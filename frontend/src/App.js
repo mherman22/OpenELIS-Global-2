@@ -35,6 +35,9 @@ import RoutedResultsViewer from "./components/patient/resultsViewer/results-view
 import EOrderPage from "./components/eOrder/Index";
 import RoutineIndex from "./components/Reports/routine/Index.js";
 import PrintBarcode from "./components/printBarcode/Index";
+import ReportNonConformingEvent from "./components/Non-Conform/ReportNonConformingEvent.js";
+import NCECorrectiveAction from "./components/Non-Conform/NCECorrectiveAction.js";
+import ViewNewNonconformingEvents from "./components/Non-Conform/ViewNewNonconformingEvents.js";
 
 
 export default function App() {
@@ -161,9 +164,9 @@ export default function App() {
 
   const changeLanguageBackend = async (lang) => {
     if (userSessionDetails.authenticated) {
-      getFromOpenElisServer("/Home?lang=" + lang, () => {});
+      getFromOpenElisServer("/Home?lang=" + lang, () => { });
     } else {
-      getFromOpenElisServer("/LoginPage?lang=" + lang, () => {});
+      getFromOpenElisServer("/LoginPage?lang=" + lang, () => { });
     }
   };
 
@@ -304,6 +307,24 @@ export default function App() {
                   path="/PatientHistory"
                   exact
                   component={() => <PatientHistory />}
+                  role="Reception"
+                />
+                <SecureRoute
+                  path="/ReportNonConformingEvent"
+                  exact
+                  component={() => <ReportNonConformingEvent />}
+                  role="Reception"
+                />
+                <SecureRoute
+                  path="/ViewNonConformingEvent"
+                  exact
+                  component={() => <ViewNewNonconformingEvents />}
+                  role="Reception"
+                />
+                <SecureRoute
+                  path="/NCECorrectiveAction"
+                  exact
+                  component={() => <NCECorrectiveAction />}
                   role="Reception"
                 />
                 <SecureRoute
