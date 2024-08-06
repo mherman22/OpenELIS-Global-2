@@ -5,6 +5,8 @@ import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.context.FhirVersionEnum;
 import ca.uhn.fhir.rest.client.apache.ApacheRestfulClientFactory;
 import ca.uhn.fhir.rest.client.api.IRestfulClientFactory;
+import lombok.Getter;
+
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +30,22 @@ public class FhirConfig {
 
     @Value("${org.openelisglobal.fhirstore.password:}")
     private String password;
+
+    @Value("${org.openelisglobal.crserver.uri}")
+    @Getter
+    private String clientRegistryServerUrl;
+
+    @Value("${org.openelisglobal.crserver.username}")
+    @Getter
+    private String clientRegistryUserName;
+
+    @Value("${org.openelisglobal.crserver.password}")
+    @Getter
+    private String clientRegistryPassword;
+
+    @Value("${org.openelisglobal.crserver.identfier.root}")
+    @Getter
+	private String identifierRoot;
 
     @Autowired
     CloseableHttpClient httpClient;
@@ -64,5 +82,9 @@ public class FhirConfig {
 
     public String[] getRemoteStorePaths() {
         return remoteStorePaths;
+    }
+
+    public String getClientRegistryDefaultPatientIdentifierSystem() {
+        return "clientregistry.defaultPatientIdentifierSystem";
     }
 }
