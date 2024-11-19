@@ -20,10 +20,8 @@ import org.openelisglobal.dictionarycategory.service.DictionaryCategoryService;
 import org.openelisglobal.dictionarycategory.valueholder.DictionaryCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MvcResult;
 
-@Rollback
 public class DictionaryMenuRestControllerTest extends BaseWebContextSensitiveTest {
 
     @Autowired
@@ -36,7 +34,6 @@ public class DictionaryMenuRestControllerTest extends BaseWebContextSensitiveTes
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        executeDataSetWithStateManagement("testdata/dictionary.xml");
     }
 
     @Test
