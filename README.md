@@ -167,7 +167,7 @@ accessing any of these links, simply follow these steps:
 
 1.  Run Build Check (Backend). This command builds the project similar to CI
 
-        mvn clean install -Dspotless.check.skip=true
+        `mvn clean install -Dspotless.check.skip=true
 
 1.  To run Individual Integration Test
 
@@ -180,7 +180,7 @@ accessing any of these links, simply follow these steps:
 
         cd frontend/ # from project directory
         npm install
-        npm run build
+        npm run build 
         npm run cy:run # this will run e2e testing same CI
 
 ### Testing Resources
