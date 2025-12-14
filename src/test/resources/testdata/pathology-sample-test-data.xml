@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Test Data for PathologySampleControllerTest This file contains test
+    fixtures for pathology sample registration tests. Uses IDs 10001-10010 for
+    samples to avoid conflicts. -->
+<dataset>
+    <!-- Sample 1 for Clinical Specimen -->
+    <sample id="10001" accession_number="PATH-CLINICAL-001"
+        fhir_uuid="20000000-0000-0000-0000-000000010001" domain="H"
+        status_id="1" entered_date="2025-01-10 09:00:00" sys_user_id="1"
+        received_date="2025-01-10 09:00:00" lastupdated="2025-01-10 12:00:00"
+        is_confirmation="false" />
+
+    <sample_item id="10001" samp_id="10001" sort_order="1"
+        external_id="PATH-CLINICAL-001-TISSUE" typeosamp_id="1"
+        collection_date="2025-01-10 08:00:00" collector="Lab-Tech-001"
+        quantity="10.0" status_id="1" voided="false" rejected="false"
+        lastupdated="2025-01-10 12:00:00" />
+
+    <!-- Sample 2 for Research Specimen -->
+    <sample id="10002" accession_number="PATH-RESEARCH-001"
+        fhir_uuid="20000000-0000-0000-0000-000000010002" domain="H"
+        status_id="1" entered_date="2025-01-10 10:00:00" sys_user_id="1"
+        received_date="2025-01-10 10:00:00" lastupdated="2025-01-10 12:00:00"
+        is_confirmation="false" />
+
+    <sample_item id="10002" samp_id="10002" sort_order="1"
+        external_id="PATH-RESEARCH-001-BIOPSY" typeosamp_id="1"
+        collection_date="2025-01-10 09:00:00" collector="Lab-Tech-002"
+        quantity="5.0" status_id="1" voided="false" rejected="false"
+        lastupdated="2025-01-10 12:00:00" />
+
+    <!-- Existing Clinical Sample Registration -->
+    <pathology_sample_registration id="1001"
+        sample_item_id="10001"
+        fhir_uuid="30000000-0000-0000-0000-000000001001" category="CLINICAL"
+        patient_id="P-TEST-001" requesting_clinician="Dr. Test Smith"
+        specimen_site="Liver"
+        clinical_details="Test case for hepatocellular carcinoma diagnosis"
+        sample_source="Alert Hospital" receiving_date="2025-01-10 09:30:00"
+        receiving_staff_id="1" lastupdated="2025-01-10 12:00:00" />
+
+    <!-- Existing Research Sample Registration -->
+    <pathology_sample_registration id="1002"
+        sample_item_id="10002"
+        fhir_uuid="30000000-0000-0000-0000-000000001002" category="RESEARCH"
+        study_id="STUDY-2024-001" pi_name="Dr. Test Johnson"
+        participant_id="PARTICIPANT-001" ethical_approval_ref="IRB-2024-TEST"
+        sample_source="Alert Hospital" receiving_date="2025-01-10 10:30:00"
+        receiving_staff_id="1" lastupdated="2025-01-10 12:00:00" />
+
+    <!-- Additional samples for pagination testing -->
+    <sample id="10003" accession_number="PATH-CLINICAL-002"
+        fhir_uuid="20000000-0000-0000-0000-000000010003" domain="H"
+        status_id="1" entered_date="2025-01-11 09:00:00" sys_user_id="1"
+        received_date="2025-01-11 09:00:00" lastupdated="2025-01-11 12:00:00"
+        is_confirmation="false" />
+
+    <sample_item id="10003" samp_id="10003" sort_order="1"
+        external_id="PATH-CLINICAL-002-TISSUE" typeosamp_id="1"
+        collection_date="2025-01-11 08:00:00" collector="Lab-Tech-001"
+        quantity="8.0" status_id="1" voided="false" rejected="false"
+        lastupdated="2025-01-11 12:00:00" />
+
+    <pathology_sample_registration id="1003"
+        sample_item_id="10003"
+        fhir_uuid="30000000-0000-0000-0000-000000001003" category="CLINICAL"
+        patient_id="P-TEST-002" requesting_clinician="Dr. Test Brown"
+        specimen_site="Lung"
+        clinical_details="Test case for lung adenocarcinoma"
+        sample_source="Alert Hospital" receiving_date="2025-01-11 09:30:00"
+        receiving_staff_id="1" lastupdated="2025-01-11 12:00:00" />
+</dataset>

@@ -27,15 +27,15 @@ goal)
 
 **Purpose**: Project initialization, package structure, Liquibase registration
 
-- [ ] T001 Create pathology package structure:
+- [x] T001 Create pathology package structure:
       `src/main/java/org/openelisglobal/pathology/{valueholder,dao,service,controller/rest,form}/`
-- [ ] T002 Create test package structure:
+- [x] T002 Create test package structure:
       `src/test/java/org/openelisglobal/pathology/{service,controller,dao}/`
-- [ ] T003 [P] Create frontend component directories:
+- [x] T003 [P] Create frontend component directories:
       `frontend/src/components/pathology/{pages,components,__tests__}/`
-- [ ] T004 [P] Create Liquibase directory:
+- [x] T004 [P] Create Liquibase directory:
       `src/main/resources/liquibase/pathology/`
-- [ ] T005 Register pathology Liquibase files in master changelog:
+- [x] T005 Register pathology Liquibase files in master changelog:
       `src/main/resources/liquibase/liquibase-changeLog.xml`
 
 ---

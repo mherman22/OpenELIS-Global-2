@@ -1,0 +1,67 @@
+.pathology-workflow-container {
+  padding: 1rem;
+}
+
+.pathology-workflow-container .notebook-description {
+  color: #525252;
+  margin-bottom: 1.5rem;
+}
+
+.pathology-workflow-container .error-message {
+  color: #da1e28;
+  padding: 1rem;
+  background-color: #fff1f1;
+  border-left: 3px solid #da1e28;
+}
+
+.pathology-qc-form {
+  margin-top: 1.5rem;
+}
+
+.pathology-qc-criteria {
+  margin: 1rem 0;
+}
+
+.pathology-test-form {
+  margin-top: 1.5rem;
+}
+
+.pathology-control-section {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: #f4f4f4;
+  border-radius: 4px;
+}
+
+.pathology-sample-reception {
+  margin-top: 1rem;
+}
+
+.pathology-category-toggle {
+  margin-bottom: 1.5rem;
+}
+
+.pathology-form-section {
+  margin: 1.5rem 0;
+}
+
+.pathology-action-buttons {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.pathology-progress-indicator {
+  margin: 1rem 0;
+}
+
+.pathology-processing-form {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+}
+
+.pathology-page-description {
+  color: #525252;
+  margin-bottom: 1rem;
+  font-style: italic;
+}

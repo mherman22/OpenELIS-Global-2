@@ -1,0 +1,695 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- ================================================================== -->
+    <!-- OGC-052: Pathology Laboratory Workflow Feature                    -->
+    <!-- Comprehensive pathology lab management system including:           -->
+    <!-- - Sample Registration (Clinical/Research)                          -->
+    <!-- - Quality Control Tracking                                         -->
+    <!-- - Test Results with Pathologist Sign-off                           -->
+    <!-- - Reference Document Management                                    -->
+    <!-- - Project-based Access Control                                     -->
+    <!-- ================================================================== -->
+
+    <!-- Enum Seed Data -->
+    <changeSet id="001-pathology-enums-seed" author="speckit">
+        <comment>Create pathology enumeration reference tables and seed data</comment>
+
+        <!-- Sample Category Enumeration -->
+        <insert tableName="type_of_sample">
+            <column name="id" valueSequenceNext="type_of_sample_seq"/>
+            <column name="description" value="Clinical Pathology Specimen"/>
+            <column name="local_abbrev" value="CLINICAL"/>
+            <column name="lastupdated" valueDate="now()"/>
+        </insert>
+
+        <insert tableName="type_of_sample">
+            <column name="id" valueSequenceNext="type_of_sample_seq"/>
+            <column name="description" value="Research Pathology Specimen"/>
+            <column name="local_abbrev" value="RESEARCH"/>
+            <column name="lastupdated" valueDate="now()"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="type_of_sample">
+                <where>local_abbrev IN ('CLINICAL', 'RESEARCH')</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <!-- Sample Registration Table -->
+    <changeSet id="002-pathology-sample-registration" author="speckit">
+        <comment>Create pathology_sample_registration table for pathology-specific metadata</comment>
+
+        <createSequence sequenceName="pathology_sample_registration_seq" startValue="1" incrementBy="1"/>
+
+        <createTable tableName="pathology_sample_registration">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sample_item_id" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="fhir_uuid" type="UUID"/>
+            <column name="category" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <!-- Clinical specimen fields -->
+            <column name="patient_id" type="VARCHAR(100)"/>
+            <column name="requesting_clinician" type="VARCHAR(255)"/>
+            <column name="clinical_details" type="TEXT"/>
+            <column name="specimen_site" type="VARCHAR(255)"/>
+            <!-- Research specimen fields -->
+            <column name="study_id" type="VARCHAR(100)"/>
+            <column name="pi_name" type="VARCHAR(255)"/>
+            <column name="participant_id" type="VARCHAR(100)"/>
+            <column name="ethical_approval_ref" type="VARCHAR(255)"/>
+            <!-- Common fields -->
+            <column name="sample_source" type="VARCHAR(255)" defaultValue="Alert Hospital"/>
+            <column name="receiving_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="receiving_staff_id" type="INTEGER"/>
+            <column name="last_updated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <!-- Foreign key constraints -->
+        <addForeignKeyConstraint
+            baseTableName="pathology_sample_registration"
+            baseColumnNames="sample_item_id"
+            constraintName="fk_path_reg_sample"
+            referencedTableName="sample_item"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+            baseTableName="pathology_sample_registration"
+            baseColumnNames="receiving_staff_id"
+            constraintName="fk_path_reg_staff"
+            referencedTableName="system_user"
+            referencedColumnNames="id"/>
+
+        <!-- Indexes for performance -->
+        <createIndex tableName="pathology_sample_registration" indexName="idx_path_reg_sample">
+            <column name="sample_item_id"/>
+        </createIndex>
+
+        <createIndex tableName="pathology_sample_registration" indexName="idx_path_reg_category">
+            <column name="category"/>
+        </createIndex>
+
+        <createIndex tableName="pathology_sample_registration" indexName="idx_path_reg_study">
+            <column name="study_id"/>
+        </createIndex>
+
+        <createIndex tableName="pathology_sample_registration" indexName="idx_path_reg_patient">
+            <column name="patient_id"/>
+        </createIndex>
+
+        <rollback>
+            <dropTable tableName="pathology_sample_registration"/>
+            <dropSequence sequenceName="pathology_sample_registration_seq"/>
+        </rollback>
+    </changeSet>
+
+    <!-- Quality Control Table -->
+    <changeSet id="003-quality-control" author="speckit">
+        <comment>Create quality_control_record table for QC inspection tracking</comment>
+
+        <createSequence sequenceName="quality_control_record_seq" startValue="1" incrementBy="1"/>
+
+        <createTable tableName="quality_control_record">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sample_item_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fhir_uuid" type="UUID"/>
+            <column name="qc_type" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="criteria_results" type="JSONB"/>
+            <column name="failure_reason" type="TEXT"/>
+            <column name="action_taken" type="VARCHAR(50)"/>
+            <column name="technician_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="recorded_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pathologist_escalated" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="notes" type="TEXT"/>
+            <column name="last_updated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <!-- Foreign key constraints -->
+        <addForeignKeyConstraint
+            baseTableName="quality_control_record"
+            baseColumnNames="sample_item_id"
+            constraintName="fk_qc_sample"
+            referencedTableName="sample_item"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+            baseTableName="quality_control_record"
+            baseColumnNames="technician_id"
+            constraintName="fk_qc_technician"
+            referencedTableName="system_user"
+            referencedColumnNames="id"/>
+
+        <!-- Indexes for performance -->
+        <createIndex tableName="quality_control_record" indexName="idx_qc_sample">
+            <column name="sample_item_id"/>
+        </createIndex>
+
+        <createIndex tableName="quality_control_record" indexName="idx_qc_status">
+            <column name="status"/>
+        </createIndex>
+
+        <createIndex tableName="quality_control_record" indexName="idx_qc_type_status">
+            <column name="qc_type"/>
+            <column name="status"/>
+        </createIndex>
+
+        <createIndex tableName="quality_control_record" indexName="idx_qc_recorded">
+            <column name="recorded_at"/>
+        </createIndex>
+
+        <rollback>
+            <dropTable tableName="quality_control_record"/>
+            <dropSequence sequenceName="quality_control_record_seq"/>
+        </rollback>
+    </changeSet>
+
+    <!-- Test Result Table -->
+    <changeSet id="005-test-result" author="speckit">
+        <comment>Create test_result_record table for test results and sign-off</comment>
+
+        <createSequence sequenceName="test_result_record_seq" startValue="1" incrementBy="1"/>
+
+        <createTable tableName="test_result_record">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sample_item_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fhir_uuid" type="UUID"/>
+            <column name="block_slide_id" type="VARCHAR(100)"/>
+            <column name="test_type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stain_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="protocol_reference_id" type="INTEGER"/>
+            <column name="positive_control_status" type="VARCHAR(10)"/>
+            <column name="negative_control_status" type="VARCHAR(10)"/>
+            <column name="stain_quality" type="VARCHAR(20)"/>
+            <column name="result_data" type="JSONB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pathologist_signoff_id" type="INTEGER"/>
+            <column name="signoff_timestamp" type="TIMESTAMP"/>
+            <column name="performed_by" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="performed_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_updated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <!-- Foreign key constraints -->
+        <addForeignKeyConstraint
+            baseTableName="test_result_record"
+            baseColumnNames="sample_item_id"
+            constraintName="fk_test_sample"
+            referencedTableName="sample_item"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+            baseTableName="test_result_record"
+            baseColumnNames="pathologist_signoff_id"
+            constraintName="fk_test_pathologist"
+            referencedTableName="system_user"
+            referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+            baseTableName="test_result_record"
+            baseColumnNames="performed_by"
+            constraintName="fk_test_technician"
+            referencedTableName="system_user"
+            referencedColumnNames="id"/>
+
+        <!-- Indexes for performance -->
+        <createIndex tableName="test_result_record" indexName="idx_test_sample">
+            <column name="sample_item_id"/>
+        </createIndex>
+
+        <createIndex tableName="test_result_record" indexName="idx_test_type">
+            <column name="test_type"/>
+        </createIndex>
+
+        <createIndex tableName="test_result_record" indexName="idx_test_stain">
+            <column name="stain_name"/>
+        </createIndex>
+
+        <createIndex tableName="test_result_record" indexName="idx_test_signoff">
+            <column name="pathologist_signoff_id"/>
+            <column name="signoff_timestamp"/>
+        </createIndex>
+
+        <rollback>
+            <dropTable tableName="test_result_record"/>
+            <dropSequence sequenceName="test_result_record_seq"/>
+        </rollback>
+    </changeSet>
+
+    <!-- Reference Document Table -->
+    <changeSet id="007-reference-document" author="speckit">
+        <comment>Create reference_document table for SOP/protocol management</comment>
+
+        <createSequence sequenceName="reference_document_seq" startValue="1" incrementBy="1"/>
+
+        <createTable tableName="reference_document">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="document_type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_path" type="VARCHAR(500)"/>
+            <column name="file_content" type="BYTEA"/>
+            <column name="file_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="mime_type" type="VARCHAR(100)"/>
+            <column name="version" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="effective_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="change_summary" type="TEXT"/>
+            <column name="uploaded_by" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uploaded_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="replaced_by_id" type="INTEGER"/>
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true"/>
+            <column name="last_updated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <!-- Foreign key constraints -->
+        <addForeignKeyConstraint
+            baseTableName="reference_document"
+            baseColumnNames="uploaded_by"
+            constraintName="fk_refdoc_uploader"
+            referencedTableName="system_user"
+            referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+            baseTableName="reference_document"
+            baseColumnNames="replaced_by_id"
+            constraintName="fk_refdoc_replacement"
+            referencedTableName="reference_document"
+            referencedColumnNames="id"/>
+
+        <!-- Indexes for performance -->
+        <createIndex tableName="reference_document" indexName="idx_refdoc_title">
+            <column name="title"/>
+        </createIndex>
+
+        <createIndex tableName="reference_document" indexName="idx_refdoc_type">
+            <column name="document_type"/>
+        </createIndex>
+
+        <createIndex tableName="reference_document" indexName="idx_refdoc_active">
+            <column name="is_active"/>
+        </createIndex>
+
+        <rollback>
+            <dropTable tableName="reference_document"/>
+            <dropSequence sequenceName="reference_document_seq"/>
+        </rollback>
+    </changeSet>
+
+    <!-- Project Access Table -->
+    <changeSet id="008-project-access" author="speckit">
+        <comment>Create project_access table for research sample access control</comment>
+
+        <createSequence sequenceName="project_access_seq" startValue="1" incrementBy="1"/>
+
+        <createTable tableName="project_access">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="project_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="access_role" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="granted_by" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="granted_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revoked_at" type="TIMESTAMP"/>
+            <column name="last_updated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <!-- Foreign key constraints -->
+        <addForeignKeyConstraint
+            baseTableName="project_access"
+            baseColumnNames="project_id"
+            constraintName="fk_proj_access_project"
+            referencedTableName="project"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+            baseTableName="project_access"
+            baseColumnNames="user_id"
+            constraintName="fk_proj_access_user"
+            referencedTableName="system_user"
+            referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+            baseTableName="project_access"
+            baseColumnNames="granted_by"
+            constraintName="fk_proj_access_granter"
+            referencedTableName="system_user"
+            referencedColumnNames="id"/>
+
+        <!-- Indexes for performance -->
+        <createIndex tableName="project_access" indexName="idx_proj_access_project">
+            <column name="project_id"/>
+        </createIndex>
+
+        <createIndex tableName="project_access" indexName="idx_proj_access_user">
+            <column name="user_id"/>
+        </createIndex>
+
+        <rollback>
+            <dropTable tableName="project_access"/>
+            <dropSequence sequenceName="project_access_seq"/>
+        </rollback>
+    </changeSet>
+
+    <!-- Seed Data -->
+    <changeSet id="009-seed-data" author="speckit">
+        <comment>Insert seed data for pathology workflow configuration</comment>
+
+        <!-- Sample Source - Alert Hospital (default) -->
+        <insert tableName="organization">
+            <column name="id" valueSequenceNext="organization_seq"/>
+            <column name="name" value="Alert Hospital"/>
+            <column name="short_name" value="Alert"/>
+            <column name="is_active" value="Y"/>
+            <column name="lastupdated" valueDate="now()"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="organization">
+                <where>short_name = 'Alert'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <!-- Pathology Workflow Page Templates -->
+    <changeSet id="010-pathology-workflow-templates" author="speckit">
+        <comment>Insert workflow page templates for pathology laboratory workflow</comment>
+
+        <!-- Page 1: Sample Reception &amp; Registration -->
+        <insert tableName="workflow_page_template">
+            <column name="id" value="100"/>
+            <column name="name" value="Sample Reception &amp; Registration"/>
+            <column name="display_key" value="pathology.workflow.sampleReception"/>
+            <column name="description" value="Register pathology samples with clinical or research metadata"/>
+            <column name="default_instructions" value="Register incoming pathology samples. For clinical specimens, record patient ID, requesting clinician, and clinical details. For research specimens, record study ID, PI name, and ethical approval reference."/>
+            <column name="default_content" value="Sample Reception - Register clinical diagnostic or research specimens"/>
+            <column name="page_type" value="INDIVIDUAL_PROCESSING"/>
+            <column name="display_order" value="1"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="workflow_category" value="PATHOLOGY"/>
+        </insert>
+
+        <!-- Page 2: Initial Quality Control -->
+        <insert tableName="workflow_page_template">
+            <column name="id" value="101"/>
+            <column name="name" value="Initial Sample Inspection"/>
+            <column name="display_key" value="pathology.workflow.initialInspection"/>
+            <column name="description" value="Verify sample adequacy and fixation quality before processing"/>
+            <column name="default_instructions" value="Perform initial quality control inspection. Check tissue adequacy, fixation quality, labeling accuracy, and container integrity. Document any quality issues and escalate to pathologist if needed."/>
+            <column name="default_content" value="Initial QC - Visual inspection and adequacy verification"/>
+            <column name="page_type" value="BATCH_VERIFICATION"/>
+            <column name="display_order" value="2"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="workflow_category" value="PATHOLOGY"/>
+        </insert>
+
+        <!-- Page 3: Grossing &amp; Block Preparation -->
+        <insert tableName="workflow_page_template">
+            <column name="id" value="102"/>
+            <column name="name" value="Grossing &amp; Block Preparation"/>
+            <column name="display_key" value="pathology.workflow.grossing"/>
+            <column name="description" value="Gross examination, tissue dissection, and embedding in paraffin blocks"/>
+            <column name="default_instructions" value="Perform gross examination and document macroscopic findings. Dissect tissue samples and embed in paraffin blocks. Assign block IDs and record block count."/>
+            <column name="default_content" value="Grossing - Macroscopic examination and block preparation"/>
+            <column name="page_type" value="INDIVIDUAL_PROCESSING"/>
+            <column name="display_order" value="3"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="workflow_category" value="PATHOLOGY"/>
+        </insert>
+
+        <!-- Page 4: Block Quality Control -->
+        <insert tableName="workflow_page_template">
+            <column name="id" value="103"/>
+            <column name="name" value="Tissue Block QC"/>
+            <column name="display_key" value="pathology.workflow.blockQC"/>
+            <column name="description" value="Verify tissue block quality before sectioning"/>
+            <column name="default_instructions" value="Inspect tissue blocks for embedding quality, tissue orientation, and block integrity. Verify proper labeling and tracking. Document any issues requiring reprocessing."/>
+            <column name="default_content" value="Block QC - Post-embedding quality verification"/>
+            <column name="page_type" value="BATCH_VERIFICATION"/>
+            <column name="display_order" value="4"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="workflow_category" value="PATHOLOGY"/>
+        </insert>
+
+        <!-- Page 5: Microtomy &amp; Slide Preparation -->
+        <insert tableName="workflow_page_template">
+            <column name="id" value="104"/>
+            <column name="name" value="Microtomy &amp; Slide Preparation"/>
+            <column name="display_key" value="pathology.workflow.microtomy"/>
+            <column name="description" value="Section tissue blocks and mount on glass slides"/>
+            <column name="default_instructions" value="Cut tissue sections at appropriate thickness (typically 4-5 microns). Mount sections on glass slides and label appropriately. Prepare slides for staining."/>
+            <column name="default_content" value="Microtomy - Tissue sectioning and slide mounting"/>
+            <column name="page_type" value="BULK_DATA_ENTRY"/>
+            <column name="display_order" value="5"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="workflow_category" value="PATHOLOGY"/>
+        </insert>
+
+        <!-- Page 6: Staining -->
+        <insert tableName="workflow_page_template">
+            <column name="id" value="105"/>
+            <column name="name" value="Staining &amp; Processing"/>
+            <column name="display_key" value="pathology.workflow.staining"/>
+            <column name="description" value="Perform H&amp;E or special stains on tissue sections"/>
+            <column name="default_instructions" value="Apply appropriate staining protocols (H&amp;E, IHC, special stains). Record stain type, protocol reference, and processing details. Verify staining quality using controls."/>
+            <column name="default_content" value="Staining - H&amp;E, IHC, and special stains"/>
+            <column name="page_type" value="BULK_DATA_ENTRY"/>
+            <column name="display_order" value="6"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="workflow_category" value="PATHOLOGY"/>
+        </insert>
+
+        <!-- Page 7: Slide Quality Control -->
+        <insert tableName="workflow_page_template">
+            <column name="id" value="106"/>
+            <column name="name" value="Slide QC &amp; Control Validation"/>
+            <column name="display_key" value="pathology.workflow.slideQC"/>
+            <column name="description" value="Verify slide and staining quality before pathologist review"/>
+            <column name="default_instructions" value="Evaluate staining quality (excellent/good/acceptable/poor/unacceptable). Verify positive and negative controls. Check for artifacts, tissue loss, or technical issues. Escalate poor quality slides for restaining."/>
+            <column name="default_content" value="Slide QC - Staining quality and control validation"/>
+            <column name="page_type" value="BATCH_VERIFICATION"/>
+            <column name="display_order" value="7"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="workflow_category" value="PATHOLOGY"/>
+        </insert>
+
+        <!-- Page 8: Microscopic Examination & Result Entry -->
+        <insert tableName="workflow_page_template">
+            <column name="id" value="107"/>
+            <column name="name" value="Microscopic Examination"/>
+            <column name="display_key" value="pathology.workflow.microscopy"/>
+            <column name="description" value="Technician performs test assays and records preliminary results"/>
+            <column name="default_instructions" value="Perform microscopic examination and specialized tests (IHC scoring, molecular tests, cytology). Record test results, control status, and preliminary findings. Document any technical issues."/>
+            <column name="default_content" value="Testing - Microscopic examination and assay execution"/>
+            <column name="page_type" value="INDIVIDUAL_PROCESSING"/>
+            <column name="display_order" value="8"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="workflow_category" value="PATHOLOGY"/>
+        </insert>
+
+        <!-- Page 9: Pathologist Review &amp; Sign-off -->
+        <insert tableName="workflow_page_template">
+            <column name="id" value="108"/>
+            <column name="name" value="Pathologist Review &amp; Sign-off"/>
+            <column name="display_key" value="pathology.workflow.pathologistReview"/>
+            <column name="description" value="Pathologist reviews results, provides diagnosis, and approves release"/>
+            <column name="default_instructions" value="Pathologist reviews all test results, microscopic findings, and control data. Provide final diagnosis and interpretation. Electronically sign off on results before release."/>
+            <column name="default_content" value="Pathologist Review - Final diagnosis and approval"/>
+            <column name="page_type" value="INDIVIDUAL_PROCESSING"/>
+            <column name="display_order" value="9"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="workflow_category" value="PATHOLOGY"/>
+        </insert>
+
+        <!-- Page 10: Results Release -->
+        <insert tableName="workflow_page_template">
+            <column name="id" value="109"/>
+            <column name="name" value="Results Release &amp; Archive"/>
+            <column name="display_key" value="pathology.workflow.resultsRelease"/>
+            <column name="description" value="Final approval and dispatch of pathology results"/>
+            <column name="default_instructions" value="Perform final quality check, generate pathology report, and release results to requesting clinician or study team. Archive slides and blocks according to retention policy."/>
+            <column name="default_content" value="Results Release - Final approval and report dispatch"/>
+            <column name="page_type" value="BATCH_VERIFICATION"/>
+            <column name="display_order" value="10"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="workflow_category" value="PATHOLOGY"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="workflow_page_template">
+                <where>workflow_category = 'PATHOLOGY'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <!-- Pathology Notebook Instance -->
+    <changeSet id="011-pathology-notebook-instance" author="speckit">
+        <comment>Create pathology laboratory notebook instance using workflow templates</comment>
+
+        <!-- Create the pathology notebook -->
+        <insert tableName="note_book">
+            <column name="id" value="10"/>
+            <column name="name" value="Pathology Laboratory Workflow"/>
+            <column name="description" value="Complete pathology laboratory workflow from sample reception through results release, including grossing, microtomy, staining, QC checkpoints, testing, and pathologist sign-off"/>
+            <column name="category" value="PATHOLOGY"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <!-- Link notebook to the 10 workflow page templates (IDs 100-109) -->
+        <insert tableName="note_book_page">
+            <column name="id" valueSequenceNext="note_book_page_seq"/>
+            <column name="note_book_id" value="10"/>
+            <column name="page_template_id" value="100"/>
+            <column name="display_order" value="1"/>
+        </insert>
+
+        <insert tableName="note_book_page">
+            <column name="id" valueSequenceNext="note_book_page_seq"/>
+            <column name="note_book_id" value="10"/>
+            <column name="page_template_id" value="101"/>
+            <column name="display_order" value="2"/>
+        </insert>
+
+        <insert tableName="note_book_page">
+            <column name="id" valueSequenceNext="note_book_page_seq"/>
+            <column name="note_book_id" value="10"/>
+            <column name="page_template_id" value="102"/>
+            <column name="display_order" value="3"/>
+        </insert>
+
+        <insert tableName="note_book_page">
+            <column name="id" valueSequenceNext="note_book_page_seq"/>
+            <column name="note_book_id" value="10"/>
+            <column name="page_template_id" value="103"/>
+            <column name="display_order" value="4"/>
+        </insert>
+
+        <insert tableName="note_book_page">
+            <column name="id" valueSequenceNext="note_book_page_seq"/>
+            <column name="note_book_id" value="10"/>
+            <column name="page_template_id" value="104"/>
+            <column name="display_order" value="5"/>
+        </insert>
+
+        <insert tableName="note_book_page">
+            <column name="id" valueSequenceNext="note_book_page_seq"/>
+            <column name="note_book_id" value="10"/>
+            <column name="page_template_id" value="105"/>
+            <column name="display_order" value="6"/>
+        </insert>
+
+        <insert tableName="note_book_page">
+            <column name="id" valueSequenceNext="note_book_page_seq"/>
+            <column name="note_book_id" value="10"/>
+            <column name="page_template_id" value="106"/>
+            <column name="display_order" value="7"/>
+        </insert>
+
+        <insert tableName="note_book_page">
+            <column name="id" valueSequenceNext="note_book_page_seq"/>
+            <column name="note_book_id" value="10"/>
+            <column name="page_template_id" value="107"/>
+            <column name="display_order" value="8"/>
+        </insert>
+
+        <insert tableName="note_book_page">
+            <column name="id" valueSequenceNext="note_book_page_seq"/>
+            <column name="note_book_id" value="10"/>
+            <column name="page_template_id" value="108"/>
+            <column name="display_order" value="9"/>
+        </insert>
+
+        <insert tableName="note_book_page">
+            <column name="id" valueSequenceNext="note_book_page_seq"/>
+            <column name="note_book_id" value="10"/>
+            <column name="page_template_id" value="109"/>
+            <column name="display_order" value="10"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="note_book_page">
+                <where>note_book_id = 10</where>
+            </delete>
+            <delete tableName="note_book">
+                <where>id = 10</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

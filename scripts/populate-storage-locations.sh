@@ -92,7 +92,7 @@ if [ "$CLEAN_FIRST" = true ]; then
 -- Clean in reverse hierarchy order (children first)
 DELETE FROM sample_storage_movement;
 DELETE FROM sample_storage_assignment;
-DELETE FROM storage_box;
+-- DELETE FROM storage_box; -- Commented out: table does not exist
 DELETE FROM storage_rack;
 DELETE FROM storage_shelf;
 DELETE FROM storage_device;
@@ -103,7 +103,7 @@ SELECT setval('storage_room_seq', 1, false);
 SELECT setval('storage_device_seq', 1, false);
 SELECT setval('storage_shelf_seq', 1, false);
 SELECT setval('storage_rack_seq', 1, false);
-SELECT setval('storage_box_seq', 1, false);
+-- SELECT setval('storage_box_seq', 1, false); -- Commented out: sequence does not exist
 EOF
     echo -e "${GREEN}Cleanup complete.${NC}"
     echo ""
@@ -158,7 +158,7 @@ echo -e "${GREEN}Devices inserted.${NC}"
 echo -e "${YELLOW}Inserting storage shelves...${NC}"
 execute_sql <<'EOF'
 -- Storage Shelves (within devices)
-INSERT INTO storage_shelf (id, fhir_uuid, label, code, capacity_limit, active, parent_device_id, sys_user_id, last_updated)
+INSERT INTO storage_shelf (id, fhir_uuid, label, short_code, capacity_limit, active, parent_device_id, sys_user_id, last_updated)
 VALUES
     -- Ultra-Low Freezer 1 shelves (Device 10)
     (100, gen_random_uuid(), 'Shelf 1', 'S1', 50, true, 10, '1', NOW()),
@@ -225,7 +225,7 @@ echo -e "${GREEN}Shelves inserted.${NC}"
 echo -e "${YELLOW}Inserting storage racks...${NC}"
 execute_sql <<'EOF'
 -- Storage Racks (within shelves)
-INSERT INTO storage_rack (id, fhir_uuid, label, code, active, parent_shelf_id, sys_user_id, last_updated)
+INSERT INTO storage_rack (id, fhir_uuid, label, short_code, active, parent_shelf_id, sys_user_id, last_updated)
 VALUES
     -- Racks in Ultra-Low Freezer 1, Shelf 1 (Shelf 100)
     (1000, gen_random_uuid(), 'Rack 1', 'R1', true, 100, '1', NOW()),
@@ -285,82 +285,87 @@ ON CONFLICT DO NOTHING;
 EOF
 echo -e "${GREEN}Racks inserted.${NC}"
 
-echo -e "${YELLOW}Inserting storage boxes...${NC}"
-execute_sql <<'EOF'
--- Storage Boxes (gridded containers within racks)
-INSERT INTO storage_box (id, fhir_uuid, label, type, rows, columns, position_schema_hint, short_code, active, parent_rack_id, sys_user_id, last_updated)
-VALUES
-    -- 96-well plates in Ultra-Low Freezer 1, Rack 1000
-    (10000, gen_random_uuid(), 'Plate ULF1-S1-R1-001', '96-well', 8, 12, 'letter-number', 'P001', true, 1000, '1', NOW()),
-    (10001, gen_random_uuid(), 'Plate ULF1-S1-R1-002', '96-well', 8, 12, 'letter-number', 'P002', true, 1000, '1', NOW()),
-    (10002, gen_random_uuid(), 'Plate ULF1-S1-R1-003', '96-well', 8, 12, 'letter-number', 'P003', true, 1000, '1', NOW()),
-
-    -- 96-well plates in Ultra-Low Freezer 1, Rack 1001
-    (10010, gen_random_uuid(), 'Plate ULF1-S1-R2-001', '96-well', 8, 12, 'letter-number', 'P001', true, 1001, '1', NOW()),
-    (10011, gen_random_uuid(), 'Plate ULF1-S1-R2-002', '96-well', 8, 12, 'letter-number', 'P002', true, 1001, '1', NOW()),
-
-    -- 384-well plates in Ultra-Low Freezer 1, Rack 1002
-    (10020, gen_random_uuid(), 'HTP Plate ULF1-S1-R3-001', '384-well', 16, 24, 'letter-number', 'HTP001', true, 1002, '1', NOW()),
-    (10021, gen_random_uuid(), 'HTP Plate ULF1-S1-R3-002', '384-well', 16, 24, 'letter-number', 'HTP002', true, 1002, '1', NOW()),
-
-    -- 9x9 sample boxes in Ultra-Low Freezer 1, Rack 1010
-    (10100, gen_random_uuid(), 'Box ULF1-S2-R1-001', '9x9', 9, 9, 'number-number', 'B001', true, 1010, '1', NOW()),
-    (10101, gen_random_uuid(), 'Box ULF1-S2-R1-002', '9x9', 9, 9, 'number-number', 'B002', true, 1010, '1', NOW()),
-    (10102, gen_random_uuid(), 'Box ULF1-S2-R1-003', '9x9', 9, 9, 'number-number', 'B003', true, 1010, '1', NOW()),
-    (10103, gen_random_uuid(), 'Box ULF1-S2-R1-004', '9x9', 9, 9, 'number-number', 'B004', true, 1010, '1', NOW()),
-
-    -- 10x10 sample boxes in Ultra-Low Freezer 1, Rack 1011
-    (10110, gen_random_uuid(), 'Box ULF1-S2-R2-001', '10x10', 10, 10, 'number-number', 'B001', true, 1011, '1', NOW()),
-    (10111, gen_random_uuid(), 'Box ULF1-S2-R2-002', '10x10', 10, 10, 'number-number', 'B002', true, 1011, '1', NOW()),
-    (10112, gen_random_uuid(), 'Box ULF1-S2-R2-003', '10x10', 10, 10, 'number-number', 'B003', true, 1011, '1', NOW()),
-
-    -- Standard freezer boxes, Rack 1200
-    (12000, gen_random_uuid(), 'SF Box A1', '9x9', 9, 9, 'letter-number', 'SFA1', true, 1200, '1', NOW()),
-    (12001, gen_random_uuid(), 'SF Box A2', '9x9', 9, 9, 'letter-number', 'SFA2', true, 1200, '1', NOW()),
-
-    -- Refrigerator boxes, Rack 1300
-    (13000, gen_random_uuid(), 'Ref Box 1', '5x5', 5, 5, 'number-number', 'RB1', true, 1300, '1', NOW()),
-    (13001, gen_random_uuid(), 'Ref Box 2', '5x5', 5, 5, 'number-number', 'RB2', true, 1300, '1', NOW()),
-    (13002, gen_random_uuid(), 'Ref Box 3', '5x5', 5, 5, 'number-number', 'RB3', true, 1300, '1', NOW()),
-
-    -- Processing active plates, Rack 2000
-    (20000, gen_random_uuid(), 'Active Plate 1', '96-well', 8, 12, 'letter-number', 'AP1', true, 2000, '1', NOW()),
-    (20001, gen_random_uuid(), 'Active Plate 2', '96-well', 8, 12, 'letter-number', 'AP2', true, 2000, '1', NOW()),
-
-    -- Processing pending boxes, Rack 2010
-    (20100, gen_random_uuid(), 'Pending Box 1', '9x9', 9, 9, 'number-number', 'PB1', true, 2010, '1', NOW()),
-    (20101, gen_random_uuid(), 'Pending Box 2', '9x9', 9, 9, 'number-number', 'PB2', true, 2010, '1', NOW()),
-
-    -- Archive boxes, Rack 3000
-    (30000, gen_random_uuid(), 'Archive 2024-001', '10x10', 10, 10, 'number-number', 'A2024-001', true, 3000, '1', NOW()),
-    (30001, gen_random_uuid(), 'Archive 2024-002', '10x10', 10, 10, 'number-number', 'A2024-002', true, 3000, '1', NOW()),
-    (30002, gen_random_uuid(), 'Archive 2024-003', '10x10', 10, 10, 'number-number', 'A2024-003', true, 3000, '1', NOW()),
-    (30003, gen_random_uuid(), 'Archive 2024-004', '10x10', 10, 10, 'number-number', 'A2024-004', true, 3000, '1', NOW()),
-
-    -- Archive boxes, Rack 3001
-    (30010, gen_random_uuid(), 'Archive 2024-005', '10x10', 10, 10, 'number-number', 'A2024-005', true, 3001, '1', NOW()),
-    (30011, gen_random_uuid(), 'Archive 2024-006', '10x10', 10, 10, 'number-number', 'A2024-006', true, 3001, '1', NOW()),
-    (30012, gen_random_uuid(), 'Archive 2024-007', '10x10', 10, 10, 'number-number', 'A2024-007', true, 3001, '1', NOW()),
-
-    -- Archive boxes, Rack 3010
-    (30100, gen_random_uuid(), 'Archive 2023-001', '10x10', 10, 10, 'number-number', 'A2023-001', true, 3010, '1', NOW()),
-    (30101, gen_random_uuid(), 'Archive 2023-002', '10x10', 10, 10, 'number-number', 'A2023-002', true, 3010, '1', NOW()),
-
-    -- QC control boxes, Rack 4000
-    (40000, gen_random_uuid(), 'QC Control Plate A', '96-well', 8, 12, 'letter-number', 'QCA', true, 4000, '1', NOW()),
-    (40001, gen_random_uuid(), 'QC Control Plate B', '96-well', 8, 12, 'letter-number', 'QCB', true, 4000, '1', NOW()),
-
-    -- Receiving incoming boxes, Rack 5000
-    (50000, gen_random_uuid(), 'Incoming Today 1', '9x9', 9, 9, 'number-number', 'INC1', true, 5000, '1', NOW()),
-    (50001, gen_random_uuid(), 'Incoming Today 2', '9x9', 9, 9, 'number-number', 'INC2', true, 5000, '1', NOW()),
-    (50002, gen_random_uuid(), 'Incoming Today 3', '9x9', 9, 9, 'number-number', 'INC3', true, 5000, '1', NOW()),
-
-    -- Receiving queue boxes, Rack 5001
-    (50010, gen_random_uuid(), 'Queue Box 1', '9x9', 9, 9, 'number-number', 'Q1', true, 5001, '1', NOW()),
-    (50011, gen_random_uuid(), 'Queue Box 2', '9x9', 9, 9, 'number-number', 'Q2', true, 5001, '1', NOW())
-ON CONFLICT DO NOTHING;
-EOF
-echo -e "${GREEN}Boxes inserted.${NC}"
+# Commented out: storage_box table does not exist in current database schema
+# The changeset ID conflict prevented storage-005-create-storage-box-table from being applied
+# (storage-005-create-storage-position-table was applied first with same ID)
+#
+# echo -e "${YELLOW}Inserting storage boxes...${NC}"
+# execute_sql <<'EOF'
+# -- Storage Boxes (gridded containers within racks)
+# INSERT INTO storage_box (id, fhir_uuid, label, type, rows, columns, position_schema_hint, short_code, active, parent_rack_id, sys_user_id, last_updated)
+# VALUES
+#     -- 96-well plates in Ultra-Low Freezer 1, Rack 1000
+#     (10000, gen_random_uuid(), 'Plate ULF1-S1-R1-001', '96-well', 8, 12, 'letter-number', 'P001', true, 1000, '1', NOW()),
+#     (10001, gen_random_uuid(), 'Plate ULF1-S1-R1-002', '96-well', 8, 12, 'letter-number', 'P002', true, 1000, '1', NOW()),
+#     (10002, gen_random_uuid(), 'Plate ULF1-S1-R1-003', '96-well', 8, 12, 'letter-number', 'P003', true, 1000, '1', NOW()),
+#
+#     -- 96-well plates in Ultra-Low Freezer 1, Rack 1001
+#     (10010, gen_random_uuid(), 'Plate ULF1-S1-R2-001', '96-well', 8, 12, 'letter-number', 'P001', true, 1001, '1', NOW()),
+#     (10011, gen_random_uuid(), 'Plate ULF1-S1-R2-002', '96-well', 8, 12, 'letter-number', 'P002', true, 1001, '1', NOW()),
+#
+#     -- 384-well plates in Ultra-Low Freezer 1, Rack 1002
+#     (10020, gen_random_uuid(), 'HTP Plate ULF1-S1-R3-001', '384-well', 16, 24, 'letter-number', 'HTP001', true, 1002, '1', NOW()),
+#     (10021, gen_random_uuid(), 'HTP Plate ULF1-S1-R3-002', '384-well', 16, 24, 'letter-number', 'HTP002', true, 1002, '1', NOW()),
+#
+#     -- 9x9 sample boxes in Ultra-Low Freezer 1, Rack 1010
+#     (10100, gen_random_uuid(), 'Box ULF1-S2-R1-001', '9x9', 9, 9, 'number-number', 'B001', true, 1010, '1', NOW()),
+#     (10101, gen_random_uuid(), 'Box ULF1-S2-R1-002', '9x9', 9, 9, 'number-number', 'B002', true, 1010, '1', NOW()),
+#     (10102, gen_random_uuid(), 'Box ULF1-S2-R1-003', '9x9', 9, 9, 'number-number', 'B003', true, 1010, '1', NOW()),
+#     (10103, gen_random_uuid(), 'Box ULF1-S2-R1-004', '9x9', 9, 9, 'number-number', 'B004', true, 1010, '1', NOW()),
+#
+#     -- 10x10 sample boxes in Ultra-Low Freezer 1, Rack 1011
+#     (10110, gen_random_uuid(), 'Box ULF1-S2-R2-001', '10x10', 10, 10, 'number-number', 'B001', true, 1011, '1', NOW()),
+#     (10111, gen_random_uuid(), 'Box ULF1-S2-R2-002', '10x10', 10, 10, 'number-number', 'B002', true, 1011, '1', NOW()),
+#     (10112, gen_random_uuid(), 'Box ULF1-S2-R2-003', '10x10', 10, 10, 'number-number', 'B003', true, 1011, '1', NOW()),
+#
+#     -- Standard freezer boxes, Rack 1200
+#     (12000, gen_random_uuid(), 'SF Box A1', '9x9', 9, 9, 'letter-number', 'SFA1', true, 1200, '1', NOW()),
+#     (12001, gen_random_uuid(), 'SF Box A2', '9x9', 9, 9, 'letter-number', 'SFA2', true, 1200, '1', NOW()),
+#
+#     -- Refrigerator boxes, Rack 1300
+#     (13000, gen_random_uuid(), 'Ref Box 1', '5x5', 5, 5, 'number-number', 'RB1', true, 1300, '1', NOW()),
+#     (13001, gen_random_uuid(), 'Ref Box 2', '5x5', 5, 5, 'number-number', 'RB2', true, 1300, '1', NOW()),
+#     (13002, gen_random_uuid(), 'Ref Box 3', '5x5', 5, 5, 'number-number', 'RB3', true, 1300, '1', NOW()),
+#
+#     -- Processing active plates, Rack 2000
+#     (20000, gen_random_uuid(), 'Active Plate 1', '96-well', 8, 12, 'letter-number', 'AP1', true, 2000, '1', NOW()),
+#     (20001, gen_random_uuid(), 'Active Plate 2', '96-well', 8, 12, 'letter-number', 'AP2', true, 2000, '1', NOW()),
+#
+#     -- Processing pending boxes, Rack 2010
+#     (20100, gen_random_uuid(), 'Pending Box 1', '9x9', 9, 9, 'number-number', 'PB1', true, 2010, '1', NOW()),
+#     (20101, gen_random_uuid(), 'Pending Box 2', '9x9', 9, 9, 'number-number', 'PB2', true, 2010, '1', NOW()),
+#
+#     -- Archive boxes, Rack 3000
+#     (30000, gen_random_uuid(), 'Archive 2024-001', '10x10', 10, 10, 'number-number', 'A2024-001', true, 3000, '1', NOW()),
+#     (30001, gen_random_uuid(), 'Archive 2024-002', '10x10', 10, 10, 'number-number', 'A2024-002', true, 3000, '1', NOW()),
+#     (30002, gen_random_uuid(), 'Archive 2024-003', '10x10', 10, 10, 'number-number', 'A2024-003', true, 3000, '1', NOW()),
+#     (30003, gen_random_uuid(), 'Archive 2024-004', '10x10', 10, 10, 'number-number', 'A2024-004', true, 3000, '1', NOW()),
+#
+#     -- Archive boxes, Rack 3001
+#     (30010, gen_random_uuid(), 'Archive 2024-005', '10x10', 10, 10, 'number-number', 'A2024-005', true, 3001, '1', NOW()),
+#     (30011, gen_random_uuid(), 'Archive 2024-006', '10x10', 10, 10, 'number-number', 'A2024-006', true, 3001, '1', NOW()),
+#     (30012, gen_random_uuid(), 'Archive 2024-007', '10x10', 10, 10, 'number-number', 'A2024-007', true, 3001, '1', NOW()),
+#
+#     -- Archive boxes, Rack 3010
+#     (30100, gen_random_uuid(), 'Archive 2023-001', '10x10', 10, 10, 'number-number', 'A2023-001', true, 3010, '1', NOW()),
+#     (30101, gen_random_uuid(), 'Archive 2023-002', '10x10', 10, 10, 'number-number', 'A2023-002', true, 3010, '1', NOW()),
+#
+#     -- QC control boxes, Rack 4000
+#     (40000, gen_random_uuid(), 'QC Control Plate A', '96-well', 8, 12, 'letter-number', 'QCA', true, 4000, '1', NOW()),
+#     (40001, gen_random_uuid(), 'QC Control Plate B', '96-well', 8, 12, 'letter-number', 'QCB', true, 4000, '1', NOW()),
+#
+#     -- Receiving incoming boxes, Rack 5000
+#     (50000, gen_random_uuid(), 'Incoming Today 1', '9x9', 9, 9, 'number-number', 'INC1', true, 5000, '1', NOW()),
+#     (50001, gen_random_uuid(), 'Incoming Today 2', '9x9', 9, 9, 'number-number', 'INC2', true, 5000, '1', NOW()),
+#     (50002, gen_random_uuid(), 'Incoming Today 3', '9x9', 9, 9, 'number-number', 'INC3', true, 5000, '1', NOW()),
+#
+#     -- Receiving queue boxes, Rack 5001
+#     (50010, gen_random_uuid(), 'Queue Box 1', '9x9', 9, 9, 'number-number', 'Q1', true, 5001, '1', NOW()),
+#     (50011, gen_random_uuid(), 'Queue Box 2', '9x9', 9, 9, 'number-number', 'Q2', true, 5001, '1', NOW())
+# ON CONFLICT DO NOTHING;
+# EOF
+# echo -e "${GREEN}Boxes inserted.${NC}"
+echo -e "${YELLOW}Skipping storage boxes (table does not exist in current schema)${NC}"
 
 echo -e "${YELLOW}Updating sequences to avoid ID conflicts...${NC}"
 execute_sql <<'EOF'
@@ -369,7 +374,7 @@ SELECT setval('storage_room_seq', 1000, false);
 SELECT setval('storage_device_seq', 1000, false);
 SELECT setval('storage_shelf_seq', 1000, false);
 SELECT setval('storage_rack_seq', 10000, false);
-SELECT setval('storage_box_seq', 100000, false);
+-- SELECT setval('storage_box_seq', 100000, false); -- Commented out: sequence does not exist
 EOF
 echo -e "${GREEN}Sequences updated.${NC}"
 
@@ -387,9 +392,9 @@ SELECT 'Devices', COUNT(*)::text FROM storage_device
 UNION ALL
 SELECT 'Shelves', COUNT(*)::text FROM storage_shelf
 UNION ALL
-SELECT 'Racks', COUNT(*)::text FROM storage_rack
-UNION ALL
-SELECT 'Boxes', COUNT(*)::text FROM storage_box;
+SELECT 'Racks', COUNT(*)::text FROM storage_rack;
+-- UNION ALL
+-- SELECT 'Boxes', COUNT(*)::text FROM storage_box; -- Commented out: table does not exist
 EOF
 
 echo ""
@@ -398,9 +403,8 @@ echo ""
 echo "Example query to verify hierarchy:"
 echo "  docker exec -i ${CONTAINER} psql -U ${DB_USER} -d ${DB_NAME} -c \\"
 echo "    \"SELECT r.name as room, d.name as device, s.label as shelf,"
-echo "            rk.label as rack, b.label as box, b.type"
-echo "     FROM storage_box b"
-echo "     JOIN storage_rack rk ON b.parent_rack_id = rk.id"
+echo "            rk.label as rack"
+echo "     FROM storage_rack rk"
 echo "     JOIN storage_shelf s ON rk.parent_shelf_id = s.id"
 echo "     JOIN storage_device d ON s.parent_device_id = d.id"
 echo "     JOIN storage_room r ON d.parent_room_id = r.id"
