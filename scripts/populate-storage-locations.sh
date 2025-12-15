@@ -158,7 +158,7 @@ echo -e "${GREEN}Devices inserted.${NC}"
 echo -e "${YELLOW}Inserting storage shelves...${NC}"
 execute_sql <<'EOF'
 -- Storage Shelves (within devices)
-INSERT INTO storage_shelf (id, fhir_uuid, label, short_code, capacity_limit, active, parent_device_id, sys_user_id, last_updated)
+INSERT INTO storage_shelf (id, fhir_uuid, label, code, capacity_limit, active, parent_device_id, sys_user_id, last_updated)
 VALUES
     -- Ultra-Low Freezer 1 shelves (Device 10)
     (100, gen_random_uuid(), 'Shelf 1', 'S1', 50, true, 10, '1', NOW()),
@@ -225,7 +225,7 @@ echo -e "${GREEN}Shelves inserted.${NC}"
 echo -e "${YELLOW}Inserting storage racks...${NC}"
 execute_sql <<'EOF'
 -- Storage Racks (within shelves)
-INSERT INTO storage_rack (id, fhir_uuid, label, short_code, active, parent_shelf_id, sys_user_id, last_updated)
+INSERT INTO storage_rack (id, fhir_uuid, label, code, active, parent_shelf_id, sys_user_id, last_updated)
 VALUES
     -- Racks in Ultra-Low Freezer 1, Shelf 1 (Shelf 100)
     (1000, gen_random_uuid(), 'Rack 1', 'R1', true, 100, '1', NOW()),

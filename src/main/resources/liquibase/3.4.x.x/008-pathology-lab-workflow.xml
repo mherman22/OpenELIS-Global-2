@@ -16,13 +16,31 @@
     <!-- ================================================================== -->
 
     <!-- Enum Seed Data -->
-    <changeSet id="001-pathology-enums-seed" author="speckit">
+    <changeSet id="001-pathology-enums-seed" author="mherman22">
         <comment>Create pathology enumeration reference tables and seed data</comment>
+
+        <!-- Localization entries for sample types -->
+        <insert tableName="localization">
+            <column name="id" value="560"/>
+            <column name="description" value="sampleType name"/>
+            <column name="english" value="Clinical Pathology Specimen"/>
+            <column name="french" value="Spécimen de pathologie clinique"/>
+            <column name="lastupdated" valueDate="now()"/>
+        </insert>
+
+        <insert tableName="localization">
+            <column name="id" value="561"/>
+            <column name="description" value="sampleType name"/>
+            <column name="english" value="Research Pathology Specimen"/>
+            <column name="french" value="Spécimen de pathologie de recherche"/>
+            <column name="lastupdated" valueDate="now()"/>
+        </insert>
 
         <!-- Sample Category Enumeration -->
         <insert tableName="type_of_sample">
             <column name="id" valueSequenceNext="type_of_sample_seq"/>
             <column name="description" value="Clinical Pathology Specimen"/>
+            <column name="name_localization_id" value="560"/>
             <column name="local_abbrev" value="CLINICAL"/>
             <column name="lastupdated" valueDate="now()"/>
         </insert>
@@ -30,6 +48,7 @@
         <insert tableName="type_of_sample">
             <column name="id" valueSequenceNext="type_of_sample_seq"/>
             <column name="description" value="Research Pathology Specimen"/>
+            <column name="name_localization_id" value="561"/>
             <column name="local_abbrev" value="RESEARCH"/>
             <column name="lastupdated" valueDate="now()"/>
         </insert>
@@ -38,11 +57,14 @@
             <delete tableName="type_of_sample">
                 <where>local_abbrev IN ('CLINICAL', 'RESEARCH')</where>
             </delete>
+            <delete tableName="localization">
+                <where>id IN (560, 561)</where>
+            </delete>
         </rollback>
     </changeSet>
 
     <!-- Sample Registration Table -->
-    <changeSet id="002-pathology-sample-registration" author="speckit">
+    <changeSet id="002-pathology-sample-registration" author="mherman22">
         <comment>Create pathology_sample_registration table for pathology-specific metadata</comment>
 
         <createSequence sequenceName="pathology_sample_registration_seq" startValue="1" incrementBy="1"/>
@@ -51,7 +73,7 @@
             <column name="id" type="INTEGER">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="sample_item_id" type="VARCHAR(255)">
+            <column name="sample_item_id" type="numeric(10,0)">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="fhir_uuid" type="UUID"/>
@@ -119,7 +141,7 @@
     </changeSet>
 
     <!-- Quality Control Table -->
-    <changeSet id="003-quality-control" author="speckit">
+    <changeSet id="003-quality-control" author="mherman22">
         <comment>Create quality_control_record table for QC inspection tracking</comment>
 
         <createSequence sequenceName="quality_control_record_seq" startValue="1" incrementBy="1"/>
@@ -128,7 +150,7 @@
             <column name="id" type="INTEGER">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="sample_item_id" type="VARCHAR(255)">
+            <column name="sample_item_id" type="numeric(10,0)">
                 <constraints nullable="false"/>
             </column>
             <column name="fhir_uuid" type="UUID"/>
@@ -195,7 +217,7 @@
     </changeSet>
 
     <!-- Test Result Table -->
-    <changeSet id="005-test-result" author="speckit">
+    <changeSet id="005-test-result" author="mherman22">
         <comment>Create test_result_record table for test results and sign-off</comment>
 
         <createSequence sequenceName="test_result_record_seq" startValue="1" incrementBy="1"/>
@@ -204,7 +226,7 @@
             <column name="id" type="INTEGER">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="sample_item_id" type="VARCHAR(255)">
+            <column name="sample_item_id" type="numeric(10,0)">
                 <constraints nullable="false"/>
             </column>
             <column name="fhir_uuid" type="UUID"/>
@@ -283,7 +305,7 @@
     </changeSet>
 
     <!-- Reference Document Table -->
-    <changeSet id="007-reference-document" author="speckit">
+    <changeSet id="007-reference-document" author="mherman22">
         <comment>Create reference_document table for SOP/protocol management</comment>
 
         <createSequence sequenceName="reference_document_seq" startValue="1" incrementBy="1"/>
@@ -359,7 +381,7 @@
     </changeSet>
 
     <!-- Project Access Table -->
-    <changeSet id="008-project-access" author="speckit">
+    <changeSet id="008-project-access" author="mherman22">
         <comment>Create project_access table for research sample access control</comment>
 
         <createSequence sequenceName="project_access_seq" startValue="1" incrementBy="1"/>
@@ -428,7 +450,7 @@
     </changeSet>
 
     <!-- Seed Data -->
-    <changeSet id="009-seed-data" author="speckit">
+    <changeSet id="009-seed-data" author="mherman22">
         <comment>Insert seed data for pathology workflow configuration</comment>
 
         <!-- Sample Source - Alert Hospital (default) -->
@@ -448,7 +470,7 @@
     </changeSet>
 
     <!-- Pathology Workflow Page Templates -->
-    <changeSet id="010-pathology-workflow-templates" author="speckit">
+    <changeSet id="010-pathology-workflow-templates" author="mherman22">
         <comment>Insert workflow page templates for pathology laboratory workflow</comment>
 
         <!-- Page 1: Sample Reception &amp; Registration -->
@@ -599,7 +621,14 @@
     </changeSet>
 
     <!-- Pathology Notebook Instance -->
-    <changeSet id="011-pathology-notebook-instance" author="speckit">
+    <changeSet id="011-pathology-notebook-instance" author="mherman22">
+        <!-- Precondition: Only run if notebook tables exist -->
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="note_book"/>
+            <tableExists tableName="note_book_page"/>
+            <tableExists tableName="workflow_page_template"/>
+        </preConditions>
+
         <comment>Create pathology laboratory notebook instance using workflow templates</comment>
 
         <!-- Create the pathology notebook -->
