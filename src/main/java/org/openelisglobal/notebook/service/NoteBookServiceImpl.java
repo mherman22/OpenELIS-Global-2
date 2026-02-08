@@ -23,6 +23,8 @@ import org.openelisglobal.common.service.AuditableBaseObjectServiceImpl;
 import org.openelisglobal.common.util.DateUtil;
 import org.openelisglobal.common.util.IdValuePair;
 import org.openelisglobal.dictionary.service.DictionaryService;
+import org.openelisglobal.inventory.valueholder.InventoryEnums;
+import org.openelisglobal.inventory.valueholder.InventoryItem;
 import org.openelisglobal.notebook.bean.NoteBookDisplayBean;
 import org.openelisglobal.notebook.bean.NoteBookFullDisplayBean;
 import org.openelisglobal.notebook.bean.NotebookHierarchyDTO;
@@ -464,38 +466,63 @@ public class NoteBookServiceImpl extends AuditableBaseObjectServiceImpl<NoteBook
             fullDisplayBean.setBudget(noteBook.getBudget());
             fullDisplayBean.setProjectTimeline(noteBook.getProjectTimeline());
 
-            // Prefer inventory instruments over legacy analyzers
+            // Dynamically fetch inventory instruments by project name (notebook title)
             List<IdValuePair> instrumentList = new ArrayList<>();
-            List<Long> instrumentIds = noteBook.getInventoryInstrumentIds();
 
-            // If this is an entry (not a template) and has no instruments, get from parent
-            // template
-            if ((instrumentIds == null || instrumentIds.isEmpty()) && noteBook.getIsTemplate() != null
-                    && !noteBook.getIsTemplate()) {
-                NoteBook parentTemplate = baseObjectDAO.findParentTemplate(noteBook.getId());
-                if (parentTemplate != null) {
-                    Hibernate.initialize(parentTemplate.getInventoryInstrumentIds());
-                    instrumentIds = parentTemplate.getInventoryInstrumentIds();
-                }
+            // Get the effective notebook title (from parent template for child instances)
+            String projectName = noteBook.getTitle();
+            if (noteBook.isChildInstance() && noteBook.getParentNotebook() != null) {
+                projectName = noteBook.getParentNotebook().getTitle();
             }
 
-            if (instrumentIds != null && !instrumentIds.isEmpty()) {
-                for (Long instrumentId : instrumentIds) {
-                    try {
-                        var inventoryItem = inventoryItemService.get(instrumentId);
-                        if (inventoryItem != null) {
-                            instrumentList
-                                    .add(new IdValuePair(inventoryItem.getId().toString(), inventoryItem.getName()));
-                        }
-                    } catch (Exception e) {
-                        LogEvent.logWarn(this.getClass().getSimpleName(), "convertToFullDisplayBean",
-                                "Could not find inventory item with id: " + instrumentId);
+            // Fetch all active inventory items where project_name matches the notebook
+            // title
+            List<InventoryItem> projectInstruments = inventoryItemService.getAllActive().stream()
+                    .filter(item -> item.getItemType() == InventoryEnums.ItemType.CARTRIDGE)
+                    .filter(item -> item.getProjectName() != null && item.getProjectName().equals(projectName))
+                    .collect(Collectors.toList());
+
+            if (!projectInstruments.isEmpty()) {
+                // Use project-based instruments (preferred method)
+                instrumentList = projectInstruments.stream()
+                        .map(item -> new IdValuePair(item.getId().toString(), item.getName()))
+                        .collect(Collectors.toList());
+                LogEvent.logDebug(this.getClass().getSimpleName(), "convertToFullDisplayBean",
+                        "Loaded " + instrumentList.size() + " instruments for project: " + projectName);
+            } else {
+                // Fallback to static inventoryInstrumentIds if no project-based instruments
+                // found
+                List<Long> instrumentIds = noteBook.getInventoryInstrumentIds();
+
+                // If this is an entry (not a template) and has no instruments, get from parent
+                // template
+                if ((instrumentIds == null || instrumentIds.isEmpty()) && noteBook.getIsTemplate() != null
+                        && !noteBook.getIsTemplate()) {
+                    NoteBook parentTemplate = baseObjectDAO.findParentTemplate(noteBook.getId());
+                    if (parentTemplate != null) {
+                        Hibernate.initialize(parentTemplate.getInventoryInstrumentIds());
+                        instrumentIds = parentTemplate.getInventoryInstrumentIds();
                     }
                 }
-            } else {
-                // Fallback to legacy analyzers if no inventory instruments
-                instrumentList = noteBook.getAnalysers().stream()
-                        .map(analyzer -> new IdValuePair(analyzer.getId(), analyzer.getName())).toList();
+
+                if (instrumentIds != null && !instrumentIds.isEmpty()) {
+                    for (Long instrumentId : instrumentIds) {
+                        try {
+                            var inventoryItem = inventoryItemService.get(instrumentId);
+                            if (inventoryItem != null) {
+                                instrumentList.add(
+                                        new IdValuePair(inventoryItem.getId().toString(), inventoryItem.getName()));
+                            }
+                        } catch (Exception e) {
+                            LogEvent.logWarn(this.getClass().getSimpleName(), "convertToFullDisplayBean",
+                                    "Could not find inventory item with id: " + instrumentId);
+                        }
+                    }
+                } else {
+                    // Final fallback to legacy analyzers if no inventory instruments
+                    instrumentList = noteBook.getAnalysers().stream()
+                            .map(analyzer -> new IdValuePair(analyzer.getId(), analyzer.getName())).toList();
+                }
             }
             fullDisplayBean.setAnalyzers(instrumentList);
             fullDisplayBean.setPages(effectivePages); // Use effective pages (inherited for child instances)

@@ -1,0 +1,805 @@
+name,description,item_type,category,project_name,storage_requirements,units,stability_after_opening,concentration,active
+MgCl2 10xPCR rxn buffer,MgCl2 10xPCR rxn buffer (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+KB extender,KB extender (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfcrt-Rv,Pfcrt-Rv (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfcrt-Fw,Pfcrt-Fw (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+K13-Fw,K13-Fw (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+K13-Rv,K13-Rv (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf mdr1-Rv,Pf mdr1-Rv (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfdhps-Rv,Pfdhps-Rv (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfdhps-Fw,Pfdhps-Fw (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfcrt-F1,Pfcrt-F1 (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfcrt-R1 sequence,Pfcrt-R1 sequence (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfdhps-F,Pfdhps-F (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfdhps-R,Pfdhps-R (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+plasmepsin 3R,plasmepsin 3R (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+plasmepsin 2R,plasmepsin 2R (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+plasmepsin 2F,plasmepsin 2F (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+plasmepsin 3F,plasmepsin 3F (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+plasmepsin 3P,plasmepsin 3P (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+plasmepsin 2P,plasmepsin 2P (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf 18s fwd,Pf 18s fwd (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf 18s rev,Pf 18s rev (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Beta tubulin F,Beta tubulin F (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+beta tubulin R,beta tubulin R (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+beta tublin P,beta tublin P (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cyt B-F1,cyt B-F1 (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cyt B-R1,cyt B-R1 (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+mitochndorion -R1,mitochndorion -R1 (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+mitochndorion -F1,mitochndorion -F1 (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf k13-F1,Pf k13-F1 (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf k13-R1,Pf k13-R1 (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pfmdr1 F,pfmdr1 F (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pfmdr1 R,pfmdr1 R (Sequencing primers),REAGENT,Sequencing primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+FastDigest Alul enzyme with buffer,FastDigest Alul enzyme with buffer (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+SmartCut enzyme with buffer,SmartCut enzyme with buffer (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+mbo II 5000 U/ml,mbo II 5000 U/ml (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Nla III  10,000 U/ml","Nla III  10,000 U/ml (Enzymes)",REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Ase I  10,000 U/ml","Ase I  10,000 U/ml (Enzymes)",REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Fok I 5,000 U/ml","Fok I 5,000 U/ml (Enzymes)",REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Fok I 5,000 U/ml (cutsmart)","Fok I 5,000 U/ml (cutsmart) (Enzymes)",REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Dra I  20,000 U/ml","Dra I  20,000 U/ml (Enzymes)",REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"ApoI 10,000 U/ml","ApoI 10,000 U/ml (Enzymes)",REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Dde I   10,000 U/ml","Dde I   10,000 U/ml (Enzymes)",REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Eco RV 20,000 U/ml","Eco RV 20,000 U/ml (Enzymes)",REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+NEBuffer  3.1  10x conc.,NEBuffer  3.1  10x conc. (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+NEBuffer  4  10x conc.,NEBuffer  4  10x conc. (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Afa I  1,000 U/ml","Afa I  1,000 U/ml (Enzymes)",REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvu II 15U/ml,Pvu II 15U/ml (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+10x M buffer,10x M buffer (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cutsmart buffer  10x conc.,cutsmart buffer  10x conc. (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Qiagen rnase free water,Qiagen rnase free water (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+1KB + DNA ladder,1KB + DNA ladder (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+0.1% BSA,0.1% BSA (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pscam II (alpha DNA),pscam II (alpha DNA) (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+T2 (alpha DNA),T2 (alpha DNA) (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ILRI 161108 R1 66.1 nmol,ILRI 161108 R1 66.1 nmol (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ILRI 161108 R2 60.3 nmol,ILRI 161108 R2 60.3 nmol (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ILRI 161108 R3 60.5 nmol,ILRI 161108 R3 60.5 nmol (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ILRI 161108 F3 45.1 nmol,ILRI 161108 F3 45.1 nmol (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ILRI 161108 F2 45.1 nmol,ILRI 161108 F2 45.1 nmol (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+loading dye,loading dye (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Eurofins genomics 2R,Eurofins genomics 2R (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Eurofins genomics 1R,Eurofins genomics 1R (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Eurofins genomics pair 1R,Eurofins genomics pair 1R (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Eurofins genomics pair 2F,Eurofins genomics pair 2F (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Eurofins genomics pair 2R,Eurofins genomics pair 2R (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Eurofins genomics 2F,Eurofins genomics 2F (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Eurofins genomics 1F,Eurofins genomics 1F (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Eurofins genomics pair 1F,Eurofins genomics pair 1F (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hae III,Hae III (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hha I,Hha I (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+10x React 2,10x React 2 (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+quanti Tect probe PCR mastermix,quanti Tect probe PCR mastermix (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+10x buffer T,10x buffer T (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hha1 use with react 2,Hha1 use with react 2 (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+10x react I,10x react I (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+10x PCR buffer (-mgcl2),10x PCR buffer (-mgcl2) (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+HuPoR (alpha DNA)(5' GGACTTCGTTTGTACCCGTTG ),HuPoR (alpha DNA)(5' GGACTTCGTTTGTACCCGTTG ) (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+b- actin R (5' CGTCATACTCCTGCTTGCTGATCCACATCTGC),b- actin R (5' CGTCATACTCCTGCTTGCTGATCCACATCTGC) (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+LaeV5f (5' CGTGATGTGCCCGAGTGCA),LaeV5f (5' CGTGATGTGCCCGAGTGCA) (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cpb EF rev,cpb EF rev (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cpb EFfwd,cpb EFfwd (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+K26 fwd,K26 fwd (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+k26 rev,k26 rev (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+List R,List R (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+10xFast DigestGreen Buffer,10xFast DigestGreen Buffer (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+10xFast Digest Buffer (colorless),10xFast Digest Buffer (colorless) (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Fast Digest Buffer Alul,Fast Digest Buffer Alul (Enzymes),REAGENT,Enzymes,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+turbo DNase buffer,turbo DNase buffer ( RNA extruction Magmax kit),REAGENT, RNA extruction Magmax kit,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RNA binding bead,RNA binding bead ( RNA extruction Magmax kit),REAGENT, RNA extruction Magmax kit,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Elution buffer,Elution buffer ( RNA extruction Magmax kit),REAGENT, RNA extruction Magmax kit,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+elution buffer  (opened),elution buffer  (opened) ( RNA extruction Magmax kit),REAGENT, RNA extruction Magmax kit,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+turbo DNase buffer (opened),turbo DNase buffer (opened) ( RNA extruction Magmax kit),REAGENT, RNA extruction Magmax kit,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+G-OFprimer (Glurp) 2.5 nMol,G-OFprimer (Glurp) 2.5 nMol (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+OuterG4 for GLURP FW,OuterG4 for GLURP FW (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+G-OR 2.5 nMol,G-OR 2.5 nMol (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+OuterG5 for GLURP RV,OuterG5 for GLURP RV (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Nested S4 for MSP-2 FW,Nested S4 for MSP-2 FW (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Nested S1 for MSP-2 FW,Nested S1 for MSP-2 FW (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MSP-2-S2 FW,MSP-2-S2 FW (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MSP-2-S3 RV,MSP-2-S3 RV (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MSP-2-S1 tail fw,MSP-2-S1 tail fw (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MSP2-FC27 RV (FAM dye labeled),MSP2-FC27 RV (FAM dye labeled) (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MSP2-3D7-RV (VIC dye labeled),MSP2-3D7-RV (VIC dye labeled) (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+M1-OR 2.5 nMol (MSP1M1OR),M1-OR 2.5 nMol (MSP1M1OR) (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MSP1 M1 RV 2.5 nMol,MSP1 M1 RV 2.5 nMol (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MSP1M1-FW 2.5 nMol,MSP1M1-FW 2.5 nMol (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MSP1M1-OF 2.5 nMol,MSP1M1-OF 2.5 nMol (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MSP1M1-KF 2.5 nMol,MSP1M1-KF 2.5 nMol (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MSP1M1-KR 2.5 nMol,MSP1M1-KR 2.5 nMol (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Nested N1 for MSP1 FW,Nested N1 for MSP1 FW (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Nested N2 for MSP1 RV,Nested N2 for MSP1 RV (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2RPfmdr86,N2RPfmdr86 (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2RPfcrt,N2RPfcrt (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPfcrt,N1FPfcrt (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPfmdr1034,N1FPfmdr1034 (Genotyping Pf),REAGENT,Genotyping Pf,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+96 DNA multi-sample kit 96 rxn,96 DNA multi-sample kit 96 rxn (Mag Max ),REAGENT,Mag Max ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+96 DNA multi-sample kit,96 DNA multi-sample kit (Mag Max ),REAGENT,Mag Max ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+96 DNA multi-sample kit 96rxn,96 DNA multi-sample kit 96rxn (Mag Max ),REAGENT,Mag Max ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+96 Blood RNA isolation kit (TURBO DNase & lysis binding inhancer),96 Blood RNA isolation kit (TURBO DNase & lysis binding inhancer) (Mag Max ),REAGENT,Mag Max ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RNase A enzyme 1mg/ml,RNase A enzyme 1mg/ml (Mag Max ),REAGENT,Mag Max ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+proteinase K 100 mg/dl,proteinase K 100 mg/dl (Mag Max ),REAGENT,Mag Max ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Mag max RNA isolation kit (used),Mag max RNA isolation kit (used) (Mag Max ),REAGENT,Mag Max ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Dna /Rna index,Dna /Rna index (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Dna prep PCR BUFFER,Dna prep PCR BUFFER (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Nextseq Accessory box v2,Nextseq Accessory box v2 (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Platinium Taq Dna polymerase,Platinium Taq Dna polymerase (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf 18s probe,Pf 18s probe (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv 18s probe,Pv 18s probe (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dNTPs mix 10mM,dNTPs mix 10mM (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+KAPA libarary Quant kit,KAPA libarary Quant kit (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+nextseq 500/550 cartirage v2,nextseq 500/550 cartirage v2 (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+nextseq 500/550 cartirage v3,nextseq 500/550 cartirage v3 (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Iseq 100 reagent cartridge,Iseq 100 reagent cartridge (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+HF DNA polymerase,HF DNA polymerase (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Dna /Rna index set B,Dna /Rna index set B (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Dna /Rna index set A,Dna /Rna index set A (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Dna /Rna index set D,Dna /Rna index set D (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+resuspension buffer,resuspension buffer (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Qubit RNA IQ assay kit,Qubit RNA IQ assay kit (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Tagmentation buffer 1,Tagmentation buffer 1 (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+enhanced PCR mix,enhanced PCR mix (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+phix control V3,phix control V3 (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Cubit dsDNA HS Assay kit,Cubit dsDNA HS Assay kit (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+AMPure XP,AMPure XP (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Nuclease free water,Nuclease free water (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+1Kb DNA ladder,1Kb DNA ladder (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Bio analyzer-High sensitivity DNA reagents,Bio analyzer-High sensitivity DNA reagents (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+DNA prep tagmentation beads,DNA prep tagmentation beads (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+sample purification beads,sample purification beads (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+DNA prep beads+buffers,DNA prep beads+buffers (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"nextseq 500/550(mid output flow cell cartridge v2,5)","nextseq 500/550(mid output flow cell cartridge v2,5) (Sequensing )",REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Taqman universal pcr mastermix,Taqman universal pcr mastermix (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Taqman fast advansed mastermix,Taqman fast advansed mastermix (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Proteinase K,Proteinase K (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+i1 flow cell,i1 flow cell (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+tagment stop buffer,tagment stop buffer (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+qubit dsDNA HS standard #2,qubit dsDNA HS standard #2 (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+mgcl2,mgcl2 (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+kb Extender,kb Extender (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+turbo DNase buffer,turbo DNase buffer (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RNA binding bead,RNA binding bead (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Elution buffer,Elution buffer (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+elution buffer  (opened),elution buffer  (opened) (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+corning pipet tips 0.1-10 ul,corning pipet tips 0.1-10 ul (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+collection tubes 2 ml,collection tubes 2 ml (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+QIAamp mini spin colomn,QIAamp mini spin colomn (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Qiagen Exraction kit,Qiagen Exraction kit (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+tris-hydro chloride 1M,tris-hydro chloride 1M (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+tagmentation wash buffer,tagmentation wash buffer (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Nextseq500/550 buffer cartrige V2,Nextseq500/550 buffer cartrige V2 (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PCR tubes 12 strips of 8 tubes,PCR tubes 12 strips of 8 tubes (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Qiagen proteinase K,Qiagen proteinase K (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Qubit Assay tubes,Qubit Assay tubes (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PCR Amplitube caps,PCR Amplitube caps (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Amplitubes PCR rxn strips,Amplitubes PCR rxn strips (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PCR plate 96 well,PCR plate 96 well (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+sample (DNA elution) storage tube,sample (DNA elution) storage tube (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Quick gel extraction & PCR Purification combo kit,Quick gel extraction & PCR Purification combo kit (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Bio analyzer-High sensitivity DNA chips,Bio analyzer-High sensitivity DNA chips (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Bio analyzer-syringe kit,Bio analyzer-syringe kit (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Top vision Agrose,Top vision Agrose (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Qubit 1x ds DNA HS assay kit,Qubit 1x ds DNA HS assay kit (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Qubit 1x dsL DNA BR assay standard is,Qubit 1x dsL DNA BR assay standard is (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+AmpureXP,AmpureXP (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Hot start MasterMix, high fidelity","Hot start MasterMix, high fidelity (Sequensing )",REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Q5 Blood Direct MasterMix,Q5 Blood Direct MasterMix (Sequensing ),REAGENT,Sequensing ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cpbF (alpha DNA),cpbF (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cpbEF-F  (alpha DNA),cpbEF-F  (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+B4 (alpha DNA),B4 (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+K26 f 15pM,K26 f 15pM (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+T2 (alpha DNA),T2 (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+seqcpbr2 (apha DNA),seqcpbr2 (apha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Cpbef frd (alpha DNA),Cpbef frd (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+seqcpbf1 (alpha DNA),seqcpbf1 (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cpbEFrev (alpha DNA),cpbEFrev (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cpbEF R  (alpha DNA),cpbEF R  (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dNTPs 10mM,dNTPs 10mM (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+vsp15pM,vsp15pM (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+one-4 phor-all buffer + 10x conc.,one-4 phor-all buffer + 10x conc. (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+taq DNA poly,taq DNA poly (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+k26r (alpha DNA),k26r (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+LITSR (alpha DNA),LITSR (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+L%.8s  (alpha DNA),L%.8s  (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Laev 10 R,Laev 10 R (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cpb TAG,cpb TAG (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cpbr (alpha DNA),cpbr (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cpb ATG (alpha DNA),cpb ATG (alpha DNA) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+big dye terminator v 3.1 cycle sequencing RR-24,big dye terminator v 3.1 cycle sequencing RR-24 (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Ilri-161108F1,Ilri-161108F1 (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pgem3Zf(+),pgem3Zf(+) (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+m13(-21)primer,m13(-21)primer (leshimaniasis),REAGENT,leshimaniasis,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+202GA-Rv,202GA-Rv (G6PD Primer),REAGENT,G6PD Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+202GA-Fw,202GA-Fw (G6PD Primer),REAGENT,G6PD Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Tailing Segment FW,Tailing Segment FW (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Tailing Segment RV,Tailing Segment RV (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+hrp2 one-step FW,hrp2 one-step FW (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+hrp2 one-step RV,hrp2 one-step RV (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPfcrt FW,N1FPfcrt FW (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPfcrt RV,N1FPfcrt RV (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2FPfcrt FW,N2FPfcrt FW (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2FPfcrt RV,N2FPfcrt RV (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1-Mdr1-86Y Fw,N1-Mdr1-86Y Fw (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1-Mdr1-86Y Rv,N1-Mdr1-86Y Rv (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2-Mdr1-86Y FW,N2-Mdr1-86Y FW (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2-Mdr1-86Y Rv,N2-Mdr1-86Y Rv (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2-mdr1-86Y FW,N2-mdr1-86Y FW (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2-mdr1-86Y RV,N2-mdr1-86Y RV (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+M1-OF,M1-OF (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+M1-OR,M1-OR (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RNaseP-F,RNaseP-F (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RNaseP-R,RNaseP-R (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp-1(N)-FW,msp-1(N)-FW (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp-1(N)-RV,msp-1(N)-RV (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp-1(N1)-FW,msp-1(N1)-FW (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp-1(N1)-RV,msp-1(N1)-RV (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp-outer-F,msp-outer-F (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp-outer-R,msp-outer-R (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+3D7/ICfamily(N-2)-FW,3D7/ICfamily(N-2)-FW (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp2-S2-fw,msp2-S2-fw (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp2-S3-rev,msp2-S3-rev (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp-2(N1)-FW,msp-2(N1)-FW (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp-2(N1)-Rv,msp-2(N1)-Rv (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp-2(N1)-RV,msp-2(N1)-RV (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp2-S2-F,msp2-S2-F (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp2-S3-R,msp2-S3-R (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp2-S1Tail-fw,msp2-S1Tail-fw (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp2-S1Tail-f,msp2-S1Tail-f (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+FC27family(N2)-FW,FC27family(N2)-FW (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+FC27family(N2)-RV,FC27family(N2)-RV (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp1-k1-F,msp1-k1-F (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp1-k1-R,msp1-k1-R (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp1-Mad20-F,msp1-Mad20-F (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp1-Mad20-R,msp1-Mad20-R (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Fc27,Fc27 (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+3D7,3D7 (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp2-3D7-N5-RV-probe,msp2-3D7-N5-RV-probe (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+msp2-FC27-MS-RV-probe,msp2-FC27-MS-RV-probe (RFLP drug Resistance primers),REAGENT,RFLP drug Resistance primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Nuclase free water,Nuclase free water (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+NOT I,NOT I (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+NE buffer 3.1,NE buffer 3.1 (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PhHv10^3,PhHv10^3 (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PhHv-26267s,PhHv-26267s (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+probephhv-305TQ-cy5,probephhv-305TQ-cy5 (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+phhv-337as,phhv-337as (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ENDFORWARD (Genosys 7112-012),ENDFORWARD (Genosys 7112-012) (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ENDREVERSE (gENOSYS 7112-013),ENDREVERSE (gENOSYS 7112-013) (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+563CT- Fw,563CT- Fw (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"DNase I, RNase free","DNase I, RNase free (unknowns )",REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+10X reaction buffer with MgCl2 for DNase I,10X reaction buffer with MgCl2 for DNase I (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MnCl2,MnCl2 (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+reaction buffer with out MnCl2 for DNase I,reaction buffer with out MnCl2 for DNase I (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+EDTA,EDTA (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cell proliferatio kit I (MTT),cell proliferatio kit I (MTT) (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"RQ1R  DNase, stop solution","RQ1R  DNase, stop solution (unknowns )",REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"RQ1 DNase, 10x rxn buffer","RQ1 DNase, 10x rxn buffer (unknowns )",REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RQ1R  RNase freeDNase,RQ1R  RNase freeDNase (unknowns ),REAGENT,unknowns ,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PV25probe,PV25probe (plasmid and probe),REAGENT,plasmid and probe,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PV_DBP_probe,PV_DBP_probe (plasmid and probe),REAGENT,plasmid and probe,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCp4 probe,CCp4 probe (plasmid and probe),REAGENT,plasmid and probe,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pfMGET,pfMGET (plasmid and probe),REAGENT,plasmid and probe,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Ps18S,Ps18S (plasmid and probe),REAGENT,plasmid and probe,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+QIAcuity probe PCR kit,QIAcuity probe PCR kit (Digital PCR),REAGENT,Digital PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Probe PCR Kit 25ml,Probe PCR Kit 25ml (Digital PCR),REAGENT,Digital PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Probe PCR Kit 50ml,Probe PCR Kit 50ml (Digital PCR),REAGENT,Digital PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Probe PCR Kit 15ml,Probe PCR Kit 15ml (Digital PCR),REAGENT,Digital PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+varATS,varATS (Digital PCR),REAGENT,Digital PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+2E12F1,2E12F1 (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+2E12R1,2E12R1 (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+2E12F,2E12F (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+2E12R,2E12R (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+2E2F,2E2F (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+2E2R1,2E2R1 (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+2E2F1,2E2F1 (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+2E2R,2E2R (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+BRAVO_F,BRAVO_F (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+BRAVO_R,BRAVO_R (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+R1(2),R1(2) (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+F1 (M1-F1),F1 (M1-F1) (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+R2,R2 (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+F2,F2 (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Out PCR barcoding fw,Out PCR barcoding fw (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Out PCR barcoding rv,Out PCR barcoding rv (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+M1-R1,M1-R1 (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+M1-IR,M1-IR (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Tailing Segment FW,Tailing Segment FW (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Tailing Segment RV,Tailing Segment RV (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+hrp2 one-step FW,hrp2 one-step FW (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+hrp2 one-step RV,hrp2 one-step RV (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPfcrt FW,N1FPfcrt FW (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPfcrt RV,N1FPfcrt RV (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2FPfcrt FW,N2FPfcrt FW (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2FPfcrt RV,N2FPfcrt RV (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1-Mdr1-86Y Fw,N1-Mdr1-86Y Fw (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1-Mdr1-86Y Rv,N1-Mdr1-86Y Rv (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2-Mdr1-86Y FW,N2-Mdr1-86Y FW (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2-Mdr1-86Y Rv,N2-Mdr1-86Y Rv (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2-mdr1-86Y FW,N2-mdr1-86Y FW (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2-mdr1-86Y RV,N2-mdr1-86Y RV (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+M1-OF,M1-OF (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+M1-OR,M1-OR (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfmdr11246-B,Pfmdr11246-B (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfmdr11246-A,Pfmdr11246-A (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfmdr1_RV,Pfmdr1_RV (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfmdr1_FW,Pfmdr1_FW (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf--tubulin_FW,Pf--tubulin_FW (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf--tubulin_RV,Pf--tubulin_RV (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfplasmepsin2__FW,Pfplasmepsin2__FW (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfplasmepsin2__RV,Pfplasmepsin2__RV (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfmdr1246-D1,Pfmdr1246-D1 (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfmdr1246-D2,Pfmdr1246-D2 (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfmdr1246-A,Pfmdr1246-A (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfmdr1246-B,Pfmdr1246-B (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RV11,RV11 (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RV12,RV12 (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+8633F,8633F (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+9211R,9211R (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+8945F,8945F (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+9577R,9577R (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+8669F,8669F (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+9541R,9541R (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RV12-2,RV12-2 (Parasite PvPf Genotyping Primer),REAGENT,Parasite PvPf Genotyping Primer,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv210-Pc,Pv210-Pc (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pf-pc2,pf-pc2 (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv-210-6,pv-210-6 (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pf-pc5,pf-pc5 (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pf-pc1,pf-pc1 (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv-210-5,pv-210-5 (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pf-pc4,pf-pc4 (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv-210-2,pv-210-2 (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv-210-1,pv-210-1 (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pf-pc6,pf-pc6 (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv-210 pc ELISA(stock),pv-210 pc ELISA(stock) (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv-247 pc ELISA(stock),pv-247 pc ELISA(stock) (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf-PC,Pf-PC (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PV-210-3,PV-210-3 (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf-PC3,Pf-PC3 (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pf-210-4,pf-210-4 (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+New Naive-serum,New Naive-serum (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+conjugate m Ab pf,conjugate m Ab pf (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pf-pc csp,pf-pc csp (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv hrp swp,pv hrp swp (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv-210-pc ELISA(stock),pv-210-pc ELISA(stock) (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv247-pc,pv247-pc (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv capture AB,pv capture AB (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pf capture AB,pf capture AB (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv-210-1 m ab,pv-210-1 m ab (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv-210 2nd mab,pv-210 2nd mab (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+pv-219 pc ELISA,pv-219 pc ELISA (Immunoassay),REAGENT,Immunoassay,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCP4-RV,CCP4-RV (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+BCFB FY2021,BCFB FY2021 (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfMGET-FW,PfMGET-FW (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfMGET-RV,PfMGET-RV (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rPLU-5,rPLU-5 (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv18s-RV,Pv18s-RV (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rVIV-1,rVIV-1 (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv525-RV,Pv525-RV (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rPLU-6,rPLU-6 (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PV525-FW,PV525-FW (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf 18s-FW,Pf 18s-FW (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rFAL-2,rFAL-2 (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PV18S probe,PV18S probe (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rVIV-2,rVIV-2 (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rFAL-1,rFAL-1 (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfMEGT probe,PfMEGT probe (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf 18s turbo probe,Pf 18s turbo probe (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCP4 probe,CCP4 probe (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PF18S RV,PF18S RV (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PVS25 Probe,PVS25 Probe (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PV18S Probe,PV18S Probe (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+E-COLI,E-COLI (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+New N-serum,New N-serum (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+E-COLI Lysate,E-COLI Lysate (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+WHO PF standard(+ve control),WHO PF standard(+ve control) (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PF +VE control(cp3 NEAT),PF +VE control(cp3 NEAT) (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cp3(1:1)(50%),cp3(1:1)(50%) (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Et-pf pooled serum,Et-pf pooled serum (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+E-COLI Lysate(5.2mg/ml),E-COLI Lysate(5.2mg/ml) (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CP3 1:10,CP3 1:10 (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+S1PV +VE control,S1PV +VE control (Recieved from CDC),REAGENT,Recieved from CDC,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hot start Taq 2x Master Mix 500rxn,Hot start Taq 2x Master Mix 500rxn (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Dream Taq Master Mix 2x,Dream Taq Master Mix 2x (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PCR buffer+green+white+mgcl,PCR buffer+green+white+mgcl (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+DNA ladder 100bp with buffer,DNA ladder 100bp with buffer (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Invitrogen DNA ladder 50bp with buffer,Invitrogen DNA ladder 50bp with buffer (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GoTaq nPCR componenet,GoTaq nPCR componenet (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GoTaq 100nM dNTPs set,GoTaq 100nM dNTPs set (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Bio-dNTP Mix,Bio-dNTP Mix (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MBL-dNTP Mix,MBL-dNTP Mix (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Thermoscintific- dNTP Mix,Thermoscintific- dNTP Mix (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GoTaq dNTP set,GoTaq dNTP set (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+100bp DNA ladder,100bp DNA ladder (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PCR Nucleotide Mix,PCR Nucleotide Mix (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rplu5-100mM,rplu5-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rplu6-100mM,rplu6-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rrplu1-100mM,rrplu1-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rplu3-100mM,rplu3-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rplu4-100mM,rplu4-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rviv1-100mM,rviv1-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rviv2-100mM,rviv2-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rfal2-100mM,rfal2-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rfal1-100mM,rfal1-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rmal1-100mM,rmal1-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rmal2-100mM,rmal2-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rova1-100mM,rova1-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rova2-100mM,rova2-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf - Rv (rFAL2),Pf - Rv (rFAL2) (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf-fw (rFAL1),Pf-fw (rFAL1) (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv Rv (rVIV 2),Pv Rv (rVIV 2) (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv Fw (rVIV 1),Pv Fw (rVIV 1) (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rPLU 6 forward,rPLU 6 forward (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rPLU 5 reverse,rPLU 5 reverse (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dCTP-100mM,dCTP-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dTTP-100mM,dTTP-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dATP-100mM,dATP-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dGTP-100mM,dGTP-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dNTP Mix -2.5mM,dNTP Mix -2.5mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dNTP MIX -10mM,dNTP MIX -10mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dATP-100mM   100umol,dATP-100mM   100umol (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dCTP-100mM  100umol,dCTP-100mM  100umol (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dGTP-100mM  100umol,dGTP-100mM  100umol (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dTTP-100mM  100umol,dTTP-100mM  100umol (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dNTP MIX with dUTP-12.5mM,dNTP MIX with dUTP-12.5mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dNTP MIX with dTTP-10mM,dNTP MIX with dTTP-10mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dNTP mix 10mM,dNTP mix 10mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+AF1III,AF1III (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+APoI,APoI (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPfcrt-100mM,N1FPfcrt-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2FPfcrt-100mM,N2FPfcrt-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPfcrt RW-100mM,N1FPfcrt RW-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPfcrt FW-100mM,N1FPfcrt FW-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2FPfcrt RW-100mM,N2FPfcrt RW-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2FPfcrt FW-100mM,N2FPfcrt FW-100mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+green Go Taq buffer,green Go Taq buffer (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MgCl2 -25mM,MgCl2 -25mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+colorless Go Taq buffer,colorless Go Taq buffer (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GO Taq G2 flexi DNA polymerases 5 u/ul,GO Taq G2 flexi DNA polymerases 5 u/ul (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+HOT Start Taq 2X master mix (500 rxn / vial ),HOT Start Taq 2X master mix (500 rxn / vial ) (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+dNTP set 4x25 umol,dNTP set 4x25 umol (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PCR nucleotide mix 10mM,PCR nucleotide mix 10mM (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+flexi DNA polymerase,flexi DNA polymerase (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GO Taq G2 flexi DNA polymerases 5u/ul,GO Taq G2 flexi DNA polymerases 5u/ul (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Go Taq flexi DNA polymerase,Go Taq flexi DNA polymerase (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+NPCR components (Go Taq),NPCR components (Go Taq) (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Flexi Go Taq DNA polymerase,Flexi Go Taq DNA polymerase (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+F-Rv+Fw,F-Rv+Fw (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+O-Rv+Fw,O-Rv+Fw (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+M-Rv+Fw,M-Rv+Fw (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+V-Rv+Fw,V-Rv+Fw (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+K-Rv+Fw,K-Rv+Fw (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+P-Rv+Fw,P-Rv+Fw (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rCutSmart Buffer,rCutSmart Buffer (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+gel loading dye purple,gel loading dye purple (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+NEBuffer,NEBuffer (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+HhaI,HhaI (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+EcoRI-HF,EcoRI-HF (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+BgI-II,BgI-II (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Dde-I,Dde-I (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pst-I,Pst-I (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+BIO Taq DNA polymerase,BIO Taq DNA polymerase (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"NH4 reaction buffer, MgCl2 free","NH4 reaction buffer, MgCl2 free (nPCR)",REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MgCl2,MgCl2 (nPCR),REAGENT,nPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RQ1 RNase-Free DNase,RQ1 RNase-Free DNase (Purification (DNARNA)),REAGENT,Purification (DNARNA),Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"DNase I, RNase-free","DNase I, RNase-free (Purification (DNARNA))",REAGENT,Purification (DNARNA),Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RNase inhibitor,RNase inhibitor (Purification (DNARNA)),REAGENT,Purification (DNARNA),Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+High capacity cDNA Reverse T kit,High capacity cDNA Reverse T kit (RT-qPCR),REAGENT,RT-qPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+One step RT-qPCR kit 2500rxn,One step RT-qPCR kit 2500rxn (RT-qPCR),REAGENT,RT-qPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+One step RT-qPCR kit 500rxn,One step RT-qPCR kit 500rxn (RT-qPCR),REAGENT,RT-qPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+One step RT-SuperMix kit 25rxn,One step RT-SuperMix kit 25rxn (RT-qPCR),REAGENT,RT-qPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Luna warm start RT enzyme mix, 20x conc","Luna warm start RT enzyme mix, 20x conc (RT-qPCR)",REAGENT,RT-qPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Luna universal probe 1 step reaction mix 2x conc,Luna universal probe 1 step reaction mix 2x conc (RT-qPCR),REAGENT,RT-qPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GO Taq PCR master mix 2X c0nc,GO Taq PCR master mix 2X c0nc (RT-qPCR),REAGENT,RT-qPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MQ,MQ (RT-qPCR),REAGENT,RT-qPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Luna One step RT-qPCR kit 2,500 rxn","Luna One step RT-qPCR kit 2,500 rxn (RT-qPCR)",REAGENT,RT-qPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+High capacity cDNA rt kit,High capacity cDNA rt kit (RT-qPCR),REAGENT,RT-qPCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+UD2-R_2_P.PIGNATELL,UD2-R_2_P.PIGNATELL (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+St-F_2_P.PIGNATELL,St-F_2_P.PIGNATELL (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+U5.8S-F_2_P.PIGNATELL,U5.8S-F_2_P.PIGNATELL (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ITS2-steph-R_P.PIGNATELL,ITS2-steph-R_P.PIGNATELL (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ITS2A_P.PIGNATELL,ITS2A_P.PIGNATELL (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ITS2B_mod2_P.PIGNATELL,ITS2B_mod2_P.PIGNATELL (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+OVM_115402_C8,OVM_115402_C8 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+OVM_115394_C4,OVM_115394_C4 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfr364af_fw,Pfr364af_fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfr364af_rb,Pfr364af_rb (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvdhfrv_fw,Pvdhfrv_fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvdhfrv_rv,Pvdhfrv_rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hrp2 exon 2 fwd,Hrp2 exon 2 fwd (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hrp2 exon 2 rev,Hrp2 exon 2 rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hrp3 rev,Hrp3 rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hrp3 fwd,Hrp3 fwd (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Trna rev,Trna rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Trna fwd,Trna fwd (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hrp2 exon 2 probe,Hrp2 exon 2 probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hrp2 probe,Hrp2 probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hrp3 probe,Hrp3 probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Trna probe,Trna probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvmsp2_n_rev,Pvmsp2_n_rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvmsp2_p_fwd,Pvmsp2_p_fwd (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvmsp2_n_fwd,Pvmsp2_n_fwd (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvmsp2_p_rev,Pvmsp2_p_rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvmsp1f3_p_rev,Pvmsp1f3_p_rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvmsp1f3_n_fwd,Pvmsp1f3_n_fwd (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvmsp1f3_p_fwd,Pvmsp1f3_p_fwd (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvmsp1f3_n_rev,Pvmsp1f3_n_rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Msp2_s1 tail_fwd,Msp2_s1 tail_fwd (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Msp2_fc27_m5_rev,Msp2_fc27_m5_rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Msp2_3d7_n5_rev,Msp2_3d7_n5_rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfmsp2_s2_fw,Pfmsp2_s2_fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfmsp2_s3_rv,Pfmsp2_s3_rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ed protein (hyp8) rv,ed protein (hyp8) rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+563ct_rv,563ct_rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rPLU3,rPLU3 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rPLU4,rPLU4 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+TARE_2_fw,TARE_2_fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+TARE_2_rv,TARE_2_rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RESA rv,RESA rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+RESA fw,RESA fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfs25_fw,Pfs25_fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+rPLU1,rPLU1 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+376AG fw,376AG fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+376AG rv,376AG rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv18s_ fw,Pv18s_ fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv18s_ rv,Pv18s_ rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pmal_qPCR_ fw,Pmal_qPCR_ fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pmal_qPCR_ rv,Pmal_qPCR_ rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pova_qPCR_fw,Pova_qPCR_fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pova_qPCR_rv,Pova_qPCR_rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PgMET_fw,PgMET_fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PgMET_rw,PgMET_rw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvs25 fw,Pvs25 fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvs25 rev,Pvs25 rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+QMAL fw,QMAL fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+QMAL rv,QMAL rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfs230p_fw,Pfs230p_fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfs230p_rv,Pfs230p_rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+varATS_fw,varATS_fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+varATS_rv,varATS_rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18S RV 100uM,Pf18S RV 100uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PV18S FW MPX 100uM,PV18S FW MPX 100uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18S probe 100uM,Pf18S probe 100uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv18S MPX 100uM,Pv18S MPX 100uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PV18S RV 100uM,PV18S RV 100uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18s FW 100uM,Pf18s FW 100uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PV25 probe 5.3 nMol,PV25 probe 5.3 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfMDR1 probe 5.1 nMol,PfMDR1 probe 5.1 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Beta TT probe 5.2 nMol,Beta TT probe 5.2 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf plasmepsin2 probe 5.3 nMol,Pf plasmepsin2 probe 5.3 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Viv f(shako),Viv f(shako) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Fal-F(shako),Fal-F(shako) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18S shoko probe 5.3 nMOL,Pf18S shoko probe 5.3 nMOL (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv18s SHOKO probe,Pv18s SHOKO probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Plasmo rev 100UM Shoko (for Pv- Pf mpx),Plasmo rev 100UM Shoko (for Pv- Pf mpx) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv 18S REV,Pv 18S REV (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv-25 Fw,Pv-25 Fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv-25 Rev,Pv-25 Rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv-25 Rv,Pv-25 Rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvs25 Fw,Pvs25 Fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv-18s new short,Pv-18s new short (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf-18s- DNA-Rv,Pf-18s- DNA-Rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf-18s- DNA-Fw,Pf-18s- DNA-Fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+StD2,StD2 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GATA-1F,GATA-1F (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GATA-1R,GATA-1R (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+hrp2-Exon-FW,hrp2-Exon-FW (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+tRNA-FW,tRNA-FW (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+hrp3-FW,hrp3-FW (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+uq-R,uq-R (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+UD2-R,UD2-R (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+St-F,St-F (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+StD2-R,StD2-R (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+us-85-F,us-85-F (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+st-F,st-F (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+tRNA-Rv,tRNA-Rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+hrp2-Exon2-RV,hrp2-Exon2-RV (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+HumTuBB-R,HumTuBB-R (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Uq-R,Uq-R (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+U5.8S-F,U5.8S-F (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfldh-F,Pfldh-F (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfldh-R,Pfldh-R (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+HumTubBB-F,HumTubBB-F (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+stq-F,stq-F (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+stq-R,stq-R (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+uq-F,uq-F (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf Hrp3-R2,Pf Hrp3-R2 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hrp3-Rv,Hrp3-Rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfHrp2-F1,PfHrp2-F1 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfHrp2-R3,PfHrp2-R3 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfHrp2-F2,PfHrp2-F2 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfHrp3-R1,PfHrp3-R1 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfHrp2-R2,PfHrp2-R2 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf Hrp3-F1,Pf Hrp3-F1 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf Hrp3-P1,Pf Hrp3-P1 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfHrp2-R1,PfHrp2-R1 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfHrp3-F2,PfHrp3-F2 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfHrp2-F3,PfHrp2-F3 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfhrp3_F2,Pfhrp3_F2 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfhrp3_R2,Pfhrp3_R2 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GATA-MT-probe,GATA-MT-probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GATA-WT-probe,GATA-WT-probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+2-probe,2-probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+tRNA-probe,tRNA-probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+hrp3-probe,hrp3-probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfhrp2-probe,Pfhrp2-probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfidh-probe,Pfidh-probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfhrp3-probe,Pfhrp3-probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Stq-P probe,Stq-P probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Uq-P probe,Uq-P probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+HumanTuBB-P probe,HumanTuBB-P probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfhrp3_probe,Pfhrp3_probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18s-Fw (Nij),Pf18s-Fw (Nij) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv18s-Fw,Pv18s-Fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv18s-fw,Pv18s-fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18s-Rv (Nij),Pf18s-Rv (Nij) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv18s-rv,Pv18s-rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfMGET-fw,PfMGET-fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfMGET-Rv,PfMGET-Rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfMGET- FW,PfMGET- FW (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfMGET- Rev multiplex,PfMGET- Rev multiplex (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18s-RNA-fw,Pf18s-RNA-fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv18s -fw,Pv18s -fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv18s-Rv,Pv18s-Rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18s-RNA-RV,Pf18s-RNA-RV (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfs25_FW,Pfs25_FW (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfs25_Rv,Pfs25_Rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+SBP1-RV,SBP1-RV (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+SBP1-Fw,SBP1-Fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfs25-Rv,Pfs25-Rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18s-DNA-RV(Swit),Pf18s-DNA-RV(Swit) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18s_Nji_RV,Pf18s_Nji_RV (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18s-Rv,Pf18s-Rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18s-DNA-FW(Swit),Pf18s-DNA-FW(Swit) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18s_Nji_FW,Pf18s_Nji_FW (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18s Rev,Pf18s Rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf18s for,Pf18s for (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv-18s Fw,Pv-18s Fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv-18s Rv,Pv-18s Rv (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCp4 Rev,CCp4 Rev (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCp4 Fw,CCp4 Fw (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pfs25-FW,Pfs25-FW (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PfMGET probe (FAM),PfMGET probe (FAM) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCP4 probe TEXAS-RED),CCP4 probe TEXAS-RED) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pvs25 probe (FAM),Pvs25 probe (FAM) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv18s probe (HEX),Pv18s probe (HEX) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pv18s probe (FAM),Pv18s probe (FAM) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"ITS2B-mod2, 20.5nmol","ITS2B-mod2, 20.5nmol (Primers)",REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"PAR, 24.7nmol","PAR, 24.7nmol (Primers)",REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"UN, 19.8nmol","UN, 19.8nmol (Primers)",REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Stq-F, 21.2nmol","Stq-F, 21.2nmol (Primers)",REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"LESS, 22.8","LESS, 22.8 (Primers)",REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"RIV,23.0 nmol","RIV,23.0 nmol (Primers)",REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"UD2, 22.3nmol","UD2, 22.3nmol (Primers)",REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"VAN, 22.5nmol","VAN, 22.5nmol (Primers)",REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"FUN,19.9nmol","FUN,19.9nmol (Primers)",REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"ITS2A, 19.5nmol","ITS2A, 19.5nmol (Primers)",REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"ITS2-steph-R, 22.2nmol","ITS2-steph-R, 22.2nmol (Primers)",REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+02Ga FW 100uM,02Ga FW 100uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+63CT FW 100 uM,63CT FW 100 uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+02GA RV 100 uM,02GA RV 100 uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+63CT RV 100 uM,63CT RV 100 uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+76AG FW 100uM,76AG FW 100uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+76AG RV 100uM,76AG RV 100uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1RPFMDR1034 100UM,N1RPFMDR1034 100UM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2FPFMDR1034 100UM,N2FPFMDR1034 100UM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPFMDR1034,N1FPFMDR1034 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2RPFMDR1034,N2RPFMDR1034 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPFMDR86 100UM,N1FPFMDR86 100UM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1RPFMDR86 100UM,N1RPFMDR86 100UM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2FPFMDR86 100UM,N2FPFMDR86 100UM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2RPFMDR86 100UM,N2RPFMDR86 100UM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Ovis F 134.9 nMol (Sheep),Ovis F 134.9 nMol (Sheep) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Can 2F 125 nMol,Can 2F 125 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ME (1) 143.5 nMol,ME (1) 143.5 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CAN 2R (2) 161.6 nMol,CAN 2R (2) 161.6 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+UN (1) 139.8 nMol,UN (1) 139.8 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Ovis 2R (2) 140.4 nMol (sheep),Ovis 2R (2) 140.4 nMol (sheep) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hmn F (2) 126.3 nMol,Hmn F (2) 126.3 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+AR (1) 130.4 nMol,AR (1) 130.4 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Sus F 145.9 nMol,Sus F 145.9 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Bos 2F (2) 149nMol,Bos 2F (2) 149nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Bos 2R 122.2 nMol,Bos 2R 122.2 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hmn R (1) 145.5 nMol,Hmn R (1) 145.5 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Sus R (2) 147.5 nMol,Sus R (2) 147.5 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ITS 2A(2) 125.7nMol,ITS 2A(2) 125.7nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ITS2-Steph-R(2) 143.2 nMol,ITS2-Steph-R(2) 143.2 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GA 170.3 nMol,GA 170.3 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Hco2 198 (1) 113.7 nMol,Hco2 198 (1) 113.7 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+LCO 1490(2) 99.7 nMol,LCO 1490(2) 99.7 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+S200x6.1-F 132.3 nMol,S200x6.1-F 132.3 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Cap3R 126.8 nMol,Cap3R 126.8 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+plsR (revers primer)(1) 644.4 nMol,plsR (revers primer)(1) 644.4 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+S200X6.1-R(2) 157.2 nMol,S200X6.1-R(2) 157.2 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PlsF(forward primer)(1) 738.6 nMol,PlsF(forward primer)(1) 738.6 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Cap3F 136.8 nMol,Cap3F 136.8 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+QD(1) 134.9 nMol,QD(1) 134.9 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1RPFmdr86 41.9.nMol,N1RPFmdr86 41.9.nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2RPVmdr1 76.4.nMol,N2RPVmdr1 76.4.nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1RPFcrt 41.1 nMol,N1RPFcrt 41.1 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPFmdr86 47.0.nMol,N1FPFmdr86 47.0.nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2RPFmdr1034 43.9 nMol,N2RPFmdr1034 43.9 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2FPFmdr 1034 61.5 nMol,N2FPFmdr 1034 61.5 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2 FPFmdr86 39.1nMol,N2 FPFmdr86 39.1nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2FPFcrt 40.6nMol,N2FPFcrt 40.6nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1RPVmdr1 77.7nMol,N1RPVmdr1 77.7nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1FPVmdr1 75.5nMol,N1FPVmdr1 75.5nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N1RPFmdr1034 61.2 nMol,N1RPFmdr1034 61.2 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+N2FPVmdr1 60.9nMol,N2FPVmdr1 60.9nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MDR3 (sense) for PFMDR1,MDR3 (sense) for PFMDR1 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MDR4 (anti-sense) for PFMDR1,MDR4 (anti-sense) for PFMDR1 (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MDR3 (sence),MDR3 (sence) (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PV-25 FW,PV-25 FW (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PV-25 RV,PV-25 RV (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCp4 FW,CCp4 FW (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+PF MGET,PF MGET (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCp4RV,CCp4RV (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCp4 RV,CCp4 RV (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf MGET RV,Pf MGET RV (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCp4 probe,CCp4 probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pf MGET probe,Pf MGET probe (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+M1-RR primer 2.5 nMol,M1-RR primer 2.5 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+M1-RF primer 2.5 nMol,M1-RF primer 2.5 nMol (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MGET FW 50uM,MGET FW 50uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+MGET RV 50uM,MGET RV 50uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCp4 forward reverse 50uM,CCp4 forward reverse 50uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCp4 forward  50uM,CCp4 forward  50uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+CCp4 reverse 50uM,CCp4 reverse 50uM (Primers),REAGENT,Primers,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+HumTuBB RV 100mM,HumTuBB RV 100mM (Conventional PCR),REAGENT,Conventional PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+HumTuBB FW 100mM,HumTuBB FW 100mM (Conventional PCR),REAGENT,Conventional PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+COX1 Plasmo F,COX1 Plasmo F (Conventional PCR),REAGENT,Conventional PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+COX1 Plasmo R,COX1 Plasmo R (Conventional PCR),REAGENT,Conventional PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Cow 121 F,Cow 121 F (Conventional PCR),REAGENT,Conventional PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Dog 368 F,Dog 368 F (Conventional PCR),REAGENT,Conventional PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Human 741 F,Human 741 F (Conventional PCR),REAGENT,Conventional PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Pig 573 F,Pig 573 F (Conventional PCR),REAGENT,Conventional PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+Got 894 F,Got 894 F (Conventional PCR),REAGENT,Conventional PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+UnRev1025,UnRev1025 (Conventional PCR),REAGENT,Conventional PCR,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+100 bp ladder (ready made),100 bp ladder (ready made) (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Ultera low range DNAladder, 0.5ug/ul","Ultera low range DNAladder, 0.5ug/ul (DNA ladder)",REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Trakit cyan/yellow loading buffer, 6x","Trakit cyan/yellow loading buffer, 6x (DNA ladder)",REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"Ultera low range DNAladder, 0.5ug/ul (used)","Ultera low range DNAladder, 0.5ug/ul (used) (DNA ladder)",REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+100bp DNA ladder,100bp DNA ladder (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+blue/orange loading day 6X conc,blue/orange loading day 6X conc (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+gel loading dye purple 6X conc,gel loading dye purple 6X conc (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+gel loading dye Blue/orange 6X conc,gel loading dye Blue/orange 6X conc (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+100bp DNA lader with loadind dye(Blue/orange 6x),100bp DNA lader with loadind dye(Blue/orange 6x) (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+cyan/orange loading buffer,cyan/orange loading buffer (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+50bp DNA ladder,50bp DNA ladder (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+5x DNA loading buffer (blue),5x DNA loading buffer (blue) (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+blue/orange 6x oading dye,blue/orange 6x oading dye (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ultra low rabge DNA ladder,ultra low rabge DNA ladder (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+1kb + DNA lader,1kb + DNA lader (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+hyper ladder 100bp 100 lans,hyper ladder 100bp 100 lans (DNA ladder),REAGENT,DNA ladder,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+primer IPCF -2.5 mM,primer IPCF -2.5 mM (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+primer west -26uM,primer west -26uM (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+primer WT (west) 25uM,primer WT (west) 25uM (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+primer WT (east),primer WT (east) (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+primer east,primer east (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+primer ALT rev,primer ALT rev (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+An.gambiae RSP-ST,An.gambiae RSP-ST (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+An.coluzzii AKDR,An.coluzzii AKDR (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ITS2A (1),ITS2A (1) (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ITS2-Steph-R(1),ITS2-Steph-R(1) (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+QD,QD (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+UN,UN (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GA,GA (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+AR,AR (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+BW,BW (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+QDA,QDA (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ME,ME (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GA RV,GA RV (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+AR RV,AR RV (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+QDA RV,QDA RV (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ME RV,ME RV (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+QD RV,QD RV (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+UN FW,UN FW (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+IMP-S1,IMP-S1 (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+QD-3T,QD-3T (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+IMP-UN,IMP-UN (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+IMP-M1,IMP-M1 (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+AR-3T,AR-3T (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+GA-3T,GA-3T (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+ME-3T,ME-3T (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+An. arabiensis Dong 5 F211,An. arabiensis Dong 5 F211 (Mosquito Id),REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"An. merus, Maf F185","An. merus, Maf F185 (Mosquito Id)",REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
+"An. quadriannus, Sangwe, F180","An. quadriannus, Sangwe, F180 (Mosquito Id)",REAGENT,Mosquito Id,Malaria and Neglected Tropical Disease (MNTD) Laboratory,2-8°C,unit,30,Standard concentration,Y
