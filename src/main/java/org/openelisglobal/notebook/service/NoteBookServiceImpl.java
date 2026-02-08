@@ -470,16 +470,18 @@ public class NoteBookServiceImpl extends AuditableBaseObjectServiceImpl<NoteBook
             List<IdValuePair> instrumentList = new ArrayList<>();
 
             // Get the effective notebook title (from parent template for child instances)
-            String projectName = noteBook.getTitle();
+            final String effectiveProjectName;
             if (noteBook.isChildInstance() && noteBook.getParentNotebook() != null) {
-                projectName = noteBook.getParentNotebook().getTitle();
+                effectiveProjectName = noteBook.getParentNotebook().getTitle();
+            } else {
+                effectiveProjectName = noteBook.getTitle();
             }
 
             // Fetch all active inventory items where project_name matches the notebook
             // title
             List<InventoryItem> projectInstruments = inventoryItemService.getAllActive().stream()
                     .filter(item -> item.getItemType() == InventoryEnums.ItemType.CARTRIDGE)
-                    .filter(item -> item.getProjectName() != null && item.getProjectName().equals(projectName))
+                    .filter(item -> item.getProjectName() != null && item.getProjectName().equals(effectiveProjectName))
                     .collect(Collectors.toList());
 
             if (!projectInstruments.isEmpty()) {
@@ -488,7 +490,7 @@ public class NoteBookServiceImpl extends AuditableBaseObjectServiceImpl<NoteBook
                         .map(item -> new IdValuePair(item.getId().toString(), item.getName()))
                         .collect(Collectors.toList());
                 LogEvent.logDebug(this.getClass().getSimpleName(), "convertToFullDisplayBean",
-                        "Loaded " + instrumentList.size() + " instruments for project: " + projectName);
+                        "Loaded " + instrumentList.size() + " instruments for project: " + effectiveProjectName);
             } else {
                 // Fallback to static inventoryInstrumentIds if no project-based instruments
                 // found
