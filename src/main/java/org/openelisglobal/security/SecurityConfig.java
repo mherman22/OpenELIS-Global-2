@@ -28,6 +28,7 @@ import org.openelisglobal.security.login.CustomAuthenticationFailureHandler;
 import org.openelisglobal.security.login.CustomFormAuthenticationSuccessHandler;
 import org.openelisglobal.security.login.CustomSSOAuthenticationSuccessHandler;
 import org.openelisglobal.spring.util.SpringContext;
+import org.openelisglobal.tenant.TenantContextFilter;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -79,6 +80,7 @@ import org.springframework.security.saml2.provider.service.registration.RelyingP
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
@@ -117,6 +119,9 @@ public class SecurityConfig {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private TenantContextFilter tenantContextFilter;
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
@@ -174,6 +179,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) //
 
                 .addFilterAt(SpringContext.getBean(BasicAuthFilter.class), BasicAuthenticationFilter.class)
+                // populate lab-unit tenant context after authentication
+                .addFilterAfter(tenantContextFilter, BasicAuthenticationFilter.class)
                 // add security headers
                 .headers(headers -> headers.frameOptions().sameOrigin().contentSecurityPolicy(CONTENT_SECURITY_POLICY));
         return http.build();
@@ -425,6 +432,8 @@ public class SecurityConfig {
                         .sessionFixation().migrateSession())
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/ValidateLogin", "/rest/**",
                         "/api/OpenELIS-Global/rest/**"))
+                // populate lab-unit tenant context after form-login authentication
+                .addFilterAfter(tenantContextFilter, UsernamePasswordAuthenticationFilter.class)
                 // add security headers
                 .headers(headers -> headers.frameOptions().sameOrigin().contentSecurityPolicy(CONTENT_SECURITY_POLICY));
         return http.build();

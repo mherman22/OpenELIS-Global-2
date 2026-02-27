@@ -2,6 +2,14 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
+
+    <!-- Lab-unit data isolation filter. Activated per HTTP request by TenantFilterAspect
+        when a non-admin user has an active loginLabUnit (TEST_SECT_ID = :labUnitId).
+        Global admins and unauthenticated requests bypass this filter entirely. -->
+    <filter-def name="labUnitFilter">
+        <filter-param name="labUnitId" type="integer" />
+    </filter-def>
+
     <class name="org.openelisglobal.analysis.valueholder.Analysis"
         table="ANALYSIS" optimistic-lock="version" dynamic-update="true">
         <id name="id"
@@ -120,6 +128,10 @@
             fetch="join" lazy="false" cascade="all">
             <column name="result_file_id" not-null="false" unique="true" />
         </many-to-one>
+
+        <!-- Restrict rows to the user's active lab unit (TestSection). -->
+        <filter name="labUnitFilter"
+            condition="test_sect_id = :labUnitId" />
 
     </class>
 
