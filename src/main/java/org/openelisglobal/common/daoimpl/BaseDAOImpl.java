@@ -668,18 +668,38 @@ public abstract class BaseDAOImpl<T extends BaseObject<PK>, PK extends Serializa
             String propertyName = comparisonOperation.getPropertyName();
             Object propertyValue = comparisonOperation.getPropertyValue();
             Path pathToProperty = getPathToProperty(root, propertyName);
-            if ((propertyName.endsWith("id") || propertyName.endsWith("Id")) && propertyValue instanceof String
-                    && org.apache.commons.validator.GenericValidator.isInt((String) propertyValue)) {
-                propertyValue = Integer.valueOf((String) propertyValue);
-            }
             Predicate predicate;
             switch (comparisonOperation.getComparison()) {
             case EQ:
-                predicate = criteriaBuilder.equal(pathToProperty, propertyValue);
+                if (propertyValue instanceof String && pathToProperty.getJavaType().isEnum()) {
+                    propertyValue = Enum.valueOf((Class<Enum>) pathToProperty.getJavaType(), (String) propertyValue);
+                }
+                // Handle entity association matching by navigating to the entity's ID
+                if (BaseObject.class.isAssignableFrom(pathToProperty.getJavaType())
+                        && !pathToProperty.getJavaType().isInstance(propertyValue)) {
+                    pathToProperty = pathToProperty.get("id");
+                    propertyValue = convertToType(propertyValue, pathToProperty.getJavaType());
+                }
+                // Handle temporal type mismatch: java.sql.Timestamp value vs
+                // java.sql.Date property. When the DB column is actually TIMESTAMP
+                // (common with hbm2ddl + PostgreSQLDialect) but HBM declares
+                // java.sql.Date, we must cast the path to Timestamp so Hibernate
+                // binds the parameter with full time precision instead of date-only.
+                if (propertyValue instanceof java.sql.Timestamp
+                        && java.sql.Date.class.isAssignableFrom(pathToProperty.getJavaType())) {
+                    predicate = criteriaBuilder.equal(pathToProperty.as(java.sql.Timestamp.class), propertyValue);
+                } else {
+                    predicate = criteriaBuilder.equal(pathToProperty, propertyValue);
+                }
                 break;
             case LIKE:
-                predicate = criteriaBuilder.like(criteriaBuilder.lower(pathToProperty),
-                        "%" + ((String) propertyValue).toLowerCase() + "%");
+                if (pathToProperty.getJavaType().isEnum()) {
+                    predicate = criteriaBuilder.like(criteriaBuilder.lower(pathToProperty.as(String.class)),
+                            "%" + ((String) propertyValue).toLowerCase() + "%");
+                } else {
+                    predicate = criteriaBuilder.like(criteriaBuilder.lower(pathToProperty),
+                            "%" + ((String) propertyValue).toLowerCase() + "%");
+                }
                 break;
             case IN:
                 In<String> inClause = criteriaBuilder.in(root.get(propertyName));
@@ -694,6 +714,32 @@ public abstract class BaseDAOImpl<T extends BaseObject<PK>, PK extends Serializa
             wherePredicates.add(predicate);
         }
         criteriaQuery.where(wherePredicates.toArray(new Predicate[wherePredicates.size()]));
+    }
+
+    /**
+     * Converts a value to the specified target type. Supports conversions between
+     * common types used in entity properties and IDs (String, Integer, Long).
+     */
+    private Object convertToType(Object value, Class<?> targetType) {
+        if (value == null || targetType.isInstance(value)) {
+            return value;
+        }
+        if (targetType == String.class) {
+            return String.valueOf(value);
+        }
+        if (targetType == Integer.class || targetType == int.class) {
+            if (value instanceof Number) {
+                return ((Number) value).intValue();
+            }
+            return Integer.valueOf(value.toString());
+        }
+        if (targetType == Long.class || targetType == long.class) {
+            if (value instanceof Number) {
+                return ((Number) value).longValue();
+            }
+            return Long.valueOf(value.toString());
+        }
+        return value;
     }
 
     @SuppressWarnings("rawtypes")

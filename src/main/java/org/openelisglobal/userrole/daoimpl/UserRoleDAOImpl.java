@@ -15,7 +15,6 @@
  */
 package org.openelisglobal.userrole.daoimpl;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -67,7 +66,7 @@ public class UserRoleDAOImpl extends BaseDAOImpl<UserRole, UserRolePK> implement
             NativeQuery query = entityManager.unwrap(Session.class).createNativeQuery(sql);
             query.setParameter("userId", Integer.parseInt(userId));
             query.setParameter("roleName", roleName);
-            int result = ((BigInteger) query.uniqueResult()).intValue();
+            int result = ((Number) query.uniqueResult()).intValue();
 
             inRole = result != 0;
         } catch (HibernateException e) {
@@ -89,7 +88,7 @@ public class UserRoleDAOImpl extends BaseDAOImpl<UserRole, UserRolePK> implement
             NativeQuery query = entityManager.unwrap(Session.class).createNativeQuery(sql);
             query.setParameter("userId", Integer.parseInt(userId));
             query.setParameterList("roleNames", roleNames);
-            int result = ((BigInteger) query.uniqueResult()).intValue();
+            int result = ((Number) query.uniqueResult()).intValue();
 
             inRole = result != 0;
         } catch (HibernateException e) {

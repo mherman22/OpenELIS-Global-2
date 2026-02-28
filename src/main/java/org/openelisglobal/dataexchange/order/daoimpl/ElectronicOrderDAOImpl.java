@@ -214,7 +214,7 @@ public class ElectronicOrderDAOImpl extends BaseDAOImpl<ElectronicOrder, String>
 
             Query<?> query = entityManager.unwrap(Session.class).createQuery(sql);
             query.setParameter("searchValue", searchValue);
-            query.setParameter("excludedStatuses", excludedStatuses);
+            query.setParameterList("excludedStatuses", excludedStatuses.stream().map(String::valueOf).toList());
             // query.setParameter("order", order.getValue());
             List<?> records = query.list();
             List<ElectronicOrder> eOrders = new ArrayList<>();
@@ -356,7 +356,7 @@ public class ElectronicOrderDAOImpl extends BaseDAOImpl<ElectronicOrder, String>
                 query.setParameter("endDate", endDate);
             }
             if (!GenericValidator.isBlankOrNull(statusId)) {
-                query.setParameter("statusId", Integer.parseInt(statusId));
+                query.setParameter("statusId", statusId);
             }
             return query.list();
         } catch (HibernateException e) {
@@ -401,7 +401,7 @@ public class ElectronicOrderDAOImpl extends BaseDAOImpl<ElectronicOrder, String>
                 query.setParameter("endDate", endTimestamp);
             }
             if (!GenericValidator.isBlankOrNull(statusId)) {
-                query.setParameter("statusId", Integer.parseInt(statusId));
+                query.setParameter("statusId", statusId);
             }
             return query.list();
         } catch (HibernateException e) {
@@ -428,7 +428,7 @@ public class ElectronicOrderDAOImpl extends BaseDAOImpl<ElectronicOrder, String>
                 query.setParameter("endDate", endTimestamp);
             }
             if (!GenericValidator.isBlankOrNull(statusId)) {
-                query.setParameter("statusId", Integer.parseInt(statusId));
+                query.setParameter("statusId", statusId);
             }
             Long count = query.uniqueResult();
             return count.intValue();
@@ -455,7 +455,7 @@ public class ElectronicOrderDAOImpl extends BaseDAOImpl<ElectronicOrder, String>
                 query.setParameter("endDate", endDate);
             }
             if (!GenericValidator.isBlankOrNull(statusId)) {
-                query.setParameter("statusId", Integer.parseInt(statusId));
+                query.setParameter("statusId", statusId);
             }
             Long count = query.uniqueResult();
             return count.intValue();
@@ -476,7 +476,7 @@ public class ElectronicOrderDAOImpl extends BaseDAOImpl<ElectronicOrder, String>
         try {
             Query<Long> query = entityManager.unwrap(Session.class).createQuery(hql, Long.class);
             if (statusIds != null) {
-                query.setParameter("statusIds", statusIds);
+                query.setParameterList("statusIds", statusIds.stream().map(String::valueOf).toList());
             }
             Long count = query.uniqueResult();
             return count.intValue();
@@ -516,7 +516,7 @@ public class ElectronicOrderDAOImpl extends BaseDAOImpl<ElectronicOrder, String>
             Query<ElectronicOrder> query = entityManager.unwrap(Session.class).createQuery(hql, ElectronicOrder.class);
 
             if (statusIds != null) {
-                query.setParameter("statusIds", statusIds);
+                query.setParameterList("statusIds", statusIds.stream().map(String::valueOf).toList());
             }
             return query.list();
         } catch (HibernateException e) {

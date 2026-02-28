@@ -88,7 +88,7 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
     public List<Test> getAllActiveTests(boolean onlyTestsFullySetup) throws LIMSRuntimeException {
         List<Test> list = new Vector<>();
         try {
-            String sql = "from Test WHERE is_Active = 'Y' Order by description";
+            String sql = "from Test WHERE isActive = 'Y' Order by description";
             Query<Test> query = entityManager.unwrap(Session.class).createQuery(sql, Test.class);
             list = query.list();
             // list = filterOnlyFullSetup(onlyTestsFullySetup, list);
@@ -341,7 +341,7 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
         try {
             String sql = "from Test t where t.id = :testId and t.isActive='Y'";
             Query<Test> query = entityManager.unwrap(Session.class).createQuery(sql, Test.class);
-            query.setParameter("testId", testId);
+            query.setParameter("testId", String.valueOf(testId));
 
             list = query.list();
 
@@ -372,7 +372,7 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
     @Transactional(readOnly = true)
     public List<Method> getMethodsByTestSection(String filter) throws LIMSRuntimeException {
         try {
-            String sql = "from Test t where t.testSection = :param";
+            String sql = "from Test t where t.testSection.id = :param";
             Query<Test> query = entityManager.unwrap(Session.class).createQuery(sql, Test.class);
             query.setParameter("param", filter);
 
@@ -401,9 +401,9 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
     @Transactional(readOnly = true)
     public List<Test> getTestsByTestSection(String filter) throws LIMSRuntimeException {
         try {
-            String sql = "from Test t where t.testSection = :param";
+            String sql = "from Test t where t.testSection.id = :param";
             Query<Test> query = entityManager.unwrap(Session.class).createQuery(sql, Test.class);
-            query.setParameter("param", Integer.parseInt(filter));
+            query.setParameter("param", filter);
 
             List<Test> list = query.list();
             return list;
@@ -421,7 +421,7 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
         try {
             String sql = "from Test t where t.testSection.id = :id";
             Query<Test> query = entityManager.unwrap(Session.class).createQuery(sql, Test.class);
-            query.setParameter("id", Integer.parseInt(id));
+            query.setParameter("id", id);
 
             List<Test> list = query.list();
             return list;
@@ -438,7 +438,7 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
     @Transactional(readOnly = true)
     public List<Test> getTestsByMethod(String filter) throws LIMSRuntimeException {
         try {
-            String sql = "from Test t where t.method = :param";
+            String sql = "from Test t where t.method.id = :param";
             Query<Test> query = entityManager.unwrap(Session.class).createQuery(sql, Test.class);
             query.setParameter("param", filter);
 
@@ -457,7 +457,7 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
     @Transactional(readOnly = true)
     public List<Test> getTestsByTestSectionAndMethod(String filter, String filter2) throws LIMSRuntimeException {
         try {
-            String sql = "from Test t where t.testSection = :param1 and t.method = :param2";
+            String sql = "from Test t where t.testSection.id = :param1 and t.method.id = :param2";
             Query<Test> query = entityManager.unwrap(Session.class).createQuery(sql, Test.class);
             query.setParameter("param1", filter);
             query.setParameter("param2", filter2);
@@ -536,7 +536,7 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
                 if (!StringUtil.isNullorNill(test.getId())) {
                     testId = test.getId();
                 }
-                query.setParameter("testId", Integer.parseInt(testId));
+                query.setParameter("testId", testId);
                 query.setParameter("description", test.getDescription().toLowerCase().trim());
 
                 list = query.list();
@@ -617,7 +617,7 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
         String sql = "From Test t where t.id = :id";
         try {
             Query<Test> query = entityManager.unwrap(Session.class).createQuery(sql, Test.class);
-            query.setParameter("id", Integer.parseInt(testId));
+            query.setParameter("id", testId);
 
             Test test = query.uniqueResult();
             return test;
@@ -734,7 +734,7 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
         try {
             String sql = "from Test t where t.testSection.id IN (:ids) and t.isActive='Y'";
             Query<Test> query = entityManager.unwrap(Session.class).createQuery(sql, Test.class);
-            query.setParameterList("ids", ids);
+            query.setParameterList("ids", ids.stream().map(String::valueOf).collect(Collectors.toList()));
 
             List<Test> list = query.list();
             return list;

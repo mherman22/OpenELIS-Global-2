@@ -117,7 +117,11 @@ public class AppTestConfig implements WebMvcConfigurer {
     @Bean
     @Profile("test")
     public TextEncryptor textEncryptor() {
-        return mock(TextEncryptor.class);
+        TextEncryptor encryptor = mock(TextEncryptor.class);
+        // Pass-through: return input as-is so encrypted fields work in tests
+        Mockito.when(encryptor.encrypt(Mockito.anyString())).thenAnswer(invocation -> invocation.getArgument(0));
+        Mockito.when(encryptor.decrypt(Mockito.anyString())).thenAnswer(invocation -> invocation.getArgument(0));
+        return encryptor;
     }
 
     @Bean()

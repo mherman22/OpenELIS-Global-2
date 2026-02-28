@@ -39,7 +39,7 @@ public class NceSpecimenDAOImpl extends BaseDAOImpl<NceSpecimen, String> impleme
         List<NceSpecimen> list;
         String sql = "from NceSpecimen ns where ns.sampleItemId=:sampleId ";
         Query<NceSpecimen> query = entityManager.unwrap(Session.class).createQuery(sql, NceSpecimen.class);
-        query.setParameter("sampleId", Integer.parseInt(sampleId));
+        query.setParameter("sampleId", Integer.valueOf(sampleId));
         list = query.list();
 
         return list;

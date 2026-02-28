@@ -138,7 +138,7 @@ public class SampleItemDAOImpl extends BaseDAOImpl<SampleItem, String> implement
             String sql = "from SampleItem si where samp_id = :param";
             Query<SampleItem> query = entityManager.unwrap(Session.class).createQuery(sql, SampleItem.class);
 
-            query.setParameter("param", Integer.parseInt(sampleItem.getSample().getId()));
+            query.setParameter("param", sampleItem.getSample().getId());
 
             List<SampleItem> list = query.list();
             SampleItem si = null;
@@ -171,7 +171,7 @@ public class SampleItemDAOImpl extends BaseDAOImpl<SampleItem, String> implement
             String sql = "from SampleItem sampleItem where sampleItem.sample.id = :sampleId order by"
                     + " sampleItem.sortOrder";
             Query<SampleItem> query = entityManager.unwrap(Session.class).createQuery(sql, SampleItem.class);
-            query.setParameter("sampleId", Integer.parseInt(id));
+            query.setParameter("sampleId", id);
             List<SampleItem> list = query.list();
 
             return list;
@@ -193,8 +193,8 @@ public class SampleItemDAOImpl extends BaseDAOImpl<SampleItem, String> implement
             String sql = "from SampleItem si where si.sample.id = :sampleId and si.typeOfSample.id ="
                     + " :typeOfSampleId";
             Query<SampleItem> query = entityManager.unwrap(Session.class).createQuery(sql, SampleItem.class);
-            query.setParameter("sampleId", Integer.parseInt(sampleId));
-            query.setParameter("typeOfSampleId", Integer.parseInt(typeOfSample.getId()));
+            query.setParameter("sampleId", sampleId);
+            query.setParameter("typeOfSampleId", typeOfSample.getId());
             List<SampleItem> list = query.list();
 
             return list;
@@ -217,8 +217,9 @@ public class SampleItemDAOImpl extends BaseDAOImpl<SampleItem, String> implement
             String sql = "from SampleItem sampleItem where sampleItem.sample.id = :sampleId and"
                     + " sampleItem.statusId in ( :statusIds ) order by sampleItem.sortOrder";
             Query<SampleItem> query = entityManager.unwrap(Session.class).createQuery(sql, SampleItem.class);
-            query.setParameter("sampleId", Integer.parseInt(id));
-            query.setParameterList("statusIds", includedStatusList);
+            query.setParameter("sampleId", id);
+            query.setParameterList("statusIds",
+                    includedStatusList.stream().map(String::valueOf).collect(Collectors.toSet()));
 
             List<SampleItem> list = query.list();
 
@@ -334,8 +335,7 @@ public class SampleItemDAOImpl extends BaseDAOImpl<SampleItem, String> implement
             Query<SampleItem> query = entityManager.unwrap(Session.class).createQuery(hql, SampleItem.class);
             // Convert String IDs to Integer to match database numeric type (same pattern as
             // AnalysisDAOImpl line 1511)
-            query.setParameterList("ids",
-                    sampleItemIds.stream().map(e -> Integer.parseInt(e)).collect(Collectors.toList()));
+            query.setParameterList("ids", sampleItemIds);
 
             // Use LinkedHashSet to remove duplicates caused by JOIN FETCH on collections
             // while preserving insertion order. Hibernate's DISTINCT doesn't always work

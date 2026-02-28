@@ -69,6 +69,46 @@ public class DBSearchResultsDAOImpl implements SearchResultsDAO {
 
             org.hibernate.query.Query query = entityManager.unwrap(Session.class).createNativeQuery(sql);
 
+            query.setParameter(ID_TYPE_FOR_ST,
+                    Integer.valueOf(PatientIdentityTypeMap.getInstance().getIDForType("ST")));
+            query.setParameter(ID_TYPE_FOR_SUBJECT_NUMBER,
+                    Integer.valueOf(PatientIdentityTypeMap.getInstance().getIDForType("SUBJECT")));
+            query.setParameter(ID_TYPE_FOR_GUID,
+                    Integer.valueOf(PatientIdentityTypeMap.getInstance().getIDForType("GUID")));
+
+            if (queryFirstName) {
+                query.setParameter(FIRST_NAME_PARAM, '%' + firstName + '%');
+            }
+            if (queryLastName) {
+                query.setParameter(LAST_NAME_PARAM, '%' + lastName + '%');
+            }
+            if (queryNationalId) {
+                query.setParameter(NATIONAL_ID_PARAM, '%' + nationalID + '%');
+            }
+            if (queryExternalId) {
+                query.setParameter(EXTERNAL_ID_PARAM, '%' + externalID + '%');
+            }
+            if (querySTNumber) {
+                query.setParameter(ST_NUMBER_PARAM, '%' + STNumber + '%');
+            }
+            if (querySubjectNumber) {
+                query.setParameter(SUBJECT_NUMBER_PARAM, '%' + subjectNumber + '%');
+            }
+            if (queryPatientID) {
+                query.setParameter(ID_PARAM, Integer.valueOf(patientID));
+            }
+            if (queryGuid) {
+                query.setParameter(GUID, guid);
+            }
+            if (queryDateOfBirth) {
+                String dobFormated = '%' + getFormatedDOB(dateOfBirth) + '%';
+                query.setParameter(DATE_OF_BIRTH, '%' + dateOfBirth + '%');
+                query.setParameter(DATE_OF_BIRTH_FORMATED, dobFormated);
+            }
+            if (queryGender) {
+                query.setParameter(GENDER, gender);
+            }
+
             queryResults = query.list();
         } catch (RuntimeException e) {
             LogEvent.logError(e);
@@ -146,7 +186,7 @@ public class DBSearchResultsDAOImpl implements SearchResultsDAO {
                 query.setParameter(NATIONAL_ID_PARAM, nationalID);
             }
             if (queryExternalId) {
-                query.setParameter(EXTERNAL_ID_PARAM, nationalID);
+                query.setParameter(EXTERNAL_ID_PARAM, externalID);
             }
             if (querySTNumber) {
                 query.setParameter(ST_NUMBER_PARAM, STNumber);
@@ -237,7 +277,7 @@ public class DBSearchResultsDAOImpl implements SearchResultsDAO {
                 query.setParameter(NATIONAL_ID_PARAM, nationalID);
             }
             if (queryExternalId) {
-                query.setParameter(EXTERNAL_ID_PARAM, nationalID);
+                query.setParameter(EXTERNAL_ID_PARAM, externalID);
             }
             if (querySTNumber) {
                 query.setParameter(ST_NUMBER_PARAM, STNumber);

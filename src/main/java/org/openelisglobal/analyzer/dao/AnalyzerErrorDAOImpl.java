@@ -21,20 +21,11 @@ public class AnalyzerErrorDAOImpl extends BaseDAOImpl<AnalyzerError, String> imp
     @Transactional(readOnly = true)
     public List<AnalyzerError> findByAnalyzerId(String analyzerId) {
         try {
-            // Convert String analyzerId to Integer for HQL parameter binding
-            // Legacy Analyzer entity uses LIMSStringNumberUserType: Java String, DB INTEGER
-            // Reference: ID_TYPE_ANALYSIS.md
-            Integer analyzerIdInt;
-            try {
-                analyzerIdInt = Integer.parseInt(analyzerId);
-            } catch (NumberFormatException e) {
-                throw new LIMSRuntimeException("Invalid analyzer ID format: " + analyzerId, e);
-            }
-
             // Eagerly fetch analyzer to avoid LazyInitializationException
+            // Analyzer.id uses LIMSStringNumberUserType: Java String, DB INTEGER
             String hql = "SELECT ae FROM AnalyzerError ae LEFT JOIN FETCH ae.analyzer WHERE ae.analyzer.id = :analyzerId ORDER BY ae.lastupdated DESC";
             Query<AnalyzerError> query = entityManager.unwrap(Session.class).createQuery(hql, AnalyzerError.class);
-            query.setParameter("analyzerId", analyzerIdInt);
+            query.setParameter("analyzerId", analyzerId);
             return query.list();
         } catch (Exception e) {
             throw new LIMSRuntimeException("Error finding AnalyzerError by analyzer ID", e);
@@ -129,22 +120,16 @@ public class AnalyzerErrorDAOImpl extends BaseDAOImpl<AnalyzerError, String> imp
                     AnalyzerError.class);
 
             if (analyzerId != null) {
-                // Legacy Analyzer uses LIMSStringNumberUserType: Java String, DB INTEGER
-                try {
-                    query.setParameter("analyzerId", Integer.parseInt(analyzerId));
-                } catch (NumberFormatException e) {
-                    throw new LIMSRuntimeException("Invalid analyzer ID format: " + analyzerId, e);
-                }
+                query.setParameter("analyzerId", analyzerId);
             }
             if (errorType != null) {
-                // Use .name() to avoid PostgreSQL varchar/bytea type mismatch
-                query.setParameter("errorType", errorType.name());
+                query.setParameter("errorType", errorType);
             }
             if (severity != null) {
-                query.setParameter("severity", severity.name());
+                query.setParameter("severity", severity);
             }
             if (status != null) {
-                query.setParameter("status", status.name());
+                query.setParameter("status", status);
             }
             if (startDate != null) {
                 query.setParameter("startDate", new java.sql.Timestamp(startDate.getTime()));
@@ -173,10 +158,10 @@ public class AnalyzerErrorDAOImpl extends BaseDAOImpl<AnalyzerError, String> imp
 
             Long unacknowledged = (Long) session
                     .createQuery("SELECT COUNT(ae) FROM AnalyzerError ae WHERE ae.status = :s")
-                    .setParameter("s", AnalyzerError.ErrorStatus.UNACKNOWLEDGED.name()).uniqueResult();
+                    .setParameter("s", AnalyzerError.ErrorStatus.UNACKNOWLEDGED).uniqueResult();
 
             Long critical = (Long) session.createQuery("SELECT COUNT(ae) FROM AnalyzerError ae WHERE ae.severity = :s")
-                    .setParameter("s", AnalyzerError.Severity.CRITICAL.name()).uniqueResult();
+                    .setParameter("s", AnalyzerError.Severity.CRITICAL).uniqueResult();
 
             Long last24h = (Long) session
                     .createQuery("SELECT COUNT(ae) FROM AnalyzerError ae WHERE ae.lastupdated >= :since")

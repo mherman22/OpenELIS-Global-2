@@ -24,7 +24,7 @@ public class SampleAdditionalFieldDAOImpl extends BaseDAOImpl<SampleAdditionalFi
         String sql = "from SampleAdditionalField s where s.sample.id = :sampleId";
         Query<SampleAdditionalField> query = entityManager.unwrap(Session.class).createQuery(sql,
                 SampleAdditionalField.class);
-        query.setParameter("sampleId", Integer.parseInt(sampleId));
+        query.setParameter("sampleId", sampleId);
         List<SampleAdditionalField> list = query.list();
         return list;
     }
@@ -34,7 +34,7 @@ public class SampleAdditionalFieldDAOImpl extends BaseDAOImpl<SampleAdditionalFi
         String sql = "from SampleAdditionalField s where s.sample.id = :sampleId AND s.id.fieldName =" + " :fieldName";
         Query<SampleAdditionalField> query = entityManager.unwrap(Session.class).createQuery(sql,
                 SampleAdditionalField.class);
-        query.setParameter("sampleId", Integer.parseInt(sampleId));
+        query.setParameter("sampleId", sampleId);
         query.setParameter("fieldName", fieldName.name());
         SampleAdditionalField field = query.uniqueResult();
         if (field == null) {

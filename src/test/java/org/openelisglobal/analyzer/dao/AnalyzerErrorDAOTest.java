@@ -117,11 +117,11 @@ public class AnalyzerErrorDAOTest {
     @Test
     public void testFindByAnalyzerId_ReturnsErrorsForAnalyzer() {
         // Arrange: Mock HQL query
-        // Note: AnalyzerErrorDAO converts String "1" to Integer 1 for HQL parameter
+        // Note: AnalyzerErrorDAO passes String analyzerId directly (no Integer.parseInt conversion)
         // Reference: ID_TYPE_ANALYSIS.md - Legacy Analyzer uses LIMSStringNumberUserType
         when(entityManager.unwrap(Session.class)).thenReturn(session);
         when(session.createQuery(anyString(), eq(AnalyzerError.class))).thenReturn(query);
-        when(query.setParameter(eq("analyzerId"), eq(1))).thenReturn(query);  // Integer, not String
+        when(query.setParameter(eq("analyzerId"), eq("1"))).thenReturn(query);  // String (Integer.parseInt removed from DAO)
 
         List<AnalyzerError> expectedResults = new ArrayList<>();
         expectedResults.add(testError1);

@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.GenericValidator;
@@ -92,12 +91,12 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
     public List<Analysis> getAllAnalysisByTestAndStatus(String testId, List<Integer> statusIdList)
             throws LIMSRuntimeException {
         try {
-            String sql = "from Analysis a where a.test = :testId and a.statusId IN (:statusIdList) order by"
+            String sql = "from Analysis a where a.test.id = :testId and a.statusId IN (:statusIdList) order by"
                     + " a.sampleItem.sample.accessionNumber";
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("testId", Integer.parseInt(testId));
-            query.setParameterList("statusIdList", statusIdList);
+            query.setParameter("testId", testId);
+            query.setParameterList("statusIdList", statusIdList.stream().map(String::valueOf).toList());
             return query.list();
         } catch (RuntimeException e) {
             LogEvent.logError(e);
@@ -109,18 +108,18 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
     @Transactional(readOnly = true)
     public List<Analysis> getAllAnalysisByTestsAndStatus(List<String> testIdList, List<Integer> statusIdList)
             throws LIMSRuntimeException {
-        List<Integer> testList = new ArrayList<>();
+        List<String> testList = new ArrayList<>();
         try {
             String sql = "from Analysis a where a.test.id IN (:testList) and a.statusId IN (:statusIdList) order"
                     + " by a.sampleItem.sample.accessionNumber";
 
             for (String testId : testIdList) {
-                testList.add(Integer.parseInt(testId));
+                testList.add(testId);
             }
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
             query.setParameterList("testList", testList);
-            query.setParameterList("statusIdList", statusIdList);
+            query.setParameterList("statusIdList", statusIdList.stream().map(String::valueOf).toList());
             return query.list();
         } catch (RuntimeException e) {
             LogEvent.logError(e);
@@ -132,19 +131,19 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
     @Transactional(readOnly = true)
     public List<Analysis> getAllAnalysisByTestsAndStatusAndCompletedDateRange(List<String> testIdList,
             List<Integer> statusIdList, Date lowDate, Date highDate) throws LIMSRuntimeException {
-        List<Integer> testList = new ArrayList<>();
+        List<String> testList = new ArrayList<>();
         try {
             String sql = "from Analysis a where a.test.id IN (:testList) and a.statusId IN (:statusIdList) and"
                     + " a.completedDate BETWEEN :lowDate AND :highDate order by"
                     + " a.sampleItem.sample.accessionNumber";
 
             for (String testId : testIdList) {
-                testList.add(Integer.parseInt(testId));
+                testList.add(testId);
             }
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
             query.setParameterList("testList", testList);
-            query.setParameterList("statusIdList", statusIdList);
+            query.setParameterList("statusIdList", statusIdList.stream().map(String::valueOf).toList());
             query.setParameter("lowDate", lowDate);
             query.setParameter("highDate", highDate);
             return query.list();
@@ -160,12 +159,12 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
     public List<Analysis> getAllAnalysisByTestAndExcludedStatus(String testId, List<Integer> statusIdList)
             throws LIMSRuntimeException {
         try {
-            String sql = "from Analysis a where a.test = :testId and a.statusId not IN (:statusIdList) order by"
+            String sql = "from Analysis a where a.test.id = :testId and a.statusId not IN (:statusIdList) order by"
                     + " a.sampleItem.sample.accessionNumber";
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("testId", Integer.parseInt(testId));
-            query.setParameterList("statusIdList", statusIdList);
+            query.setParameter("testId", testId);
+            query.setParameterList("statusIdList", statusIdList.stream().map(String::valueOf).toList());
             return query.list();
         } catch (RuntimeException e) {
 
@@ -191,8 +190,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
             }
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("testSectionId", Integer.parseInt(testSectionId));
-            query.setParameterList("statusIdList", statusIdList);
+            query.setParameter("testSectionId", testSectionId);
+            query.setParameterList("statusIdList", statusIdList.stream().map(String::valueOf).toList());
             return query.list();
         } catch (RuntimeException e) {
 
@@ -216,8 +215,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
 
-            query.setParameter("testSectionId", Integer.parseInt(testSectionId));
-            query.setParameterList("statusIdList", statusIdList);
+            query.setParameter("testSectionId", testSectionId);
+            query.setParameterList("statusIdList", statusIdList.stream().map(String::valueOf).toList());
             // query.setMaxResults(SpringContext.getBean(PagingProperties.class).getValidationPageSize());
 
             return query.list();
@@ -242,7 +241,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(hql, Analysis.class);
 
             query.setParameter("accessionNumber", accessionNumber);
-            query.setParameterList("statusIdList", statusIdList);
+            query.setParameterList("statusIdList", statusIdList.stream().map(String::valueOf).toList());
             // query.setMaxResults(SpringContext.getBean(PagingProperties.class).getValidationPageSize());
 
             return query.list();
@@ -263,8 +262,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
                     + " a.sampleItem.sample.accessionNumber ";
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("testSectionId", Integer.parseInt(testSectionId));
-            query.setParameterList("statusIdList", statusIdList);
+            query.setParameter("testSectionId", testSectionId);
+            query.setParameterList("statusIdList", statusIdList.stream().map(String::valueOf).toList());
             return query.list();
         } catch (RuntimeException e) {
 
@@ -281,7 +280,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
             String sql = "from Analysis a where a.sampleItem.id = :sampleItemId";
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("sampleItemId", Integer.parseInt(sampleItem.getId()));
+            query.setParameter("sampleItemId", sampleItem.getId());
 
             list = query.list();
         } catch (RuntimeException e) {
@@ -307,8 +306,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
                     + " :statusList )";
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("sampleItemId", Integer.parseInt(sampleItem.getId()));
-            query.setParameterList("statusList", statusIds);
+            query.setParameter("sampleItemId", sampleItem.getId());
+            query.setParameterList("statusList", statusIds.stream().map(String::valueOf).toList());
 
             analysisList = query.list();
         } catch (RuntimeException e) {
@@ -333,8 +332,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
 
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("sampleStatus", Integer.parseInt(statusId));
-            query.setParameterList("excludedStatusIds", statusIds);
+            query.setParameter("sampleStatus", statusId);
+            query.setParameterList("excludedStatusIds", statusIds.stream().map(String::valueOf).toList());
 
             List<Analysis> analysisList = query.list();
             return analysisList;
@@ -355,7 +354,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
             String sql = "from Analysis a where a.sampleItem.sample.statusId = :sampleStatusId";
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("sampleStatusId", Integer.parseInt(statusId));
+            query.setParameter("sampleStatusId", statusId);
 
             analysisList = query.list();
         } catch (RuntimeException e) {
@@ -380,8 +379,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
 
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("sampleId", Integer.parseInt(id));
-            query.setParameterList("excludedIds", statusIds);
+            query.setParameter("sampleId", id);
+            query.setParameterList("excludedIds", statusIds.stream().map(String::valueOf).toList());
             List<Analysis> analysisList = query.list();
             return analysisList;
         } catch (HibernateException e) {
@@ -403,8 +402,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
 
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("sampleId", Integer.parseInt(id));
-            query.setParameterList("statusIds", statusIds);
+            query.setParameter("sampleId", id);
+            query.setParameterList("statusIds", statusIds.stream().map(String::valueOf).toList());
             List<Analysis> analysisList = query.list();
             return analysisList;
         } catch (HibernateException e) {
@@ -423,8 +422,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
 
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("oderpriority", priority.name());
-            query.setParameterList("statusIds", statusIds);
+            query.setParameter("oderpriority", priority);
+            query.setParameterList("statusIds", statusIds.stream().map(String::valueOf).toList());
             List<Analysis> analysisList = query.list();
             return analysisList;
         } catch (HibernateException e) {
@@ -609,7 +608,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
         try {
             String sql = "from Analysis a where (a.sampleItem.id, a.revision) IN "
                     + "(select b.sampleItem.id, max(b.revision) from Analysis b " + "group by b.sampleItem.id) "
-                    + "and a.test = :param " + "and a.status NOT IN (:param2) "
+                    + "and a.test.id = :param " + "and a.status NOT IN (:param2) "
                     + "order by a.sampleItem.sample.accessionNumber";
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
@@ -911,8 +910,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
             Analysis anal = null;
             String sql = "from Analysis a where (a.sampleItem.id, a.test.id, a.revision) IN "
                     + "(select b.sampleItem.id, b.test.id, max(b.revision) from Analysis b "
-                    + "group by b.sampleItem.id, b.test.id) " + "and a.sampleItem = :param "
-                    + "and a.status NOT IN (:param3) " + "and a.test = :param2";
+                    + "group by b.sampleItem.id, b.test.id) " + "and a.sampleItem.id = :param "
+                    + "and a.status NOT IN (:param3) " + "and a.test.id = :param2";
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
             query.setParameter("param", analysis.getSampleItem().getId());
@@ -971,7 +970,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
         try {
             String sql = "from Analysis a where a.statusId = :statusId";
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("statusId", Integer.parseInt(statusId));
+            query.setParameter("statusId", statusId);
 
             list = query.list();
             return list;
@@ -995,7 +994,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
             query.setParameter("startedDate", collectionDate);
-            query.setParameterList("statusList", statusIds);
+            query.setParameterList("statusList", statusIds.stream().map(String::valueOf).toList());
 
             List<Analysis> analysisList = query.list();
             return analysisList;
@@ -1016,7 +1015,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
             query.setParameter("releasedDate", completedDate);
-            query.setParameter("statusId", Integer.parseInt(statusId));
+            query.setParameter("statusId", statusId);
 
             List<Analysis> analysisList = query.list();
             return analysisList;
@@ -1060,7 +1059,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
             query.setParameter("startedDate", collectionDate);
-            query.setParameterList("statusList", statusIds);
+            query.setParameterList("statusList", statusIds.stream().map(String::valueOf).toList());
 
             List<Analysis> analysisList = query.list();
             return analysisList;
@@ -1104,8 +1103,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
             }
             String sql = "from Analysis a WHERE a.sampleItem.sample.id = :sampleId AND a.test.id IN ( :testIds )";
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("sampleId", Integer.valueOf(sampleId));
-            query.setParameterList("testIds", testIds);
+            query.setParameter("sampleId", sampleId);
+            query.setParameterList("testIds", testIds.stream().map(String::valueOf).toList());
 
             list = query.list();
         } catch (HibernateException e) {
@@ -1126,7 +1125,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
 
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("testSectionId", Integer.parseInt(sectionID));
+            query.setParameter("testSectionId", sectionID);
             query.setParameter("lowDate", lowDate);
             query.setParameter("highDate", highDate);
 
@@ -1171,8 +1170,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
             query.setParameter("lowDate", lowDate);
             query.setParameter("highDate", highDate);
-            query.setParameter("testId", Integer.parseInt(testId));
-            query.setParameterList("testSectionIds", testSectionIds);
+            query.setParameter("testId", testId);
+            query.setParameterList("testSectionIds", testSectionIds.stream().map(String::valueOf).toList());
             List<Analysis> list = query.list();
             return list;
         } catch (HibernateException e) {
@@ -1208,9 +1207,9 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
                 + " a.sampleItem.sample.statusId IN (:sampleStatusList)";
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameterList("testIds", testIds);
-            query.setParameterList("analysisStatusList", analysisStatusList);
-            query.setParameterList("sampleStatusList", sampleStatusList);
+            query.setParameterList("testIds", testIds.stream().map(String::valueOf).toList());
+            query.setParameterList("analysisStatusList", analysisStatusList.stream().map(String::valueOf).toList());
+            query.setParameterList("sampleStatusList", sampleStatusList.stream().map(String::valueOf).toList());
 
             List<Analysis> analysisList = query.list();
 
@@ -1238,8 +1237,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
             query.setParameterList("testList", testList);
-            query.setParameterList("sampleStatusList", sampleStatusList);
-            query.setParameterList("analysisStatusList", analysisStatusList);
+            query.setParameterList("sampleStatusList", sampleStatusList.stream().map(String::valueOf).toList());
+            query.setParameterList("analysisStatusList", analysisStatusList.stream().map(String::valueOf).toList());
             query.setParameter("lowDate", lowDate);
             query.setParameter("highDate", highDate);
 
@@ -1262,9 +1261,9 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
                 + " BY a.sampleItem.sample.accessionNumber";
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("testSectionId", Integer.parseInt(testSectionId));
-            query.setParameterList("analysisStatusList", analysisStatusList);
-            query.setParameterList("sampleStatusList", sampleStatusList);
+            query.setParameter("testSectionId", testSectionId);
+            query.setParameterList("analysisStatusList", analysisStatusList.stream().map(String::valueOf).toList());
+            query.setParameterList("sampleStatusList", sampleStatusList.stream().map(String::valueOf).toList());
             List<Analysis> analysisList = query.list();
 
             return analysisList;
@@ -1285,9 +1284,9 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
                 + " BY a.sampleItem.sample.accessionNumber";
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("testSectionId", Integer.parseInt(testSectionId));
-            query.setParameterList("analysisStatusList", analysisStatusList);
-            query.setParameterList("sampleStatusList", sampleStatusList);
+            query.setParameter("testSectionId", testSectionId);
+            query.setParameterList("analysisStatusList", analysisStatusList.stream().map(String::valueOf).toList());
+            query.setParameterList("sampleStatusList", sampleStatusList.stream().map(String::valueOf).toList());
             // query.setMaxResults(SpringContext.getBean(PagingProperties.class).getResultsPageSize());
 
             List<Analysis> analysisList = query.list();
@@ -1310,7 +1309,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
 
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("statusID", Integer.parseInt(statusID));
+            query.setParameter("statusID", statusID);
             query.setParameter("lowDate", lowDate);
             query.setParameter("highDate", highDate);
 
@@ -1378,7 +1377,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
             query.setParameter("accessionNumber", accessionNumber);
-            query.setParameter("testId", Integer.parseInt(testId));
+            query.setParameter("testId", testId);
             List<Analysis> analysises = query.list();
             return analysises;
         } catch (HibernateException e) {
@@ -1449,8 +1448,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
             String sql = "from Analysis a where a.sampleItem.id = :sampleItemId and a.statusId = :statusId";
 
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("sampleItemId", Integer.parseInt(sampleItemId));
-            query.setParameter("statusId", Integer.parseInt(statusId));
+            query.setParameter("sampleItemId", sampleItemId);
+            query.setParameter("statusId", statusId);
 
             List<Analysis> analysisList = query.list();
             return analysisList;
@@ -1490,9 +1489,9 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
 
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameterList("sampleIdList", sampleIdList);
-            query.setParameterList("testIdList", testIdList);
-            query.setParameterList("statusIdList", statusIdList);
+            query.setParameterList("sampleIdList", sampleIdList.stream().map(String::valueOf).toList());
+            query.setParameterList("testIdList", testIdList.stream().map(String::valueOf).toList());
+            query.setParameterList("statusIdList", statusIdList.stream().map(String::valueOf).toList());
             List<Analysis> analysisList = query.list();
             return analysisList;
         } catch (HibernateException e) {
@@ -1508,7 +1507,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
 
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameterList("ids", ids.stream().map(e -> Integer.parseInt(e)).collect(Collectors.toList()));
+            query.setParameterList("ids", ids);
             List<Analysis> analysisList = query.list();
             return analysisList;
         } catch (HibernateException e) {
@@ -1526,9 +1525,9 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
                 + " (:analysisStatusList) AND a.sampleItem.sample.statusId IN (:sampleStatusList)";
         try {
             Query<Long> query = entityManager.unwrap(Session.class).createQuery(hql, Long.class);
-            query.setParameter("testSectionId", Integer.parseInt(testSectionId));
-            query.setParameterList("analysisStatusList", analysisStatusList);
-            query.setParameterList("sampleStatusList", sampleStatusList);
+            query.setParameter("testSectionId", testSectionId);
+            query.setParameterList("analysisStatusList", analysisStatusList.stream().map(String::valueOf).toList());
+            query.setParameterList("sampleStatusList", sampleStatusList.stream().map(String::valueOf).toList());
 
             Long analysisList = query.uniqueResult();
 
@@ -1548,8 +1547,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
                 + " (:analysisStatusList)";
         try {
             Query<Long> query = entityManager.unwrap(Session.class).createQuery(hql, Long.class);
-            query.setParameter("testSectionId", Integer.parseInt(testSectionId));
-            query.setParameterList("analysisStatusList", analysisStatusList);
+            query.setParameter("testSectionId", testSectionId);
+            query.setParameterList("analysisStatusList", analysisStatusList.stream().map(String::valueOf).toList());
 
             Long analysisList = query.uniqueResult();
 
@@ -1580,8 +1579,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
                             + "sampleStatusList: " + (sampleStatusList != null ? sampleStatusList.toString() : "null"));
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
             query.setParameter("accessionNumber", accessionNumber);
-            query.setParameterList("analysisStatusList", analysisStatusList);
-            query.setParameterList("sampleStatusList", sampleStatusList);
+            query.setParameterList("analysisStatusList", analysisStatusList.stream().map(String::valueOf).toList());
+            query.setParameterList("sampleStatusList", sampleStatusList.stream().map(String::valueOf).toList());
             // query.setMaxResults(SpringContext.getBean(PagingProperties.class).getResultsPageSize());
 
             List<Analysis> analysisList = query.list();
@@ -1603,23 +1602,28 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
             List<Integer> sampleStatusList, String accessionNumber, String upperRangeAccessionNumber, boolean doRange,
             boolean finished) {
 
+        List<String> statusStrList = new ArrayList<>();
+        for (Integer statusId : analysisStatusList) {
+            statusStrList.add(String.valueOf(statusId));
+        }
         if (finished) {
-            analysisStatusList.add(Integer
-                    .parseInt(SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.Finalized)));
-            analysisStatusList.add(Integer.parseInt(
-                    SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.BiologistRejected)));
-            analysisStatusList.add(
-                    Integer.parseInt(SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.Canceled)));
-            analysisStatusList.add(Integer
-                    .parseInt(SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.NotStarted)));
-            analysisStatusList.add(Integer.parseInt(
-                    SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.NonConforming_depricated)));
-            analysisStatusList.add(Integer
-                    .parseInt(SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.SampleRejected)));
-            analysisStatusList.add(Integer.parseInt(
-                    SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.TechnicalAcceptance)));
-            analysisStatusList.add(Integer.parseInt(
-                    SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.TechnicalRejected)));
+            statusStrList.add(SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.Finalized));
+            statusStrList
+                    .add(SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.BiologistRejected));
+            statusStrList.add(SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.Canceled));
+            statusStrList.add(SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.NotStarted));
+            statusStrList.add(
+                    SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.NonConforming_depricated));
+            statusStrList.add(SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.SampleRejected));
+            statusStrList
+                    .add(SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.TechnicalAcceptance));
+            statusStrList
+                    .add(SpringContext.getBean(IStatusService.class).getStatusID(AnalysisStatus.TechnicalRejected));
+        }
+
+        List<String> sampleStatusStrList = new ArrayList<>();
+        for (Integer statusId : sampleStatusList) {
+            sampleStatusStrList.add(String.valueOf(statusId));
         }
 
         String sql = "";
@@ -1643,8 +1647,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
             if (StringUtils.isNotBlank(upperRangeAccessionNumber)) {
                 query.setParameter("upperRangeAccessionNumber", upperRangeAccessionNumber);
             }
-            query.setParameterList("analysisStatusList", analysisStatusList);
-            query.setParameterList("sampleStatusList", sampleStatusList);
+            query.setParameterList("analysisStatusList", statusStrList);
+            query.setParameterList("sampleStatusList", sampleStatusStrList);
             // query.setMaxResults(SpringContext.getBean(PagingProperties.class).getResultsPageSize());
 
             List<Analysis> analysisList = query.list();
@@ -1666,8 +1670,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
                 + " AND a.sampleItem.sample.statusId IN (:sampleStatusList)";
         try {
             Query<Long> query = entityManager.unwrap(Session.class).createQuery(hql, Long.class);
-            query.setParameterList("analysisStatusList", analysisStatusList);
-            query.setParameterList("sampleStatusList", sampleStatusList);
+            query.setParameterList("analysisStatusList", analysisStatusList.stream().map(String::valueOf).toList());
+            query.setParameterList("sampleStatusList", sampleStatusList.stream().map(String::valueOf).toList());
 
             Long analysisList = query.uniqueResult();
 
@@ -1689,7 +1693,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
                 + " RequesterType rt WHERE rt.requesterType = 'organization' ))";
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(hql, Analysis.class);
-            query.setParameter("requesterId", Integer.parseInt(referringSiteId));
+            query.setParameter("requesterId", referringSiteId);
             query.setParameter("lowerDate", lowerDate.atStartOfDay());
             query.setParameter("upperDate", upperDate.atTime(LocalTime.MAX));
             return query.list();
@@ -1707,7 +1711,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
                 + " so.organization.id = :requesterId )";
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(hql, Analysis.class);
-            query.setParameter("requesterId", Integer.parseInt(referringSiteId));
+            query.setParameter("requesterId", referringSiteId);
             query.setParameter("lowerDate", lowerDate.atStartOfDay());
             query.setParameter("upperDate", upperDate.atTime(LocalTime.MAX));
             return query.list();
@@ -1722,7 +1726,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
         String hql = "SELECT COUNT(*) From Analysis a WHERE  a.statusId IN (:analysisStatusList)";
         try {
             Query<Long> query = entityManager.unwrap(Session.class).createQuery(hql, Long.class);
-            query.setParameterList("analysisStatusList", statusIdList);
+            query.setParameterList("analysisStatusList", statusIdList.stream().map(String::valueOf).toList());
 
             Long count = query.uniqueResult();
             return count.intValue();
@@ -1742,7 +1746,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
         try {
             Query<Long> query = entityManager.unwrap(Session.class).createQuery(sql, Long.class);
             query.setParameter("releasedDate", completedDate);
-            query.setParameterList("statusList", statusIds);
+            query.setParameterList("statusList", statusIds.stream().map(String::valueOf).toList());
 
             Long count = query.uniqueResult();
             return count.intValue();
@@ -1762,7 +1766,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
         try {
             Query<Long> query = entityManager.unwrap(Session.class).createQuery(sql, Long.class);
             query.setParameter("startedDate", collectionDate);
-            query.setParameterList("statusList", statusIds);
+            query.setParameterList("statusList", statusIds.stream().map(String::valueOf).toList());
 
             Long count = query.uniqueResult();
             return count.intValue();
@@ -1781,7 +1785,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
         try {
             Query<Long> query = entityManager.unwrap(Session.class).createQuery(sql, Long.class);
             query.setParameter("startedDate", startedDate);
-            query.setParameterList("statusList", statusIds);
+            query.setParameterList("statusList", statusIds.stream().map(String::valueOf).toList());
 
             Long count = query.uniqueResult();
             return count.intValue();
@@ -1801,7 +1805,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
             query.setParameter("completedDate", completedDate);
-            query.setParameterList("statusList", statusIds);
+            query.setParameterList("statusList", statusIds.stream().map(String::valueOf).toList());
 
             List<Analysis> analysisList = query.list();
             return analysisList;
@@ -1823,8 +1827,8 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
 
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-            query.setParameter("sampleItemId", Integer.parseInt(sampleItemId));
-            query.setParameter("testId", Integer.parseInt(testId));
+            query.setParameter("sampleItemId", sampleItemId);
+            query.setParameter("testId", testId);
 
             List<Analysis> results = query.list();
             return results.isEmpty() ? null : results.get(0);

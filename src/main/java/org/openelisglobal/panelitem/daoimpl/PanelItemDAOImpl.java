@@ -132,7 +132,7 @@ public class PanelItemDAOImpl extends BaseDAOImpl<PanelItem, String> implements 
         try {
             String sql = "from PanelItem p where p.panel.id = :panelId";
             Query<PanelItem> query = entityManager.unwrap(Session.class).createQuery(sql, PanelItem.class);
-            query.setParameter("panelId", Integer.parseInt(panelId));
+            query.setParameter("panelId", panelId);
 
             list = query.list();
         } catch (RuntimeException e) {
@@ -162,7 +162,7 @@ public class PanelItemDAOImpl extends BaseDAOImpl<PanelItem, String> implements 
             Query<PanelItem> query = entityManager.unwrap(Session.class).createQuery(sql, PanelItem.class);
 
             query.setParameter("param", panelItem.getPanelName().toLowerCase().trim());
-            query.setParameter("sortOrder", Integer.parseInt(panelItem.getSortOrder()));
+            query.setParameter("sortOrder", panelItem.getSortOrder());
 
             // initialize with 0 (for new records where no id has been generated
             // yet
@@ -171,7 +171,7 @@ public class PanelItemDAOImpl extends BaseDAOImpl<PanelItem, String> implements 
                 panelItemId = panelItem.getId();
             }
 
-            query.setParameter("panelItemId", Integer.parseInt(panelItemId));
+            query.setParameter("panelItemId", panelItemId);
 
             list = query.list();
 
@@ -190,7 +190,7 @@ public class PanelItemDAOImpl extends BaseDAOImpl<PanelItem, String> implements 
 
         try {
             Query<PanelItem> query = entityManager.unwrap(Session.class).createQuery(sql, PanelItem.class);
-            query.setParameter("testId", Integer.parseInt(testId));
+            query.setParameter("testId", testId);
             List<PanelItem> panelItems = query.list();
             return panelItems;
 
@@ -208,8 +208,8 @@ public class PanelItemDAOImpl extends BaseDAOImpl<PanelItem, String> implements 
         String sql = "From PanelItem pi where pi.panel.id = :panelId and pi.test.id in (:testList)";
         try {
             Query<PanelItem> query = entityManager.unwrap(Session.class).createQuery(sql, PanelItem.class);
-            query.setParameter("panelId", Integer.parseInt(panelId));
-            query.setParameterList("testList", testList);
+            query.setParameter("panelId", panelId);
+            query.setParameterList("testList", testList.stream().map(String::valueOf).toList());
             List<PanelItem> items = query.list();
             return items;
         } catch (HibernateException e) {
