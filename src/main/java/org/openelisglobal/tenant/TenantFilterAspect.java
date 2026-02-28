@@ -7,7 +7,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.hibernate.Filter;
 import org.hibernate.Session;
-import org.springframework.stereotype.Component;
 
 /**
  * AOP aspect that automatically enables the {@code labUnitFilter} Hibernate
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Component;
  * <p>
  * The filter is defined in {@code Analysis.hbm.xml} (and any other HBM files
  * that declare it) as:
- * 
+ *
  * <pre>{@code
  * <filter-def name="labUnitFilter">
  *     <filter-param name="labUnitId" type="integer"/>
@@ -41,9 +40,15 @@ import org.springframework.stereotype.Component;
  * request or call from a background thread).
  * <li>{@code TenantContext.isBypassed() == true} – global admin.
  * </ul>
+ *
+ * <p>
+ * <b>Registration note:</b> This bean is declared explicitly via
+ * {@link MultitenancyConfig#tenantFilterAspect()} and must NOT carry
+ * {@code @Component}. {@code AppConfig} scans all of
+ * {@code org.openelisglobal}, so adding {@code @Component} here would register
+ * a second bean instance, causing every DAO call to be advised twice.
  */
 @Aspect
-@Component
 public class TenantFilterAspect {
 
     static final String FILTER_NAME = "labUnitFilter";
@@ -61,13 +66,24 @@ public class TenantFilterAspect {
         }
 
         Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter(FILTER_NAME);
-        filter.setParameter(PARAM_NAME, labUnitId);
+
+        // Guard against nested DAO calls: if a DAO method (A) calls another injected
+        // DAO (B) through a Spring proxy, this aspect fires again on B. Without this
+        // guard, B's finally block would disable the filter before A finishes.
+        // Current OpenELIS DAOs do not inject other DAOs, so this is safe today, but
+        // the guard makes the pattern correct for future changes.
+        boolean alreadyActive = session.getEnabledFilter(FILTER_NAME) != null;
+        if (!alreadyActive) {
+            Filter filter = session.enableFilter(FILTER_NAME);
+            filter.setParameter(PARAM_NAME, labUnitId);
+        }
 
         try {
             return pjp.proceed();
         } finally {
-            session.disableFilter(FILTER_NAME);
+            if (!alreadyActive) {
+                session.disableFilter(FILTER_NAME);
+            }
         }
     }
 }

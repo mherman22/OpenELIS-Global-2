@@ -1190,7 +1190,7 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
                 String sql = "from Analysis a where a.sampleItem.sample.id = :sampleId";
 
                 Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(sql, Analysis.class);
-                query.setParameter("sampleId", Integer.parseInt(id));
+                query.setParameter("sampleId", id);
 
                 list = query.list();
             } catch (RuntimeException e) {
