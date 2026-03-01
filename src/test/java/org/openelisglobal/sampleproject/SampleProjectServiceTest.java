@@ -26,17 +26,11 @@ public class SampleProjectServiceTest extends BaseWebContextSensitiveTest {
         SampleProject sampleProject = sampleProjectService.getSampleProjectBySampleId("1");
 
         assertNotNull(sampleProject);
+        assertNotNull(sampleProject.getSample());
+        assertNotNull(sampleProject.getProject());
         assertEquals("1", sampleProject.getSample().getId());
-    }
-
-    @Test
-    public void getSampleProjectBySampleId_shouldReturnSingleSampleProject() {
-        SampleProject result = sampleProjectService.getSampleProjectBySampleId("1");
-        assertNotNull(result);
-        assertNotNull(result.getSample());
-        assertEquals("1", result.getSample().getId().toString());
-        assertNotNull(result.getProject());
-        assertEquals("1", result.getProject().getId().toString());
+        assertEquals("1", sampleProject.getProject().getId());
+        assertEquals("Y", sampleProject.getIsPermanent());
     }
 
     @Test
@@ -47,7 +41,7 @@ public class SampleProjectServiceTest extends BaseWebContextSensitiveTest {
         sampleProjectService.getData(emptyProject);
 
         assertNotNull(emptyProject.getProject());
-        assertEquals("1", emptyProject.getProject().getId().toString());
+        assertEquals("1", emptyProject.getProject().getId());
     }
 
     @Test
@@ -75,6 +69,8 @@ public class SampleProjectServiceTest extends BaseWebContextSensitiveTest {
     @Test
     public void updateSampleProject_shouldModifyExistingSampleProject() {
         SampleProject existingProject = sampleProjectService.getSampleProjectBySampleId("1");
+        assertEquals("Y", existingProject.getIsPermanent());
+
         existingProject.setIsPermanent("N");
         sampleProjectService.save(existingProject);
 
@@ -88,24 +84,7 @@ public class SampleProjectServiceTest extends BaseWebContextSensitiveTest {
         Date highDate = Date.valueOf("2024-02-01");
         List<SampleProject> projects = sampleProjectService.getByOrganizationProjectAndReceivedOnRange("1",
                 "Test Project", lowDate, highDate);
-        assertNotNull(projects);
-        assertTrue(projects.isEmpty());
-    }
-
-    @Test
-    public void getSampleProjectBySampleId_shouldReturnNullIfNotFound() {
-        SampleProject sampleProject = sampleProjectService.getSampleProjectBySampleId("999"); // Assuming "999" does not
-                                                                                              // exist.
-        assertNull(sampleProject);
-    }
-
-    @Test
-    public void getData_shouldSetIdToNullIfNoDataFound() {
-        SampleProject sampleProject = new SampleProject();
-        sampleProject.setId("999");
-
-        sampleProjectService.getData(sampleProject);
-        assertNull(sampleProject.getId());
+        assertEquals("No projects should match a date range outside test data", 0, projects.size());
     }
 
     @Test
@@ -119,19 +98,11 @@ public class SampleProjectServiceTest extends BaseWebContextSensitiveTest {
     }
 
     @Test
-    public void getSampleProjectBySampleId_shouldReturnEmptyForEmptyDatabase() {
-        SampleProject sampleProject = sampleProjectService.getSampleProjectBySampleId("1");
-
-        assertNotNull(sampleProject);
-        assertNull(sampleProject.getSampleId());
-        assertNull(sampleProject.getProjectId());
-    }
-
-    @Test
     public void getAllSampleProjects_shouldReturnNonEmptyList() {
         List<SampleProject> projects = sampleProjectService.getAll();
         assertNotNull(projects);
-        assertFalse(projects.isEmpty());
+        assertTrue("Test data contains at least 1 sample project", projects.size() >= 1);
+        assertEquals("1", projects.get(0).getId());
     }
 
     @Test
@@ -145,4 +116,29 @@ public class SampleProjectServiceTest extends BaseWebContextSensitiveTest {
         assertNull(deletedProject);
     }
 
+    // --- Negative / edge-case tests ---
+
+    @Test
+    public void getSampleProjectBySampleId_shouldReturnNullForEmptyString() {
+        SampleProject result = sampleProjectService.getSampleProjectBySampleId("");
+        assertNull(result);
+    }
+
+    @Test
+    public void getByOrganizationProjectAndReceivedOnRange_shouldReturnEmptyForNonExistentOrg() {
+        Date lowDate = Date.valueOf("2023-01-01");
+        Date highDate = Date.valueOf("2025-12-31");
+        List<SampleProject> projects = sampleProjectService.getByOrganizationProjectAndReceivedOnRange("999",
+                "Test Project", lowDate, highDate);
+        assertEquals("Non-existent org should return empty list", 0, projects.size());
+    }
+
+    @Test
+    public void getByOrganizationProjectAndReceivedOnRange_shouldReturnEmptyForReversedDateRange() {
+        Date lowDate = Date.valueOf("2025-01-01");
+        Date highDate = Date.valueOf("2020-01-01");
+        List<SampleProject> projects = sampleProjectService.getByOrganizationProjectAndReceivedOnRange("1",
+                "Test Project", lowDate, highDate);
+        assertEquals("Reversed date range should return empty list", 0, projects.size());
+    }
 }

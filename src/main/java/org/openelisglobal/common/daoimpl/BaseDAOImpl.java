@@ -702,6 +702,10 @@ public abstract class BaseDAOImpl<T extends BaseObject<PK>, PK extends Serializa
                 }
                 break;
             case IN:
+                // NOTE: IN only supports primitive/simple properties (String, numeric).
+                // Entity-association navigation (e.g. "test" -> "test.id") and enum
+                // conversion are NOT handled here — use EQ for those cases, or pass
+                // pre-resolved ID lists with the correct property path (e.g. "test.id").
                 In<String> inClause = criteriaBuilder.in(root.get(propertyName));
                 for (String id : (List<String>) propertyValue) {
                     inClause.value(id);

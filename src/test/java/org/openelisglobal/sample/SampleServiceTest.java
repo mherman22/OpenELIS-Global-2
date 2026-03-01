@@ -235,7 +235,7 @@ public class SampleServiceTest extends BaseWebContextSensitiveTest {
         // but the query must not throw a NumberFormatException
         List<String> statuses = Arrays.asList("1", "2");
         List<Sample> results = sampleService.getSamplesByStatusAndDomain(statuses, "H");
-        Assert.assertNotNull(results);
+        Assert.assertTrue("Expected empty for unmatched status/domain", results.isEmpty());
     }
 
     @Test

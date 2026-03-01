@@ -2,12 +2,12 @@ name: Catalyst CI Tests
 
 on:
   push:
-    branches: [feat/multitenancy, demo/tenant]
+    branches: [develop]
     paths:
       - "projects/catalyst/**"
       - ".github/workflows/catalyst-ci.yml"
   pull_request:
-    branches: [feat/multitenancy, demo/tenant]
+    branches: [develop]
     paths:
       - "projects/catalyst/**"
       - ".github/workflows/catalyst-ci.yml"

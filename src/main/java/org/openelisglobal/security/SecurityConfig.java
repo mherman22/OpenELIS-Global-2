@@ -307,6 +307,8 @@ public class SecurityConfig {
                         .logoutResponse(response -> response.logoutUrl("/logout/saml2/slo")))
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/logout/saml2/slo/**"))
                 .authenticationManager(new ProviderManager(authenticationProvider))
+                // populate lab-unit tenant context after SAML authentication
+                .addFilterAfter(tenantContextFilter, UsernamePasswordAuthenticationFilter.class)
 
         ;
         return http.build();
@@ -356,6 +358,8 @@ public class SecurityConfig {
                         .failureHandler(customOAuthAuthenticationFailureHandler())
                         .successHandler(customOAuthAuthenticationSuccessHandler())) //
                 .logout(logout -> logout.logoutSuccessHandler(oidcLogoutSuccessHandler()))
+                // populate lab-unit tenant context after OAuth authentication
+                .addFilterAfter(tenantContextFilter, UsernamePasswordAuthenticationFilter.class)
                 // add security headers
                 .headers(headers -> headers.frameOptions().sameOrigin().contentSecurityPolicy(CONTENT_SECURITY_POLICY));
         return http.build();
@@ -397,7 +401,9 @@ public class SecurityConfig {
         http.securityMatcher(new CertificateAuthRequestedMatcher())
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .x509(x509 -> x509.subjectPrincipalRegex("CN=(.*?)(?:,|$)"))
-                .userDetailsService(SpringContext.getBean(UserDetailsService.class)).csrf().disable();
+                .userDetailsService(SpringContext.getBean(UserDetailsService.class))
+                // populate lab-unit tenant context after certificate authentication
+                .addFilterAfter(tenantContextFilter, UsernamePasswordAuthenticationFilter.class).csrf().disable();
         return http.build();
     }
 

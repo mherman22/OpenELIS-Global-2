@@ -1,7 +1,7 @@
 name: OpenELIS-Global-2 CI Build
 on:
   push:
-    branches: [feat/multitenancy, demo/tenant]
+    branches: [develop]
   pull_request:
   workflow_dispatch:
 

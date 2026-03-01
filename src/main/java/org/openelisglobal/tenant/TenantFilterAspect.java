@@ -65,7 +65,13 @@ public class TenantFilterAspect {
             return pjp.proceed();
         }
 
-        Session session = entityManager.unwrap(Session.class);
+        Session session;
+        try {
+            session = entityManager.unwrap(Session.class);
+        } catch (IllegalStateException e) {
+            // No active persistence context (e.g. background thread) — skip filtering
+            return pjp.proceed();
+        }
 
         // Guard against nested DAO calls: if a DAO method (A) calls another injected
         // DAO (B) through a Spring proxy, this aspect fires again on B. Without this

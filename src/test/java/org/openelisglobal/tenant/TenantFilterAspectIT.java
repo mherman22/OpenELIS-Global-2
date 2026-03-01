@@ -1,16 +1,25 @@
 package org.openelisglobal.tenant;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import jakarta.servlet.FilterChain;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openelisglobal.BaseWebContextSensitiveTest;
 import org.openelisglobal.analysis.service.AnalysisService;
 import org.openelisglobal.analysis.valueholder.Analysis;
+import org.openelisglobal.common.action.IActionConstants;
+import org.openelisglobal.login.valueholder.UserSessionData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * Integration tests for {@link TenantFilterAspect}.
@@ -41,6 +50,9 @@ public class TenantFilterAspectIT extends BaseWebContextSensitiveTest {
 
     @Autowired
     private AnalysisService analysisService;
+
+    @Autowired
+    private TenantContextFilter tenantContextFilter;
 
     @Before
     public void setUp() throws Exception {
@@ -104,5 +116,108 @@ public class TenantFilterAspectIT extends BaseWebContextSensitiveTest {
 
         assertEquals("After clear(), sample 1 analysis must be visible", 1, sample1.size());
         assertEquals("After clear(), sample 2 analysis must be visible", 1, sample2.size());
+    }
+
+    @Test
+    public void httpPipeline_nonAdminWithLabUnit_filtersData() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        Objects.requireNonNull(request.getSession(true)).setAttribute(IActionConstants.USER_SESSION_DATA,
+                createSessionData(1, false));
+
+        List<Analysis> capturedSample1 = new ArrayList<>();
+        List<Analysis> capturedSample2 = new ArrayList<>();
+        AtomicReference<Integer> capturedLabUnitId = new AtomicReference<>();
+
+        FilterChain chain = (req, res) -> {
+            capturedLabUnitId.set(TenantContext.get());
+            capturedSample1.addAll(analysisService.getAnalysesBySampleId("1"));
+            capturedSample2.addAll(analysisService.getAnalysesBySampleId("2"));
+        };
+
+        tenantContextFilter.doFilter(request, response, chain);
+
+        assertEquals("TenantContext must be set to lab unit 1 during request", Integer.valueOf(1),
+                capturedLabUnitId.get());
+        assertEquals("Sample 1 (test_sect_id=1) must be visible for lab unit 1", 1, capturedSample1.size());
+        assertTrue("Sample 2 (test_sect_id=2) must be hidden for lab unit 1", capturedSample2.isEmpty());
+        assertNull("TenantContext must be cleared after filter completes", TenantContext.get());
+    }
+
+    @Test
+    public void httpPipeline_adminUser_bypassesFilter() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        Objects.requireNonNull(request.getSession(true)).setAttribute(IActionConstants.USER_SESSION_DATA,
+                createSessionData(1, true));
+
+        List<Analysis> capturedSample1 = new ArrayList<>();
+        List<Analysis> capturedSample2 = new ArrayList<>();
+
+        FilterChain chain = (req, res) -> {
+            capturedSample1.addAll(analysisService.getAnalysesBySampleId("1"));
+            capturedSample2.addAll(analysisService.getAnalysesBySampleId("2"));
+        };
+
+        tenantContextFilter.doFilter(request, response, chain);
+
+        assertEquals("Admin: sample 1 must be visible", 1, capturedSample1.size());
+        assertEquals("Admin: sample 2 must be visible", 1, capturedSample2.size());
+        assertNull("TenantContext must be cleared after filter completes", TenantContext.get());
+    }
+
+    @Test
+    public void httpPipeline_noSession_noFiltering() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        // No session attribute set
+
+        List<Analysis> capturedSample1 = new ArrayList<>();
+        List<Analysis> capturedSample2 = new ArrayList<>();
+
+        FilterChain chain = (req, res) -> {
+            capturedSample1.addAll(analysisService.getAnalysesBySampleId("1"));
+            capturedSample2.addAll(analysisService.getAnalysesBySampleId("2"));
+        };
+
+        tenantContextFilter.doFilter(request, response, chain);
+
+        assertEquals("No session: sample 1 must be visible", 1, capturedSample1.size());
+        assertEquals("No session: sample 2 must be visible", 1, capturedSample2.size());
+    }
+
+    @Test
+    public void httpPipeline_labUnitZero_noFiltering() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        Objects.requireNonNull(request.getSession(true)).setAttribute(IActionConstants.USER_SESSION_DATA,
+                createSessionData(0, false));
+
+        List<Analysis> capturedSample1 = new ArrayList<>();
+        List<Analysis> capturedSample2 = new ArrayList<>();
+
+        FilterChain chain = (req, res) -> {
+            capturedSample1.addAll(analysisService.getAnalysesBySampleId("1"));
+            capturedSample2.addAll(analysisService.getAnalysesBySampleId("2"));
+        };
+
+        tenantContextFilter.doFilter(request, response, chain);
+
+        assertEquals("Lab unit 0: sample 1 must be visible", 1, capturedSample1.size());
+        assertEquals("Lab unit 0: sample 2 must be visible", 1, capturedSample2.size());
+    }
+
+    // For End-to-end HTTP pipeline tests.
+    // These drive TenantContextFilter.doFilter() with mock HTTP requests and
+    // verify that data isolation flows through the full pipeline:
+    // HTTP request → TenantContextFilter → TenantContext → TenantFilterAspect
+    // → Hibernate filter → filtered query results → TenantContext cleared.
+    private UserSessionData createSessionData(int labUnit, boolean admin) {
+        UserSessionData usd = new UserSessionData();
+        usd.setSytemUserId(1);
+        usd.setLoginName("testUser");
+        usd.setLoginLabUnit(labUnit);
+        usd.setAdmin(admin);
+        return usd;
     }
 }
