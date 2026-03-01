@@ -69,9 +69,19 @@ public class AnalyzerErrorServiceIntegrationTest extends BaseWebContextSensitive
      */
     private void cleanTestData() {
         try {
+            String analyzerIdSubquery = "(SELECT id FROM analyzer WHERE name LIKE 'TEST-%')";
+            String analyzerFieldSubquery = "(SELECT id FROM analyzer_field WHERE analyzer_id IN " + analyzerIdSubquery
+                    + ")";
+
             // Delete analyzer errors for test analyzer
-            jdbcTemplate.execute("DELETE FROM analyzer_error WHERE analyzer_id IN "
-                    + "(SELECT id FROM analyzer WHERE name LIKE 'TEST-%')");
+            jdbcTemplate.execute("DELETE FROM analyzer_error WHERE analyzer_id IN " + analyzerIdSubquery);
+
+            // Delete analyzer field mappings
+            jdbcTemplate
+                    .execute("DELETE FROM analyzer_field_mapping WHERE analyzer_field_id IN " + analyzerFieldSubquery);
+
+            // Delete analyzer fields
+            jdbcTemplate.execute("DELETE FROM analyzer_field WHERE analyzer_id IN " + analyzerIdSubquery);
 
             // Delete test analyzer (if exists)
             jdbcTemplate.execute("DELETE FROM analyzer WHERE name LIKE 'TEST-%'");

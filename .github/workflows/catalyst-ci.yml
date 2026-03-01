@@ -2,15 +2,15 @@ name: Catalyst CI Tests
 
 on:
   push:
-    branches: [develop]
+    branches: [feat/multitenancy, demo/tenant]
     paths:
-      - 'projects/catalyst/**'
-      - '.github/workflows/catalyst-ci.yml'
+      - "projects/catalyst/**"
+      - ".github/workflows/catalyst-ci.yml"
   pull_request:
-    branches: [develop]
+    branches: [feat/multitenancy, demo/tenant]
     paths:
-      - 'projects/catalyst/**'
-      - '.github/workflows/catalyst-ci.yml'
+      - "projects/catalyst/**"
+      - ".github/workflows/catalyst-ci.yml"
   workflow_dispatch:
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
