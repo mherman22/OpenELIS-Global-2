@@ -672,7 +672,13 @@ public abstract class BaseDAOImpl<T extends BaseObject<PK>, PK extends Serializa
             switch (comparisonOperation.getComparison()) {
             case EQ:
                 if (propertyValue instanceof String && pathToProperty.getJavaType().isEnum()) {
-                    propertyValue = Enum.valueOf((Class<Enum>) pathToProperty.getJavaType(), (String) propertyValue);
+                    try {
+                        propertyValue = Enum.valueOf((Class<Enum>) pathToProperty.getJavaType(),
+                                (String) propertyValue);
+                    } catch (IllegalArgumentException e) {
+                        throw new LIMSRuntimeException(
+                                "Invalid enum value '" + propertyValue + "' for property " + propertyName, e);
+                    }
                 }
                 // Handle entity association matching by navigating to the entity's ID
                 if (BaseObject.class.isAssignableFrom(pathToProperty.getJavaType())
@@ -735,13 +741,21 @@ public abstract class BaseDAOImpl<T extends BaseObject<PK>, PK extends Serializa
             if (value instanceof Number) {
                 return ((Number) value).intValue();
             }
-            return Integer.valueOf(value.toString());
+            try {
+                return Integer.valueOf(value.toString());
+            } catch (NumberFormatException e) {
+                throw new LIMSRuntimeException("Cannot convert '" + value + "' to " + targetType.getSimpleName(), e);
+            }
         }
         if (targetType == Long.class || targetType == long.class) {
             if (value instanceof Number) {
                 return ((Number) value).longValue();
             }
-            return Long.valueOf(value.toString());
+            try {
+                return Long.valueOf(value.toString());
+            } catch (NumberFormatException e) {
+                throw new LIMSRuntimeException("Cannot convert '" + value + "' to " + targetType.getSimpleName(), e);
+            }
         }
         return value;
     }
