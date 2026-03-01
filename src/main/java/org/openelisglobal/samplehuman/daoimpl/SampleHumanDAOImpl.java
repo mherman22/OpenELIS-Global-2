@@ -83,7 +83,7 @@ public class SampleHumanDAOImpl extends BaseDAOImpl<SampleHuman, String> impleme
     public void getDataBySample(SampleHuman sampleHuman) throws LIMSRuntimeException {
 
         try {
-            String sql = "from SampleHuman sh where samp_id = :param";
+            String sql = "from SampleHuman sh where sh.sampleId = :param";
             Query<SampleHuman> query = entityManager.unwrap(Session.class).createQuery(sql, SampleHuman.class);
             query.setParameter("param", sampleHuman.getSampleId());
             List<SampleHuman> list = query.list();

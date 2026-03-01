@@ -1,10 +1,12 @@
 package org.openelisglobal.tenant;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -153,14 +155,17 @@ public class TenantFilterAspectIT extends BaseWebContextSensitiveTest {
 
         List<Analysis> capturedSample1 = new ArrayList<>();
         List<Analysis> capturedSample2 = new ArrayList<>();
+        AtomicReference<Boolean> capturedBypassed = new AtomicReference<>();
 
         FilterChain chain = (req, res) -> {
+            capturedBypassed.set(TenantContext.isBypassed());
             capturedSample1.addAll(analysisService.getAnalysesBySampleId("1"));
             capturedSample2.addAll(analysisService.getAnalysesBySampleId("2"));
         };
 
         tenantContextFilter.doFilter(request, response, chain);
 
+        assertTrue("TenantContext must be bypassed for admin during request", capturedBypassed.get());
         assertEquals("Admin: sample 1 must be visible", 1, capturedSample1.size());
         assertEquals("Admin: sample 2 must be visible", 1, capturedSample2.size());
         assertNull("TenantContext must be cleared after filter completes", TenantContext.get());
@@ -184,6 +189,7 @@ public class TenantFilterAspectIT extends BaseWebContextSensitiveTest {
 
         assertEquals("No session: sample 1 must be visible", 1, capturedSample1.size());
         assertEquals("No session: sample 2 must be visible", 1, capturedSample2.size());
+        assertNull("TenantContext must be cleared after filter completes", TenantContext.get());
     }
 
     @Test
@@ -205,6 +211,30 @@ public class TenantFilterAspectIT extends BaseWebContextSensitiveTest {
 
         assertEquals("Lab unit 0: sample 1 must be visible", 1, capturedSample1.size());
         assertEquals("Lab unit 0: sample 2 must be visible", 1, capturedSample2.size());
+        assertNull("TenantContext must be cleared after filter completes", TenantContext.get());
+    }
+
+    @Test
+    public void httpPipeline_exceptionInChain_stillClearsTenantContext() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        Objects.requireNonNull(request.getSession(true)).setAttribute(IActionConstants.USER_SESSION_DATA,
+                createSessionData(1, false));
+
+        FilterChain chain = (req, res) -> {
+            throw new ServletException("simulated error");
+        };
+
+        boolean exceptionCaught = false;
+        try {
+            tenantContextFilter.doFilter(request, response, chain);
+        } catch (ServletException e) {
+            exceptionCaught = true;
+        }
+
+        assertTrue("Exception from filter chain must propagate", exceptionCaught);
+        assertNull("TenantContext must be cleared even after exception", TenantContext.get());
+        assertFalse("TenantContext bypass must be cleared even after exception", TenantContext.isBypassed());
     }
 
     // For End-to-end HTTP pipeline tests.

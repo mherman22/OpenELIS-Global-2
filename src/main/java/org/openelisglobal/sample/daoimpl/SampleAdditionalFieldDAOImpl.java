@@ -35,7 +35,7 @@ public class SampleAdditionalFieldDAOImpl extends BaseDAOImpl<SampleAdditionalFi
         Query<SampleAdditionalField> query = entityManager.unwrap(Session.class).createQuery(sql,
                 SampleAdditionalField.class);
         query.setParameter("sampleId", sampleId);
-        query.setParameter("fieldName", fieldName.name());
+        query.setParameter("fieldName", fieldName);
         SampleAdditionalField field = query.uniqueResult();
         if (field == null) {
             return Optional.empty();

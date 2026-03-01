@@ -1,6 +1,7 @@
 package org.openelisglobal.analyzer.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -148,11 +149,9 @@ public class AnalyzerErrorServiceIntegrationTest extends BaseWebContextSensitive
         // should handle it)
         boolean reprocessSuccess = analyzerErrorService.reprocessError(errorId);
 
-        // Assert: Reprocessing was attempted
-        // Note: Reprocessing may fail if mappings don't exist, but the service
-        // should handle it gracefully
-        // The actual success depends on mappings being created (tested in T181)
-        assertTrue("Reprocessing should be attempted", true); // Service should not throw exception
+        // Assert: Reprocessing fails gracefully when no mappings exist.
+        // Actual success (with mappings) is tested in T181.
+        assertFalse("Reprocessing should fail without mappings", reprocessSuccess);
     }
 
     /**

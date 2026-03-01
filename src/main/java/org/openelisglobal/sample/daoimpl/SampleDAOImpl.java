@@ -447,8 +447,8 @@ public class SampleDAOImpl extends BaseDAOImpl<Sample, String> implements Sample
                 + " sp where sp.project.id in (:projectId))";
         try {
             Query<Sample> query = entityManager.unwrap(Session.class).createQuery(sql, Sample.class);
-            query.setParameterList("statusList", inclusiveStatusIdList);
-            query.setParameterList("projectId", inclusiveProjectIdList);
+            query.setParameterList("statusList", inclusiveStatusIdList.stream().map(String::valueOf).toList());
+            query.setParameterList("projectId", inclusiveProjectIdList.stream().map(String::valueOf).toList());
             query.setParameter("minAccess", minAccession);
             query.setParameter("maxAccess", maxAccession);
 
@@ -472,7 +472,7 @@ public class SampleDAOImpl extends BaseDAOImpl<Sample, String> implements Sample
                 + " sp where sp.project.id = :projectId)";
         try {
             Query<Sample> query = entityManager.unwrap(Session.class).createQuery(sql, Sample.class);
-            query.setParameterList("statusList", inclusiveStatusIdList);
+            query.setParameterList("statusList", inclusiveStatusIdList.stream().map(String::valueOf).toList());
             query.setParameter("projectId", projectId);
             query.setParameter("minAccess", minAccession);
             query.setParameter("maxAccess", maxAccession);

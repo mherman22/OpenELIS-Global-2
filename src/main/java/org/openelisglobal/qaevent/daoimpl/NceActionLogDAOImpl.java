@@ -28,7 +28,7 @@ public class NceActionLogDAOImpl extends BaseDAOImpl<NceActionLog, String> imple
             String sqlString = "from NceActionLog nc where nc.ncEventId = :param";
 
             Query<NceActionLog> query = entityManager.unwrap(Session.class).createQuery(sqlString, NceActionLog.class);
-            query.setParameter("param", Integer.parseInt(nceId));
+            query.setParameter("param", nceId);
 
             list = query.list();
             return list;
