@@ -1,0 +1,205 @@
+{
+  "title": "Pathology Laboratory",
+  "workflowType": "pathology",
+  "departments": [
+    "Pathology Laboratory"
+  ],
+  "objective": "Complete pathology workflow from sample reception to archiving",
+  "protocol": "Standard Pathology Laboratory Protocol",
+  "content": "Pathology Laboratory notebook with 11 predefined workflow pages for granular histopathology workflow.",
+  "status": "ACTIVE",
+  "pages": [
+    {
+      "order": 1,
+      "title": "Sample Creation & Metadata Capture",
+      "pageType": "generic_sample_reception",
+      "instructions": "Create pathology samples with comprehensive metadata capture",
+      "content": "Sample Creation & Metadata Capture page",
+      "manifestColumns": [
+        {
+          "csvHeader": "studyId",
+          "field": "groupId",
+          "label": "Study ID",
+          "required": true
+        },
+        {
+          "csvHeader": "specimenType",
+          "field": "sampleType",
+          "label": "Specimen Type",
+          "required": true
+        },
+        {
+          "csvHeader": "collectionDateTime",
+          "field": "collectionDate",
+          "label": "Collection Date & Time"
+        },
+        {
+          "csvHeader": "firstName",
+          "field": "firstName",
+          "label": "First Name"
+        },
+        {
+          "csvHeader": "surname",
+          "field": "surname",
+          "label": "Surname"
+        },
+        {
+          "csvHeader": "piName",
+          "field": "piName",
+          "label": "PI Name"
+        },
+        {
+          "csvHeader": "participantAnimalId",
+          "field": "participantAnimalId",
+          "label": "Participant/Animal ID"
+        },
+        {
+          "csvHeader": "specimenSite",
+          "field": "specimenSite",
+          "label": "Specimen Site"
+        },
+        {
+          "csvHeader": "collectionMethod",
+          "field": "collectionMethod",
+          "label": "Collection Method"
+        },
+        {
+          "csvHeader": "collector",
+          "field": "collector",
+          "label": "Collector"
+        },
+        {
+          "csvHeader": "processingCondition",
+          "field": "processingCondition",
+          "label": "Processing Condition"
+        },
+        {
+          "csvHeader": "laboratoryMaterial",
+          "field": "laboratoryMaterial",
+          "label": "Laboratory Material"
+        },
+        {
+          "csvHeader": "ethicalApprovalRef",
+          "field": "ethicalApprovalRef",
+          "label": "Ethical Approval Ref"
+        },
+        {
+          "csvHeader": "receivedDateTime",
+          "field": "receivedDateTime",
+          "label": "Received Date & Time"
+        },
+        {
+          "csvHeader": "receivedBy",
+          "field": "receivedBy",
+          "label": "Received By"
+        },
+        {
+          "csvHeader": "sourceFacility",
+          "field": "sourceFacility",
+          "label": "Source Facility"
+        }
+      ],
+      "columns": [
+        {
+          "key": "firstName",
+          "header": "First Name"
+        },
+        {
+          "key": "surname",
+          "header": "Surname"
+        },
+        {
+          "key": "piName",
+          "header": "PI"
+        },
+        {
+          "key": "specimenSite",
+          "header": "Specimen Site"
+        },
+        {
+          "key": "ethicalApprovalRef",
+          "header": "Ethics Ref"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Sample Quality Control",
+      "pageType": "pathology_quality_control",
+      "instructions": "Perform initial QC on pathology samples",
+      "content": "Sample Quality Control page"
+    },
+    {
+      "order": 3,
+      "title": "Gross Examination",
+      "pageType": "pathology_gross_examination",
+      "instructions": "Perform macroscopic examination of specimens with photo documentation. Document specimen appearance, dimensions, weight, color, texture, margins, orientation, and abnormalities. Capture up to 96 gross images per specimen. Record sectioning decisions and number of sections to submit for processing.",
+      "content": "Gross Examination - Specimen macroscopic evaluation with photo documentation"
+    },
+    {
+      "order": 4,
+      "title": "Cassette Setup",
+      "pageType": "pathology_cassettes",
+      "instructions": "Create and label cassettes for tissue embedding. Transfer tissue sections into labeled cassettes (perforated plastic containers). Use color coding for specimen type or priority. Document tissue orientation and sectioning notes. Track cassette count per specimen.",
+      "content": "Cassette Setup - Create cassettes from grossed specimens"
+    },
+    {
+      "order": 5,
+      "title": "Block Creation",
+      "pageType": "pathology_blocks",
+      "instructions": "Create paraffin blocks from processed cassettes. Embed tissue in paraffin wax with correct orientation. Verify tissue orientation before embedding. Document embedding quality, temperature, and station used. Generate block IDs for traceability.",
+      "content": "Block Creation - Embed tissue from cassettes into paraffin blocks"
+    },
+    {
+      "order": 6,
+      "title": "Slide Preparation",
+      "pageType": "pathology_slides",
+      "instructions": "Cut and prepare slides from tissue blocks via microtomy. Cut thin sections (typically 3-5 um) using microtome. Mount sections on appropriately labeled glass slides. Document section thickness, blade type, and section quality. Float sections in water bath before mounting.",
+      "content": "Slide Preparation - Cut sections from blocks and mount on slides"
+    },
+    {
+      "order": 7,
+      "title": "Slide Staining",
+      "pageType": "pathology_staining",
+      "instructions": "Apply routine and special stains to prepared slides. ROUTINE STAINS: H&E for histology, Pap for cytology, Wright-Giemsa for hematology, Gram for microbiology. SPECIAL STAINS: PAS, Masson Trichrome, Reticulin, Iron, Congo Red, AFB, GMS as indicated. IHC/ICC: Immunohistochemistry for protein markers when needed. Run positive and negative controls with each batch.",
+      "content": "Slide Staining - Apply stains to prepared slides"
+    },
+    {
+      "order": 8,
+      "title": "Microscopy & Diagnosis",
+      "pageType": "pathology_testing_microscopy",
+      "instructions": "Perform microscopic examination and enter diagnosis. Two-phase workflow: INITIAL FINDINGS: Pathologist examines stained slides, documents microscopic findings, cellular features, architectural observations, nuclear features, and records initial diagnostic impression. FINAL DIAGNOSIS: Review initial findings, correlate with clinical history, finalize diagnosis with ICD-O/SNOMED codes, document tumor type, grade, stage, margins, and prognostic factors.",
+      "content": "Microscopy & Diagnosis - Microscopic examination and final diagnosis"
+    },
+    {
+      "order": 9,
+      "title": "Storage & Inventory Management",
+      "pageType": "pathology_storage_inventory",
+      "instructions": "Assign processed pathology specimens to storage. Paraffin blocks at room temperature, cytology slides refrigerated, frozen sections at -80°C.",
+      "content": "Storage & Inventory Management page",
+      "data": {
+        "storageConditions": [
+          { "id": "ROOM_TEMP", "label": "Room Temperature (Paraffin blocks / slides)", "default": true },
+          { "id": "REFRIGERATED", "label": "Refrigerated (2-8°C) – Cytology / wet specimens" },
+          { "id": "FROZEN_MINUS80", "label": "Ultra-Low Frozen (-80°C) – Frozen sections" },
+          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" }
+        ],
+        "defaultRetentionYears": 10
+      }
+    },
+    {
+      "order": 10,
+      "title": "Reporting & Performance Monitoring",
+      "pageType": "pathology_reporting",
+      "instructions": "Generate routine reports and performance metrics",
+      "content": "Reporting & Performance Monitoring page"
+    },
+    {
+      "order": 11,
+      "title": "Disposal & Archiving",
+      "pageType": "pathology_disposal_archiving",
+      "instructions": "Close sample lifecycle compliantly and archive records",
+      "content": "Disposal & Archiving page"
+    }
+  ]
+}

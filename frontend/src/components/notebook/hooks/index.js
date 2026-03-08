@@ -10,3 +10,5 @@ export {
   useAsyncEffect,
   useSafeCallback,
 } from "./useComponentMounted";
+
+export { useNotebookPage } from "./useNotebookPage";

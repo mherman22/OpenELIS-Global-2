@@ -1,0 +1,133 @@
+{
+  "title": "Bioequivalence Laboratory",
+  "workflowType": "bioequivalence",
+  "departments": [
+    "Bioequivalence Laboratory"
+  ],
+  "objective": "Complete bioequivalence study testing workflow from sample reception to archiving",
+  "protocol": "Standard Bioequivalence Laboratory Protocol",
+  "content": "Bioequivalence Laboratory notebook template with 5 predefined workflow pages for bioequivalence study sample reception, test assignment, analytical execution, reporting, and storage/archiving.",
+  "status": "ACTIVE",
+  "pages": [
+    {
+      "order": 1,
+      "title": "Sample Reception",
+      "pageType": "generic_sample_reception",
+      "instructions": "Register bioequivalence study sample receipt: Assign or retain Sample ID, capture sample type (API, tablet, plasma, serum, etc.), note source (Medical Lab or clinical site), record requested bioequivalence tests, document storage condition on arrival, receipt date/time, and receiving personnel. Link to bioequivalence study protocol.",
+      "content": "Sample Reception - Batch verification and metadata capture of incoming bioequivalence study samples",
+      "manifestColumns": [
+        {
+          "csvHeader": "uniqueSampleId",
+          "field": "groupId",
+          "label": "Unique Sample ID",
+          "required": true
+        },
+        {
+          "csvHeader": "sampleType",
+          "field": "sampleType",
+          "label": "Sample Type",
+          "required": true
+        },
+        {
+          "csvHeader": "dateTimeOfReceipt",
+          "field": "collectionDate",
+          "label": "Date/Time of Receipt"
+        },
+        {
+          "csvHeader": "sourceOrigin",
+          "field": "sourceOrigin",
+          "label": "Source/Origin"
+        },
+        {
+          "csvHeader": "projectStudyAssociation",
+          "field": "projectStudyAssociation",
+          "label": "Project/Study"
+        },
+        {
+          "csvHeader": "storageConditionPrior",
+          "field": "storageConditionPrior",
+          "label": "Storage Condition Prior"
+        },
+        {
+          "csvHeader": "requestedTests",
+          "field": "requestedTests",
+          "label": "Requested Tests"
+        },
+        {
+          "csvHeader": "timepoint",
+          "field": "timepoint",
+          "label": "Timepoint"
+        },
+        {
+          "csvHeader": "subjectId",
+          "field": "subjectId",
+          "label": "Subject ID"
+        },
+        {
+          "csvHeader": "receivingPersonnel",
+          "field": "receivingPersonnel",
+          "label": "Receiving Personnel"
+        },
+        {
+          "csvHeader": "notes",
+          "field": "notes",
+          "label": "Notes"
+        }
+      ],
+      "columns": [
+        {
+          "key": "sourceOrigin",
+          "header": "Source/Origin"
+        },
+        {
+          "key": "projectStudyAssociation",
+          "header": "Project/Study"
+        },
+        {
+          "key": "requestedTests",
+          "header": "Requested Tests"
+        },
+        {
+          "key": "subjectId",
+          "header": "Subject ID"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Test Assignment",
+      "pageType": "bioeq_test_assignment",
+      "instructions": "Assign bioequivalence tests to analysts by test category. Select analytical method (LC-MS/MS, HPLC, dissolution apparatus, etc.) from dropdown. Specify instrument ID, calibration status. Document sample preparation methodology for bioequivalence studies. Define QC requirements (calibration curve criteria, control samples). Set expected analysis date.",
+      "content": "Test Assignment - Methodology selection and analyst assignment for bioequivalence testing"
+    },
+    {
+      "order": 3,
+      "title": "Analytical Execution",
+      "pageType": "bioeq_execution",
+      "instructions": "Record execution date/time and analyst ID for bioequivalence testing. Upload or link calibration curve details (r-squared value, slope, intercept, acceptance criteria). Document QC sample results (Low/Medium/High concentrations) with acceptance limits. Upload raw data files (chromatograms, spectra). Record calculated results with units. Document any deviations. Verify ALCOA+ compliance.",
+      "content": "Analytical Execution - Raw data capture and QC validation for bioequivalence studies"
+    },
+    {
+      "order": 4,
+      "title": "Reporting & Release",
+      "pageType": "bioeq_reporting",
+      "instructions": "Compile all bioequivalence study results. Validate against acceptance criteria. Perform Primary Review (analyst validation). Perform Secondary Review (senior scientist/QA). Obtain Final Approval (lab manager/study director). Select result distribution method (email, REDCap, LMIS integration, regulatory submission). Generate bioequivalence performance metrics dashboard. Document data integrity and audit trail.",
+      "content": "Reporting & Release - Bioequivalence result compilation, validation, and report generation with embedded dashboard"
+    },
+    {
+      "order": 5,
+      "title": "Post-Test Storage & Archiving",
+      "pageType": "bioeq_storage",
+      "instructions": "Document quantity retained for storage from bioequivalence study. Record storage location and set retention period per regulatory requirements.",
+      "content": "Post-Test Storage & Archiving - Storage tracking, retention periods, and data archiving for bioequivalence samples",
+      "data": {
+        "storageConditions": [
+          { "id": "FROZEN_MINUS80", "label": "Ultra-Low Frozen (-80°C) – Biological samples", "default": true },
+          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" },
+          { "id": "ROOM_TEMP", "label": "Room Temperature – Pharmaceutical samples" }
+        ],
+        "defaultRetentionYears": 2
+      }
+    }
+  ]
+}

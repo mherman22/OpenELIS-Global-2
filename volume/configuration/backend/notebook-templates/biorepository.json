@@ -1,0 +1,159 @@
+{
+  "title": "Biorepository Laboratory",
+  "workflowType": "biorepository",
+  "departments": [
+    "Biorepository Laboratory"
+  ],
+  "objective": "Complete biorepository workflow from sample intake to long-term storage and disposition",
+  "protocol": "Standard Biorepository Laboratory Protocol",
+  "content": "Biorepository Laboratory notebook template with 7 predefined workflow pages for sample intake, storage, monitoring, retention, requests, QC inspection, and reporting.",
+  "status": "ACTIVE",
+  "pages": [
+    {
+      "order": 1,
+      "title": "Sample Intake",
+      "pageType": "generic_sample_reception",
+      "instructions": "Register incoming biological samples for long-term storage. Capture complete metadata including sample origin, donor information (if applicable), sample type, volume/quantity, collection date, receiving date, study/project linkage, and consent documentation reference. Assign biorepository ID and generate barcodes.",
+      "content": "Sample Intake - Biological sample registration and accession",
+      "manifestColumns": [
+        {
+          "csvHeader": "externalId",
+          "field": "groupId",
+          "label": "External ID",
+          "required": true
+        },
+        {
+          "csvHeader": "sampleType",
+          "field": "sampleType",
+          "label": "Sample Type",
+          "required": true
+        },
+        {
+          "csvHeader": "collectionDate",
+          "field": "collectionDate",
+          "label": "Collection Date"
+        },
+        {
+          "csvHeader": "projectId",
+          "field": "projectId",
+          "label": "Project ID"
+        },
+        {
+          "csvHeader": "biosafetyLevel",
+          "field": "biosafetyLevel",
+          "label": "Biosafety Level"
+        },
+        {
+          "csvHeader": "originLab",
+          "field": "originLab",
+          "label": "Origin Lab"
+        },
+        {
+          "csvHeader": "principalInvestigator",
+          "field": "principalInvestigator",
+          "label": "Principal Investigator"
+        },
+        {
+          "csvHeader": "consentId",
+          "field": "consentId",
+          "label": "Consent ID"
+        },
+        {
+          "csvHeader": "ethicsApprovalRef",
+          "field": "ethicsApprovalRef",
+          "label": "Ethics Approval Ref"
+        },
+        {
+          "csvHeader": "mtaReference",
+          "field": "mtaReference",
+          "label": "MTA Reference"
+        },
+        {
+          "csvHeader": "preservationMedium",
+          "field": "preservationMedium",
+          "label": "Preservation Medium"
+        },
+        {
+          "csvHeader": "arrivalCondition",
+          "field": "arrivalCondition",
+          "label": "Arrival Condition"
+        },
+        {
+          "csvHeader": "notes",
+          "field": "notes",
+          "label": "Notes"
+        }
+      ],
+      "columns": [
+        {
+          "key": "projectId",
+          "header": "Project"
+        },
+        {
+          "key": "originLab",
+          "header": "Origin Lab"
+        },
+        {
+          "key": "biosafetyLevel",
+          "header": "BSL"
+        },
+        {
+          "key": "principalInvestigator",
+          "header": "PI"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Storage Assignment",
+      "pageType": "biorepo_storage_assignment",
+      "instructions": "Assign samples to appropriate long-term storage locations. Use hierarchical location system (Room -> Device/Freezer -> Shelf -> Rack -> Box -> Well/Position). Select storage conditions based on sample type.",
+      "content": "Storage Assignment - Physical location assignment and storage manifest generation",
+      "data": {
+        "storageConditions": [
+          { "id": "FROZEN_MINUS80", "label": "Ultra-Low Frozen (-80°C)", "default": true },
+          { "id": "LIQUID_NITROGEN", "label": "Liquid Nitrogen (-196°C)" },
+          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" },
+          { "id": "REFRIGERATED", "label": "Refrigerated (2-8°C)" },
+          { "id": "ROOM_TEMP", "label": "Room Temperature (Ambient)" }
+        ],
+        "defaultRetentionYears": 25
+      }
+    },
+    {
+      "order": 3,
+      "title": "Environmental Monitoring",
+      "pageType": "biorepo_environmental_monitoring",
+      "instructions": "Monitor and record storage conditions continuously. Log temperature readings (continuous monitoring or manual AM/PM checks) for all storage units. Record any temperature excursions with response actions taken. Document equipment maintenance events (defrost cycles, malfunctions, repairs). Generate environmental monitoring reports.",
+      "content": "Environmental Monitoring - Temperature and condition monitoring for all storage units"
+    },
+    {
+      "order": 4,
+      "title": "Retention & Disposal",
+      "pageType": "biorepo_retention_disposal",
+      "instructions": "Manage sample retention periods and execute disposal. Apply material-specific retention policies (clinical: per consent/protocol, research: per MTA/protocol, reference: indefinite). Process disposal of expired or exhausted samples using approved methods (autoclave, incineration, chemical treatment). Document all disposal events with supervisor authorization.",
+      "content": "Retention & Disposal - Sample lifecycle management and compliant disposal"
+    },
+    {
+      "order": 5,
+      "title": "Sample Request",
+      "pageType": "biorepo_sample_request",
+      "instructions": "Process requests for stored samples from authorized researchers or clinical teams. Review request authorization, consent compliance, and available quantity. Record requestor details, purpose, MTA/agreement reference, samples requested, and approved quantity. Track aliquot creation and shipment for outgoing samples.",
+      "content": "Sample Request - Authorized sample retrieval and distribution management"
+    },
+    {
+      "order": 6,
+      "title": "QC Inspection",
+      "pageType": "biorepo_qc_inspection",
+      "instructions": "Perform periodic quality control inspections of stored samples. Visually inspect sample integrity (tube integrity, label legibility, ice crystal formation). Verify location accuracy against database records. Check for any cross-contamination risks. Document inspection findings and corrective actions for any discrepancies.",
+      "content": "QC Inspection - Periodic sample integrity and location verification"
+    },
+    {
+      "order": 7,
+      "title": "Reporting",
+      "pageType": "biorepo_reporting",
+      "instructions": "Generate biorepository utilization and compliance reports. Track inventory levels, inflow/outflow trends, storage capacity utilization, and sample age distribution. Generate regulatory compliance reports (temperature excursion history, disposal records). Provide inventory reports for sponsors and regulatory authorities.",
+      "content": "Reporting - Inventory, utilization, and compliance reporting"
+    }
+  ]
+}

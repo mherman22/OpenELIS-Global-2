@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!--
+        Separates template configuration from runtime user data on notebook_page.
+
+        Previously the single 'data' JSONB column held both:
+          - Template-seeded config (qcSections, storageConditions, manifestColumns, etc.)
+          - Runtime user data (qcResult, storageBox, assigned timestamps, etc.)
+
+        The new 'config' column holds only template-seeded, read-only configuration.
+        The 'data' column holds only runtime user data.
+
+        This prevents the UI's POST /page/{id}/data from ever overwriting config keys,
+        and makes the separation explicit and enforceable at the DB layer.
+    -->
+
+    <changeSet id="notebook-page-config-001-add-config-column" author="claude">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="notebook_page" columnName="config" schemaName="clinlims"/>
+            </not>
+        </preConditions>
+        <comment>Add config JSONB column to notebook_page for template-seeded configuration</comment>
+
+        <addColumn tableName="notebook_page" schemaName="clinlims">
+            <column name="config" type="jsonb">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="notebook-page-config-002-migrate-config-keys" author="claude">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="notebook_page" columnName="config" schemaName="clinlims"/>
+            <columnExists tableName="notebook_page" columnName="data" schemaName="clinlims"/>
+        </preConditions>
+        <comment>
+            Migrate known template-config keys from data column into the new config column.
+            Keys migrated: manifestColumns, columns, qcSections, qcResultOptions,
+            storageConditions, defaultRetentionYears, additionalFields.
+            These keys are removed from data to complete the separation.
+        </comment>
+
+        <sql splitStatements="false"><![CDATA[
+            UPDATE clinlims.notebook_page
+            SET
+                config = COALESCE(config, '{}'::jsonb) ||
+                    (
+                        SELECT jsonb_object_agg(key, value)
+                        FROM jsonb_each(COALESCE(data, '{}'::jsonb))
+                        WHERE key IN (
+                            'manifestColumns', 'columns',
+                            'qcSections', 'qcResultOptions',
+                            'storageConditions', 'defaultRetentionYears',
+                            'additionalFields'
+                        )
+                    ),
+                data = (
+                    SELECT COALESCE(jsonb_object_agg(key, value), '{}'::jsonb)
+                    FROM jsonb_each(COALESCE(data, '{}'::jsonb))
+                    WHERE key NOT IN (
+                        'manifestColumns', 'columns',
+                        'qcSections', 'qcResultOptions',
+                        'storageConditions', 'defaultRetentionYears',
+                        'additionalFields'
+                    )
+                )
+            WHERE data IS NOT NULL
+              AND data != '{}'::jsonb
+              AND data ?| ARRAY[
+                    'manifestColumns', 'columns',
+                    'qcSections', 'qcResultOptions',
+                    'storageConditions', 'defaultRetentionYears',
+                    'additionalFields'
+                  ];
+        ]]></sql>
+    </changeSet>
+
+    <changeSet id="notebook-page-config-003-add-comment" author="claude">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="notebook_page" columnName="config" schemaName="clinlims"/>
+        </preConditions>
+        <comment>Document the purpose of the new config column</comment>
+
+        <sql>
+            COMMENT ON COLUMN clinlims.notebook_page.config IS
+            'Read-only template configuration seeded by NotebookTemplateConfigurationHandler.
+            Contains: manifestColumns, columns, qcSections, qcResultOptions,
+            storageConditions, defaultRetentionYears, additionalFields.
+            Never written by end-user API calls. Updated only on application start-up
+            when JSON template files change.';
+        </sql>
+
+        <sql>
+            COMMENT ON COLUMN clinlims.notebook_page.data IS
+            'Runtime user data collected during workflow execution.
+            Contains: qcResult, storageBox, storagePath, well assignments,
+            timestamps, and any other data entered by lab staff.
+            Written by POST /rest/notebook/page/{id}/data and bulk sample operations.
+            Never contains template configuration keys.';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

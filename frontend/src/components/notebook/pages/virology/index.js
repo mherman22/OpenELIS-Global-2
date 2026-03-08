@@ -1,4 +1,3 @@
-export { default as VirologySampleReceptionPage } from "./VirologySampleReceptionPage";
 export { default as VirologyMediaPreparationPage } from "./VirologyMediaPreparationPage";
 export { default as VirologyCellCulturePage } from "./VirologyCellCulturePage";
 export { default as VirologyQualityControlPage } from "./VirologyQualityControlPage";

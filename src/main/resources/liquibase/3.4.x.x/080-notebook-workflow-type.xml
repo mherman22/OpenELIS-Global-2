@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Add workflow_type column to notebook table -->
+    <!-- Values are NOT seeded here — they are managed via NotebookWorkflowTypeConfigurationHandler -->
+    <!-- which reads notebook-workflow-types/*.csv at startup. No code or Liquibase changes needed per lab. -->
+    <changeSet id="add-notebook-workflow-type-column" author="mherman22">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="notebook" columnName="workflow_type" schemaName="clinlims"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="notebook" schemaName="clinlims">
+            <column name="workflow_type" type="VARCHAR(50)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

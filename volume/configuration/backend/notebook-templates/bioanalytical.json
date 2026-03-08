@@ -1,0 +1,134 @@
+{
+  "title": "Bioanalytical Laboratory",
+  "workflowType": "bioanalytical",
+  "departments": [
+    "Bioanalytical Laboratory"
+  ],
+  "objective": "Complete bioanalytical testing workflow from sample reception to archiving",
+  "protocol": "Standard Bioanalytical Laboratory Protocol",
+  "content": "Bioanalytical Laboratory notebook template with 5 predefined workflow pages for sample reception, test assignment, analytical execution, reporting, and storage/archiving.",
+  "status": "ACTIVE",
+  "pages": [
+    {
+      "order": 1,
+      "title": "Sample Reception & Registration",
+      "pageType": "generic_sample_reception",
+      "instructions": "Register sample receipt: Assign or retain Sample ID, capture sample type (API, tablet, plasma, serum, etc.), note source (Medical Lab or external client), record requested tests, document storage condition on arrival, receipt date/time, and receiving personnel.",
+      "content": "Sample Reception & Registration - Batch verification and metadata capture of incoming samples",
+      "manifestColumns": [
+        {
+          "csvHeader": "uniqueSampleId",
+          "field": "groupId",
+          "label": "Unique Sample ID",
+          "required": true
+        },
+        {
+          "csvHeader": "sampleType",
+          "field": "sampleType",
+          "label": "Sample Type",
+          "required": true
+        },
+        {
+          "csvHeader": "dateTimeOfReceipt",
+          "field": "collectionDate",
+          "label": "Date/Time of Receipt"
+        },
+        {
+          "csvHeader": "sourceOrigin",
+          "field": "sourceOrigin",
+          "label": "Source/Origin"
+        },
+        {
+          "csvHeader": "projectStudyAssociation",
+          "field": "projectStudyAssociation",
+          "label": "Project/Study"
+        },
+        {
+          "csvHeader": "storageConditionPrior",
+          "field": "storageConditionPrior",
+          "label": "Storage Condition Prior"
+        },
+        {
+          "csvHeader": "requestedTests",
+          "field": "requestedTests",
+          "label": "Requested Tests"
+        },
+        {
+          "csvHeader": "timepoint",
+          "field": "timepoint",
+          "label": "Timepoint"
+        },
+        {
+          "csvHeader": "subjectId",
+          "field": "subjectId",
+          "label": "Subject ID"
+        },
+        {
+          "csvHeader": "receivingPersonnel",
+          "field": "receivingPersonnel",
+          "label": "Receiving Personnel"
+        },
+        {
+          "csvHeader": "notes",
+          "field": "notes",
+          "label": "Notes"
+        }
+      ],
+      "columns": [
+        {
+          "key": "sourceOrigin",
+          "header": "Source/Origin"
+        },
+        {
+          "key": "projectStudyAssociation",
+          "header": "Project/Study"
+        },
+        {
+          "key": "requestedTests",
+          "header": "Requested Tests"
+        },
+        {
+          "key": "subjectId",
+          "header": "Subject ID"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Test Assignment & Preparation",
+      "pageType": "bioanalytical_test_assignment",
+      "instructions": "Assign tests to analysts/pharmacists by test category. Select analytical method (HPLC UV-Vis, LC-MS/MS, dissolution apparatus, etc.) from dropdown. Specify instrument ID, calibration status. Document sample preparation methodology. Define QC requirements (calibration curve criteria, control samples). Set expected analysis date.",
+      "content": "Test Assignment & Preparation - Methodology selection and analyst assignment"
+    },
+    {
+      "order": 3,
+      "title": "Analytical Test Execution",
+      "pageType": "bioanalytical_execution",
+      "instructions": "Record execution date/time and analyst ID. Upload or link calibration curve details (r-squared value, slope, intercept, acceptance criteria). Document QC sample results (Low/Medium/High concentrations) with acceptance limits. Upload raw data files (chromatograms, spectra). Record calculated results with units. Document any deviations. Verify ALCOA+ compliance (Attributable, Legible, Contemporaneous, Original, Accurate, Complete).",
+      "content": "Analytical Test Execution - Raw data capture and QC validation"
+    },
+    {
+      "order": 4,
+      "title": "Reporting & Release",
+      "pageType": "bioanalytical_reporting",
+      "instructions": "Compile all sample results. Validate against acceptance criteria. Perform Primary Review (analyst validation). Perform Secondary Review (senior scientist/QA). Obtain Final Approval (lab manager/study director). Select result distribution method (email, REDCap, LMIS integration, manual). Generate performance metrics dashboard. Document data integrity and audit trail.",
+      "content": "Reporting & Release - Result compilation, validation, and report generation with embedded dashboard"
+    },
+    {
+      "order": 5,
+      "title": "Post-Test Storage & Archiving",
+      "pageType": "bioanalytical_storage",
+      "instructions": "Document quantity retained for storage. Transfer to biorepository if applicable. Record exact storage location and set retention period.",
+      "content": "Post-Test Storage & Archiving - Storage tracking, retention periods, and data archiving",
+      "data": {
+        "storageConditions": [
+          { "id": "FROZEN_MINUS80", "label": "Ultra-Low Frozen (-80°C) – Biological samples", "default": true },
+          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" },
+          { "id": "ROOM_TEMP", "label": "Room Temperature – Pharmaceutical samples" },
+          { "id": "LIQUID_NITROGEN", "label": "Liquid Nitrogen (-196°C)" }
+        ],
+        "defaultRetentionYears": 5
+      }
+    }
+  ]
+}

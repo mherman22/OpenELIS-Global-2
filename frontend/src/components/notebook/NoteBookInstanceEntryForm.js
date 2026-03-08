@@ -61,18 +61,7 @@ import {
 } from "../utils/Utils";
 import { usePermissions } from "../../hooks/usePermissions";
 import { Permissions } from "../../constants/roles";
-import NotebookWorkflowTab from "./workflow/NotebookWorkflowTab";
-import MNTDWorkflowTab from "./workflow/MNTDWorkflowTab";
-import TBWorkflowTab from "./workflow/TBWorkflowTab";
-import PharmaceuticalWorkflowTab from "./workflow/PharmaceuticalWorkflowTab";
-import BacteriologyWorkflowTab from "./workflow/BacteriologyWorkflowTab";
-import PathologyWorkflowTab from "./workflow/PathologyWorkflowTab";
-import BioanalyticalWorkflowTab from "./workflow/BioanalyticalWorkflowTab";
-import BioequivalenceWorkflowTab from "./workflow/BioequivalenceWorkflowTab";
-import MedLabWorkflowTab from "./workflow/MedLabWorkflowTab";
-import BiorepositoryWorkflowTab from "./workflow/BiorepositoryWorkflowTab";
-import TraditionalMedicineWorkflowTab from "./workflow/TraditionalMedicineWorkflowTab";
-import GBDWorkflowTab from "./workflow/GBDWorkflowTab";
+import GenericWorkflowTab from "./workflow/GenericWorkflowTab";
 import NotebookAuditLogViewer from "./NotebookAuditLogViewer";
 
 const NoteBookInstanceEntryForm = () => {
@@ -1106,111 +1095,15 @@ const NoteBookInstanceEntryForm = () => {
         )}
         {selectedTab === TABS.WORKFLOW && (
           <Column lg={16} md={8} sm={4}>
-            {/* Use enhanced workflow view for notebook instances (non-templates) */}
-            {/* Detect workflow type based on notebook title */}
             {/*
-              IMPORTANT: Do NOT pass entryId to workflow tabs.
-
-              The notebookentryid from URL params is a NoteBook ID (from notebook table),
-              NOT a NotebookEntry ID (from notebook_entry table). These are different entities.
-
-              The workflow tabs have their own logic to:
-              1. Load notebook data using notebookId
-              2. Check for existing NotebookEntry via /rest/notebook-entry/by-notebook/{notebookId}
-              3. Create a new NotebookEntry if needed
-
-              Passing notebookentryid as entryId would cause 404 errors because the workflow
-              tabs would try to fetch /rest/notebook-entry/{notebookId} which doesn't exist.
+              All labs use GenericWorkflowTab. Page components are dispatched via
+              PAGE_TYPE_REGISTRY using the pageType stored in the notebook_page table.
+              To add a new lab: write page components + add a CSV in
+              volume/configuration/backend/notebook-page-types/<lab>.csv
             */}
-            {noteBookData?.isTemplate !== true &&
-              noteBookData?.id &&
-              noteBookData?.title
-                ?.toLowerCase()
-                .includes("malaria and neglected tropical disease") && (
-                <MNTDWorkflowTab notebookId={noteBookData.id} />
-              )}
-            {noteBookData?.isTemplate !== true &&
-              noteBookData?.id &&
-              noteBookData?.title?.toLowerCase().includes("pharmaceutical") && (
-                <PharmaceuticalWorkflowTab notebookId={noteBookData.id} />
-              )}
-            {noteBookData?.isTemplate !== true &&
-              noteBookData?.id &&
-              (noteBookData?.title?.toLowerCase().includes("traditional") ||
-                noteBookData?.title
-                  ?.toLowerCase()
-                  .includes("modern medicine")) && (
-                <TraditionalMedicineWorkflowTab notebookId={noteBookData.id} />
-              )}
-            {noteBookData?.isTemplate !== true &&
-              noteBookData?.id &&
-              noteBookData?.title?.toLowerCase().includes("tuberculosis") &&
-              !noteBookData?.title
-                ?.toLowerCase()
-                .includes("malaria and neglected tropical disease") && (
-                <TBWorkflowTab notebookId={noteBookData.id} />
-              )}
-            {noteBookData?.isTemplate !== true &&
-              noteBookData?.id &&
-              noteBookData?.title?.toLowerCase().includes("bacteriology") && (
-                <BacteriologyWorkflowTab notebookId={noteBookData.id} />
-              )}
-            {noteBookData?.isTemplate !== true &&
-              noteBookData?.id &&
-              noteBookData?.title?.toLowerCase().includes("pathology") && (
-                <PathologyWorkflowTab notebookId={noteBookData.id} />
-              )}
-            {noteBookData?.isTemplate !== true &&
-              noteBookData?.id &&
-              noteBookData?.title?.toLowerCase().includes("bioanalytical") && (
-                <BioanalyticalWorkflowTab notebookId={noteBookData.id} />
-              )}
-            {noteBookData?.isTemplate !== true &&
-              noteBookData?.id &&
-              noteBookData?.title?.toLowerCase().includes("bioequivalence") && (
-                <BioequivalenceWorkflowTab notebookId={noteBookData.id} />
-              )}
-            {noteBookData?.isTemplate !== true &&
-              noteBookData?.id &&
-              noteBookData?.title
-                ?.toLowerCase()
-                .includes("medical laboratory") && (
-                <MedLabWorkflowTab notebookId={noteBookData.id} />
-              )}
-            {noteBookData?.isTemplate !== true &&
-              noteBookData?.id &&
-              noteBookData?.title?.toLowerCase().includes("biorepository") && (
-                <BiorepositoryWorkflowTab notebookId={noteBookData.id} />
-              )}
-            {noteBookData?.isTemplate !== true &&
-              noteBookData?.id &&
-              noteBookData?.title
-                ?.toLowerCase()
-                .includes("genomics & bioinformatics laboratory") && (
-                <GBDWorkflowTab notebookId={noteBookData.id} />
-              )}
-            {noteBookData?.isTemplate !== true &&
-              noteBookData?.id &&
-              !noteBookData?.title?.toLowerCase().includes("tuberculosis") &&
-              !noteBookData?.title
-                ?.toLowerCase()
-                .includes("malaria and neglected tropical disease") &&
-              !noteBookData?.title?.toLowerCase().includes("pharmaceutical") &&
-              !noteBookData?.title?.toLowerCase().includes("bacteriology") &&
-              !noteBookData?.title?.toLowerCase().includes("pathology") &&
-              !noteBookData?.title?.toLowerCase().includes("bioanalytical") &&
-              !noteBookData?.title?.toLowerCase().includes("bioequivalence") &&
-              !noteBookData?.title?.toLowerCase().includes("pharmaceutical") &&
-              !noteBookData?.title?.toLowerCase().includes("traditional") &&
-              !noteBookData?.title
-                ?.toLowerCase()
-                .includes("medical laboratory") &&
-              !noteBookData?.title?.toLowerCase().includes("biorepository") &&
-              !noteBookData?.title
-                ?.toLowerCase()
-                .includes("genomics & bioinformatics laboratory") && (
-                <NotebookWorkflowTab notebookId={noteBookData.id} />
-              )}
+            {noteBookData?.isTemplate !== true && noteBookData?.id && (
+              <GenericWorkflowTab notebookId={noteBookData.id} />
+            )}
             {/* Use accordion view for templates or when no ID is available */}
             {(noteBookData?.isTemplate === true || !noteBookData?.id) && (
               <Grid fullWidth={true} className="gridBoundary">

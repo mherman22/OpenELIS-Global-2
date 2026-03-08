@@ -235,6 +235,15 @@ public class ManifestImportServiceImpl implements ManifestImportService {
                     }
                 }
 
+                // Set quantity/volume from manifest row
+                if (row.volume() != null && !row.volume().isBlank()) {
+                    try {
+                        item.setQuantity(Double.parseDouble(row.volume().trim()));
+                    } catch (NumberFormatException e) {
+                        // Non-numeric volume — skip silently; stored as extra field if mapped
+                    }
+                }
+
                 String itemId = sampleItemService.insert(item);
                 item.setId(itemId);
                 createdSamples.add(item);
@@ -318,23 +327,31 @@ public class ManifestImportServiceImpl implements ManifestImportService {
         }
 
         String trimmed = dateStr.trim();
-        java.time.LocalDate date = null;
 
-        // Try different date formats
-        String[] formats = { "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy", "dd-MM-yyyy", "yyyy/MM/dd" };
-
-        for (String format : formats) {
+        // Try datetime formats first (more specific, e.g. "2024-06-15 09:30")
+        String[] datetimeFormats = { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM-dd'T'HH:mm:ss",
+                "yyyy-MM-dd'T'HH:mm", "dd/MM/yyyy HH:mm:ss", "dd/MM/yyyy HH:mm", "MM/dd/yyyy HH:mm:ss",
+                "MM/dd/yyyy HH:mm" };
+        for (String format : datetimeFormats) {
             try {
                 java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern(format);
-                date = java.time.LocalDate.parse(trimmed, formatter);
-                break;
+                java.time.LocalDateTime ldt = java.time.LocalDateTime.parse(trimmed, formatter);
+                return java.sql.Timestamp.valueOf(ldt);
             } catch (java.time.format.DateTimeParseException e) {
                 // Try next format
             }
         }
 
-        if (date != null) {
-            return java.sql.Timestamp.valueOf(date.atStartOfDay());
+        // Fall back to date-only formats
+        String[] dateFormats = { "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy", "dd-MM-yyyy", "yyyy/MM/dd" };
+        for (String format : dateFormats) {
+            try {
+                java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern(format);
+                java.time.LocalDate date = java.time.LocalDate.parse(trimmed, formatter);
+                return java.sql.Timestamp.valueOf(date.atStartOfDay());
+            } catch (java.time.format.DateTimeParseException e) {
+                // Try next format
+            }
         }
 
         return null;

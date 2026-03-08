@@ -1,0 +1,217 @@
+{
+  "title": "Bacteriology Laboratory",
+  "workflowType": "bacteriology",
+  "departments": [
+    "Bacteriology"
+  ],
+  "objective": "Complete bacteriology workflow from sample reception to archiving",
+  "protocol": "Standard Bacteriology Laboratory Protocol",
+  "content": "Bacteriology Laboratory notebook template with workflow pages for clinical, environmental, food/beverage, and veterinary sample processing.",
+  "status": "ACTIVE",
+  "pages": [
+    {
+      "order": 1,
+      "title": "Sample Reception",
+      "pageType": "generic_sample_reception",
+      "instructions": "Import sample manifest and verify sample receipt. Check that all samples match the manifest. Inspect for damage, proper labeling, and temperature compliance. Capture all reception metadata including project information, participant details, collection data, storage conditions, and consent status.",
+      "content": "Sample Reception - Manifest Import and Verification",
+      "manifestColumns": [
+        {
+          "csvHeader": "barcode",
+          "field": "groupId",
+          "label": "Barcode (Sample ID)",
+          "required": true
+        },
+        {
+          "csvHeader": "sample_type",
+          "field": "sampleType",
+          "label": "Sample Type",
+          "required": true
+        },
+        {
+          "csvHeader": "collection_date_time",
+          "field": "collectionDate",
+          "label": "Collection Date & Time"
+        },
+        {
+          "csvHeader": "project_name",
+          "field": "projectName",
+          "label": "Project Name"
+        },
+        {
+          "csvHeader": "study_id",
+          "field": "studyId",
+          "label": "Study ID"
+        },
+        {
+          "csvHeader": "participant_id",
+          "field": "participantId",
+          "label": "Participant ID"
+        },
+        {
+          "csvHeader": "collection_site",
+          "field": "collectionSite",
+          "label": "Collection Site"
+        },
+        {
+          "csvHeader": "sample_received_date",
+          "field": "sampleReceivedDate",
+          "label": "Sample Received Date"
+        },
+        {
+          "csvHeader": "sample_arrival_time",
+          "field": "sampleArrivalTime",
+          "label": "Sample Arrival Time"
+        },
+        {
+          "csvHeader": "received_by",
+          "field": "receivedBy",
+          "label": "Received By"
+        },
+        {
+          "csvHeader": "storage_container_type",
+          "field": "storageContainerType",
+          "label": "Storage Container Type"
+        },
+        {
+          "csvHeader": "storage_temperature_on_arrival",
+          "field": "storageTemperatureOnArrival",
+          "label": "Storage Temp on Arrival"
+        },
+        {
+          "csvHeader": "consent_status",
+          "field": "consentStatus",
+          "label": "Consent Status"
+        },
+        {
+          "csvHeader": "crf_status",
+          "field": "crfStatus",
+          "label": "CRF Status"
+        },
+        {
+          "csvHeader": "sample_origin",
+          "field": "sampleOrigin",
+          "label": "Sample Origin"
+        },
+        {
+          "csvHeader": "source_location_facility",
+          "field": "sourceLocationFacility",
+          "label": "Source Location/Facility"
+        }
+      ],
+      "columns": [
+        {
+          "key": "projectName",
+          "header": "Project"
+        },
+        {
+          "key": "studyId",
+          "header": "Study ID"
+        },
+        {
+          "key": "collectionSite",
+          "header": "Collection Site"
+        },
+        {
+          "key": "sampleOrigin",
+          "header": "Origin"
+        },
+        {
+          "key": "consentStatus",
+          "header": "Consent"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Laboratory Reception & Verification",
+      "pageType": "generic_quality_check",
+      "instructions": "Confirm physical receipt and validate sample quality. Use the QC checklist to assess temperature compliance, volume, labeling, packaging integrity, contamination, leakage, and container type. Passed samples proceed to Temporary Storage Assignment. Failed samples can be discarded or kept with flagged status.",
+      "content": "Laboratory Reception and Verification - Quality Control Assessment",
+      "data": {
+        "qcSections": [
+          {
+            "id": "reception_qc",
+            "title": "Sample Reception QC",
+            "criteria": [
+              { "key": "temperatureCompliance", "label": "Temperature compliance (cold chain maintained)", "criticalForPass": true },
+              { "key": "volumeAdequacy", "label": "Volume adequacy", "criticalForPass": true },
+              { "key": "labelingCorrectness", "label": "Labeling correctness", "criticalForPass": false },
+              { "key": "packagingIntegrity", "label": "Triple packaging integrity", "criticalForPass": true },
+              { "key": "noContamination", "label": "No contamination signs", "criticalForPass": true },
+              { "key": "noLeakage", "label": "No leakage", "criticalForPass": true },
+              { "key": "properContainerType", "label": "Proper container type", "criticalForPass": false }
+            ]
+          }
+        ],
+        "qcResultOptions": [
+          { "id": "PASS", "label": "Pass – Proceed to Temporary Storage" },
+          { "id": "FAIL_DISCARD", "label": "Fail – Discard sample (critical failure)" },
+          { "id": "FAIL_PROCEED", "label": "Fail – Keep with flagged status" }
+        ],
+        "additionalFields": [
+          { "key": "receivedBy", "label": "Received By", "type": "text" },
+          { "key": "remarks", "label": "Remarks", "type": "textarea" }
+        ]
+      }
+    },
+    {
+      "order": 3,
+      "title": "Isolate Creation",
+      "pageType": "bacteriology_isolate_creation",
+      "instructions": "Create bacterial isolates from verified samples. Select parent samples and specify isolate type and number of isolates. Child isolates maintain parent-child hierarchy for traceability. Mark samples as processing complete when ready for storage assignment.",
+      "content": "Isolate Creation - Create child isolates from parent samples"
+    },
+    {
+      "order": 4,
+      "title": "Sample Storage Assignment",
+      "pageType": "bacteriology_temporary_storage",
+      "instructions": "Assign samples to storage locations after QC. Select storage type (Temporary for awaiting processing, Long-Term for processed samples/isolates). Use hierarchy: Room -> Device/Freezer -> Shelf -> Rack -> Box -> Well. Record exact placement for retrieval.",
+      "content": "Sample Storage Assignment - Storage and Environmental Monitoring",
+      "data": {
+        "storageConditions": [
+          { "id": "FROZEN_MINUS80", "label": "Ultra-Low Frozen (-80°C)", "default": true },
+          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" },
+          { "id": "REFRIGERATED", "label": "Refrigerated (2-8°C)" },
+          { "id": "ROOM_TEMP", "label": "Room Temperature (15-25°C)" }
+        ],
+        "defaultRetentionYears": 5
+      }
+    },
+    {
+      "order": 5,
+      "title": "Processing & Quality Control",
+      "pageType": "bacteriology_processing_qc",
+      "instructions": "Prepare culture and biochemical media with IQC verification. Test antibiotic discs with ATCC control strains. Process samples through Gram staining, microscopy examination, inoculation onto appropriate media, and incubation. Record QC results and document any failures with retake options.",
+      "content": "Processing & Quality Control - Media preparation, inoculation, and QC verification"
+    },
+    {
+      "order": 6,
+      "title": "Assay/Test Execution",
+      "pageType": "bacteriology_assay_execution",
+      "instructions": "Execute comprehensive bacteriology tests including microscopy examination, culture isolation, biochemical identification, drug susceptibility testing (disc diffusion, MIC, E-test), automated identification (VITEK, Phoenix, MALDI-TOF), and molecular techniques (PCR, WGS). Record all results with QC validation.",
+      "content": "Assay/Test Execution - Comprehensive bacteriology testing and result recording"
+    },
+    {
+      "order": 7,
+      "title": "Post-Analysis Storage",
+      "pageType": "bacteriology_post_analysis",
+      "instructions": "Select samples to assign to post-analysis storage. Choose aliquot type (isolate, DNA, primary sample), storage media (STGG, glycerol stock, bead system), container type, and storage conditions. Record environmental temperature logs twice daily.",
+      "content": "Post-Analysis Storage - Store processed samples with appropriate conditions and environmental monitoring"
+    },
+    {
+      "order": 8,
+      "title": "Sample Retrieval, Archival & Disposal",
+      "pageType": "bacteriology_retrieval_disposal",
+      "instructions": "Manage sample lifecycle closure. Retrieve samples for shipping, retesting, or research with approval workflow. Transfer isolates and DNA to biorepository for long-term archival. Dispose samples using appropriate methods (autoclave, incineration, chemical treatment) with full documentation and supervisor sign-off.",
+      "content": "Sample Retrieval, Archival & Disposal - Final stage of sample lifecycle"
+    },
+    {
+      "order": 9,
+      "title": "Reporting & Data Export",
+      "pageType": "bacteriology_reporting",
+      "instructions": "Finalize bacteriology results and export data. Generate culture result reports, antibiotic susceptibility testing (AST) reports, and QC summaries. Export data in WHONET format for AMR surveillance. Submit to REDCap or other external systems. Archive completed samples with full chain of custody documentation.",
+      "content": "Reporting & Data Export - Report generation and data export for AMR surveillance"
+    }
+  ]
+}

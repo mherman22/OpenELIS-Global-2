@@ -1,0 +1,76 @@
+{
+  "title": "Medical Laboratory",
+  "workflowType": "medlab",
+  "departments": [
+    "Medical Laboratory"
+  ],
+  "objective": "Complete medical laboratory workflow from patient order to archiving",
+  "protocol": "Standard Medical Laboratory Protocol",
+  "content": "Medical Laboratory notebook template with 9 predefined workflow pages for routine clinical laboratory testing.",
+  "status": "ACTIVE",
+  "pages": [
+    {
+      "order": 1,
+      "title": "Patient Order",
+      "pageType": "medlab_patient_order",
+      "instructions": "Capture patient information and test orders. Record patient demographics, requesting clinician, clinical indication, and ordered tests. Link to existing patient records where available.",
+      "content": "Patient Order - Test order registration and patient metadata capture"
+    },
+    {
+      "order": 2,
+      "title": "Sample Collection",
+      "pageType": "medlab_sample_collection",
+      "instructions": "Document sample collection details. Record specimen type, collection site, collection date/time, collector identity, and pre-analytical conditions. Verify adequate sample volume and appropriate container used.",
+      "content": "Sample Collection - Specimen collection documentation"
+    },
+    {
+      "order": 3,
+      "title": "Quality Check",
+      "pageType": "medlab_quality_check",
+      "instructions": "Perform pre-analytical QC on received samples. Assess sample condition, volume adequacy, hemolysis, lipemia, and icterus. Verify labeling accuracy. Accept or reject samples with documented reason.",
+      "content": "Quality Check - Pre-analytical sample quality assessment"
+    },
+    {
+      "order": 4,
+      "title": "Sample Routing",
+      "pageType": "medlab_sample_routing",
+      "instructions": "Route samples to appropriate analysis sections or departments. Assign samples to analyzers, workstations, or external reference labs. Track chain of custody during routing.",
+      "content": "Sample Routing - Routing to appropriate analysis destination"
+    },
+    {
+      "order": 5,
+      "title": "Sample Processing",
+      "pageType": "medlab_sample_processing",
+      "instructions": "Execute pre-analytical processing steps. Centrifuge, aliquot, dilute, or otherwise prepare samples for testing. Document all processing steps and resulting aliquots.",
+      "content": "Sample Processing - Pre-analytical preparation and aliquoting"
+    },
+    {
+      "order": 6,
+      "title": "Testing / Analyzer",
+      "pageType": "medlab_testing_analyzer",
+      "instructions": "Execute analytical tests using laboratory analyzers or manual methods. Load samples onto analyzer, run controls, and verify calibration status. Document instrument ID, reagent lot numbers, and run parameters.",
+      "content": "Testing / Analyzer - Analytical test execution"
+    },
+    {
+      "order": 7,
+      "title": "Result Entry",
+      "pageType": "medlab_result_entry",
+      "instructions": "Enter and review test results. Record numeric or qualitative results with appropriate units and reference ranges. Flag abnormal results for review. Document any repeat testing or confirmatory tests performed.",
+      "content": "Result Entry - Test result recording and flagging"
+    },
+    {
+      "order": 8,
+      "title": "Validation & Reporting",
+      "pageType": "medlab_validation_reporting",
+      "instructions": "Perform technical and clinical validation of results. Apply delta check and critical value rules. Authorize and release validated results. Generate patient reports and transmit to requesting clinicians.",
+      "content": "Validation & Reporting - Result validation, authorization, and reporting"
+    },
+    {
+      "order": 9,
+      "title": "Archiving",
+      "pageType": "medlab_archiving",
+      "instructions": "Archive completed samples and finalize documentation. Store residual samples according to retention policy. Archive test records and maintain audit trail for compliance and traceability.",
+      "content": "Archiving - Sample and record archiving"
+    }
+  ]
+}

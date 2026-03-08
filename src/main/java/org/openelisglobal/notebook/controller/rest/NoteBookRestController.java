@@ -1202,8 +1202,24 @@ public class NoteBookRestController extends BaseRestController {
                 return ResponseEntity.status(403).body(Map.of("error", "Access denied to this notebook page"));
             }
 
-            // Save the page data - store as JSON in page's data field
-            page.setData(pageData);
+            // Merge incoming user data with existing data, preserving template config keys
+            // (qcSections, storageConditions, etc.) that were seeded by
+            // NotebookTemplateConfigurationHandler.
+            // Replacing the entire field would wipe config that the frontend needs for
+            // rendering.
+            Map<String, Object> merged = new java.util.HashMap<>();
+            if (page.getData() != null) {
+                merged.putAll(page.getData());
+            }
+            // Overwrite only non-schema (runtime) keys from incoming request
+            java.util.Set<String> schemaKeys = java.util.Set.of("manifestColumns", "columns", "qcSections",
+                    "qcResultOptions", "storageConditions", "defaultRetentionYears", "additionalFields");
+            pageData.forEach((key, value) -> {
+                if (!schemaKeys.contains(key)) {
+                    merged.put(key, value);
+                }
+            });
+            page.setData(merged);
             page.setLastupdated(new Timestamp(System.currentTimeMillis()));
             noteBookPageService.update(page);
 

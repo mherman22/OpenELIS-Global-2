@@ -1,0 +1,175 @@
+{
+  "title": "Immunology Laboratory",
+  "workflowType": "immunology",
+  "departments": [
+    "Immunology"
+  ],
+  "objective": "Complete immunology workflow from sample reception to archiving",
+  "protocol": "Standard Immunology Laboratory Protocol",
+  "content": "Immunology Laboratory notebook template with 10 predefined workflow pages for sample processing, analysis, and archiving.",
+  "status": "ACTIVE",
+  "pages": [
+    {
+      "order": 1,
+      "title": "Sample Reception",
+      "pageType": "generic_sample_reception",
+      "instructions": "Verify sample receipt and condition. Check that all samples match the manifest. Inspect for damage, proper labeling, and temperature compliance.",
+      "content": "Sample Reception - Batch verification of incoming samples",
+      "manifestColumns": [
+        {
+          "csvHeader": "uniqueParentSampleId",
+          "field": "groupId",
+          "label": "Unique Parent Sample ID",
+          "required": true
+        },
+        {
+          "csvHeader": "sampleType",
+          "field": "sampleType",
+          "label": "Sample Type",
+          "required": true
+        },
+        {
+          "csvHeader": "collectionDateTime",
+          "field": "collectionDate",
+          "label": "Collection Date & Time"
+        },
+        {
+          "csvHeader": "sampleVolume",
+          "field": "volume",
+          "label": "Sample Volume (mL)"
+        },
+        {
+          "csvHeader": "projectNameId",
+          "field": "projectNameId",
+          "label": "Project Name/ID"
+        },
+        {
+          "csvHeader": "deliveryManifestReference",
+          "field": "deliveryManifestReference",
+          "label": "Delivery Manifest Reference"
+        },
+        {
+          "csvHeader": "receptionDateTime",
+          "field": "receptionDateTime",
+          "label": "Reception Date & Time"
+        },
+        {
+          "csvHeader": "sourceOrigin",
+          "field": "sourceOrigin",
+          "label": "Source/Origin"
+        },
+        {
+          "csvHeader": "storageConditionOnArrival",
+          "field": "storageConditionOnArrival",
+          "label": "Storage Condition on Arrival"
+        },
+        {
+          "csvHeader": "transportTemperature",
+          "field": "transportTemperature",
+          "label": "Transport Temperature"
+        },
+        {
+          "csvHeader": "receivingPersonnelName",
+          "field": "receivingPersonnelName",
+          "label": "Receiving Personnel"
+        },
+        {
+          "csvHeader": "manifestVerificationStatus",
+          "field": "manifestVerificationStatus",
+          "label": "Manifest Verification Status"
+        },
+        {
+          "csvHeader": "patientId",
+          "field": "patientId",
+          "label": "Patient ID"
+        },
+        {
+          "csvHeader": "notes",
+          "field": "notes",
+          "label": "Notes"
+        }
+      ],
+      "columns": [
+        {
+          "key": "projectNameId",
+          "header": "Project"
+        },
+        {
+          "key": "sourceOrigin",
+          "header": "Source"
+        },
+        {
+          "key": "storageConditionOnArrival",
+          "header": "Storage Condition"
+        },
+        {
+          "key": "manifestVerificationStatus",
+          "header": "Manifest Status"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Initial Processing",
+      "pageType": "immunology_initial_processing",
+      "instructions": "Perform initial processing steps including centrifugation and visual inspection. Record any quality issues.",
+      "content": "Initial Processing - Centrifugation and sample preparation"
+    },
+    {
+      "order": 3,
+      "title": "Additional Assays",
+      "pageType": "immunology_additional_assays",
+      "instructions": "Record test type, operator, reagents used, and results",
+      "content": "Additional Assays - Supplementary tests prior to extraction"
+    },
+    {
+      "order": 4,
+      "title": "Child Sample Creation",
+      "pageType": "immunology_child_samples",
+      "instructions": "Create child samples for specific test requirements. Route samples to appropriate destinations (internal analysis, external lab, or storage).",
+      "content": "Child Sample Creation - Branching workflow for sample routing"
+    },
+    {
+      "order": 5,
+      "title": "Plate Setup",
+      "pageType": "immunology_prep",
+      "instructions": "Assign samples to analyzer plates with well coordinates. Use row-major ordering (A1, A2...B1, B2...).",
+      "content": "Plate Setup - Well coordinate assignment for analyzer"
+    },
+    {
+      "order": 6,
+      "title": "Analyzer Results",
+      "pageType": "immunology_analysis",
+      "instructions": "Import analyzer results from CSV/Excel. Match results to samples by well coordinate or sample ID. Review and validate results.",
+      "content": "Analyzer Results - Import and match analyzer output"
+    },
+    {
+      "order": 7,
+      "title": "Post-Analysis",
+      "pageType": "immunology_post_analysis",
+      "instructions": "Perform post-analysis review and quality checks. Flag any outliers or failed QC samples for repeat testing.",
+      "content": "Post-Analysis - Individual sample review and QC"
+    },
+    {
+      "order": 8,
+      "title": "Compilation",
+      "pageType": "immunology_result_compilation",
+      "instructions": "Compile final results and prepare for reporting. Aggregate data from all test runs.",
+      "content": "Compilation - Aggregate results for reporting"
+    },
+    {
+      "order": 9,
+      "title": "Archiving",
+      "pageType": "immunology_archiving",
+      "instructions": "Archive samples and finalize documentation. Assign storage locations and complete audit trail.",
+      "content": "Archiving - Final storage assignment and documentation"
+    },
+    {
+      "order": 10,
+      "title": "Reporting & REDCap Integration",
+      "pageType": "immunology_data_analysis",
+      "instructions": "Finalize results and integrate with external systems. Generate final reports (summary, detailed, QC, statistical, or audit trail). Configure REDCap project settings and submit validated data. Archive completed samples with full audit trail.",
+      "content": "Reporting and REDCap Integration - External system integration and final reporting"
+    }
+  ]
+}

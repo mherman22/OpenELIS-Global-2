@@ -1,0 +1,179 @@
+{
+  "title": "Malaria and Neglected Tropical Disease (MNTD) Laboratory",
+  "workflowType": "mntd",
+  "departments": [
+    "Malaria and Neglected Tropical Disease (MNTD) Laboratory"
+  ],
+  "objective": "Complete MNTD workflow from sample intake to archiving",
+  "protocol": "Standard MNTD Laboratory Protocol",
+  "content": "Malaria and Neglected Tropical Disease Laboratory notebook template with workflow pages for sample intake, reception, verification, and processing.",
+  "status": "ACTIVE",
+  "pages": [
+    {
+      "order": 1,
+      "title": "Sample Intake / Sample Creation",
+      "pageType": "generic_sample_reception",
+      "instructions": "Capture all incoming samples as they arrive at reception. Import samples via CSV manifest. Record: Sample ID/Registration name, Sample source, Project name, Sample Type, Collection site/location, Collection date and time, Collected by, Number of samples. System will generate unique ID, barcode, and set status to 'Registered - Awaiting Reception'.",
+      "content": "Sample Intake / Sample Creation - Bulk data entry for incoming MNTD samples",
+      "manifestColumns": [
+        {
+          "csvHeader": "sample_id",
+          "field": "groupId",
+          "label": "Sample ID",
+          "required": true
+        },
+        {
+          "csvHeader": "sample_type",
+          "field": "sampleType",
+          "label": "Sample Type",
+          "required": true
+        },
+        {
+          "csvHeader": "collection_date_time",
+          "field": "collectionDate",
+          "label": "Collection Date & Time"
+        },
+        {
+          "csvHeader": "num_of_samples",
+          "field": "numOfSamples",
+          "label": "Number of Samples"
+        },
+        {
+          "csvHeader": "sample_source",
+          "field": "sampleSource",
+          "label": "Sample Source"
+        },
+        {
+          "csvHeader": "project_name",
+          "field": "projectName",
+          "label": "Project Name"
+        },
+        {
+          "csvHeader": "collection_site",
+          "field": "collectionSite",
+          "label": "Collection Site"
+        },
+        {
+          "csvHeader": "collected_by",
+          "field": "collectedBy",
+          "label": "Collected By"
+        }
+      ],
+      "columns": [
+        {
+          "key": "projectName",
+          "header": "Project"
+        },
+        {
+          "key": "collectionSite",
+          "header": "Collection Site"
+        },
+        {
+          "key": "sampleSource",
+          "header": "Source"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Laboratory Reception & Verification",
+      "pageType": "generic_quality_check",
+      "instructions": "Confirm physical receipt and validate sample quality. Use bulk value entry to verify samples. Record receipt information, verification status, and quality assessment. If Fail: notify researcher and mark as Discarded or Proceed with remarks.",
+      "content": "Laboratory Reception & Verification - Batch verification of sample quality",
+      "data": {
+        "qcSections": [
+          {
+            "id": "reception_verification",
+            "title": "Reception Verification",
+            "criteria": [
+              { "key": "sampleMatchesRegistration", "label": "Sample matches registration form", "criticalForPass": true },
+              { "key": "labelVerified", "label": "Label verified and legible", "criticalForPass": false },
+              { "key": "containerIntact", "label": "Container intact (no leaks or damage)", "criticalForPass": true },
+              { "key": "conditionAcceptable", "label": "Condition on arrival acceptable", "criticalForPass": false }
+            ]
+          }
+        ],
+        "qcResultOptions": [
+          { "id": "PASS", "label": "Pass – Received QC Passed" },
+          { "id": "FAIL_DISCARD", "label": "Fail – Notify researcher / Discard" },
+          { "id": "FAIL_PROCEED", "label": "Pass with Remarks – Proceed with caution" }
+        ],
+        "additionalFields": [
+          { "key": "receivedDateTime", "label": "Received Date/Time", "type": "text" },
+          { "key": "receivedBy", "label": "Received By", "type": "text" },
+          { "key": "conditionOnArrival", "label": "Condition on Arrival", "type": "text" },
+          { "key": "remarks", "label": "Remarks", "type": "textarea" }
+        ]
+      }
+    },
+    {
+      "order": 3,
+      "title": "Temporary Storage Assignment",
+      "pageType": "mntd_temporary_storage",
+      "instructions": "Track exact physical location using storage hierarchy. Select a storage location (Room, Freezer, Rack, Box), then click a well position to assign samples. Record: Storage Hierarchy (Room, Freezer/Device, Storage type, Rack, Box, Well/position), Environmental Monitoring (Freezer ID, Temperature check AM/PM, Temperature value, Checked by). System updates status to 'Stored - Temporary Storage'.",
+      "content": "Temporary Storage Assignment - Location tracking and environmental monitoring",
+      "data": {
+        "storageConditions": [
+          { "id": "FROZEN_MINUS80", "label": "Ultra-Low Frozen (-80°C)", "default": true },
+          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" },
+          { "id": "LIQUID_NITROGEN", "label": "Liquid Nitrogen (-196°C)" },
+          { "id": "REFRIGERATED", "label": "Refrigerated (2-8°C)" }
+        ],
+        "defaultRetentionYears": 5,
+        "additionalFields": [
+          { "key": "storageType", "label": "Storage Type (Temporary/Long-Term)", "type": "text" },
+          { "key": "checkedBy", "label": "Checked By", "type": "text" }
+        ]
+      }
+    },
+    {
+      "order": 4,
+      "title": "Sample Processing Preparation",
+      "pageType": "mntd_sample_processing",
+      "instructions": "Prepare samples for laboratory processing. Select processing type (Aliquoting, DBS punching, Extraction, Culture), assign technician and processing date. Link reagents and instruments from inventory. System locks parent samples for processing and links reagents/instruments to the process.",
+      "content": "Sample Processing Preparation - Processing type selection and inventory linking"
+    },
+    {
+      "order": 5,
+      "title": "Aliquoting / Bulk Sample Import",
+      "pageType": "mntd_aliquoting",
+      "instructions": "Create child samples (aliquots) from parent samples and route them to analyzer plates for internal analysis. Select parent samples, configure aliquot type (Tube, Plate 96-well, Cryobox), specify number of aliquots per parent, and set ID prefix. Upload plate maps or box layouts for bulk import. Route completed aliquots to analyzer plates with automatic well assignment.",
+      "content": "Aliquoting / Bulk Sample Import - Child sample creation and analyzer plate routing"
+    },
+    {
+      "order": 6,
+      "title": "Processing & Quality Control",
+      "pageType": "mntd_processing_qc",
+      "instructions": "Execute lab processes and verify sample integrity through quality control checks. Record processing execution data: Protocol used (DNA Extraction, RNA Extraction, PCR Amplification, ELISA, Microscopy, RDT, Culture, Sequencing), Start and end time, Technician name. Record QC results: Pass or Fail, QC metrics (Ct value, Yield, Integrity). If QC fails, select action: Re-extract, Re-run, or Discard.",
+      "content": "Processing and Quality Control - Lab process execution and QC verification"
+    },
+    {
+      "order": 7,
+      "title": "Test Assignment & Machine Scheduling",
+      "pageType": "mntd_test_assignment",
+      "instructions": "Link samples to experiments and schedule machine time. Assign experiment category: Molecular (qPCR, PCR), Genomics, Digital PCR, Serology (ELISA, Multiplex), Culture, or Flow Cytometry. For machine scheduling, select the instrument, date and time slot, and assign an operator. System will send test orders to integrated machines and block machine calendar.",
+      "content": "Test Assignment and Machine Scheduling - Experiment and instrument scheduling"
+    },
+    {
+      "order": 8,
+      "title": "Test Execution & Raw Data Capture",
+      "pageType": "mntd_test_execution",
+      "instructions": "Collect machine outputs and validate results. Record execution confirmation (run completed Yes/No, run issues if any). Upload or enter raw data files and machine-generated results. Capture run metadata (run ID, kit lot number, operator). Perform post-test quality control (QC pass/fail) and decide if repeat test is needed.",
+      "content": "Test Execution and Raw Data Capture - Machine output collection and validation"
+    },
+    {
+      "order": 9,
+      "title": "Data Analysis & Export",
+      "pageType": "mntd_archiving",
+      "instructions": "Analyze validated data and prepare final outputs. Record analysis details (software used, analyst name, analysis date, notes). Flag samples with validation status (VALID, INVALID, INCONCLUSIVE) with reason if not valid. Export results to Excel or CSV format. Lock raw data when analysis is complete to maintain audit trail.",
+      "content": "Data Analysis and Export - Validation, export, and delivery"
+    },
+    {
+      "order": 10,
+      "title": "Reporting & REDCap Integration",
+      "pageType": "mntd_data_analysis",
+      "instructions": "Finalize results and integrate with external systems. Generate final reports (summary, detailed, QC, statistical, or audit trail). Configure REDCap project settings and submit validated data. Archive completed samples with full audit trail.",
+      "content": "Reporting and REDCap Integration - External system integration and final reporting"
+    }
+  ]
+}

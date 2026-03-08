@@ -1,0 +1,228 @@
+{
+  "title": "Virology and Vaccine Unit",
+  "workflowType": "virology",
+  "departments": [
+    "Virology and Vaccine Unit"
+  ],
+  "objective": "Complete virology and vaccine production workflow from sample intake through virus culture to vaccine development",
+  "protocol": "Standard Virology and Vaccine Production Protocol",
+  "content": "Virology and Vaccine Unit notebook template with 14 predefined workflow pages from sample intake through preclinical and clinical trials.",
+  "status": "ACTIVE",
+  "pages": [
+    {
+      "order": 1,
+      "title": "Sample Intake and Registration",
+      "pageType": "generic_sample_reception",
+      "instructions": "Sample Arrival: Receive pre-labeled or labeled samples (clinical specimens or research samples). Registration: Enter metadata (Sample ID, Source, Type, Date/time), assign test type (Viral or Bacterial testing), link to project/study if applicable.",
+      "content": "Stage 1: Sample Intake and Registration - Sample arrival verification and metadata entry",
+      "manifestColumns": [
+        {
+          "csvHeader": "sampleId",
+          "field": "groupId",
+          "label": "Sample ID",
+          "required": true
+        },
+        {
+          "csvHeader": "sampleType",
+          "field": "sampleType",
+          "label": "Sample Type",
+          "required": true
+        },
+        {
+          "csvHeader": "collectionDateTime",
+          "field": "collectionDate",
+          "label": "Collection Date & Time"
+        },
+        {
+          "csvHeader": "source",
+          "field": "source",
+          "label": "Source"
+        },
+        {
+          "csvHeader": "receptionDateTime",
+          "field": "receptionDateTime",
+          "label": "Reception Date & Time"
+        },
+        {
+          "csvHeader": "testType",
+          "field": "testType",
+          "label": "Test Type"
+        },
+        {
+          "csvHeader": "projectStudyAssociation",
+          "field": "projectStudyAssociation",
+          "label": "Project/Study"
+        },
+        {
+          "csvHeader": "batchId",
+          "field": "batchId",
+          "label": "Batch ID"
+        },
+        {
+          "csvHeader": "productionStage",
+          "field": "productionStage",
+          "label": "Production Stage"
+        },
+        {
+          "csvHeader": "cellLineUsed",
+          "field": "cellLineUsed",
+          "label": "Cell Line Used"
+        },
+        {
+          "csvHeader": "passageNumber",
+          "field": "passageNumber",
+          "label": "Passage Number"
+        },
+        {
+          "csvHeader": "titerValues",
+          "field": "titerValues",
+          "label": "Titer Values"
+        },
+        {
+          "csvHeader": "qualityControlResults",
+          "field": "qualityControlResults",
+          "label": "QC Results"
+        },
+        {
+          "csvHeader": "formulationDetails",
+          "field": "formulationDetails",
+          "label": "Formulation Details"
+        },
+        {
+          "csvHeader": "storageConditionOnArrival",
+          "field": "storageConditionOnArrival",
+          "label": "Storage Condition on Arrival"
+        },
+        {
+          "csvHeader": "transportTemperature",
+          "field": "transportTemperature",
+          "label": "Transport Temperature"
+        },
+        {
+          "csvHeader": "receivingPersonnelName",
+          "field": "receivingPersonnelName",
+          "label": "Receiving Personnel"
+        },
+        {
+          "csvHeader": "manifestVerificationStatus",
+          "field": "manifestVerificationStatus",
+          "label": "Manifest Verification Status"
+        },
+        {
+          "csvHeader": "notes",
+          "field": "notes",
+          "label": "Notes"
+        }
+      ],
+      "columns": [
+        {
+          "key": "source",
+          "header": "Source"
+        },
+        {
+          "key": "testType",
+          "header": "Test Type"
+        },
+        {
+          "key": "projectStudyAssociation",
+          "header": "Project/Study"
+        },
+        {
+          "key": "productionStage",
+          "header": "Production Stage"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Media Preparation",
+      "pageType": "virology_media_preparation",
+      "instructions": "Log materials used in media preparation with full traceability. Select media, reagents (with lot numbers and expiry dates), and equipment. Record sterilization parameters (temperature, time, pressure).",
+      "content": "Media Preparation - Material logging and sterilization tracking"
+    },
+    {
+      "order": 3,
+      "title": "Cell Culture",
+      "pageType": "virology_cell_culture",
+      "instructions": "Grow host cells where the virus will be propagated. Track cell line (e.g., Vero, MDCK), passage number, and growth conditions (temperature, CO2 percentage, humidity). Record seeding density, flask type, and media volume.",
+      "content": "Cell Culture - Host cell growth and tracking"
+    },
+    {
+      "order": 4,
+      "title": "Quality Control",
+      "pageType": "virology_quality_control",
+      "instructions": "Validate cell viability and sterility. Log QC results including viability percentage (0-100%), sterility result (Pass/Fail), test method, acceptance criteria, and any deviation notes.",
+      "content": "Quality Control - Cell viability and sterility validation"
+    },
+    {
+      "order": 5,
+      "title": "Virus Culture",
+      "pageType": "virology_virus_culture",
+      "instructions": "Inoculate cells with virus. Record virus strain, culture conditions (temperature, CO2 percentage, duration), and any observations during the culture period.",
+      "content": "Virus Culture - Virus inoculation and culture condition tracking"
+    },
+    {
+      "order": 6,
+      "title": "Dark Room Imaging",
+      "pageType": "virology_dark_room_imaging",
+      "instructions": "Perform imaging or fluorescence analysis on virus culture samples. Store image data (Image ID), record CPE (Cytopathic Effect) observations, measure fluorescence intensity, and document any relevant observations.",
+      "content": "Dark Room Imaging - Capture image data and fluorescence analysis results"
+    },
+    {
+      "order": 7,
+      "title": "Formulation",
+      "pageType": "virology_formulation",
+      "instructions": "Prepare viral product while recording formulation details. Document stabilizers, preservatives, virus concentration, buffer composition, batch number, and formulation notes for traceability.",
+      "content": "Formulation - Prepare viral product and document formulation details"
+    },
+    {
+      "order": 8,
+      "title": "Feeding",
+      "pageType": "virology_feeding",
+      "instructions": "Log culture feeding and maintenance activities. Record feeding schedule and reagents used from inventory with full traceability. Document feeding date, time, schedule (e.g., Daily, Every 2 days), reagents used, volume, and observations (e.g., cell confluence, media color, contamination check).",
+      "content": "Feeding - Culture feeding and maintenance activity log"
+    },
+    {
+      "order": 9,
+      "title": "Packaging",
+      "pageType": "virology_packaging",
+      "instructions": "Log final product packaging specifications. Record batch ID, vial type (glass vial 2mL/5mL/10mL, plastic vial, ampoule), fill volume, labeling information (product name, batch number, expiry date, storage instructions, warnings), packaging date, expiry date, and storage conditions for regulatory compliance and traceability.",
+      "content": "Packaging - Final product packaging specifications and traceability"
+    },
+    {
+      "order": 10,
+      "title": "Virus Isolation",
+      "pageType": "virology_virus_isolation",
+      "instructions": "Isolate virus from culture batches. Record isolation batch ID, link to source culture batch, method, virus strain, and passage number.",
+      "content": "Virus Isolation - Isolate virus from culture with full traceability"
+    },
+    {
+      "order": 11,
+      "title": "Titer Measurement",
+      "pageType": "virology_titer_measurement",
+      "instructions": "Quantify viral load using various assay methods. Record titer values (TCID50, PFU/ml, FFU/ml, HA Units, qPCR copies/ml) with dilution factors and calculation methods.",
+      "content": "Titer Measurement - Quantify viral load with full traceability"
+    },
+    {
+      "order": 12,
+      "title": "Genome Sequencing",
+      "pageType": "virology_genome_sequencing",
+      "instructions": "Viral genome analysis - record FASTA files and GenBank accession data",
+      "content": "Genome Sequencing - Viral genome analysis and data submission"
+    },
+    {
+      "order": 13,
+      "title": "Seed Virus Production",
+      "pageType": "virology_seed_virus_production",
+      "instructions": "Select strain for vaccine - document seed virus batch ID and selection criteria",
+      "content": "Seed Virus Production - Strain selection and seed virus batch documentation"
+    },
+    {
+      "order": 14,
+      "title": "Preclinical & Clinical Trials",
+      "pageType": "virology_trials",
+      "instructions": "Manage preclinical (animal) and clinical (human) trials - track trial phases, outcomes, and regulatory submissions",
+      "content": "Preclinical & Clinical Trials - Trial management and regulatory submissions"
+    }
+  ]
+}

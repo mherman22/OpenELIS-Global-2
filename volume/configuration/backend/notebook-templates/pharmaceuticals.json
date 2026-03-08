@@ -1,0 +1,214 @@
+{
+  "title": "Pharmaceuticals Laboratory",
+  "workflowType": "pharmaceutical",
+  "departments": [
+    "Pharmaceuticals Laboratory"
+  ],
+  "objective": "Pharmaceutical sample workflows from creation through quality check",
+  "protocol": "Pharmaceuticals Laboratory",
+  "content": "Pharmaceuticals Laboratory notebook with workflow pages for sample creation, QC, processing, testing, storage, reporting, and disposal.",
+  "status": "ACTIVE",
+  "pages": [
+    {
+      "order": 1,
+      "title": "Sample Creation & Full Metadata Capture",
+      "pageType": "generic_sample_reception",
+      "instructions": "Create pharmaceutical samples with complete traceability from reception. Capture sample identity, material/category, core chemistry metadata, and any clinical context. System generates barcode/QR and sets status to Created - Pending QC.",
+      "content": "Sample Creation & Full Metadata Capture - Comprehensive pharmaceutical sample registration",
+      "manifestColumns": [
+        {
+          "csvHeader": "sampleName",
+          "field": "groupId",
+          "label": "Sample Name",
+          "required": true
+        },
+        {
+          "csvHeader": "sampleType",
+          "field": "sampleType",
+          "label": "Sample Type",
+          "required": true
+        },
+        {
+          "csvHeader": "dateOfManufacture",
+          "field": "collectionDate",
+          "label": "Date of Manufacture"
+        },
+        {
+          "csvHeader": "lotBatchNumber",
+          "field": "lotBatchNumber",
+          "label": "Lot/Batch Number"
+        },
+        {
+          "csvHeader": "expiryRetestDate",
+          "field": "expiryRetestDate",
+          "label": "Expiry/Retest Date"
+        },
+        {
+          "csvHeader": "storageCondition",
+          "field": "storageCondition",
+          "label": "Storage Condition"
+        },
+        {
+          "csvHeader": "ownerRequester",
+          "field": "ownerRequester",
+          "label": "Owner/Requester"
+        },
+        {
+          "csvHeader": "alphanumericCode",
+          "field": "alphanumericCode",
+          "label": "Alphanumeric Code"
+        },
+        {
+          "csvHeader": "chemicalIupacName",
+          "field": "chemicalIupacName",
+          "label": "Chemical/IUPAC Name"
+        },
+        {
+          "csvHeader": "gradeSpecification",
+          "field": "gradeSpecification",
+          "label": "Grade/Specification"
+        },
+        {
+          "csvHeader": "chainOfCustodyDetails",
+          "field": "chainOfCustodyDetails",
+          "label": "Chain of Custody"
+        },
+        {
+          "csvHeader": "patientId",
+          "field": "patientId",
+          "label": "Patient/Subject ID"
+        },
+        {
+          "csvHeader": "clinicalTrialNumber",
+          "field": "clinicalTrialNumber",
+          "label": "Clinical Trial Number"
+        },
+        {
+          "csvHeader": "consentStatus",
+          "field": "consentStatus",
+          "label": "Consent Status"
+        }
+      ],
+      "columns": [
+        {
+          "key": "lotBatchNumber",
+          "header": "Lot/Batch"
+        },
+        {
+          "key": "ownerRequester",
+          "header": "Owner/Requester"
+        },
+        {
+          "key": "storageCondition",
+          "header": "Storage"
+        },
+        {
+          "key": "expiryRetestDate",
+          "header": "Expiry Date"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Raw Sample Quality Check (QC)",
+      "pageType": "generic_quality_check",
+      "instructions": "Perform initial QC on pharmaceutical samples: check container integrity, label readability, visual appearance, volume/weight, and environmental condition deviations. Record pass/fail with remarks and move compliant samples forward.",
+      "content": "Raw Sample Quality Check (QC) - Assess condition, integrity, and readiness for further processing",
+      "data": {
+        "qcSections": [
+          {
+            "id": "pharmaceutical_checks",
+            "title": "Pharmaceutical Sample Checks",
+            "criteria": [
+              { "key": "containerIntact", "label": "Container/packaging intact (no cracks, leaks, or damage)", "criticalForPass": true },
+              { "key": "labelReadable", "label": "Label readable and matches request form", "criticalForPass": false },
+              { "key": "visualAppearanceAcceptable", "label": "Visual appearance acceptable (no discoloration, precipitation, particulates)", "criticalForPass": false },
+              { "key": "volumeWeightAdequate", "label": "Volume/weight within specified range", "criticalForPass": true },
+              { "key": "storageConditionsMet", "label": "Storage conditions maintained during transport", "criticalForPass": false }
+            ]
+          },
+          {
+            "id": "biological_checks",
+            "title": "Biological Sample Checks",
+            "criteria": [
+              { "key": "coldChainMaintained", "label": "Cold chain maintained (temperature log attached)", "criticalForPass": true },
+              { "key": "biocontainmentIntact", "label": "Biocontainment packaging intact", "criticalForPass": true },
+              { "key": "expiryDateValid", "label": "Expiry date not exceeded", "criticalForPass": true },
+              { "key": "sterilitySealIntact", "label": "Sterility seal/tamper-evident closure intact", "criticalForPass": false }
+            ]
+          },
+          {
+            "id": "microbiological_checks",
+            "title": "Microbiological Sample Checks",
+            "criteria": [
+              { "key": "triplePackagingIntact", "label": "Triple packaging intact and compliant", "criticalForPass": true },
+              { "key": "biohazardLabelPresent", "label": "Biohazard label present and legible", "criticalForPass": false },
+              { "key": "transportMediumAdequate", "label": "Transport medium adequate and not expired", "criticalForPass": true },
+              { "key": "temperatureRecordAttached", "label": "Temperature record attached", "criticalForPass": false }
+            ]
+          }
+        ],
+        "qcResultOptions": [
+          { "id": "PASS", "label": "Pass – Proceed to processing" },
+          { "id": "FAIL_DISCARD", "label": "Fail – Discard sample (critical failure)" },
+          { "id": "FAIL_PROCEED", "label": "Fail – Proceed with remarks (non-critical)" }
+        ],
+        "additionalFields": [
+          { "key": "checkedBy", "label": "QC Officer", "type": "text" },
+          { "key": "deviationReference", "label": "Deviation Reference No. (if applicable)", "type": "text" },
+          { "key": "remarks", "label": "Remarks / Non-conformance Notes", "type": "textarea" }
+        ]
+      }
+    },
+    {
+      "order": 3,
+      "title": "Sample Processing & Aliquoting",
+      "pageType": "pharma_processing",
+      "instructions": "Prepare samples for downstream analytical assays. Perform weighing, grinding, homogenization, extraction/dissolution. Create aliquots with parent-child traceability, including unique aliquot IDs and barcode/QR labels.",
+      "content": "Sample Processing & Aliquoting - Sample preparation and aliquoting with parent-child traceability"
+    },
+    {
+      "order": 4,
+      "title": "Assay & Test Execution",
+      "pageType": "pharma_testing",
+      "instructions": "Perform analytical testing with data integrity. Execute pharmaceutical assays (TLC, UV-Vis, FTIR, HPLC, titration, GC, LC-MS/MS), physical tests (dissolution, friability, hardness), and stability testing per ICH guidelines. Include positive/negative controls, internal standards, and replicates.",
+      "content": "Assay & Test Execution - Analytical testing with data integrity"
+    },
+    {
+      "order": 5,
+      "title": "Storage & Inventory Management",
+      "pageType": "pharma_storage",
+      "instructions": "Assign samples to hierarchical storage (Room - Device - Rack - Box - Position). Set storage conditions per sample type: Pharmaceuticals (15-25C/2-8C/-20C), Biologicals (-80C/LN2), Microbiologicals (-80C stocks).",
+      "content": "Storage & Inventory Management - Storage hierarchies and environmental monitoring",
+      "data": {
+        "storageConditions": [
+          { "id": "ROOM_TEMP", "label": "Controlled Room Temperature (15-25°C)", "default": true },
+          { "id": "REFRIGERATED", "label": "Refrigerated (2-8°C)" },
+          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" },
+          { "id": "FROZEN_MINUS80", "label": "Ultra-Low (-80°C)" },
+          { "id": "LIQUID_NITROGEN", "label": "Liquid Nitrogen Vapor Phase (-196°C)" },
+          { "id": "PROTECT_LIGHT", "label": "Protected from Light (Amber)" },
+          { "id": "HUMIDITY_CONTROLLED", "label": "Humidity Controlled (≤60% RH)" }
+        ],
+        "defaultRetentionYears": 5,
+        "additionalFields": [
+          { "key": "deviationRef", "label": "Deviation Reference (if any)", "type": "text" }
+        ]
+      }
+    },
+    {
+      "order": 6,
+      "title": "Reporting & Performance Monitoring",
+      "pageType": "pharma_reporting",
+      "instructions": "Generate routine reports (intake logs, utilization, TAT) and track laboratory performance metrics (QC pass rates, assay success rates). View real-time dashboards and create external reporting summaries for collaborators, regulatory agencies, and surveillance networks.",
+      "content": "Reporting & Performance Monitoring - Comprehensive with QC parameters for Controls, Acceptance Criteria, and Deviation Management"
+    },
+    {
+      "order": 7,
+      "title": "Disposal & Archiving",
+      "pageType": "pharma_disposal",
+      "instructions": "Close sample lifecycle compliantly. Dispose samples based on criteria (expiry, exhaustion, failed QC, safety). Apply material-specific disposal methods (incineration for pharmaceuticals, autoclaving for biologicals). Archive raw data, final reports, and lineage for 5-10 years per GxP/GMP requirements.",
+      "content": "Disposal & Archiving - Compliant closure and long-term archival"
+    }
+  ]
+}

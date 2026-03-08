@@ -75,9 +75,23 @@ public class NoteBookPage extends BaseObject<Integer> {
     @Column(name = "completed")
     private Boolean completed;
 
+    /**
+     * Runtime user data: QC results, storage assignments, timestamps, etc. Written
+     * by end-user API calls. Never contains template configuration.
+     */
     @Type(type = "jsonb-map")
     @Column(name = "data", columnDefinition = "jsonb")
     private Map<String, Object> data;
+
+    /**
+     * Read-only template configuration seeded by
+     * {@code NotebookTemplateConfigurationHandler}. Contains: manifestColumns,
+     * columns, qcSections, qcResultOptions, storageConditions,
+     * defaultRetentionYears, additionalFields. Never written by end-user API calls.
+     */
+    @Type(type = "jsonb-map")
+    @Column(name = "config", columnDefinition = "jsonb")
+    private Map<String, Object> config;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "notebook_page_allowed_roles", joinColumns = @JoinColumn(name = "notebook_page_id"))
@@ -178,6 +192,14 @@ public class NoteBookPage extends BaseObject<Integer> {
         this.data = data;
     }
 
+    public Map<String, Object> getConfig() {
+        return config;
+    }
+
+    public void setConfig(Map<String, Object> config) {
+        this.config = config;
+    }
+
     public Set<String> getAllowedRoles() {
         if (allowedRoles == null) {
             allowedRoles = new HashSet<>();
@@ -195,5 +217,17 @@ public class NoteBookPage extends BaseObject<Integer> {
 
     public void setPageId(String pageId) {
         this.pageId = pageId;
+    }
+
+    @Column(name = "page_type")
+    @SafeHtml(level = SafeHtml.SafeListLevel.NONE)
+    private String pageType;
+
+    public String getPageType() {
+        return pageType;
+    }
+
+    public void setPageType(String pageType) {
+        this.pageType = pageType;
     }
 }

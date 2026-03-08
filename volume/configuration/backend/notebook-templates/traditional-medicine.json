@@ -1,0 +1,179 @@
+{
+  "title": "Traditional & Modern Medicine Research Lab",
+  "workflowType": "traditional_medicine",
+  "departments": [
+    "Traditional & Modern Medicine Research Lab"
+  ],
+  "objective": "Complete sample-centric workflow for traditional and modern medicine research from initial sample intake through product formulation and archival",
+  "protocol": "TMMRD - Traditional & Modern Medicine Research & Development",
+  "content": "8-stage comprehensive workflow: (1) Sample Intake & Registration, (2) Authentication, (3) Storage & Herbarium, (4) Sample Preparation, (5) Extraction, (6) Analytical Pathways (dual-path), (7) Product Development & Testing, (8) Formulation & Archival per TMMRD SRS",
+  "status": "ACTIVE",
+  "pages": [
+    {
+      "order": 1,
+      "title": "Sample Intake, Reception & Registration",
+      "pageType": "generic_sample_reception",
+      "instructions": "STAGE 1 (SRS) - Receive plant materials or traditional medicine samples. Record metadata: origin, species, collector, date/time, sample condition. Two-phase workflow: Sample Receipt -> Registration & Labeling.",
+      "content": "Sample Intake, Reception & Registration - Plant material and traditional medicine sample reception",
+      "manifestColumns": [
+        {
+          "csvHeader": "sample_id",
+          "field": "groupId",
+          "label": "Sample ID",
+          "required": true
+        },
+        {
+          "csvHeader": "sample_category",
+          "field": "sampleType",
+          "label": "Sample Category",
+          "required": true
+        },
+        {
+          "csvHeader": "collection_date",
+          "field": "collectionDate",
+          "label": "Collection Date"
+        },
+        {
+          "csvHeader": "source_type",
+          "field": "sourceType",
+          "label": "Source Type"
+        },
+        {
+          "csvHeader": "origin_location",
+          "field": "originLocation",
+          "label": "Origin Location"
+        },
+        {
+          "csvHeader": "collection_site",
+          "field": "collectionSite",
+          "label": "Collection Site"
+        },
+        {
+          "csvHeader": "collected_by",
+          "field": "collectedBy",
+          "label": "Collected By"
+        },
+        {
+          "csvHeader": "local_name",
+          "field": "localName",
+          "label": "Local Name"
+        },
+        {
+          "csvHeader": "scientific_name",
+          "field": "scientificName",
+          "label": "Scientific Name"
+        },
+        {
+          "csvHeader": "species",
+          "field": "species",
+          "label": "Species"
+        },
+        {
+          "csvHeader": "plant_part",
+          "field": "plantPart",
+          "label": "Plant Part"
+        },
+        {
+          "csvHeader": "sample_condition",
+          "field": "sampleCondition",
+          "label": "Sample Condition"
+        },
+        {
+          "csvHeader": "intended_use",
+          "field": "intendedUse",
+          "label": "Intended Use"
+        },
+        {
+          "csvHeader": "num_of_samples",
+          "field": "numOfSamples",
+          "label": "Number of Samples"
+        },
+        {
+          "csvHeader": "notes",
+          "field": "notes",
+          "label": "Notes"
+        }
+      ],
+      "columns": [
+        {
+          "key": "scientificName",
+          "header": "Scientific Name"
+        },
+        {
+          "key": "sourceType",
+          "header": "Source Type"
+        },
+        {
+          "key": "originLocation",
+          "header": "Origin"
+        },
+        {
+          "key": "plantPart",
+          "header": "Plant Part"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Authentication",
+      "pageType": "trad_med_authentication",
+      "instructions": "STAGE 2 (SRS) - Botanical verification or expert identification. Methods: Morphological examination, Microscopic analysis, Molecular identification (DNA barcoding: ITS, rbcL, matK genes). Document method used, result (species confirmed, uncertain, misidentified), authenticator name and date. Link to herbarium specimen if prepared.",
+      "content": "Authentication - Species verification and identification"
+    },
+    {
+      "order": 3,
+      "title": "Storage & Herbarium Placement",
+      "pageType": "trad_med_auth_storage",
+      "instructions": "STAGE 3 (SRS) - Assign storage location based on sample condition. Fresh (2-8°C), Dried (room temp), Preserved (fixative/alcohol). Create herbarium specimen record if needed.",
+      "content": "Storage & Herbarium Placement - Sample preservation and herbarium management",
+      "data": {
+        "storageConditions": [
+          { "id": "REFRIGERATED", "label": "Refrigerated (2-8°C) – Fresh samples", "default": true },
+          { "id": "ROOM_TEMP", "label": "Room Temperature – Dried samples" },
+          { "id": "FIXED_ALCOHOL", "label": "Fixative / Alcohol Preservation" },
+          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" }
+        ],
+        "defaultRetentionYears": 25,
+        "additionalFields": [
+          { "key": "specimenId", "label": "Herbarium Specimen ID (if applicable)", "type": "text" },
+          { "key": "preservationMethod", "label": "Preservation Method", "type": "text" }
+        ]
+      }
+    },
+    {
+      "order": 4,
+      "title": "Sample Preparation for Analysis",
+      "pageType": "trad_med_preparation",
+      "instructions": "STAGE 4 (SRS) - Physical processing of samples. Freshly processed or drying (air, oven, freeze). Preparation methods: Grinding, Chopping, Powdering. Document: Method, weight before/after, yield (%), date, operator. Create child/processed samples from original material.",
+      "content": "Sample Preparation for Analysis - Physical processing and preparation"
+    },
+    {
+      "order": 5,
+      "title": "Extraction, Filtration & Concentration",
+      "pageType": "trad_med_extraction",
+      "instructions": "STAGE 5 (SRS) - Extract compounds from prepared plant material. Solvents: Ethanol, methanol, water, hexane, chloroform. Techniques: Maceration, Soxhlet, Ultrasonic, Distillation. Remove impurities via filtration. Concentrate extract via evaporation or distillation. Document: Solvent, plant weight, technique, temp, duration, yields, operator. Create aliquots/child samples from extracts.",
+      "content": "Extraction, Filtration & Concentration - Compound extraction and processing"
+    },
+    {
+      "order": 6,
+      "title": "Analytical Pathways",
+      "pageType": "trad_med_analytical",
+      "instructions": "STAGE 6 (SRS) - Dual-path decision point. PATH A: Advanced Analysis (Fractionation via chromatography, Identification/Isolation via TLC/HPLC/GC-MS/LC-MS, Purification via recrystallization/HPLC, Characterization via NMR/MS/IR-FTIR, store spectral data). PATH B: Direct to Production (skip analysis, proceed to formulation). User selects path based on research needs.",
+      "content": "Analytical Pathways - Dual-path decision (Advanced Analysis or Direct Production)"
+    },
+    {
+      "order": 7,
+      "title": "Product Development & Testing",
+      "pageType": "trad_med_testing",
+      "instructions": "STAGE 7 (SRS) - Preliminary phytochemical screening (Alkaloids, Flavonoids, Tannins, Saponins, Terpenoids, Glycosides, Others). Safety/Toxicity studies (in vitro, in vivo, LD50, NOAEL). Efficacy tests (antimicrobial, antioxidant, anti-inflammatory, anticancer). Document outcomes and protocols. Three-way approval: Approve, Further Testing, Reject.",
+      "content": "Product Development & Testing - Phytochemical, safety, and efficacy testing"
+    },
+    {
+      "order": 8,
+      "title": "Formulation of Medical Product",
+      "pageType": "trad_med_formulation",
+      "instructions": "STAGE 8 (SRS) - Select formulation type (Capsules, Tinctures, Ointments/creams, Teas, Syrups, Others). Record: Ingredients with quantities/concentrations, Manufacturing steps, Batch number, Manufacturing date. Product QC: Stability testing, Microbial contamination, Heavy metals, Pesticide residues, Active constituent quantification.",
+      "content": "Formulation of Medical Product - Product formulation and QC testing"
+    }
+  ]
+}

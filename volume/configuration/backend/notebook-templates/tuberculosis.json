@@ -1,0 +1,264 @@
+{
+  "title": "Tuberculosis Laboratory",
+  "workflowType": "tuberculosis",
+  "departments": [
+    "Tuberculosis Laboratory"
+  ],
+  "objective": "Tuberculosis Laboratory Workflows",
+  "protocol": "Tuberculosis Laboratory",
+  "content": "Tuberculosis Laboratory notebook template with workflow pages for sample accession, quality check, initial processing, incubation, test execution, isolate storage, disposal/archiving, and reporting.",
+  "status": "ACTIVE",
+  "pages": [
+    {
+      "order": 1,
+      "title": "Sample Accession & Registration",
+      "pageType": "generic_sample_reception",
+      "instructions": "Import TB samples from delivery manifest with complete metadata. Verify sample information and mark as verified to proceed.",
+      "content": "Sample Accession & Registration - Complete metadata entry and verification for TB samples",
+      "manifestColumns": [
+        {
+          "csvHeader": "Sample ID",
+          "field": "groupId",
+          "label": "Sample ID",
+          "required": true
+        },
+        {
+          "csvHeader": "Specimen Type",
+          "field": "sampleType",
+          "label": "Specimen Type",
+          "required": true
+        },
+        {
+          "csvHeader": "Num Of Samples",
+          "field": "numOfSamples",
+          "label": "Number of Samples"
+        },
+        {
+          "csvHeader": "Specimen Quality",
+          "field": "specimenQuality",
+          "label": "Specimen Quality"
+        },
+        {
+          "csvHeader": "Document Number",
+          "field": "documentNumber",
+          "label": "Document Number"
+        },
+        {
+          "csvHeader": "Referring Facility",
+          "field": "referringFacility",
+          "label": "Referring Facility"
+        },
+        {
+          "csvHeader": "Patient Name",
+          "field": "patientName",
+          "label": "Patient Name"
+        },
+        {
+          "csvHeader": "Patient Age",
+          "field": "patientAge",
+          "label": "Patient Age"
+        },
+        {
+          "csvHeader": "Patient Sex",
+          "field": "patientSex",
+          "label": "Patient Sex"
+        },
+        {
+          "csvHeader": "Patient ID",
+          "field": "patientId",
+          "label": "Patient ID"
+        },
+        {
+          "csvHeader": "Study ID",
+          "field": "studyId",
+          "label": "Study ID"
+        },
+        {
+          "csvHeader": "Treatment History",
+          "field": "treatmentHistory",
+          "label": "Treatment History"
+        },
+        {
+          "csvHeader": "Culture",
+          "field": "cultureResult",
+          "label": "Culture Result"
+        },
+        {
+          "csvHeader": "Smear Microscopy",
+          "field": "smearMicroscopyResult",
+          "label": "Smear Microscopy"
+        },
+        {
+          "csvHeader": "GeneXpert",
+          "field": "geneXpertResult",
+          "label": "GeneXpert Result"
+        },
+        {
+          "csvHeader": "Identification",
+          "field": "identificationResult",
+          "label": "Identification Result"
+        },
+        {
+          "csvHeader": "DST First Line",
+          "field": "dstFirstLine",
+          "label": "DST First Line"
+        },
+        {
+          "csvHeader": "DST Second Line",
+          "field": "dstSecondLine",
+          "label": "DST Second Line"
+        },
+        {
+          "csvHeader": "Received Site",
+          "field": "receivedSite",
+          "label": "Received Site"
+        },
+        {
+          "csvHeader": "Received Date",
+          "field": "receivedDate",
+          "label": "Received Date"
+        },
+        {
+          "csvHeader": "Received Time",
+          "field": "receivedTime",
+          "label": "Received Time"
+        }
+      ],
+      "columns": [
+        {
+          "key": "patientName",
+          "header": "Patient"
+        },
+        {
+          "key": "referringFacility",
+          "header": "Facility"
+        },
+        {
+          "key": "specimenQuality",
+          "header": "Quality"
+        },
+        {
+          "key": "treatmentHistory",
+          "header": "Tx History"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Raw Sample Quality Check (QC)",
+      "pageType": "generic_quality_check",
+      "instructions": "Perform quality checks on raw samples. Verify sample condition, volume, and suitability for processing.",
+      "content": "Raw Sample Quality Check (QC) - Quality assessment of incoming samples",
+      "data": {
+        "qcSections": [
+          {
+            "id": "sample_integrity",
+            "title": "Sample Integrity",
+            "criteria": [
+              { "key": "leakCheck", "label": "No leaks / container intact", "criticalForPass": true },
+              { "key": "temperatureCheck", "label": "Correct temperature on arrival", "criticalForPass": true },
+              { "key": "packagingCheck", "label": "Proper packaging / triple packaging", "criticalForPass": false },
+              { "key": "labelingCheck", "label": "Labeling accurate and legible", "criticalForPass": false },
+              { "key": "volumeCheck", "label": "Adequate sample volume", "criticalForPass": true },
+              { "key": "requestMatchCheck", "label": "Sample matches test request form", "criticalForPass": false }
+            ]
+          },
+          {
+            "id": "culture_qc",
+            "title": "Culture QC",
+            "criteria": [
+              { "key": "cultureControlsIncluded", "label": "Positive and negative controls included", "criticalForPass": true },
+              { "key": "contaminationRateAcceptable", "label": "Contamination rate within acceptable limits (<5%)", "criticalForPass": false }
+            ]
+          },
+          {
+            "id": "smear_microscopy_qc",
+            "title": "Smear Microscopy QC",
+            "criteria": [
+              { "key": "smearControlsIncluded", "label": "Positive and negative smear controls included", "criticalForPass": true },
+              { "key": "eqaParticipation", "label": "EQA participation up to date", "criticalForPass": false }
+            ]
+          },
+          {
+            "id": "genexpert_qc",
+            "title": "GeneXpert QC",
+            "criteria": [
+              { "key": "geneXpertCalibrated", "label": "GeneXpert instrument calibrated", "criticalForPass": true },
+              { "key": "geneXpertControlsRun", "label": "Module controls run and passed", "criticalForPass": true },
+              { "key": "errorRateAcceptable", "label": "Error rate within acceptable limits", "criticalForPass": false }
+            ]
+          },
+          {
+            "id": "dst_qc",
+            "title": "Drug Susceptibility Testing (DST) QC",
+            "criteria": [
+              { "key": "referenceStrainsTested", "label": "Reference strains (H37Rv) included", "criticalForPass": true },
+              { "key": "micRangesVerified", "label": "MIC ranges within expected limits", "criticalForPass": true },
+              { "key": "dstEqaParticipation", "label": "DST EQA participation up to date", "criticalForPass": false }
+            ]
+          }
+        ],
+        "qcResultOptions": [
+          { "id": "PASS", "label": "Pass – Proceed to processing" },
+          { "id": "FAIL_DISCARD", "label": "Fail – Discard sample (critical failure)" },
+          { "id": "FAIL_PROCEED", "label": "Fail – Proceed with remarks (non-critical)" }
+        ],
+        "additionalFields": [
+          { "key": "checkedBy", "label": "Checked By", "type": "text" },
+          { "key": "remarks", "label": "Remarks / Observations", "type": "textarea" }
+        ]
+      }
+    },
+    {
+      "order": 3,
+      "title": "Initial Sample Processing",
+      "pageType": "tb_initial_processing",
+      "instructions": "Perform initial processing steps including sample preparation and decontamination procedures.",
+      "content": "Initial Sample Processing - Sample preparation and decontamination"
+    },
+    {
+      "order": 4,
+      "title": "Incubation & Monitoring",
+      "pageType": "tb_incubation_monitoring",
+      "instructions": "Track weekly culture readings for inoculated samples. Monitor growth patterns over 8 weeks and record final culture results (positive, negative, or contaminated).",
+      "content": "Incubation & Monitoring - Weekly culture reading and growth tracking"
+    },
+    {
+      "order": 5,
+      "title": "Assay/Test Execution",
+      "pageType": "tb_test_execution",
+      "instructions": "Execute requested tests including culture, smear microscopy, GeneXpert, identification, and drug susceptibility testing. Record test results and methods used.",
+      "content": "Assay/Test Execution - Execute and record test results"
+    },
+    {
+      "order": 6,
+      "title": "Isolate Storage",
+      "pageType": "tb_storage_assignment",
+      "instructions": "Assign TB isolates to appropriate storage locations. Record storage location details and conditions for culture-positive samples.",
+      "content": "Isolate Storage - Assign isolates to storage locations",
+      "data": {
+        "storageConditions": [
+          { "id": "FROZEN_MINUS80", "label": "Ultra-Low Frozen (-80°C)", "default": true },
+          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" },
+          { "id": "REFRIGERATED", "label": "Refrigerated (2-8°C)" },
+          { "id": "LIQUID_NITROGEN", "label": "Liquid Nitrogen (-196°C)" }
+        ],
+        "defaultRetentionYears": 10
+      }
+    },
+    {
+      "order": 7,
+      "title": "Disposal & Archiving",
+      "pageType": "tb_disposal_archiving",
+      "instructions": "Dispose of completed samples or transfer to biorepository for long-term archiving. Track disposal reasons, methods, and maintain complete audit trail.",
+      "content": "Disposal & Archiving - Sample lifecycle management"
+    },
+    {
+      "order": 8,
+      "title": "Reporting",
+      "pageType": "tb_reporting",
+      "instructions": "View laboratory performance metrics, turnaround times, positivity rates, and resistance trends. Filter by date range to analyze workflow data.",
+      "content": "Reporting - Analytics and metrics for TB laboratory workflow"
+    }
+  ]
+}

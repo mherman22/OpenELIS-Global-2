@@ -1,4 +1,3 @@
-export { default as ImmunologySampleReceptionPage } from "./ImmunologySampleReceptionPage";
 export { default as ImmunologyInitialProcessingPage } from "./ImmunologyInitialProcessingPage";
 export { default as ImmunologyAdditionalAssaysPage } from "./ImmunologyAdditionalAssaysPage";
 export { default as ImmunologyChildSampleCreationPage } from "./ImmunologyChildSampleCreationPage";

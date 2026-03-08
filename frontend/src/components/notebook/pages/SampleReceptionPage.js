@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import {
   Grid,
   Column,
@@ -8,22 +14,29 @@ import {
   InlineNotification,
   Loading,
 } from "@carbon/react";
-import { Add, Upload, Checkmark, Search } from "@carbon/react/icons";
+import { Upload, Checkmark, Search } from "@carbon/react/icons";
 import { FormattedMessage, useIntl } from "react-intl";
 import { getFromOpenElisServer, postToOpenElisServer } from "../../utils/Utils";
 import SampleGrid from "../workflow/SampleGrid";
-import ManifestImportModal from "../workflow/ManifestImportModal";
+import GenericManifestImportModal from "../modals/GenericManifestImportModal";
 import "../workflow/NotebookWorkflow.css";
 
 /**
- * SampleReceptionPage - Page 1 of the immunology workflow.
- * Handles sample reception: linking existing samples or importing from manifest.
+ * SampleReceptionPage — generic sample reception page used by all labs that
+ * declare {@code "pageType": "generic_sample_reception"} in their JSON config.
  *
- * @param {Object} props
- * @param {number} props.entryId - The notebook entry ID
- * @param {Object} props.pageData - The notebook page data
- * @param {Object} props.progress - Page progress {total, pending, inProgress, completed, skipped, percentage}
- * @param {function} props.onProgressUpdate - Callback when progress changes
+ * Behaviour is driven by two optional arrays stored in {@code pageData.data}:
+ * - {@code manifestColumns} — column schema for the generic import modal
+ * - {@code columns}         — extra columns to show in the sample grid
+ *   (each item: {@code { key: "fieldKey", header: "Display Header" }})
+ *
+ * Adding a new lab or changing displayed columns requires only a JSON edit —
+ * no React changes.
+ *
+ * @param {Object}   props.entryId          Notebook entry ID
+ * @param {Object}   props.pageData         Template page object (includes data)
+ * @param {Object}   props.progress         Page progress counts
+ * @param {function} props.onProgressUpdate Called when progress changes
  */
 function SampleReceptionPage({
   entryId,
@@ -33,6 +46,17 @@ function SampleReceptionPage({
 }) {
   const intl = useIntl();
   const componentMounted = useRef(false);
+
+  // Extra columns declared in the JSON config for this lab
+  const extraColumns = useMemo(
+    () => pageData?.data?.columns ?? [],
+    [pageData?.data?.columns],
+  );
+
+  // Whether this page has a generic manifest schema configured
+  const hasManifestConfig =
+    Array.isArray(pageData?.data?.manifestColumns) &&
+    pageData.data.manifestColumns.length > 0;
 
   // State
   const [samples, setSamples] = useState([]);
@@ -78,6 +102,9 @@ function SampleReceptionPage({
           if (response && Array.isArray(response)) {
             // Transform samples for the grid - ensure ID is string for consistent comparison
             const transformedSamples = response.map((sample) => ({
+              // Spread extra fields from NotebookPageSample.data first so that
+              // fixed fields below take precedence if there is a key collision.
+              ...(sample.data || {}),
               id: String(sample.id || sample.sampleItemId),
               externalId: sample.externalId,
               accessionNumber: sample.accessionNumber,
@@ -246,6 +273,7 @@ function SampleReceptionPage({
           kind="primary"
           size="sm"
           renderIcon={Upload}
+          disabled={!hasManifestConfig}
           onClick={() => setImportModalOpen(true)}
         >
           <FormattedMessage
@@ -292,7 +320,7 @@ function SampleReceptionPage({
         />
       )}
 
-      {/* Sample Grid */}
+      {/* Sample Grid — extra columns come from pageData.data.columns */}
       <div className="sample-grid-container">
         <SampleGrid
           samples={samples}
@@ -303,6 +331,11 @@ function SampleReceptionPage({
           onStatusFilterChange={setStatusFilter}
           showSelection={true}
           loading={loading}
+          additionalColumns={extraColumns.map((col) => ({
+            key: col.key,
+            header: col.header,
+            render: (value, sample) => sample?.[col.key] ?? value ?? "-",
+          }))}
         />
       </div>
 
@@ -318,13 +351,16 @@ function SampleReceptionPage({
         </div>
       )}
 
-      {/* Manifest Import Modal */}
-      <ManifestImportModal
-        open={importModalOpen}
-        onClose={() => setImportModalOpen(false)}
-        entryId={entryId}
-        onImportSuccess={handleImportSuccess}
-      />
+      {/* Generic Manifest Import Modal — driven entirely by pageData.data.manifestColumns */}
+      {hasManifestConfig && (
+        <GenericManifestImportModal
+          open={importModalOpen}
+          onClose={() => setImportModalOpen(false)}
+          entryId={entryId}
+          pageData={pageData}
+          onImportSuccess={handleImportSuccess}
+        />
+      )}
     </div>
   );
 }
