@@ -72,7 +72,7 @@
                 )
             WHERE data IS NOT NULL
               AND data != '{}'::jsonb
-              AND data ?| ARRAY[
+              AND data ??| ARRAY[
                     'manifestColumns', 'columns',
                     'qcSections', 'qcResultOptions',
                     'storageConditions', 'defaultRetentionYears',
