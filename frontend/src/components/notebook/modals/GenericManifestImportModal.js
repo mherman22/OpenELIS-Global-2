@@ -26,12 +26,7 @@ import {
   TableRow,
   Tag,
 } from "@carbon/react";
-import {
-  Checkmark,
-  ChevronLeft,
-  Download,
-  Warning
-} from "@carbon/react/icons";
+import { Checkmark, ChevronLeft, Download, Warning } from "@carbon/react/icons";
 import { useCallback, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import { postToOpenElisServerFormDataJson } from "../../utils/Utils";
@@ -271,7 +266,7 @@ function GenericManifestImportModal({
                     {
                       id: "notebook.manifest.error.invalidValue",
                       defaultMessage:
-                        "Invalid value for {field}: \"{value}\". Expected one of: {allowed}",
+                        'Invalid value for {field}: "{value}". Expected one of: {allowed}',
                     },
                     {
                       field: col.label ?? col.field,
