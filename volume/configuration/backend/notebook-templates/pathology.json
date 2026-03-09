@@ -7,6 +7,12 @@
   "objective": "Complete pathology workflow from sample reception to archiving",
   "protocol": "Standard Pathology Laboratory Protocol",
   "content": "Pathology Laboratory notebook with 11 predefined workflow pages for granular histopathology workflow.",
+  "tags": [
+    "pathology",
+    "histology",
+    "cytology",
+    "tissue-diagnosis"
+  ],
   "status": "ACTIVE",
   "pages": [
     {
@@ -20,83 +26,149 @@
           "csvHeader": "studyId",
           "field": "groupId",
           "label": "Study ID",
-          "required": true
+          "required": true,
+          "description": "Unique study or accession identifier assigned to this pathology specimen.",
+          "example": "PATH-2024-0033"
         },
         {
           "csvHeader": "specimenType",
           "field": "sampleType",
           "label": "Specimen Type",
-          "required": true
+          "required": true,
+          "description": "Histopathological material type (e.g., biopsy, excision, FNA, cytology smear).",
+          "example": "Core Needle Biopsy"
         },
         {
           "csvHeader": "collectionDateTime",
           "field": "collectionDate",
-          "label": "Collection Date & Time"
+          "label": "Collection Date & Time",
+          "required": true,
+          "description": "Date and time the specimen was collected or surgically obtained.",
+          "example": "2024-09-10 11:00",
+          "category": "Sample Metadata"
         },
         {
           "csvHeader": "firstName",
           "field": "firstName",
-          "label": "First Name"
+          "label": "First Name",
+          "required": true,
+          "description": "First name of the patient or study subject from whom the specimen was taken.",
+          "example": "Tigist",
+          "category": "Identification"
         },
         {
           "csvHeader": "surname",
           "field": "surname",
-          "label": "Surname"
+          "label": "Surname",
+          "description": "Surname of the patient or study subject from whom the specimen was taken.",
+          "example": "Worku",
+          "category": "Identification"
         },
         {
           "csvHeader": "piName",
           "field": "piName",
-          "label": "PI Name"
+          "label": "PI Name",
+          "required": true,
+          "description": "Name of the principal investigator or requesting clinician for this specimen.",
+          "example": "Dr. M. Bekele",
+          "category": "Tracking"
         },
         {
           "csvHeader": "participantAnimalId",
           "field": "participantAnimalId",
-          "label": "Participant/Animal ID"
+          "label": "Participant/Animal ID",
+          "required": true,
+          "description": "Identifier for the study participant or animal subject from whom the specimen was collected.",
+          "example": "PAT-2024-0099",
+          "category": "Identification"
         },
         {
           "csvHeader": "specimenSite",
           "field": "specimenSite",
-          "label": "Specimen Site"
+          "label": "Specimen Site",
+          "required": true,
+          "description": "Anatomical site from which the specimen was obtained.",
+          "example": "Left breast, upper outer quadrant",
+          "category": "Sample Metadata"
         },
         {
           "csvHeader": "collectionMethod",
           "field": "collectionMethod",
-          "label": "Collection Method"
+          "label": "Collection Method",
+          "required": true,
+          "description": "Procedure used to collect the specimen (e.g., biopsy, excision, FNA, scraping).",
+          "example": "Core Needle Biopsy",
+          "category": "Sample Metadata"
         },
         {
           "csvHeader": "collector",
           "field": "collector",
-          "label": "Collector"
+          "label": "Collector",
+          "required": true,
+          "description": "Name or ID of the clinician or pathologist who performed the collection procedure.",
+          "example": "Dr. A. Desta",
+          "category": "Reception"
         },
         {
           "csvHeader": "processingCondition",
           "field": "processingCondition",
-          "label": "Processing Condition"
+          "label": "Processing Condition",
+          "required": true,
+          "description": "Preservation state of the specimen at time of processing (e.g., formalin-fixed, fresh, frozen).",
+          "example": "Formalin-fixed",
+          "category": "Processing"
         },
         {
           "csvHeader": "laboratoryMaterial",
           "field": "laboratoryMaterial",
-          "label": "Laboratory Material"
+          "label": "Laboratory Material",
+          "required": true,
+          "description": "Physical form of the laboratory material submitted (e.g., paraffin block, slides, tissue in cassette).",
+          "example": "Paraffin Block",
+          "category": "Processing",
+          "validValues": [
+            "Tissue Biopsy",
+            "FFPE Block",
+            "Cytology Specimen",
+            "Frozen Section",
+            "Fine Needle Aspirate",
+            "Core Needle Biopsy"
+          ]
         },
         {
           "csvHeader": "ethicalApprovalRef",
           "field": "ethicalApprovalRef",
-          "label": "Ethical Approval Ref"
+          "label": "Ethical Approval Ref",
+          "required": true,
+          "description": "Reference number of the ethics committee approval for this study or procedure.",
+          "example": "TASH-IRB-2023-045",
+          "category": "General"
         },
         {
           "csvHeader": "receivedDateTime",
           "field": "receivedDateTime",
-          "label": "Received Date & Time"
+          "label": "Received Date & Time",
+          "required": true,
+          "description": "Date and time the specimen was received at the pathology laboratory.",
+          "example": "2024-09-10 13:20",
+          "category": "Reception"
         },
         {
           "csvHeader": "receivedBy",
           "field": "receivedBy",
-          "label": "Received By"
+          "label": "Received By",
+          "required": true,
+          "description": "Name or staff ID of the laboratory personnel who received the specimen.",
+          "example": "Z. Hailu",
+          "category": "Reception"
         },
         {
           "csvHeader": "sourceFacility",
           "field": "sourceFacility",
-          "label": "Source Facility"
+          "label": "Source Facility",
+          "description": "Name of the hospital or clinic that sent the specimen to the pathology laboratory.",
+          "example": "St. Paul's Hospital Millennium Medical College",
+          "category": "Sample Metadata"
         }
       ],
       "columns": [
@@ -179,10 +251,23 @@
       "content": "Storage & Inventory Management page",
       "data": {
         "storageConditions": [
-          { "id": "ROOM_TEMP", "label": "Room Temperature (Paraffin blocks / slides)", "default": true },
-          { "id": "REFRIGERATED", "label": "Refrigerated (2-8°C) – Cytology / wet specimens" },
-          { "id": "FROZEN_MINUS80", "label": "Ultra-Low Frozen (-80°C) – Frozen sections" },
-          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" }
+          {
+            "id": "ROOM_TEMP",
+            "label": "Room Temperature (Paraffin blocks / slides)",
+            "default": true
+          },
+          {
+            "id": "REFRIGERATED",
+            "label": "Refrigerated (2-8°C) – Cytology / wet specimens"
+          },
+          {
+            "id": "FROZEN_MINUS80",
+            "label": "Ultra-Low Frozen (-80°C) – Frozen sections"
+          },
+          {
+            "id": "FROZEN_MINUS20",
+            "label": "Frozen (-20°C)"
+          }
         ],
         "defaultRetentionYears": 10
       }

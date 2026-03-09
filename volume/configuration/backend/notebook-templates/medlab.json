@@ -7,6 +7,7 @@
   "objective": "Complete medical laboratory workflow from patient order to archiving",
   "protocol": "Standard Medical Laboratory Protocol",
   "content": "Medical Laboratory notebook template with 9 predefined workflow pages for routine clinical laboratory testing.",
+  "tags": ["medical-laboratory", "clinical", "routine-testing"],
   "status": "ACTIVE",
   "pages": [
     {

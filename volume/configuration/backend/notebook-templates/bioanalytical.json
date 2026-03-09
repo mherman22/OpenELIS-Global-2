@@ -7,6 +7,12 @@
   "objective": "Complete bioanalytical testing workflow from sample reception to archiving",
   "protocol": "Standard Bioanalytical Laboratory Protocol",
   "content": "Bioanalytical Laboratory notebook template with 5 predefined workflow pages for sample reception, test assignment, analytical execution, reporting, and storage/archiving.",
+  "tags": [
+    "bioanalytical",
+    "research",
+    "pharmacokinetics",
+    "pharmaceutical"
+  ],
   "status": "ACTIVE",
   "pages": [
     {
@@ -20,58 +26,220 @@
           "csvHeader": "uniqueSampleId",
           "field": "groupId",
           "label": "Unique Sample ID",
-          "required": true
+          "required": true,
+          "description": "Unique identifier assigned to each sample submitted for bioanalytical testing.",
+          "example": "BAN-2024-S0042",
+          "aliases": [
+            "sampleId",
+            "id"
+          ]
         },
         {
           "csvHeader": "sampleType",
           "field": "sampleType",
           "label": "Sample Type",
-          "required": true
+          "required": true,
+          "description": "Type of sample matrix (e.g., plasma, serum, API, tablet formulation).",
+          "example": "Plasma",
+          "validValues": [
+            "Plasma",
+            "Plasma - EDTA",
+            "Plasma - Heparin",
+            "Serum",
+            "Urine",
+            "Whole Blood",
+            "Cerebrospinal Fluid",
+            "Saliva",
+            "Hair",
+            "Nail",
+            "Other Biological Matrix",
+            "API",
+            "API - Powder",
+            "API - Solution",
+            "Tablet",
+            "Capsule",
+            "Suspension",
+            "Powder",
+            "Liquid",
+            "Cream",
+            "Gel",
+            "Patch",
+            "Reference Standard",
+            "Excipient",
+            "Degradation Product",
+            "Stability Sample - Initial",
+            "Stability Sample - Intermediate",
+            "Stability Sample - Final",
+            "Accelerated Sample"
+          ],
+          "aliases": [
+            "type"
+          ]
         },
         {
           "csvHeader": "dateTimeOfReceipt",
           "field": "collectionDate",
-          "label": "Date/Time of Receipt"
+          "label": "Date/Time of Receipt",
+          "required": true,
+          "description": "Date and time the sample was received at the bioanalytical laboratory.",
+          "example": "2024-07-15 09:00",
+          "category": "Reception",
+          "aliases": [
+            "receiptDateTime",
+            "receiptDate",
+            "receptionDateTime",
+            "receivedDate"
+          ]
         },
         {
           "csvHeader": "sourceOrigin",
           "field": "sourceOrigin",
-          "label": "Source/Origin"
-        },
-        {
-          "csvHeader": "projectStudyAssociation",
-          "field": "projectStudyAssociation",
-          "label": "Project/Study"
-        },
-        {
-          "csvHeader": "storageConditionPrior",
-          "field": "storageConditionPrior",
-          "label": "Storage Condition Prior"
+          "label": "Source/Origin",
+          "required": true,
+          "description": "Institution, clinic, or department from which the sample was submitted.",
+          "example": "Clinical Pharmacology Unit – EHNRI",
+          "category": "Sample Metadata",
+          "aliases": [
+            "source",
+            "origin",
+            "laboratory",
+            "client"
+          ]
         },
         {
           "csvHeader": "requestedTests",
           "field": "requestedTests",
-          "label": "Requested Tests"
-        },
-        {
-          "csvHeader": "timepoint",
-          "field": "timepoint",
-          "label": "Timepoint"
-        },
-        {
-          "csvHeader": "subjectId",
-          "field": "subjectId",
-          "label": "Subject ID"
+          "label": "Requested Tests",
+          "required": true,
+          "description": "Analytical tests requested for this sample (e.g., LC-MS/MS drug quantification).",
+          "example": "LC-MS/MS Artemether quantification",
+          "category": "Processing",
+          "aliases": [
+            "tests",
+            "test",
+            "analysis"
+          ]
         },
         {
           "csvHeader": "receivingPersonnel",
           "field": "receivingPersonnel",
-          "label": "Receiving Personnel"
+          "label": "Receiving Personnel",
+          "required": true,
+          "description": "Name or staff ID of the analyst who received and registered this sample.",
+          "example": "M. Haile",
+          "category": "Reception",
+          "aliases": [
+            "personnel",
+            "receivedBy",
+            "receiver"
+          ]
+        },
+        {
+          "csvHeader": "projectStudyAssociation",
+          "field": "projectStudyAssociation",
+          "label": "Project/Study",
+          "description": "Research study or protocol this sample is linked to.",
+          "example": "PK Study BAL-2024-001",
+          "category": "Tracking",
+          "aliases": [
+            "project",
+            "study",
+            "projectName",
+            "studyId"
+          ]
+        },
+        {
+          "csvHeader": "storageConditionPrior",
+          "field": "storageConditionPrior",
+          "label": "Storage Condition Prior",
+          "description": "Storage conditions maintained before the sample was shipped to this laboratory.",
+          "example": "Frozen (-80°C)",
+          "category": "Sample Metadata",
+          "aliases": [
+            "storage",
+            "storageCondition",
+            "condition",
+            "storageContitionPrior"
+          ]
+        },
+        {
+          "csvHeader": "sampleVolume",
+          "field": "sampleVolume",
+          "label": "Sample Volume/Quantity",
+          "description": "Volume or quantity of the sample with units.",
+          "example": "5 mL, 100 mg, 2 tablets",
+          "category": "Sample Metadata",
+          "aliases": [
+            "volume",
+            "quantity",
+            "amount"
+          ]
+        },
+        {
+          "csvHeader": "transportTemperature",
+          "field": "transportTemperature",
+          "label": "Transport Temperature",
+          "description": "Temperature during transport in Celsius.",
+          "example": "4°C, -20°C, Ambient",
+          "category": "Sample Metadata",
+          "aliases": [
+            "transport",
+            "temperature",
+            "temp"
+          ]
+        },
+        {
+          "csvHeader": "manifestVerificationStatus",
+          "field": "manifestVerificationStatus",
+          "label": "Manifest Verification Status",
+          "description": "Status of manifest verification at time of receipt.",
+          "example": "Verified, Pending, Discrepancy",
+          "category": "Reception",
+          "aliases": [
+            "verification",
+            "status",
+            "verificationStatus"
+          ]
+        },
+        {
+          "csvHeader": "timepoint",
+          "field": "timepoint",
+          "label": "Timepoint",
+          "description": "Study timepoint at which this sample was collected (e.g., pre-dose, 2h, 24h).",
+          "example": "2h post-dose",
+          "category": "Sample Metadata",
+          "aliases": [
+            "time",
+            "sampling"
+          ]
+        },
+        {
+          "csvHeader": "subjectId",
+          "field": "subjectId",
+          "label": "Subject ID",
+          "description": "De-identified identifier of the study subject or volunteer who provided this sample.",
+          "example": "SUB-012",
+          "category": "Identification",
+          "aliases": [
+            "subject",
+            "patientId",
+            "patient"
+          ]
         },
         {
           "csvHeader": "notes",
           "field": "notes",
-          "label": "Notes"
+          "label": "Notes",
+          "description": "Any special handling instructions or observations about this sample.",
+          "example": "Protect from light",
+          "category": "General",
+          "aliases": [
+            "note",
+            "comments",
+            "comment",
+            "remarks",
+            "observation"
+          ]
         }
       ],
       "columns": [
@@ -91,7 +259,21 @@
           "key": "subjectId",
           "header": "Subject ID"
         }
-      ]
+      ],
+      "data": {
+        "autoGeneratedFields": [
+          {
+            "key": "accessionNumber",
+            "label": "Accession Number",
+            "description": "System-generated laboratory accession number"
+          },
+          {
+            "key": "barcodeQrCode",
+            "label": "Barcode/QR Code",
+            "description": "System-generated scannable identifier"
+          }
+        ]
+      }
     },
     {
       "order": 2,
@@ -122,10 +304,23 @@
       "content": "Post-Test Storage & Archiving - Storage tracking, retention periods, and data archiving",
       "data": {
         "storageConditions": [
-          { "id": "FROZEN_MINUS80", "label": "Ultra-Low Frozen (-80°C) – Biological samples", "default": true },
-          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" },
-          { "id": "ROOM_TEMP", "label": "Room Temperature – Pharmaceutical samples" },
-          { "id": "LIQUID_NITROGEN", "label": "Liquid Nitrogen (-196°C)" }
+          {
+            "id": "FROZEN_MINUS80",
+            "label": "Ultra-Low Frozen (-80°C) – Biological samples",
+            "default": true
+          },
+          {
+            "id": "FROZEN_MINUS20",
+            "label": "Frozen (-20°C)"
+          },
+          {
+            "id": "ROOM_TEMP",
+            "label": "Room Temperature – Pharmaceutical samples"
+          },
+          {
+            "id": "LIQUID_NITROGEN",
+            "label": "Liquid Nitrogen (-196°C)"
+          }
         ],
         "defaultRetentionYears": 5
       }

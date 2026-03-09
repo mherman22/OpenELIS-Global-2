@@ -7,6 +7,12 @@
   "objective": "Complete biorepository workflow from sample intake to long-term storage and disposition",
   "protocol": "Standard Biorepository Laboratory Protocol",
   "content": "Biorepository Laboratory notebook template with 7 predefined workflow pages for sample intake, storage, monitoring, retention, requests, QC inspection, and reporting.",
+  "tags": [
+    "biorepository",
+    "sample-storage",
+    "biobanking",
+    "ISO-20387"
+  ],
   "status": "ACTIVE",
   "pages": [
     {
@@ -20,68 +26,120 @@
           "csvHeader": "externalId",
           "field": "groupId",
           "label": "External ID",
-          "required": true
+          "required": true,
+          "description": "External tracking identifier assigned by the originating laboratory or study site.",
+          "example": "EXT-HAIN-2024-0091"
         },
         {
           "csvHeader": "sampleType",
           "field": "sampleType",
           "label": "Sample Type",
-          "required": true
+          "required": true,
+          "description": "Biological material type to be archived (e.g., serum, PBMC, DNA, tissue).",
+          "example": "PBMC",
+          "validValues": [
+            "Cell Line",
+            "Primary Cells",
+            "Tissue",
+            "Blood",
+            "Plasma",
+            "Serum",
+            "DNA",
+            "RNA",
+            "Protein",
+            "Microbial Culture",
+            "Organoid",
+            "Urine",
+            "CSF"
+          ]
         },
         {
           "csvHeader": "collectionDate",
           "field": "collectionDate",
-          "label": "Collection Date"
+          "label": "Collection Date",
+          "description": "Date the sample was originally collected from the donor or environment.",
+          "example": "2024-01-18",
+          "category": "Sample Metadata"
         },
         {
           "csvHeader": "projectId",
           "field": "projectId",
-          "label": "Project ID"
+          "label": "Project ID",
+          "description": "Identifier of the research study or protocol this sample is associated with.",
+          "example": "PROJ-AHRI-2024-003",
+          "category": "Tracking"
         },
         {
           "csvHeader": "biosafetyLevel",
           "field": "biosafetyLevel",
-          "label": "Biosafety Level"
+          "label": "Biosafety Level",
+          "description": "Biosafety containment level required for handling this sample (BSL-1, BSL-2, BSL-3).",
+          "example": "BSL-2",
+          "category": "Sample Metadata"
         },
         {
           "csvHeader": "originLab",
           "field": "originLab",
-          "label": "Origin Lab"
+          "label": "Origin Lab",
+          "description": "Name or code of the laboratory that generated or transferred the sample.",
+          "example": "AHRI Immunology Lab",
+          "category": "Sample Metadata"
         },
         {
           "csvHeader": "principalInvestigator",
           "field": "principalInvestigator",
-          "label": "Principal Investigator"
+          "label": "Principal Investigator",
+          "description": "Name of the principal investigator responsible for the study associated with this sample.",
+          "example": "Prof. A. Aseffa",
+          "category": "Tracking"
         },
         {
           "csvHeader": "consentId",
           "field": "consentId",
-          "label": "Consent ID"
+          "label": "Consent ID",
+          "description": "Reference number of the informed consent document signed by the donor.",
+          "example": "CONS-2024-0456",
+          "category": "General"
         },
         {
           "csvHeader": "ethicsApprovalRef",
           "field": "ethicsApprovalRef",
-          "label": "Ethics Approval Ref"
+          "label": "Ethics Approval Ref",
+          "description": "Reference number of the ethics committee approval covering this sample.",
+          "example": "AHRI-IRB-2023-078",
+          "category": "General"
         },
         {
           "csvHeader": "mtaReference",
           "field": "mtaReference",
-          "label": "MTA Reference"
+          "label": "MTA Reference",
+          "description": "Reference number of the Material Transfer Agreement governing sample use.",
+          "example": "MTA-2024-AHRI-007",
+          "category": "Tracking"
         },
         {
           "csvHeader": "preservationMedium",
           "field": "preservationMedium",
-          "label": "Preservation Medium"
+          "label": "Preservation Medium",
+          "description": "Solution or medium used to preserve the sample during storage (e.g., DMSO, formalin, RNAlater).",
+          "example": "10% DMSO in FBS",
+          "category": "Sample Metadata"
         },
         {
           "csvHeader": "arrivalCondition",
           "field": "arrivalCondition",
-          "label": "Arrival Condition"
+          "label": "Arrival Condition",
+          "description": "Physical state and integrity of the sample as assessed upon arrival.",
+          "example": "Intact; frozen on dry ice",
+          "category": "Reception"
         },
         {
           "csvHeader": "notes",
           "field": "notes",
-          "label": "Notes"
+          "label": "Notes",
+          "description": "Additional remarks about the sample, donor, or special handling instructions.",
+          "example": "Low volume — handle with care",
+          "category": "General"
         }
       ],
       "columns": [
@@ -111,11 +169,27 @@
       "content": "Storage Assignment - Physical location assignment and storage manifest generation",
       "data": {
         "storageConditions": [
-          { "id": "FROZEN_MINUS80", "label": "Ultra-Low Frozen (-80°C)", "default": true },
-          { "id": "LIQUID_NITROGEN", "label": "Liquid Nitrogen (-196°C)" },
-          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" },
-          { "id": "REFRIGERATED", "label": "Refrigerated (2-8°C)" },
-          { "id": "ROOM_TEMP", "label": "Room Temperature (Ambient)" }
+          {
+            "id": "FROZEN_MINUS80",
+            "label": "Ultra-Low Frozen (-80°C)",
+            "default": true
+          },
+          {
+            "id": "LIQUID_NITROGEN",
+            "label": "Liquid Nitrogen (-196°C)"
+          },
+          {
+            "id": "FROZEN_MINUS20",
+            "label": "Frozen (-20°C)"
+          },
+          {
+            "id": "REFRIGERATED",
+            "label": "Refrigerated (2-8°C)"
+          },
+          {
+            "id": "ROOM_TEMP",
+            "label": "Room Temperature (Ambient)"
+          }
         ],
         "defaultRetentionYears": 25
       }

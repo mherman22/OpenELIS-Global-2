@@ -7,6 +7,12 @@
   "objective": "Complete genomics and bioinformatics analysis workflow from sample reception to data submission",
   "protocol": "Standard Genomics & Bioinformatics Laboratory Protocol",
   "content": "Genomics & Bioinformatics Laboratory notebook template with 10 predefined workflow pages for sample reception, DNA/RNA extraction, quality assessment, PCR amplification, gel electrophoresis, library preparation, bioanalyzer QC, sequencing, bioinformatics analysis, and storage.",
+  "tags": [
+    "GBD",
+    "genomics",
+    "bioinformatics",
+    "research"
+  ],
   "status": "ACTIVE",
   "pages": [
     {
@@ -20,93 +26,235 @@
           "csvHeader": "sampleId",
           "field": "groupId",
           "label": "Sample ID",
-          "required": true
+          "required": true,
+          "description": "Unique identifier assigned to the genomic sample at collection or submission.",
+          "example": "GBD-2024-S0055"
         },
         {
           "csvHeader": "sampleType",
           "field": "sampleType",
           "label": "Sample Type",
-          "required": true
+          "required": true,
+          "description": "Biological material type submitted for genomic analysis (e.g., DNA, RNA, tissue, isolate, PCR product, library, swab).",
+          "example": "DNA",
+          "validValues": [
+            "DNA",
+            "DNA - Genomic",
+            "DNA - Plasmid",
+            "DNA - cDNA",
+            "DNA - PCR Product",
+            "PCR Product",
+            "RNA",
+            "RNA - Total",
+            "RNA - mRNA",
+            "RNA - ncRNA",
+            "RNA - miRNA",
+            "cDNA",
+            "cDNA - First Strand",
+            "cDNA - Double Strand",
+            "Whole Blood",
+            "Saliva",
+            "Buccal Swab",
+            "Tissue",
+            "Hair Follicle",
+            "Nail",
+            "Cultured Cells",
+            "Bacterial Culture",
+            "Viral Lysate",
+            "Library",
+            "Fragmented DNA",
+            "Adapter-Ligated DNA",
+            "PCR-Amplified Library",
+            "Size-Selected Library",
+            "Positive Control",
+            "Negative Control",
+            "Reference Standard",
+            "Quality Control Sample"
+          ],
+          "aliases": [
+            "type"
+          ]
         },
         {
           "csvHeader": "collectionDate",
           "field": "collectionDate",
-          "label": "Collection Date"
+          "label": "Collection Date",
+          "required": true,
+          "description": "Date the sample was collected from the organism or environment.",
+          "example": "2024-10-05",
+          "category": "Sample Metadata",
+          "aliases": [
+            "collectedDate"
+          ]
         },
         {
           "csvHeader": "source",
           "field": "source",
-          "label": "Source"
+          "label": "Source",
+          "required": true,
+          "description": "Origin of the sample — patient, animal, environmental isolate, or cell culture.",
+          "example": "Patient",
+          "category": "Sample Metadata",
+          "aliases": [
+            "origin",
+            "facility",
+            "studySite"
+          ]
         },
         {
           "csvHeader": "receptionDateTime",
           "field": "receptionDateTime",
-          "label": "Reception Date & Time"
+          "label": "Reception Date & Time",
+          "required": true,
+          "description": "Date and time the sample was formally received at the genomics laboratory.",
+          "example": "2024-10-06 09:15",
+          "category": "Reception",
+          "aliases": [
+            "receptionDate",
+            "receivedDate"
+          ]
         },
         {
           "csvHeader": "projectStudyAssociation",
           "field": "projectStudyAssociation",
-          "label": "Project/Study"
+          "label": "Project/Study",
+          "required": true,
+          "description": "Research project or study protocol this sample is linked to.",
+          "example": "Whole Genome Sequencing AMR-2024",
+          "category": "Tracking",
+          "aliases": [
+            "projectStudy",
+            "projectName",
+            "project"
+          ]
         },
         {
           "csvHeader": "volumeConcentration",
           "field": "volumeConcentration",
-          "label": "Volume/Concentration"
+          "label": "Volume/Concentration",
+          "description": "Initial volume (µL) or concentration (ng/µL) of the sample as submitted.",
+          "example": "50 µL at 25 ng/µL",
+          "category": "Sample Metadata",
+          "aliases": [
+            "volume",
+            "concentration"
+          ]
         },
         {
           "csvHeader": "a260_280",
           "field": "a260_280",
-          "label": "A260/280"
+          "label": "A260/280",
+          "description": "DNA purity ratio measured by NanoDrop; ideal range 1.8–2.0 for pure DNA.",
+          "example": "1.85",
+          "category": "Processing"
         },
         {
           "csvHeader": "a260_230",
           "field": "a260_230",
-          "label": "A260/230"
+          "label": "A260/230",
+          "description": "Secondary purity metric indicating contamination by salts, phenol, or carbohydrates; ideal >2.0.",
+          "example": "2.10",
+          "category": "Processing"
         },
         {
           "csvHeader": "rin",
           "field": "rin",
-          "label": "RIN"
+          "label": "RIN",
+          "description": "RNA Integrity Number scored 0–10; values ≥7 indicate acceptable RNA quality for sequencing.",
+          "example": "8.5",
+          "category": "Processing",
+          "aliases": [
+            "rinNumber"
+          ]
         },
         {
           "csvHeader": "extractionMethodKit",
           "field": "extractionMethodKit",
-          "label": "Extraction Method/Kit"
+          "label": "Extraction Method/Kit",
+          "description": "Nucleic acid extraction method or commercial kit used (e.g., TRIzol, RNeasy Mini Kit, CTAB, Phenol-Chloroform).",
+          "example": "Qiagen DNeasy Blood & Tissue Kit",
+          "category": "Processing",
+          "aliases": [
+            "extractionKit",
+            "extractionMethod"
+          ]
         },
         {
           "csvHeader": "pcrProtocol",
           "field": "pcrProtocol",
-          "label": "PCR Protocol"
+          "label": "PCR Protocol",
+          "description": "PCR amplification protocol applied to this sample (e.g., Standard PCR, RT-PCR, qRT-PCR, Nested PCR).",
+          "example": "Standard PCR",
+          "category": "Processing",
+          "aliases": [
+            "pcr"
+          ]
         },
         {
           "csvHeader": "libraryPrepProtocol",
           "field": "libraryPrepProtocol",
-          "label": "Library Prep Protocol"
+          "label": "Library Prep Protocol",
+          "description": "Sequencing library preparation kit or protocol used (e.g., NEBNext Ultra II, TruSeq DNA, Nextera XT).",
+          "example": "NEBNext Ultra II FS DNA Library Prep Kit",
+          "category": "Processing",
+          "aliases": [
+            "libraryPrep"
+          ]
         },
         {
           "csvHeader": "sequencingPlatform",
           "field": "sequencingPlatform",
-          "label": "Sequencing Platform"
+          "label": "Sequencing Platform",
+          "description": "Sequencing instrument platform used for this sample (e.g., Illumina MiSeq, Illumina NextSeq, PacBio).",
+          "example": "Illumina MiSeq",
+          "category": "Processing",
+          "aliases": [
+            "sequencer",
+            "platform"
+          ]
         },
         {
           "csvHeader": "runId",
           "field": "runId",
-          "label": "Run ID"
+          "label": "Run ID",
+          "description": "Unique identifier of the sequencing run in which this sample was processed.",
+          "example": "RUN-2024-MiSeq-042",
+          "category": "Tracking"
         },
         {
           "csvHeader": "operator",
           "field": "operator",
-          "label": "Operator"
+          "label": "Operator",
+          "description": "Name or ID of the laboratory technician who performed the extraction or sequencing.",
+          "example": "Y. Tesfaye",
+          "category": "Reception",
+          "aliases": [
+            "technician",
+            "analyst"
+          ]
         },
         {
           "csvHeader": "processingDateTime",
           "field": "processingDateTime",
-          "label": "Processing Date & Time"
+          "label": "Processing Date & Time",
+          "description": "Date and time the sample was processed (extracted, amplified, or sequenced).",
+          "example": "2024-10-07 14:00",
+          "category": "Processing",
+          "aliases": [
+            "processingDate"
+          ]
         },
         {
           "csvHeader": "notes",
           "field": "notes",
-          "label": "Notes"
+          "label": "Notes",
+          "description": "Additional remarks about the sample quality, handling, or special processing requirements.",
+          "example": "Low input DNA; used low-input protocol",
+          "category": "General",
+          "aliases": [
+            "comments",
+            "remarks"
+          ]
         }
       ],
       "columns": [
@@ -126,7 +274,21 @@
           "key": "operator",
           "header": "Operator"
         }
-      ]
+      ],
+      "data": {
+        "autoGeneratedFields": [
+          {
+            "key": "accessionNumber",
+            "label": "Accession Number",
+            "description": "System-generated laboratory accession number"
+          },
+          {
+            "key": "barcodeQrCode",
+            "label": "Barcode/QR Code",
+            "description": "System-generated scannable identifier"
+          }
+        ]
+      }
     },
     {
       "order": 2,
@@ -192,10 +354,23 @@
       "content": "Storage & Environmental Monitoring - Physical storage management, temperature monitoring, and sample lifecycle tracking",
       "data": {
         "storageConditions": [
-          { "id": "FROZEN_MINUS80", "label": "Ultra-Low Frozen (-80°C) – RNA / sensitive DNA" },
-          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C) – DNA / PCR products", "default": true },
-          { "id": "LIQUID_NITROGEN", "label": "Liquid Nitrogen (-196°C) – Long-term preservation" },
-          { "id": "REFRIGERATED", "label": "Refrigerated (2-8°C) – Short-term use" }
+          {
+            "id": "FROZEN_MINUS80",
+            "label": "Ultra-Low Frozen (-80°C) – RNA / sensitive DNA"
+          },
+          {
+            "id": "FROZEN_MINUS20",
+            "label": "Frozen (-20°C) – DNA / PCR products",
+            "default": true
+          },
+          {
+            "id": "LIQUID_NITROGEN",
+            "label": "Liquid Nitrogen (-196°C) – Long-term preservation"
+          },
+          {
+            "id": "REFRIGERATED",
+            "label": "Refrigerated (2-8°C) – Short-term use"
+          }
         ],
         "defaultRetentionYears": 10
       }

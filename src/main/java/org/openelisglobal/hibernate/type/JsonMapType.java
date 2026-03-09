@@ -82,14 +82,18 @@ public class JsonMapType implements UserType {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Object deepCopy(Object value) throws HibernateException {
         if (value == null) {
             return null;
         }
-        // Create a deep copy of the map
-        Map<String, Object> original = (Map<String, Object>) value;
-        return new HashMap<>(original);
+        try {
+            // Serialize then deserialize to produce a true deep copy, so nested lists/maps
+            // (e.g. manifestColumns → aliases) are independent of the original.
+            String json = OBJECT_MAPPER.writeValueAsString(value);
+            return OBJECT_MAPPER.readValue(json, MAP_TYPE_REF);
+        } catch (JsonProcessingException ex) {
+            throw new HibernateException("Failed to deep-copy JSONB map: " + ex.getMessage(), ex);
+        }
     }
 
     @Override

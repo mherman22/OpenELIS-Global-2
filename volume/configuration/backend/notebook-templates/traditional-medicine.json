@@ -7,6 +7,12 @@
   "objective": "Complete sample-centric workflow for traditional and modern medicine research from initial sample intake through product formulation and archival",
   "protocol": "TMMRD - Traditional & Modern Medicine Research & Development",
   "content": "8-stage comprehensive workflow: (1) Sample Intake & Registration, (2) Authentication, (3) Storage & Herbarium, (4) Sample Preparation, (5) Extraction, (6) Analytical Pathways (dual-path), (7) Product Development & Testing, (8) Formulation & Archival per TMMRD SRS",
+  "tags": [
+    "traditional-medicine",
+    "natural-products",
+    "herbal",
+    "ethnopharmacology"
+  ],
   "status": "ACTIVE",
   "pages": [
     {
@@ -20,78 +26,195 @@
           "csvHeader": "sample_id",
           "field": "groupId",
           "label": "Sample ID",
-          "required": true
+          "required": true,
+          "description": "Unique identifier assigned to the plant material or traditional medicine sample at intake.",
+          "example": "TMMRD-2024-P0018",
+          "aliases": [
+            "id"
+          ]
         },
         {
           "csvHeader": "sample_category",
           "field": "sampleType",
           "label": "Sample Category",
-          "required": true
+          "required": true,
+          "description": "Category of the traditional medicine sample (e.g., crude plant material, extract, formulation, isolate).",
+          "example": "Crude Plant Material",
+          "validValues": [
+            "Dried Herb",
+            "Liquid Extract",
+            "Plant Material",
+            "Powder",
+            "Resin",
+            "Essential Oil",
+            "Tincture"
+          ],
+          "aliases": [
+            "category",
+            "type"
+          ]
         },
         {
           "csvHeader": "collection_date",
           "field": "collectionDate",
-          "label": "Collection Date"
+          "label": "Collection Date",
+          "required": true,
+          "description": "Date the plant material or sample was collected from the field or source.",
+          "example": "2024-03-22",
+          "category": "Sample Metadata",
+          "aliases": [
+            "collectedDate",
+            "samplingDate"
+          ]
         },
         {
           "csvHeader": "source_type",
           "field": "sourceType",
-          "label": "Source Type"
+          "label": "Source Type",
+          "required": true,
+          "description": "Type of source from which the sample was obtained (e.g., wild-collected, cultivated, market sample, traditional healer).",
+          "example": "Wild-collected",
+          "category": "Sample Metadata",
+          "validValues": [
+            "Wild-harvested",
+            "Cultivated",
+            "Market-sourced",
+            "Donated",
+            "Laboratory Strain"
+          ],
+          "aliases": [
+            "source"
+          ]
         },
         {
           "csvHeader": "origin_location",
           "field": "originLocation",
-          "label": "Origin Location"
+          "label": "Origin Location",
+          "description": "Geographic location or region where the sample was collected or sourced.",
+          "example": "Bale Mountains National Park, Oromia",
+          "category": "Sample Metadata",
+          "aliases": [
+            "geographicOrigin",
+            "habitat"
+          ]
         },
         {
           "csvHeader": "collection_site",
           "field": "collectionSite",
-          "label": "Collection Site"
+          "label": "Collection Site",
+          "required": true,
+          "description": "Specific collection site (GPS coordinates or landmark description).",
+          "example": "7.8°N 40.0°E, altitude 2800m",
+          "category": "Sample Metadata",
+          "aliases": [
+            "collectionLocation",
+            "origin"
+          ]
         },
         {
           "csvHeader": "collected_by",
           "field": "collectedBy",
-          "label": "Collected By"
+          "label": "Collected By",
+          "description": "Name of the researcher, ethnobotanist, or collaborator who collected the sample.",
+          "example": "Dr. E. Haile (Ethnobotany Unit)",
+          "category": "Reception",
+          "aliases": [
+            "collector",
+            "sampledBy"
+          ]
         },
         {
           "csvHeader": "local_name",
           "field": "localName",
-          "label": "Local Name"
+          "label": "Local Name",
+          "description": "Local or vernacular name used for the plant in the collection area.",
+          "example": "Birbirraa (Oromo)",
+          "category": "Identification",
+          "aliases": [
+            "commonName",
+            "vernacularName"
+          ]
         },
         {
           "csvHeader": "scientific_name",
           "field": "scientificName",
-          "label": "Scientific Name"
+          "label": "Scientific Name",
+          "required": true,
+          "description": "Scientific (Latin binomial) name of the plant species, if identified.",
+          "example": "Hagenia abyssinica",
+          "category": "Identification",
+          "aliases": [
+            "binomialName"
+          ]
         },
         {
           "csvHeader": "species",
           "field": "species",
-          "label": "Species"
+          "label": "Species",
+          "description": "Species epithet or short identifier used for tracking within the laboratory system.",
+          "example": "abyssinica",
+          "category": "Identification"
         },
         {
           "csvHeader": "plant_part",
           "field": "plantPart",
-          "label": "Plant Part"
+          "label": "Plant Part",
+          "description": "Part of the plant collected (e.g., leaves, root bark, seeds, flowers, whole plant).",
+          "example": "Female flowers",
+          "category": "Sample Metadata",
+          "aliases": [
+            "part"
+          ]
         },
         {
           "csvHeader": "sample_condition",
           "field": "sampleCondition",
-          "label": "Sample Condition"
+          "label": "Sample Condition",
+          "description": "Physical state and condition of the sample at the time of receipt.",
+          "example": "Fresh; no signs of mold",
+          "category": "Reception",
+          "aliases": [
+            "condition",
+            "state"
+          ]
         },
         {
           "csvHeader": "intended_use",
           "field": "intendedUse",
-          "label": "Intended Use"
+          "label": "Intended Use",
+          "description": "Proposed research use or traditional medicinal application documented for this sample.",
+          "example": "Anthelmintic activity screening",
+          "category": "General",
+          "aliases": [
+            "purpose",
+            "use"
+          ]
         },
         {
           "csvHeader": "num_of_samples",
           "field": "numOfSamples",
-          "label": "Number of Samples"
+          "label": "Number of Samples",
+          "description": "Total number of individual sample units or aliquots in this submission.",
+          "example": "3",
+          "category": "Sample Metadata",
+          "aliases": [
+            "numberOfSamples",
+            "quantity",
+            "count"
+          ]
         },
         {
           "csvHeader": "notes",
           "field": "notes",
-          "label": "Notes"
+          "label": "Notes",
+          "description": "Additional observations, handling instructions, or ethnobotanical notes.",
+          "example": "Collected during dry season; voucher deposited at ETH herbarium",
+          "category": "General",
+          "aliases": [
+            "comments",
+            "remarks",
+            "observations"
+          ]
         }
       ],
       "columns": [
@@ -111,7 +234,21 @@
           "key": "plantPart",
           "header": "Plant Part"
         }
-      ]
+      ],
+      "data": {
+        "autoGeneratedFields": [
+          {
+            "key": "accessionNumber",
+            "label": "Accession Number",
+            "description": "System-generated laboratory accession number"
+          },
+          {
+            "key": "barcodeQrCode",
+            "label": "Barcode/QR Code",
+            "description": "System-generated scannable identifier"
+          }
+        ]
+      }
     },
     {
       "order": 2,
@@ -128,15 +265,36 @@
       "content": "Storage & Herbarium Placement - Sample preservation and herbarium management",
       "data": {
         "storageConditions": [
-          { "id": "REFRIGERATED", "label": "Refrigerated (2-8°C) – Fresh samples", "default": true },
-          { "id": "ROOM_TEMP", "label": "Room Temperature – Dried samples" },
-          { "id": "FIXED_ALCOHOL", "label": "Fixative / Alcohol Preservation" },
-          { "id": "FROZEN_MINUS20", "label": "Frozen (-20°C)" }
+          {
+            "id": "REFRIGERATED",
+            "label": "Refrigerated (2-8°C) – Fresh samples",
+            "default": true
+          },
+          {
+            "id": "ROOM_TEMP",
+            "label": "Room Temperature – Dried samples"
+          },
+          {
+            "id": "FIXED_ALCOHOL",
+            "label": "Fixative / Alcohol Preservation"
+          },
+          {
+            "id": "FROZEN_MINUS20",
+            "label": "Frozen (-20°C)"
+          }
         ],
         "defaultRetentionYears": 25,
         "additionalFields": [
-          { "key": "specimenId", "label": "Herbarium Specimen ID (if applicable)", "type": "text" },
-          { "key": "preservationMethod", "label": "Preservation Method", "type": "text" }
+          {
+            "key": "specimenId",
+            "label": "Herbarium Specimen ID (if applicable)",
+            "type": "text"
+          },
+          {
+            "key": "preservationMethod",
+            "label": "Preservation Method",
+            "type": "text"
+          }
         ]
       }
     },

@@ -321,7 +321,8 @@ public class NoteBookServiceImpl extends AuditableBaseObjectServiceImpl<NoteBook
                 displayBean.setTypeName(noteBook.getType().getDictEntry());
             }
 
-            displayBean.setDateCreated(DateUtil.formatDateAsText(noteBook.getDateCreated()));
+            displayBean.setDateCreated(
+                    noteBook.getDateCreated() != null ? DateUtil.formatDateAsText(noteBook.getDateCreated()) : null);
             displayBean.setStatus(noteBook.getStatus());
             displayBean.setIsTemplate(noteBook.getIsTemplate());
             displayBean.setEntriesCount(noteBook.getEntries().size());
@@ -466,7 +467,8 @@ public class NoteBookServiceImpl extends AuditableBaseObjectServiceImpl<NoteBook
                 fullDisplayBean.setTypeName(noteBook.getType().getDictEntry());
             }
             fullDisplayBean.setTags(noteBook.getTags());
-            fullDisplayBean.setDateCreated(DateUtil.formatDateAsText(noteBook.getDateCreated()));
+            fullDisplayBean.setDateCreated(
+                    noteBook.getDateCreated() != null ? DateUtil.formatDateAsText(noteBook.getDateCreated()) : null);
             fullDisplayBean.setStatus(noteBook.getStatus());
             fullDisplayBean.setContent(noteBook.getContent());
             fullDisplayBean.setObjective(noteBook.getObjective());

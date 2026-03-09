@@ -316,6 +316,7 @@ const PAGE_TYPE_REGISTRY = {
   generic_sample_storage: SampleStoragePage,
   generic_disposal: EndOfProjectArchivingPage,
   generic_reporting: ReportingPage,
+  generic_environmental_monitor: BiorepositoryEnvironmentalMonitoringPage,
 };
 
 export default PAGE_TYPE_REGISTRY;

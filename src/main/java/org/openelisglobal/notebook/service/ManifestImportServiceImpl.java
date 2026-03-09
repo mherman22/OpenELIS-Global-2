@@ -186,7 +186,11 @@ public class ManifestImportServiceImpl implements ManifestImportService {
             TypeOfSample sampleType = typeOfSampleService.getTypeOfSampleByDescriptionAndDomain(searchType, true);
 
             if (sampleType == null) {
-                errors.add(new ParseError(row.rowNumber(), "sample_type", "Unknown sample type: " + row.sampleType()));
+                errors.add(new ParseError(row.rowNumber(), "sample_type",
+                        "Sample type '" + row.sampleType() + "' is not registered in the system. "
+                                + "Ask an administrator to add it to the sample type catalog, or verify spelling. "
+                                + "Tip: define validValues in the lab's manifestColumns config to enable "
+                                + "config-driven validation instead of the system catalog lookup."));
                 continue;
             }
 

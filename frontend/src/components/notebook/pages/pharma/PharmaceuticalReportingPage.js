@@ -164,19 +164,31 @@ function PharmaceuticalReportingPage({
     coaGenerated: 0,
   });
 
-  // Parse QC parameters from page content
+  // Parse QC parameters — 3-tier priority:
+  // 1. pageData.content (user-edited, saved via /content endpoint with audit trail)
+  // 2. pageData.config.qualityControlParameters (template-seeded default from JSON config)
+  // 3. defaultQcParams (hardcoded fallback)
   const parseQcParameters = useCallback(() => {
-    if (!pageData?.content) return null;
-    try {
-      const content =
-        typeof pageData.content === "string"
-          ? JSON.parse(pageData.content)
-          : pageData.content;
-      return content?.qualityControlParameters || null;
-    } catch {
-      return null;
+    // Tier 1: user-saved content takes priority (preserves user customisations)
+    if (pageData?.content) {
+      try {
+        const content =
+          typeof pageData.content === "string"
+            ? JSON.parse(pageData.content)
+            : pageData.content;
+        if (content?.qualityControlParameters) {
+          return content.qualityControlParameters;
+        }
+      } catch {
+        // content is a plain string (description), fall through
+      }
     }
-  }, [pageData?.content]);
+    // Tier 2: template-seeded config (pageData.config populated by NotebookTemplateConfigurationHandler)
+    if (pageData?.config?.qualityControlParameters) {
+      return pageData.config.qualityControlParameters;
+    }
+    return null;
+  }, [pageData?.content, pageData?.config]);
 
   // Local state for QC parameters (allows updates without waiting for parent refresh)
   const [savedQcParams, setSavedQcParams] = useState(null);

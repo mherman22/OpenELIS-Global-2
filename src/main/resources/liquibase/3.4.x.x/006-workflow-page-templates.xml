@@ -60,5 +60,91 @@
         </rollback>
     </changeSet>
 
+    <!-- ======================================================== -->
+    <!-- SEED GENERIC PAGE TYPES -->
+    <!-- These page types work for any lab via JSON config alone — -->
+    <!-- no per-lab React or Java code required.                   -->
+    <!-- ======================================================== -->
+    <changeSet id="seed-generic-workflow-page-templates" author="openelis-generic-notebook">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="workflow_page_template" schemaName="clinlims"/>
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM clinlims.workflow_page_template WHERE page_type = 'generic_sample_reception'
+            </sqlCheck>
+        </preConditions>
+        <comment>Seed generic page types usable by any lab without custom code</comment>
+
+        <insert tableName="workflow_page_template" schemaName="clinlims">
+            <column name="id" valueSequenceNext="workflow_page_template_seq"/>
+            <column name="name" value="Sample Reception &amp; Registration"/>
+            <column name="display_key" value="notebook.page.generic_sample_reception"/>
+            <column name="description" value="Config-driven sample intake: manifest CSV import, column mapping, barcode generation, and sample grid. Driven entirely by manifestColumns in page config JSON."/>
+            <column name="page_type" value="generic_sample_reception"/>
+            <column name="workflow_category" value="reception"/>
+            <column name="display_order" valueNumeric="10"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="workflow_page_template" schemaName="clinlims">
+            <column name="id" valueSequenceNext="workflow_page_template_seq"/>
+            <column name="name" value="Quality Check"/>
+            <column name="display_key" value="notebook.page.generic_quality_check"/>
+            <column name="description" value="Config-driven QC page with checklist sections, pass/fail decision, and optional free-text fields. Driven by qcSections and qcResultOptions in page config JSON."/>
+            <column name="page_type" value="generic_quality_check"/>
+            <column name="workflow_category" value="quality"/>
+            <column name="display_order" valueNumeric="20"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="workflow_page_template" schemaName="clinlims">
+            <column name="id" valueSequenceNext="workflow_page_template_seq"/>
+            <column name="name" value="Sample Processing"/>
+            <column name="display_key" value="notebook.page.generic_sample_processing"/>
+            <column name="description" value="Generic mid-workflow processing step with configurable data fields. Use additionalFields in page config JSON to define lab-specific inputs."/>
+            <column name="page_type" value="generic_sample_processing"/>
+            <column name="workflow_category" value="processing"/>
+            <column name="display_order" valueNumeric="30"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="workflow_page_template" schemaName="clinlims">
+            <column name="id" valueSequenceNext="workflow_page_template_seq"/>
+            <column name="name" value="Storage &amp; Retention"/>
+            <column name="display_key" value="notebook.page.generic_storage"/>
+            <column name="description" value="Config-driven storage assignment with hierarchical location selector, retention period tracking, and temperature condition selection. Driven by storageConditions and defaultRetentionYears in page config JSON."/>
+            <column name="page_type" value="generic_storage"/>
+            <column name="workflow_category" value="storage"/>
+            <column name="display_order" valueNumeric="40"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="workflow_page_template" schemaName="clinlims">
+            <column name="id" valueSequenceNext="workflow_page_template_seq"/>
+            <column name="name" value="Reporting &amp; Data Export"/>
+            <column name="display_key" value="notebook.page.generic_reporting"/>
+            <column name="description" value="Generic reporting step for result compilation, review, approval, and export. Suitable for any lab workflow that requires a sign-off and distribution step."/>
+            <column name="page_type" value="generic_reporting"/>
+            <column name="workflow_category" value="reporting"/>
+            <column name="display_order" valueNumeric="50"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="workflow_page_template" schemaName="clinlims">
+            <column name="id" valueSequenceNext="workflow_page_template_seq"/>
+            <column name="name" value="Disposal &amp; Archiving"/>
+            <column name="display_key" value="notebook.page.generic_disposal"/>
+            <column name="description" value="End-of-project sample disposal and record archiving. Tracks disposal method, documentation, and data archival location."/>
+            <column name="page_type" value="generic_disposal"/>
+            <column name="workflow_category" value="archiving"/>
+            <column name="display_order" valueNumeric="60"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="workflow_page_template" schemaName="clinlims">
+                <where>page_type IN ('generic_sample_reception','generic_quality_check','generic_sample_processing','generic_storage','generic_reporting','generic_disposal')</where>
+            </delete>
+        </rollback>
+    </changeSet>
 
 </databaseChangeLog>

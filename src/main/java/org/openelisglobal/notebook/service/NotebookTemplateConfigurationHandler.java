@@ -192,6 +192,7 @@ public class NotebookTemplateConfigurationHandler implements DomainConfiguration
             page.setInstructions(textOrNull(pageNode, "instructions"));
             page.setContent(textOrNull(pageNode, "content"));
             page.setCompleted(false);
+            page.setSysUserId("1");
             Map<String, Object> schema = buildPageSchema(pageNode);
             if (!schema.isEmpty()) {
                 page.setConfig(schema);
@@ -234,6 +235,19 @@ public class NotebookTemplateConfigurationHandler implements DomainConfiguration
             template.setStatus(NoteBook.NoteBookStatus.ACTIVE);
         }
 
+        // Seed template tags from JSON
+        JsonNode tagsNode = root.get("tags");
+        if (tagsNode != null && tagsNode.isArray()) {
+            for (JsonNode tagNode : tagsNode) {
+                String tag = tagNode.asText("").trim();
+                if (!tag.isEmpty()) {
+                    template.getTags().add(tag);
+                }
+            }
+        }
+
+        template.setDateCreated(new java.util.Date());
+        template.setSysUserId("1");
         noteBookDAO.insert(template);
         LogEvent.logInfo(this.getClass().getSimpleName(), "createTemplate",
                 "Created notebook template '" + title + "' from " + fileName);
@@ -241,13 +255,19 @@ public class NotebookTemplateConfigurationHandler implements DomainConfiguration
     }
 
     /**
-     * Builds the page schema data map from a JSON page node.
+     * Builds the page schema map from a JSON page node.
      * <p>
-     * Reads top-level {@code manifestColumns} / {@code columns} arrays, then reads
-     * all fields from the optional {@code data} object. Both sets of values are
-     * stored in the page's JSONB {@code data} field so the frontend can drive
-     * generic QC, storage, and manifest behaviour from config without any new Java
-     * or React code per lab.
+     * Reads top-level {@code manifestColumns} / {@code columns} arrays (used by
+     * {@code generic_sample_reception} pages), then merges all keys from the
+     * optional {@code data} object (used for {@code qcSections},
+     * {@code storageConditions}, {@code additionalFields}, etc.). The resulting map
+     * is stored in the page's JSONB {@code config} column — a read-only template
+     * definition that the frontend reads to drive generic QC, storage, and manifest
+     * behaviour without any per-lab Java or React code.
+     *
+     * <p>
+     * The {@code config} column is never written by end-user API calls; only this
+     * handler (on application startup) may update it.
      */
     private Map<String, Object> buildPageSchema(JsonNode pageNode) {
         Map<String, Object> schema = new HashMap<>();

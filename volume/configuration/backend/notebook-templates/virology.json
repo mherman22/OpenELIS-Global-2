@@ -7,6 +7,12 @@
   "objective": "Complete virology and vaccine production workflow from sample intake through virus culture to vaccine development",
   "protocol": "Standard Virology and Vaccine Production Protocol",
   "content": "Virology and Vaccine Unit notebook template with 14 predefined workflow pages from sample intake through preclinical and clinical trials.",
+  "tags": [
+    "virology",
+    "vaccine",
+    "virus-culture",
+    "serology"
+  ],
   "status": "ACTIVE",
   "pages": [
     {
@@ -20,98 +26,230 @@
           "csvHeader": "sampleId",
           "field": "groupId",
           "label": "Sample ID",
-          "required": true
+          "required": true,
+          "description": "Unique identifier assigned to the clinical or research sample at intake.",
+          "example": "VIR-2024-0010",
+          "aliases": [
+            "id"
+          ]
         },
         {
           "csvHeader": "sampleType",
           "field": "sampleType",
           "label": "Sample Type",
-          "required": true
+          "required": true,
+          "description": "Type of material (e.g., clinical specimen, virus stock, cell culture supernatant).",
+          "example": "Nasopharyngeal Swab",
+          "validValues": [
+            "Serum",
+            "Plasma",
+            "Nasopharyngeal Swab",
+            "Tissue",
+            "CSF",
+            "Stool",
+            "Throat Swab",
+            "Bronchoalveolar Lavage"
+          ],
+          "aliases": [
+            "type"
+          ]
         },
         {
           "csvHeader": "collectionDateTime",
           "field": "collectionDate",
-          "label": "Collection Date & Time"
+          "label": "Collection Date & Time",
+          "description": "Date and time the sample was collected or produced.",
+          "example": "2024-06-01 14:00",
+          "category": "Sample Metadata",
+          "aliases": [
+            "collectionDate"
+          ]
         },
         {
           "csvHeader": "source",
           "field": "source",
-          "label": "Source"
+          "label": "Source",
+          "required": true,
+          "description": "Origin of the sample — patient, animal model, environmental isolate, or cell culture.",
+          "example": "Patient",
+          "category": "Sample Metadata",
+          "aliases": [
+            "origin"
+          ]
         },
         {
           "csvHeader": "receptionDateTime",
           "field": "receptionDateTime",
-          "label": "Reception Date & Time"
+          "label": "Reception Date & Time",
+          "required": true,
+          "description": "Date and time the sample was formally received at the virology unit.",
+          "example": "2024-06-01 16:30",
+          "category": "Reception",
+          "aliases": [
+            "receptionDate",
+            "receivedDate"
+          ]
         },
         {
           "csvHeader": "testType",
           "field": "testType",
-          "label": "Test Type"
+          "label": "Test Type",
+          "required": true,
+          "description": "Specific test or assay requested for this sample (e.g., PCR, serology, culture).",
+          "example": "RT-PCR",
+          "category": "Processing",
+          "aliases": [
+            "test"
+          ]
         },
         {
           "csvHeader": "projectStudyAssociation",
           "field": "projectStudyAssociation",
-          "label": "Project/Study"
+          "label": "Project/Study",
+          "required": true,
+          "description": "Name or ID of the research project or study this sample is linked to.",
+          "example": "Influenza Surveillance 2024",
+          "category": "Tracking",
+          "aliases": [
+            "project",
+            "study"
+          ]
         },
         {
           "csvHeader": "batchId",
           "field": "batchId",
-          "label": "Batch ID"
+          "label": "Batch ID",
+          "description": "Identifier for the production batch this sample belongs to.",
+          "example": "BATCH-VIR-2024-005",
+          "category": "Tracking",
+          "aliases": [
+            "batch"
+          ]
         },
         {
           "csvHeader": "productionStage",
           "field": "productionStage",
-          "label": "Production Stage"
+          "label": "Production Stage",
+          "description": "Current stage in the virus production or vaccine development pipeline.",
+          "example": "Seed Virus Expansion",
+          "category": "Processing",
+          "aliases": [
+            "stage"
+          ]
         },
         {
           "csvHeader": "cellLineUsed",
           "field": "cellLineUsed",
-          "label": "Cell Line Used"
+          "label": "Cell Line Used",
+          "description": "Name of the cell line used for virus propagation or culture.",
+          "example": "Vero E6",
+          "category": "Processing",
+          "aliases": [
+            "cellLine"
+          ]
         },
         {
           "csvHeader": "passageNumber",
           "field": "passageNumber",
-          "label": "Passage Number"
+          "label": "Passage Number",
+          "description": "Number of times the virus or cell culture has been serially passaged.",
+          "example": "P3",
+          "category": "Processing",
+          "aliases": [
+            "passage"
+          ]
         },
         {
           "csvHeader": "titerValues",
           "field": "titerValues",
-          "label": "Titer Values"
+          "label": "Titer Values",
+          "description": "Quantitative measure of viral concentration (e.g., TCID50/mL, PFU/mL).",
+          "example": "1.2 × 10^7 TCID50/mL",
+          "category": "Processing",
+          "aliases": [
+            "titer"
+          ]
         },
         {
           "csvHeader": "qualityControlResults",
           "field": "qualityControlResults",
-          "label": "QC Results"
+          "label": "QC Results",
+          "description": "Summary result of quality control tests performed on this batch.",
+          "example": "Pass",
+          "category": "Processing",
+          "aliases": [
+            "qc"
+          ]
         },
         {
           "csvHeader": "formulationDetails",
           "field": "formulationDetails",
-          "label": "Formulation Details"
+          "label": "Formulation Details",
+          "description": "Description of stabilizers, adjuvants, or buffers added during formulation.",
+          "example": "Sucrose 5% w/v; PBS pH 7.4",
+          "category": "Processing",
+          "aliases": [
+            "formulation"
+          ]
         },
         {
           "csvHeader": "storageConditionOnArrival",
           "field": "storageConditionOnArrival",
-          "label": "Storage Condition on Arrival"
+          "label": "Storage Condition on Arrival",
+          "description": "Temperature or storage state of the sample when it arrived at the laboratory.",
+          "example": "Frozen (-80°C)",
+          "category": "Reception",
+          "aliases": [
+            "storageCondition",
+            "storage"
+          ]
         },
         {
           "csvHeader": "transportTemperature",
           "field": "transportTemperature",
-          "label": "Transport Temperature"
+          "label": "Transport Temperature",
+          "description": "Temperature maintained during transit from origin to the laboratory.",
+          "example": "-80°C (dry ice)",
+          "category": "Reception",
+          "aliases": [
+            "temperature",
+            "temp"
+          ]
         },
         {
           "csvHeader": "receivingPersonnelName",
           "field": "receivingPersonnelName",
-          "label": "Receiving Personnel"
+          "label": "Receiving Personnel",
+          "description": "Name or staff ID of the laboratory personnel who received the sample.",
+          "example": "H. Alemu",
+          "category": "Reception",
+          "aliases": [
+            "receivedBy",
+            "receiver"
+          ]
         },
         {
           "csvHeader": "manifestVerificationStatus",
           "field": "manifestVerificationStatus",
-          "label": "Manifest Verification Status"
+          "label": "Manifest Verification Status",
+          "description": "Status of verification of this sample against the delivery manifest.",
+          "example": "Verified",
+          "category": "Tracking",
+          "aliases": [
+            "verificationStatus",
+            "verified"
+          ]
         },
         {
           "csvHeader": "notes",
           "field": "notes",
-          "label": "Notes"
+          "label": "Notes",
+          "description": "Any additional observations or comments about this sample at intake.",
+          "example": "Partial thaw detected on arrival; stored immediately",
+          "category": "General",
+          "aliases": [
+            "comments"
+          ]
         }
       ],
       "columns": [
@@ -131,7 +269,21 @@
           "key": "productionStage",
           "header": "Production Stage"
         }
-      ]
+      ],
+      "data": {
+        "autoGeneratedFields": [
+          {
+            "key": "accessionNumber",
+            "label": "Accession Number",
+            "description": "System-generated laboratory accession number"
+          },
+          {
+            "key": "barcodeQrCode",
+            "label": "Barcode/QR Code",
+            "description": "System-generated scannable identifier"
+          }
+        ]
+      }
     },
     {
       "order": 2,

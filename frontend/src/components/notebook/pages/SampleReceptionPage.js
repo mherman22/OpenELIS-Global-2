@@ -25,7 +25,7 @@ import "../workflow/NotebookWorkflow.css";
  * SampleReceptionPage — generic sample reception page used by all labs that
  * declare {@code "pageType": "generic_sample_reception"} in their JSON config.
  *
- * Behaviour is driven by two optional arrays stored in {@code pageData.data}:
+ * Behaviour is driven by two optional arrays stored in {@code pageData.config} (falls back to {@code pageData.data}):
  * - {@code manifestColumns} — column schema for the generic import modal
  * - {@code columns}         — extra columns to show in the sample grid
  *   (each item: {@code { key: "fieldKey", header: "Display Header" }})
@@ -47,16 +47,19 @@ function SampleReceptionPage({
   const intl = useIntl();
   const componentMounted = useRef(false);
 
+  // Read config from pageData.config (template-seeded, read-only).
+  // Fall back to pageData.data for backwards-compat with rows created before migration 030.
+  const cfg = pageData?.config ?? pageData?.data ?? {};
+
   // Extra columns declared in the JSON config for this lab
   const extraColumns = useMemo(
-    () => pageData?.data?.columns ?? [],
-    [pageData?.data?.columns],
+    () => cfg?.columns ?? [],
+    [pageData?.config, pageData?.data],
   );
 
   // Whether this page has a generic manifest schema configured
   const hasManifestConfig =
-    Array.isArray(pageData?.data?.manifestColumns) &&
-    pageData.data.manifestColumns.length > 0;
+    Array.isArray(cfg?.manifestColumns) && cfg.manifestColumns.length > 0;
 
   // State
   const [samples, setSamples] = useState([]);
@@ -320,7 +323,7 @@ function SampleReceptionPage({
         />
       )}
 
-      {/* Sample Grid — extra columns come from pageData.data.columns */}
+      {/* Sample Grid — extra columns come from pageData.config.columns */}
       <div className="sample-grid-container">
         <SampleGrid
           samples={samples}
@@ -351,7 +354,7 @@ function SampleReceptionPage({
         </div>
       )}
 
-      {/* Generic Manifest Import Modal — driven entirely by pageData.data.manifestColumns */}
+      {/* Generic Manifest Import Modal — driven entirely by pageData.config.manifestColumns */}
       {hasManifestConfig && (
         <GenericManifestImportModal
           open={importModalOpen}
