@@ -86,4 +86,11 @@
     <include file="liquibase/3.5.x.x/029-electronic-signature.xml"/>
     <include file="liquibase/3.5.x.x/030-add-notebook-page-config-column.xml"/>
 
+    <!-- ======================================================== -->
+    <!-- FHIR-Native Generic Notebook Engine (M1)                 -->
+    <!-- Adds questionnaire_uuid to notebook for FHIR persistence -->
+    <!-- ======================================================== -->
+
+    <include file="liquibase/3.5.x.x/031-add-notebook-questionnaire-uuid.xml"/>
+
 </databaseChangeLog>

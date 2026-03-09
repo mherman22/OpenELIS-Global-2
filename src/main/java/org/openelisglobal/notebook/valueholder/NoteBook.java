@@ -152,6 +152,9 @@ public class NoteBook extends BaseObject<Integer> {
     @Column(name = "questionnaire_fhir_uuid", columnDefinition = "uuid")
     private UUID questionnaireFhirUuid;
 
+    @Column(name = "questionnaire_uuid")
+    private String questionnaireUuid;
+
     @ManyToMany
     @JoinTable(name = "notebook_organizations", joinColumns = @JoinColumn(name = "notebook_id"), inverseJoinColumns = @JoinColumn(name = "organization_id"))
     private Set<Organization> organizations = new HashSet<>();
@@ -475,5 +478,13 @@ public class NoteBook extends BaseObject<Integer> {
     public void removeChildInstance(NoteBook child) {
         getChildInstances().remove(child);
         child.setParentNotebook(null);
+    }
+
+    public String getQuestionnaireUuid() {
+        return questionnaireUuid;
+    }
+
+    public void setQuestionnaireUuid(String questionnaireUuid) {
+        this.questionnaireUuid = questionnaireUuid;
     }
 }

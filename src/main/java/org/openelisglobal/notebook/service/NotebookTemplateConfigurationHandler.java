@@ -4,9 +4,15 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.hl7.fhir.r4.model.Enumerations;
+import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.Questionnaire;
+import org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent;
+import org.hl7.fhir.r4.model.StringType;
 import org.openelisglobal.common.log.LogEvent;
 import org.openelisglobal.configuration.service.DomainConfigurationHandler;
 import org.openelisglobal.notebook.dao.NoteBookDAO;
@@ -62,6 +68,9 @@ public class NotebookTemplateConfigurationHandler implements DomainConfiguration
 
     @Autowired
     private TestSectionService testSectionService;
+
+    @Autowired
+    private NotebookFhirPersistenceService notebookFhirPersistenceService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -203,6 +212,21 @@ public class NotebookTemplateConfigurationHandler implements DomainConfiguration
 
         LogEvent.logInfo(this.getClass().getSimpleName(), "processConfiguration", "Template '" + title + "' from "
                 + fileName + ": pages created=" + created + ", updated=" + updated + ", skipped=" + skipped);
+
+        // Build a FHIR Questionnaire from the JSON config and persist it
+        try {
+            Questionnaire questionnaire = buildFhirQuestionnaire(root, template);
+            String uuid = notebookFhirPersistenceService.saveOrUpdateQuestionnaire(questionnaire);
+            if (uuid != null && !uuid.isEmpty()) {
+                template.setQuestionnaireUuid(uuid);
+                noteBookDAO.update(template);
+                LogEvent.logInfo(this.getClass().getSimpleName(), "processConfiguration",
+                        "Persisted FHIR Questionnaire for template '" + title + "' with UUID: " + uuid);
+            }
+        } catch (Exception e) {
+            LogEvent.logError(this.getClass().getSimpleName(), "processConfiguration",
+                    "Failed to persist FHIR Questionnaire for template '" + title + "': " + e.getMessage());
+        }
     }
 
     private NoteBook findTemplate(String title) {
@@ -297,6 +321,85 @@ public class NotebookTemplateConfigurationHandler implements DomainConfiguration
         }
 
         return schema;
+    }
+
+    /**
+     * Builds a FHIR R4 Questionnaire from a notebook JSON config root node and its
+     * corresponding NoteBook template entity.
+     *
+     * <p>
+     * The Questionnaire canonical URL is derived from the workflowType:
+     * {@code http://openelis-global.org/notebook/{workflowType}}. Each page in the
+     * JSON becomes a group-type item with extensions carrying page-type and
+     * optional table-data / instructions metadata.
+     */
+    private Questionnaire buildFhirQuestionnaire(JsonNode root, NoteBook template) {
+        Questionnaire questionnaire = new Questionnaire();
+
+        String workflowType = textOrNull(root, "workflowType");
+        if (workflowType == null) {
+            workflowType = "unknown";
+        }
+        questionnaire.setUrl("http://openelis-global.org/notebook/" + workflowType);
+
+        String title = textOrNull(root, "title");
+        if (title != null) {
+            questionnaire.setTitle(title);
+        }
+
+        questionnaire.setStatus(Enumerations.PublicationStatus.ACTIVE);
+
+        JsonNode pagesNode = root.get("pages");
+        if (pagesNode != null && pagesNode.isArray()) {
+            List<QuestionnaireItemComponent> items = new ArrayList<>();
+            for (JsonNode pageNode : pagesNode) {
+                QuestionnaireItemComponent item = new QuestionnaireItemComponent();
+                item.setType(Questionnaire.QuestionnaireItemType.GROUP);
+
+                String pageTitle = textOrNull(pageNode, "title");
+                if (pageTitle != null) {
+                    item.setText(pageTitle);
+                }
+
+                int order = pageNode.has("order") ? pageNode.get("order").asInt() : items.size() + 1;
+                item.setLinkId("page-" + order);
+
+                // Extension: page-type
+                String pageType = textOrNull(pageNode, "pageType");
+                if (pageType != null) {
+                    Extension pageTypeExt = new Extension();
+                    pageTypeExt.setUrl("http://openelis-global.org/page-type");
+                    pageTypeExt.setValue(new StringType(pageType));
+                    item.addExtension(pageTypeExt);
+                }
+
+                // Extension: table-data (from data.availableControls)
+                JsonNode dataNode = pageNode.get("data");
+                if (dataNode != null && dataNode.isObject()) {
+                    JsonNode availableControls = dataNode.get("availableControls");
+                    if (availableControls != null) {
+                        Extension tableDataExt = new Extension();
+                        tableDataExt.setUrl("http://openelis-global.org/table-data");
+                        tableDataExt.setValue(new StringType(availableControls.toString()));
+                        item.addExtension(tableDataExt);
+                    }
+
+                    // Extension: instructions (from data.preparationSteps)
+                    JsonNode preparationSteps = dataNode.get("preparationSteps");
+                    if (preparationSteps != null) {
+                        Extension instructionsExt = new Extension();
+                        instructionsExt.setUrl("http://openelis-global.org/instructions");
+                        instructionsExt.setValue(new StringType(preparationSteps.toString()));
+                        item.addExtension(instructionsExt);
+                    }
+                }
+
+                items.add(item);
+            }
+            questionnaire.setItem(items);
+        }
+
+        return questionnaire;
     }
 
     private String textOrNull(JsonNode node, String field) {
