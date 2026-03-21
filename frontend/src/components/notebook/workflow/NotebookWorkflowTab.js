@@ -316,7 +316,7 @@ function NotebookWorkflowTab({ notebookId, entryId: propEntryId }) {
     }
     // Return null to indicate no known workflow type -
     // renderPageContent will use GenericWorkflowPage
-    return null;
+    return "generic";
   }, [
     notebook?.workflowType,
     entry?.notebook?.workflowType,

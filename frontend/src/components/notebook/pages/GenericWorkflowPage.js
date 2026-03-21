@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Column, Tile, Tag } from "@carbon/react";
 import { Information } from "@carbon/react/icons";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import "../workflow/NotebookWorkflow.css";
 
 /**
@@ -13,21 +13,11 @@ import "../workflow/NotebookWorkflow.css";
  * lab-specific React components.
  *
  * @param {Object} props
- * @param {number} props.entryId - The notebook entry ID
  * @param {Object} props.pageData - The notebook page data from backend
  * @param {Object} props.progress - Page progress {total, completed, percentage}
- * @param {function} props.onProgressUpdate - Callback when progress changes
  * @param {string} props.workflowType - The workflow type from the backend template
  */
-function GenericWorkflowPage({
-  entryId,
-  pageData,
-  progress,
-  onProgressUpdate,
-  workflowType,
-}) {
-  const intl = useIntl();
-
+function GenericWorkflowPage({ pageData, progress, workflowType }) {
   return (
     <div className="generic-workflow-page">
       <Grid fullWidth>
