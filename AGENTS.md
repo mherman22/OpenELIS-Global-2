@@ -126,6 +126,59 @@ Then customize `.env` for your environment (database passwords, domain, etc.).
 - Docker Compose uses `.env` for `${VAR}` substitution in compose files
 - Missing `.env` causes authentication failures and SSL certificate errors
 
+### Configuration Architecture - 12-Factor App Principles
+
+**Philosophy:** Code belongs in Git. Configuration varies by environment.
+
+OpenELIS Global uses a professional, multi-layered configuration strategy:
+
+**1. Code Configurations (In Git — `src/main/resources/`)**
+
+These ship with the application WAR and NEVER vary:
+
+- `application.properties` — Base property defaults
+- `application-{profile}.properties` — Environment-specific defaults
+  - `application-local.properties.example` (dev template)
+  - `application-production.properties` (prod defaults)
+- `configuration/backend/` — Domain configurations (dictionaries, templates,
+  roles, etc.)
+- `SystemConfiguration.properties` — System property defaults
+
+**2. Operator Configuration (Git-excluded — `config/`)**
+
+These are operator-managed and environment-specific:
+
+- `config/secrets/common.properties` (⚠️ **NEVER COMMIT**) — SSL paths, FHIR
+  endpoints, Odoo credentials
+  - Copy from `common.properties.example` and customize
+  - Passed to container as Docker secret via
+    `file:/run/secrets/common.properties`
+- `config/overrides/` — Optional domain config overrides (uncommonly used)
+- `config/nginx/` — Nginx reverse proxy configuration
+- `config/database/` — Database initialization scripts
+
+**3. Runtime Data (Named Docker Volumes)**
+
+These are NOT configuration; they are persistent application state:
+
+- `plugins-vol` — Plugin JARs (installed at runtime)
+- `lucene-vol` — Search index (generated at runtime)
+- `db-data` — PostgreSQL database (managed by Docker)
+
+**Configuration Loading Order (highest wins):**
+
+1. System property defaults (Java hardcoded)
+2. Classpath defaults (`application.properties` in WAR)
+3. Spring profile properties (`application-{profile}.properties` in WAR)
+4. Docker secrets (`/run/secrets/common.properties`)
+5. Operator filesystem overrides (optional bind mount)
+6. Database values (`site_information` table)
+
+**For development:** Create `config/secrets/common.properties` from the example.
+**For production:** Use Docker secrets or Vault; do NOT mount filesystem files.
+
+**See:** `config/README.md` for full documentation on operator configuration.
+
 ---
 
 ## Technology Stack
