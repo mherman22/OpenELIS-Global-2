@@ -15,12 +15,12 @@ services:
     image: postgres:14.4
     restart: always
     env_file:
-      - ./volume/database/database.env
+      - ./config/database/database.env
     ports:
       - "15432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
-      - ./volume/database/dbInit:/docker-entrypoint-initdb.d
+      - ./config/database/dbInit:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-d", "clinlims", "-U", "clinlims"]
       timeout: 45s
@@ -55,9 +55,10 @@ services:
       - ./volume/programs:/var/lib/openelis-global/programs
       - ./volume/logs/oeLogs:/var/lib/openelis-global/logs
       - ./volume/logs/tomcatLogs:/usr/local/tomcat/logs
-      - ./volume/properties/SystemConfiguration.properties:/var/lib/openelis-global/properties/SystemConfiguration.properties
-      - ./volume/analyzer/analyzer-test-map.csv:/var/lib/openelis-global/analyzer/analyzer-test-map.csv
-      - ./volume/menu/menu_config.json:/var/lib/openelis-global/menu/menu_config.json
+      # Optional configuration overrides (uncomment to customize defaults):
+      # - ./config/overrides/SystemConfiguration.properties:/var/lib/openelis-global/properties/SystemConfiguration.properties
+      # - ./config/overrides/analyzer-test-map.csv:/var/lib/openelis-global/analyzer/analyzer-test-map.csv
+      # - ./config/overrides/menu_config.json:/var/lib/openelis-global/menu/menu_config.json
       - ./volume/analyzer-imports:/data/analyzer-imports
       - ../../projects/analyzer-profiles:/data/analyzer-profiles:ro
     secrets:

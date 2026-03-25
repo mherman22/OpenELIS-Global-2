@@ -52,6 +52,13 @@ volume/odoo/*
 volume/branding/*
 volume/lucene/*
 
+# Configuration directory (operator-specific overrides and secrets)
+config/secrets/common.properties
+config/secrets/datasource.password
+# Track example/template files for documentation
+!config/secrets/*.example
+!config/secrets/*.example.properties
+
 # AI agent directories -- generated content (rebuilt by installer scripts)
 # These are compiled from legacy .specify sources and packaged skills, and should not be tracked
 .cursor/commands/
