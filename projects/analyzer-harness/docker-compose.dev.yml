@@ -43,6 +43,7 @@ services:
     environment:
       - DEFAULT_PW=adminADMIN!
       - TZ=Africa/Nairobi
+      - SPRING_PROFILES_ACTIVE=local
       - SPRING_LIQUIBASE_CONTEXTS=test
       - CATALINA_OPTS=-Ddatasource.url=jdbc:postgresql://db:5432/clinlims -Ddatasource.username=clinlims -Dspring.liquibase.contexts=test
     volumes:

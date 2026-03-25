@@ -54,6 +54,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableJpaRepositories(basePackages = { "org.itech", "org.ozeki.sms" })
 @PropertySource("classpath:application.properties")
+@PropertySource(value = "classpath:application-${spring.profiles.active:local}.properties", ignoreResourceNotFound = true)
 @PropertySource("file:/run/secrets/common.properties")
 @PropertySource(value = "file:/run/secrets/extra.properties", ignoreResourceNotFound = true)
 @PropertySource(value = "classpath:SystemConfiguration.properties", ignoreResourceNotFound = true)
