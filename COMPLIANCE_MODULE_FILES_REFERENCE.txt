@@ -1,0 +1,211 @@
+=============================================================================
+COMPLIANCE MODULE - FILES REFERENCE & PATTERN EXAMPLES
+=============================================================================
+Generated: 2026-04-20
+Purpose: Cross-reference guide for examining compliance module against patterns
+
+=============================================================================
+EXISTING COMPLIANCE MODULE FILES
+=============================================================================
+
+Service Layer (Interfaces):
+  /src/main/java/org/openelisglobal/compliance/service/
+    - ComplianceStandardService.java           [INTERFACE - Exists]
+    - ComplianceEvaluationService.java         [INTERFACE - Exists]
+    - ParameterGroupService.java               [INTERFACE - Exists]
+    - ComplianceThresholdService.java          [INTERFACE - Exists]
+    - EvaluationResultService.java             [INTERFACE - Exists]
+    - CSVImportService.java                    [INTERFACE - Exists]
+    - CSVImportServiceImpl.java                 [IMPLEMENTATION - Exists] ✓
+
+Service Layer (Missing):
+    - ComplianceStandardServiceImpl.java        [MISSING - CRITICAL] ✗
+    - ComplianceEvaluationServiceImpl.java      [MISSING - CRITICAL] ✗
+    - ParameterGroupServiceImpl.java            [MISSING - CRITICAL] ✗
+    - ComplianceThresholdServiceImpl.java       [MISSING - CRITICAL] ✗
+    - EvaluationResultServiceImpl.java          [MISSING - CRITICAL] ✗
+
+DAO Layer:
+  /src/main/java/org/openelisglobal/compliance/
+    - dao/ComplianceStandardDAO.java           [INTERFACE - Exists] ✓
+    - daoimpl/ComplianceStandardDAOImpl.java    [IMPLEMENTATION - Exists] ✓
+    
+  [NOTE: Other DAO interfaces/implementations not found]
+
+Form Layer:
+  /src/main/java/org/openelisglobal/compliance/form/
+    - ComplianceStandardConfigMenuForm.java    [Exists] ✓
+
+Controller Layer:
+  /src/main/java/org/openelisglobal/compliance/controller/
+    - ComplianceStandardConfigMenuController.java
+    - rest/ComplianceStandardConfigMenuRestController.java
+    - rest/ComplianceStandardMenuRestController.java
+
+FHIR Layer:
+  /src/main/java/org/openelisglobal/compliance/fhir/
+    - ComplianceFhirTransform.java
+    - providers/ComplianceStandardProvider.java     [Complete] ✓
+    - providers/ComplianceEvaluationProvider.java   [Incomplete] ⚠️
+
+Valueholder (Entity) Layer:
+  /src/main/java/org/openelisglobal/compliance/valueholder/
+    - ComplianceStandard.java
+    - ComplianceEvaluation.java
+    - ParameterGroup.java
+    - ComplianceThreshold.java
+    - EvaluationStatus.java
+    - EvaluationResult.java
+    - ComplianceStandardStatus.java
+    - ThresholdType.java
+    - ValidationError.java
+    - ValidationErrorType.java
+    - ImportStatus.java
+    - ImportResult.java
+
+Test Layer:
+  /src/test/java/org/openelisglobal/compliance/
+    - service/ComplianceStandardServiceTest.java
+    - service/ComplianceEvaluationServiceTest.java
+    - service/ParameterGroupServiceTest.java
+    - service/ComplianceThresholdServiceTest.java
+    - service/CSVImportServiceTest.java
+
+=============================================================================
+REFERENCE EXAMPLES FROM OTHER MODULES
+=============================================================================
+
+PATTERN EXAMPLE 1: Service Implementation
+  File: /src/main/java/org/openelisglobal/organization/service/
+         OrganizationServiceImpl.java
+  Key: Shows proper extends AuditableBaseObjectServiceImpl + interface implementation
+  Pattern: @Service annotation, @Autowired DAO, protected getBaseObjectDAO()
+
+PATTERN EXAMPLE 2: Service Implementation  
+  File: /src/main/java/org/openelisglobal/organization/service/
+         OrganizationContactServiceImpl.java
+  Key: Simpler service with minimal overrides
+  Pattern: Wraps DAO methods with @Transactional boundaries
+
+PATTERN EXAMPLE 3: DAO Implementation
+  File: /src/main/java/org/openelisglobal/dictionary/daoimpl/
+         DictionaryDAOImpl.java
+  Key: Shows HQL query patterns, exception handling, read-only boundaries
+  Pattern: @Component @Transactional class, HQL queries, LogEvent error handling
+
+PATTERN EXAMPLE 4: Form Class
+  File: /src/main/java/org/openelisglobal/dictionary/form/
+         DictionaryForm.java
+  Key: Shows validation annotations, form naming, field structure
+  Pattern: extends BaseForm, @NotBlank @Pattern @Length, setFormName() in constructor
+
+PATTERN EXAMPLE 5: Menu Form
+  File: /src/main/java/org/openelisglobal/compliance/form/
+         ComplianceStandardConfigMenuForm.java [ALREADY IN COMPLIANCE]
+  Key: Shows AdminOptionMenuForm pattern with helper methods
+  Pattern: extends AdminOptionMenuForm<Entity>, filter fields, nested config class
+
+PATTERN EXAMPLE 6: FHIR Provider
+  File: /src/main/java/org/openelisglobal/fhir/providers/
+         OrganizationProvider.java
+  Key: Complete FHIR R4 resource provider with all CRUD ops
+  Pattern: @Component, IResourceProvider, @Read @Create @Update @Delete @Search
+
+PATTERN EXAMPLE 7: FHIR Provider (Compliance)
+  File: /src/main/java/org/openelisglobal/compliance/fhir/providers/
+         ComplianceStandardProvider.java [ALREADY IN COMPLIANCE]
+  Key: Shows complete FHIR provider implementation
+  Pattern: Measure resource mapping, proper error handling, transform integration
+
+PATTERN EXAMPLE 8: Import Service
+  File: /src/main/java/org/openelisglobal/organization/service/
+         OrganizationImportServiceImpl.java
+  Key: Shows scheduled async import with FHIR data fetching
+  Pattern: @Scheduled @Async, @Transactional, pagination, error recovery
+
+PATTERN EXAMPLE 9: Import Service (CSV)
+  File: /src/main/java/org/openelisglobal/compliance/service/
+         CSVImportServiceImpl.java [ALREADY IN COMPLIANCE]
+  Key: Shows CSV security validation, progress tracking, thread safety
+  Pattern: AtomicBoolean/AtomicInteger, ImportResult wrapper, security checks
+
+=============================================================================
+KEY PATTERN LOCATIONS BY DOMAIN
+=============================================================================
+
+Organization Module (Good Reference):
+  ✓ Complete service implementations
+  ✓ DAO implementations with proper HQL
+  ✓ Import service (both FHIR and reference patterns)
+  Location: /src/main/java/org/openelisglobal/organization/
+
+Dictionary Module (DAO Reference):
+  ✓ Excellent DAO query patterns
+  ✓ Complex HQL examples
+  ✓ Error handling patterns
+  Location: /src/main/java/org/openelisglobal/dictionary/
+
+FHIR Module (FHIR Reference):
+  ✓ Multiple provider examples
+  ✓ Transform service patterns
+  ✓ Exception handling for FHIR
+  Location: /src/main/java/org/openelisglobal/fhir/providers/
+
+=============================================================================
+CONSTITUTION REQUIREMENTS (From CLAUDE.md)
+=============================================================================
+
+Critical Requirements for Services:
+  1. @Transactional boundaries ONLY in services (not DAOs, not controllers)
+  2. Compile all data within transaction (prevent LazyInitializationException)
+  3. DAO methods use @Transactional(readOnly=true) for queries
+  4. Services override DAO methods to add business logic
+
+Critical Requirements for DAOs:
+  1. @Component annotation (not @Service)
+  2. Extends BaseDAOImpl<Entity, String>
+  3. HQL only (no native SQL unless critical)
+  4. Proper exception handling with LogEvent
+
+Critical Requirements for Forms:
+  1. Extends BaseForm
+  2. @NotBlank, @Pattern, @Length, @SafeHtml annotations
+  3. setFormName() in constructor
+  4. Private fields with getters/setters
+
+Critical Requirements for FHIR:
+  1. @Component on provider class
+  2. Implements IResourceProvider
+  3. Proper exception handling (InvalidRequestException, ResourceNotFoundException)
+  4. Transform service integration
+
+=============================================================================
+ACTIONABLE NEXT STEPS
+=============================================================================
+
+Priority 1 - CRITICAL (Blocking):
+  [ ] Create ComplianceStandardServiceImpl
+  [ ] Create ComplianceEvaluationServiceImpl
+  [ ] Create ParameterGroupServiceImpl
+  [ ] Create ComplianceThresholdServiceImpl
+  [ ] Create EvaluationResultServiceImpl
+  [ ] Move bulkUpdateStatus from DAO to Service
+
+Priority 2 - HIGH:
+  [ ] Complete ComplianceEvaluationProvider
+  [ ] Verify all @Transactional boundaries
+  [ ] Add null-safety checks to services
+  [ ] Add LogEvent calls for audit trail
+
+Priority 3 - MEDIUM:
+  [ ] Create REST import controller
+  [ ] Add integration tests
+  [ ] Document FHIR resource mappings
+  [ ] Security audit of CSV import
+
+Priority 4 - LOW:
+  [ ] Performance testing
+  [ ] API documentation
+  [ ] Frontend integration testing
+
+=============================================================================
