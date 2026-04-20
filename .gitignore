@@ -144,3 +144,4 @@ frontend/full_vitest_run.log
 
 # Per-PR scratch session notes (never commit)
 PR-*-STATUS-REPORT.md
+frontend/build/

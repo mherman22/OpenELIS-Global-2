@@ -1,0 +1,328 @@
+/* ComplianceStandardForm.css - Carbon-compliant form styles */
+
+.compliance-standard-form {
+  padding: 2rem 0;
+}
+
+.compliance-standard-form__header {
+  margin-bottom: 2rem;
+}
+
+.compliance-standard-form__header h1 {
+  color: var(--cds-text-01);
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  line-height: 1.25;
+}
+
+.compliance-standard-form__header p {
+  color: var(--cds-text-02);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.compliance-standard-form__content {
+  margin-bottom: 2rem;
+}
+
+.compliance-standard-form__section {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--cds-ui-04);
+}
+
+.compliance-standard-form__section:last-child {
+  border-bottom: none;
+}
+
+.compliance-standard-form__section h2 {
+  color: var(--cds-text-01);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  line-height: 1.25;
+}
+
+.compliance-standard-form__actions {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--cds-ui-04);
+}
+
+.compliance-standard-form__actions .cds--btn-set {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+/* Sample types selection */
+.compliance-standard-form__sample-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--cds-field-01);
+  border: 1px solid var(--cds-ui-04);
+  border-radius: 4px;
+  min-height: 3rem;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.compliance-standard-form__sample-types .cds--tag {
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  margin: 0.125rem;
+  user-select: none;
+}
+
+.compliance-standard-form__sample-types .cds--tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.compliance-standard-form__sample-types .cds--tag[data-selected="true"] {
+  background-color: var(--cds-interactive-01);
+  color: var(--cds-text-04);
+}
+
+/* Form field customizations */
+.compliance-standard-form .cds--text-input,
+.compliance-standard-form .cds--text-area,
+.compliance-standard-form .cds--select-input,
+.compliance-standard-form .cds--date-picker-input__wrapper input {
+  background-color: var(--cds-field-01);
+  border: 1px solid var(--cds-ui-04);
+}
+
+.compliance-standard-form .cds--text-input:focus,
+.compliance-standard-form .cds--text-area:focus,
+.compliance-standard-form .cds--select-input:focus,
+.compliance-standard-form .cds--date-picker-input__wrapper input:focus {
+  outline: 2px solid var(--cds-focus);
+  outline-offset: -2px;
+}
+
+.compliance-standard-form .cds--text-input[data-invalid],
+.compliance-standard-form .cds--text-area[data-invalid],
+.compliance-standard-form .cds--select-input[data-invalid] {
+  border-color: var(--cds-support-01);
+  outline: 2px solid var(--cds-support-01);
+}
+
+.compliance-standard-form .cds--form-requirement {
+  color: var(--cds-support-01);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.25;
+  margin-top: 0.25rem;
+}
+
+/* Label styling */
+.compliance-standard-form .cds--label {
+  color: var(--cds-text-02);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Helper text */
+.compliance-standard-form .cds--form__helper-text {
+  color: var(--cds-text-02);
+  font-size: 0.75rem;
+  line-height: 1.25;
+  margin-top: 0.25rem;
+}
+
+/* DatePicker customization */
+.compliance-standard-form .cds--date-picker {
+  position: relative;
+}
+
+.compliance-standard-form .cds--date-picker-input__wrapper {
+  position: relative;
+}
+
+.compliance-standard-form .cds--date-picker__icon {
+  fill: var(--cds-icon-01);
+}
+
+/* TextArea customization */
+.compliance-standard-form .cds--text-area {
+  min-height: 6rem;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.compliance-standard-form .cds--text-area__counter {
+  color: var(--cds-text-02);
+  font-size: 0.75rem;
+  text-align: right;
+  margin-top: 0.25rem;
+}
+
+/* Select customization */
+.compliance-standard-form .cds--select__arrow {
+  fill: var(--cds-icon-01);
+}
+
+.compliance-standard-form .cds--select-input:disabled {
+  background-color: var(--cds-field-disabled-01);
+  color: var(--cds-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Button customizations */
+.compliance-standard-form .cds--btn {
+  font-weight: 600;
+  letter-spacing: 0.16px;
+}
+
+.compliance-standard-form .cds--btn--primary {
+  background-color: var(--cds-interactive-01);
+  border-color: var(--cds-interactive-01);
+  color: var(--cds-text-04);
+}
+
+.compliance-standard-form .cds--btn--primary:hover {
+  background-color: var(--cds-hover-primary);
+  border-color: var(--cds-hover-primary);
+}
+
+.compliance-standard-form .cds--btn--primary:disabled {
+  background-color: var(--cds-interactive-01);
+  border-color: var(--cds-interactive-01);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.compliance-standard-form .cds--btn--secondary {
+  background-color: transparent;
+  border-color: var(--cds-interactive-01);
+  color: var(--cds-interactive-01);
+}
+
+.compliance-standard-form .cds--btn--secondary:hover {
+  background-color: var(--cds-hover-secondary);
+}
+
+/* Loading states */
+.compliance-standard-form .cds--inline-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.compliance-standard-form .cds--inline-loading__text {
+  color: var(--cds-text-02);
+  font-size: 0.875rem;
+}
+
+/* Modal customizations */
+.compliance-standard-form .cds--modal-container {
+  background-color: var(--cds-ui-01);
+}
+
+.compliance-standard-form .cds--modal-header {
+  border-bottom: 1px solid var(--cds-ui-04);
+}
+
+.compliance-standard-form .cds--modal-content {
+  color: var(--cds-text-01);
+  line-height: 1.5;
+}
+
+/* Responsive design */
+@media (max-width: 1056px) {
+  .compliance-standard-form {
+    padding: 1rem 0;
+  }
+
+  .compliance-standard-form__actions .cds--btn-set {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .compliance-standard-form__sample-types {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .compliance-standard-form__header h1 {
+    font-size: 1.5rem;
+  }
+
+  .compliance-standard-form__section h2 {
+    font-size: 1.125rem;
+  }
+
+  .compliance-standard-form__sample-types {
+    min-height: auto;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .compliance-standard-form__sample-types .cds--tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+/* Focus management for accessibility */
+.compliance-standard-form *:focus {
+  outline: 2px solid var(--cds-focus);
+  outline-offset: -2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .compliance-standard-form .cds--text-input,
+  .compliance-standard-form .cds--text-area,
+  .compliance-standard-form .cds--select-input {
+    border: 2px solid var(--cds-text-01);
+  }
+
+  .compliance-standard-form .cds--tag {
+    border: 1px solid var(--cds-text-01);
+  }
+
+  .compliance-standard-form__section {
+    border-bottom: 2px solid var(--cds-text-01);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .compliance-standard-form * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .compliance-standard-form__sample-types .cds--tag:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .compliance-standard-form__actions {
+    display: none;
+  }
+
+  .compliance-standard-form {
+    background: white;
+    color: black;
+  }
+
+  .compliance-standard-form__section {
+    border-bottom: 1px solid #ccc;
+    break-inside: avoid;
+  }
+}
