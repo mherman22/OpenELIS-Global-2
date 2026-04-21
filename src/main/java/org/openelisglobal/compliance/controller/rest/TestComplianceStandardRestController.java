@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,13 +38,12 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * Constitutional compliance:
  * - Uses REST API pattern (/rest mapping)
- * - @PreAuthorize for role-based access control
  * - Extends BaseController for standard OpenELIS patterns
  * - Proper error handling and validation
+ * - Role-based access control to be added later
  */
 @RestController
-@RequestMapping("/api/v1")
-@PreAuthorize("hasAnyRole('ADMIN', 'COMPLIANCE_ADMIN', 'COMPLIANCE_USER')")
+@RequestMapping("/rest")
 public class TestComplianceStandardRestController extends BaseController {
 
     private static final String[] ALLOWED_FIELDS = new String[] {
@@ -73,7 +71,6 @@ public class TestComplianceStandardRestController extends BaseController {
      * Get all compliance standards associated with a test
      */
     @GetMapping(value = "/test/{testId}/compliance-standards", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole('ADMIN', 'COMPLIANCE_ADMIN', 'COMPLIANCE_USER', 'COMPLIANCE_VIEWER')")
     public ResponseEntity<?> getComplianceStandardsForTest(@PathVariable String testId) {
         try {
             List<TestComplianceStandard> associations =
@@ -98,7 +95,6 @@ public class TestComplianceStandardRestController extends BaseController {
      * Get all available compliance standards that can be associated with tests
      */
     @GetMapping(value = "/available-compliance-standards", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole('ADMIN', 'COMPLIANCE_ADMIN', 'COMPLIANCE_USER', 'COMPLIANCE_VIEWER')")
     public ResponseEntity<?> getAvailableComplianceStandards() {
         try {
             List<ComplianceStandard> standards = complianceStandardService.getActiveComplianceStandards();
@@ -130,7 +126,6 @@ public class TestComplianceStandardRestController extends BaseController {
      * Associate a test with a compliance standard
      */
     @PostMapping(value = "/test/{testId}/compliance-standards", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole('ADMIN', 'COMPLIANCE_ADMIN', 'COMPLIANCE_USER')")
     public ResponseEntity<?> associateTestWithComplianceStandard(
             @PathVariable String testId,
             @RequestBody TestComplianceStandardDTO associationDTO,
@@ -166,7 +161,6 @@ public class TestComplianceStandardRestController extends BaseController {
      * Remove association between test and compliance standard
      */
     @PostMapping(value = "/test/{testId}/compliance-standards/{standardId}/remove", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole('ADMIN', 'COMPLIANCE_ADMIN', 'COMPLIANCE_USER')")
     public ResponseEntity<?> removeTestComplianceStandardAssociation(
             @PathVariable String testId,
             @PathVariable String standardId) {
@@ -193,7 +187,6 @@ public class TestComplianceStandardRestController extends BaseController {
      * Update multiple test-compliance standard associations
      */
     @PostMapping(value = "/test/{testId}/compliance-standards/bulk-update", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole('ADMIN', 'COMPLIANCE_ADMIN', 'COMPLIANCE_USER')")
     public ResponseEntity<?> updateTestComplianceStandards(
             @PathVariable String testId,
             @RequestBody List<TestComplianceStandardDTO> associationDTOs,

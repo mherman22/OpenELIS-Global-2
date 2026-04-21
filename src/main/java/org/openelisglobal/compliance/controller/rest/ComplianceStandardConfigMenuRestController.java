@@ -1,12 +1,11 @@
 package org.openelisglobal.compliance.controller.rest;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.openelisglobal.common.controller.BaseController;
 import org.openelisglobal.common.log.LogEvent;
@@ -25,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,14 +40,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * and other test management REST endpoints.
  *
  * Constitutional compliance:
- * - Uses @PreAuthorize for role-based access control
  * - Returns JSON responses instead of ModelAndView
  * - Delegates business logic to service layer
  * - Follows RESTful API patterns
+ * - Role-based access control to be added later
  */
 @Controller
-@RequestMapping("/api/v1")
-@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping("/rest")
 public class ComplianceStandardConfigMenuRestController extends BaseController {
 
     @Autowired

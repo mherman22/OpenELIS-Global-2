@@ -90,7 +90,7 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
       formData.append('file', file);
       formData.append('validateOnly', 'true');
 
-      const response = await postWithFileUpload('/api/v1/compliance-standards/import/preview', formData);
+      const response = await postWithFileUpload('/rest/compliance-standards/import/preview', formData);
 
       if (response.success) {
         setPreviewData(response.previewData || []);
@@ -136,7 +136,7 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
         });
       }, 500);
 
-      const response = await postWithFileUpload('/api/v1/compliance-standards/import', formData);
+      const response = await postWithFileUpload('/rest/compliance-standards/import', formData);
 
       clearInterval(progressInterval);
       setImportProgress(100);

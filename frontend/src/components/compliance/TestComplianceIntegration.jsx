@@ -81,18 +81,18 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
     setLoading(true);
     try {
       // Load test details
-      const testResponse = await getFromOpenElisServer(`/api/v1/tests/${testId}`);
+      const testResponse = await getFromOpenElisServer(`/rest/tests/${testId}`);
       setTest(testResponse);
 
       // Load assigned compliance standards
       const assignedResponse = await getFromOpenElisServer(
-        `/api/v1/test/${testId}/compliance-standards`
+        `/rest/test/${testId}/compliance-standards`
       );
       setAssignedStandards(assignedResponse || []);
 
       // Load available standards
       const availableResponse = await getFromOpenElisServer(
-        `/api/v1/available-compliance-standards`
+        `/rest/available-compliance-standards`
       );
       setAvailableStandards(availableResponse || []);
 
@@ -122,7 +122,7 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
       };
 
       const response = await postToOpenElisServer(
-        `/api/v1/test/${testId}/compliance-standards`,
+        `/rest/test/${testId}/compliance-standards`,
         JSON.stringify(payload)
       );
 
@@ -155,7 +155,7 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
   const handleRemoveStandard = async (standardId) => {
     try {
       await postToOpenElisServer(
-        `/api/v1/test/${testId}/compliance-standards/${standardId}/remove`,
+        `/rest/test/${testId}/compliance-standards/${standardId}/remove`,
         ''
       );
 

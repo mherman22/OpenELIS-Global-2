@@ -351,6 +351,42 @@ function TestManagementConfigMenu() {
           <br />
           <hr />
           <br />
+          <Grid fullWidth={true}>
+            <Column lg={16} md={8} sm={4}>
+              <Section>
+                <Section>
+                  <Section>
+                    <Heading>
+                      <FormattedMessage id="configuration.test.management.compliance" />
+                    </Heading>
+                  </Section>
+                </Section>
+              </Section>
+            </Column>
+          </Grid>
+          <br />
+          <hr />
+          <br />
+          <Grid fullWidth={true}>
+            <Column lg={16} md={8} sm={4}>
+              <UnorderedList>
+                <ClickableTile
+                  href="/ComplianceStandards"
+                  id="ComplianceStandards"
+                >
+                  <FormattedMessage id="configuration.compliance.standards" />
+                  <UnorderedList nested>
+                    <ListItem>
+                      <FormattedMessage id="configuration.compliance.standards.explain" />
+                    </ListItem>
+                  </UnorderedList>
+                </ClickableTile>
+              </UnorderedList>
+            </Column>
+          </Grid>
+          <br />
+          <hr />
+          <br />
         </div>
       </div>
     </>

@@ -140,6 +140,7 @@ import {
   OrderLabel,
   OrderQA,
 } from "./components/order";
+import { ComplianceStandardsDashboard } from "./components/compliance";
 
 export default function App() {
   const defaultLocale =
@@ -401,6 +402,11 @@ export default function App() {
                   path="/MasterListsPage"
                   component={() => <Admin />}
                   role={Roles.GLOBAL_ADMIN}
+                />
+                <SecureRoute
+                  path="/ComplianceStandards"
+                  exact
+                  component={() => <ComplianceStandardsDashboard />}
                 />
                 <SecureRoute
                   path="/PathologyDashboard"

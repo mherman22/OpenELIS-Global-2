@@ -139,7 +139,7 @@ const ComplianceStandardsDashboard = () => {
 
   const loadComplianceStandards = () => {
     setLoading(true);
-    const endpoint = `/api/v1/ComplianceStandardMenu?page=${currentPage}&pageSize=${pageSize}`;
+    const endpoint = `/rest/ComplianceStandardMenu?page=${currentPage}&pageSize=${pageSize}`;
 
     getFromOpenElisServer(endpoint, (response) => {
       if (response) {
@@ -173,7 +173,7 @@ const ComplianceStandardsDashboard = () => {
   };
 
   const handleExportStandards = () => {
-    const endpoint = '/api/v1/compliance-standards/export';
+    const endpoint = '/rest/compliance-standards/export';
     postToOpenElisServer(endpoint, '', (status) => {
       if (status === 200) {
         addNotification({
@@ -285,6 +285,8 @@ const ComplianceStandardsDashboard = () => {
       <Column lg={16}>
         <PageBreadCrumb breadcrumbs={[
           { label: intl.formatMessage({ id: 'breadcrumb.home', defaultMessage: 'Home' }), link: '/' },
+          { label: intl.formatMessage({ id: 'breadcrums.admin.managment', defaultMessage: 'Administration' }), link: '/MasterListsPage' },
+          { label: intl.formatMessage({ id: 'master.lists.page.test.management', defaultMessage: 'Test Management' }), link: '/MasterListsPage/testManagementConfigMenu' },
           {
             label: intl.formatMessage({
               id: 'compliance.standards.breadcrumb',
