@@ -45,8 +45,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * - Implements required abstract methods from BaseMenuController
  */
 @RestController
-@RequestMapping("/rest")
-@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping("/api/v1")
+@PreAuthorize("hasAnyRole('ADMIN', 'COMPLIANCE_ADMIN', 'COMPLIANCE_USER')")
 public class ComplianceStandardMenuRestController extends BaseMenuController<ComplianceStandard> {
 
     private static final String[] ALLOWED_FIELDS = new String[] {
@@ -73,6 +73,7 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
                              "/SearchComplianceStandardMenu" },
                    produces = MediaType.APPLICATION_JSON_VALUE,
                    method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPLIANCE_ADMIN', 'COMPLIANCE_USER', 'COMPLIANCE_VIEWER')")
     public ResponseEntity<?> showComplianceStandardMenu(HttpServletRequest request,
                                                        RedirectAttributes redirectAttributes)
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
@@ -102,6 +103,7 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
     @RequestMapping(value = "/compliance-sample-types",
                    produces = MediaType.APPLICATION_JSON_VALUE,
                    method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPLIANCE_ADMIN', 'COMPLIANCE_USER', 'COMPLIANCE_VIEWER')")
     public List<TypeOfSample> fetchSampleTypes() {
         return typeOfSampleService.getAllTypeOfSamples();
     }
@@ -110,6 +112,7 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
      * Delete compliance standards (bulk operation)
      */
     @RequestMapping(value = "/DeleteComplianceStandard", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPLIANCE_ADMIN')")
     public ResponseEntity<?> deleteComplianceStandards(HttpServletRequest request,
                                                       @RequestParam(value = ID, required = false) String id) {
 
@@ -157,6 +160,7 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
      * Archive compliance standards (bulk operation)
      */
     @RequestMapping(value = "/ArchiveComplianceStandard", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPLIANCE_ADMIN')")
     public ResponseEntity<?> archiveComplianceStandards(HttpServletRequest request,
                                                        @RequestParam(value = ID, required = false) String id) {
 

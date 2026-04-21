@@ -159,4 +159,9 @@ public interface ComplianceStandardDAO extends BaseDAO<ComplianceStandard, Strin
      * Get compliance standards summary statistics
      */
     List<Object[]> getStandardsStatistics() throws LIMSRuntimeException;
+
+    /**
+     * Get compliance standard by regulation number and name
+     */
+    ComplianceStandard getByRegulationNumberAndName(String regulationNumber, String name) throws LIMSRuntimeException;
 }

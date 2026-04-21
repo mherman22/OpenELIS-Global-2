@@ -26,6 +26,13 @@ public class TestCatalog {
     private List<ResultLimitBean> resultLimits;
     private int testSortOrder = Integer.MAX_VALUE;
 
+    // Compliance Standards integration
+    private boolean hasComplianceStandards = false;
+    private List<String> complianceStandardNames;
+    private List<String> complianceStandardIds;
+    private List<String> complianceStandardStatuses;
+    private int mandatoryComplianceCount = 0;
+
     public String getId() {
         return id;
     }
@@ -184,5 +191,47 @@ public class TestCatalog {
 
     public void setTestSortOrder(int testSortOrder) {
         this.testSortOrder = testSortOrder;
+    }
+
+    // Compliance Standards getters and setters
+
+    public boolean isHasComplianceStandards() {
+        return hasComplianceStandards;
+    }
+
+    public void setHasComplianceStandards(boolean hasComplianceStandards) {
+        this.hasComplianceStandards = hasComplianceStandards;
+    }
+
+    public List<String> getComplianceStandardNames() {
+        return complianceStandardNames;
+    }
+
+    public void setComplianceStandardNames(List<String> complianceStandardNames) {
+        this.complianceStandardNames = complianceStandardNames;
+    }
+
+    public List<String> getComplianceStandardIds() {
+        return complianceStandardIds;
+    }
+
+    public void setComplianceStandardIds(List<String> complianceStandardIds) {
+        this.complianceStandardIds = complianceStandardIds;
+    }
+
+    public List<String> getComplianceStandardStatuses() {
+        return complianceStandardStatuses;
+    }
+
+    public void setComplianceStandardStatuses(List<String> complianceStandardStatuses) {
+        this.complianceStandardStatuses = complianceStandardStatuses;
+    }
+
+    public int getMandatoryComplianceCount() {
+        return mandatoryComplianceCount;
+    }
+
+    public void setMandatoryComplianceCount(int mandatoryComplianceCount) {
+        this.mandatoryComplianceCount = mandatoryComplianceCount;
     }
 }

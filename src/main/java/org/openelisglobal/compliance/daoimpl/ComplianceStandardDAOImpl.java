@@ -590,4 +590,20 @@ public class ComplianceStandardDAOImpl extends BaseDAOImpl<ComplianceStandard, S
         }
         return list;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ComplianceStandard getByRegulationNumberAndName(String regulationNumber, String name) throws LIMSRuntimeException {
+        try {
+            String hql = "FROM ComplianceStandard cs WHERE cs.regulationNumber = :regulationNumber AND cs.name = :name";
+            TypedQuery<ComplianceStandard> query = entityManager.createQuery(hql, ComplianceStandard.class);
+            query.setParameter("regulationNumber", regulationNumber);
+            query.setParameter("name", name);
+            List<ComplianceStandard> results = query.getResultList();
+            return results.isEmpty() ? null : results.get(0);
+        } catch (RuntimeException e) {
+            LogEvent.logError(e);
+            throw new LIMSRuntimeException("Error in ComplianceStandard getByRegulationNumberAndName()", e);
+        }
+    }
 }

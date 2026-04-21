@@ -333,4 +333,10 @@ public class ComplianceStandardServiceImpl extends AuditableBaseObjectServiceImp
         // Standards with linked evaluations should be versioned rather than modified
         return !standardHasEvaluations(standardId);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ComplianceStandard getByRegulationNumberAndName(String regulationNumber, String name) {
+        return getBaseObjectDAO().getByRegulationNumberAndName(regulationNumber, name);
+    }
 }

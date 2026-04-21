@@ -9,6 +9,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openelisglobal.common.controller.BaseController;
 import org.openelisglobal.common.log.LogEvent;
+import org.openelisglobal.compliance.service.TestComplianceStandardService;
+import org.openelisglobal.compliance.valueholder.TestComplianceStandard;
 import org.openelisglobal.dictionary.service.DictionaryService;
 import org.openelisglobal.dictionary.valueholder.Dictionary;
 import org.openelisglobal.localization.service.LocalizationService;
@@ -46,6 +48,8 @@ public class TestCatalogRestController extends BaseController {
     private DictionaryService dictionaryService;
     @Autowired
     private LocalizationService localizationService;
+    @Autowired
+    private TestComplianceStandardService testComplianceStandardService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -133,6 +137,10 @@ public class TestCatalogRestController extends BaseController {
                 catalog.setDictionaryValues(createDictionaryValues(testService, test));
                 catalog.setReferenceValue(createReferenceValueForDictionaryType(test));
             }
+
+            // Add compliance standards information
+            populateComplianceStandards(catalog, test);
+
             catalogList.add(catalog);
         }
 
@@ -250,5 +258,52 @@ public class TestCatalogRestController extends BaseController {
         }
 
         return panelString;
+    }
+
+    /**
+     * Populate compliance standards information for a test catalog entry
+     */
+    private void populateComplianceStandards(TestCatalog catalog, Test test) {
+        try {
+            List<TestComplianceStandard> complianceAssociations =
+                testComplianceStandardService.getComplianceStandardsForTestOrdered(test.getId());
+
+            if (complianceAssociations != null && !complianceAssociations.isEmpty()) {
+                catalog.setHasComplianceStandards(true);
+
+                List<String> standardNames = new ArrayList<>();
+                List<String> standardIds = new ArrayList<>();
+                List<String> standardStatuses = new ArrayList<>();
+                int mandatoryCount = 0;
+
+                for (TestComplianceStandard association : complianceAssociations) {
+                    if (association.getComplianceStandard() != null) {
+                        standardNames.add(association.getComplianceStandardDisplayName());
+                        standardIds.add(association.getComplianceStandard().getId());
+                        standardStatuses.add(association.getComplianceStandardStatus());
+
+                        if (association.isMandatory()) {
+                            mandatoryCount++;
+                        }
+                    }
+                }
+
+                catalog.setComplianceStandardNames(standardNames);
+                catalog.setComplianceStandardIds(standardIds);
+                catalog.setComplianceStandardStatuses(standardStatuses);
+                catalog.setMandatoryComplianceCount(mandatoryCount);
+            } else {
+                catalog.setHasComplianceStandards(false);
+                catalog.setMandatoryComplianceCount(0);
+            }
+
+        } catch (Exception e) {
+            LogEvent.logError(this.getClass().getSimpleName(), "populateComplianceStandards",
+                "Error loading compliance standards for test " + test.getId() + ": " + e.getMessage());
+
+            // Set safe defaults on error
+            catalog.setHasComplianceStandards(false);
+            catalog.setMandatoryComplianceCount(0);
+        }
     }
 }

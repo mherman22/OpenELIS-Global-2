@@ -48,7 +48,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * - Follows RESTful API patterns
  */
 @Controller
-@RequestMapping("/rest")
+@RequestMapping("/api/v1")
 @PreAuthorize("hasRole('ADMIN')")
 public class ComplianceStandardConfigMenuRestController extends BaseController {
 

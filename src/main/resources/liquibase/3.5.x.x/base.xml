@@ -74,6 +74,5 @@
   <include relativeToChangelogFile="true" file="018-compliance-003-create-compliance-threshold-table.xml"/>
   <include relativeToChangelogFile="true" file="018-compliance-004-create-compliance-evaluation-table.xml"/>
   <include relativeToChangelogFile="true" file="018-compliance-005-create-evaluation-result-table.xml"/>
-  <include relativeToChangelogFile="true" file="018-compliance-006-pre-seeded-standards-data.xml"/>
 
 </databaseChangeLog>

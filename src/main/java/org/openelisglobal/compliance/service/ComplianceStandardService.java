@@ -119,6 +119,11 @@ public interface ComplianceStandardService extends BaseObjectService<ComplianceS
     List<ComplianceStandard> getVersionHistory(String issuingBody, String regulationNumber);
 
     /**
+     * Get compliance standard by regulation number and name
+     */
+    ComplianceStandard getByRegulationNumberAndName(String regulationNumber, String name);
+
+    /**
      * Search standards by multiple criteria
      */
     List<ComplianceStandard> searchStandards(String name, String issuingBody, String regulationNumber,
