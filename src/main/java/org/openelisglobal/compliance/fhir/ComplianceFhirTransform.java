@@ -1,15 +1,14 @@
 package org.openelisglobal.compliance.fhir;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Measure;
 import org.hl7.fhir.r4.model.MeasureReport;
 import org.hl7.fhir.r4.model.Period;
@@ -17,6 +16,7 @@ import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StringType;
+import org.openelisglobal.common.log.LogEvent;
 import org.openelisglobal.compliance.valueholder.ComplianceEvaluation;
 import org.openelisglobal.compliance.valueholder.ComplianceStandard;
 import org.openelisglobal.compliance.valueholder.ComplianceThreshold;
@@ -29,12 +29,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import org.openelisglobal.common.log.LogEvent;
-
 /**
- * FHIR R4 transformation service for compliance module entities
- * Maps OpenELIS compliance entities to FHIR resources following established patterns
+ * FHIR R4 transformation service for compliance module entities Maps OpenELIS
+ * compliance entities to FHIR resources following established patterns
  */
 @Service
 public class ComplianceFhirTransform {
@@ -44,8 +41,8 @@ public class ComplianceFhirTransform {
     private static final String COMPLIANCE_EXTENSION_BASE = "http://openelis.org/fhir/extension/";
 
     /**
-     * Transform ComplianceStandard to FHIR Measure resource
-     * FHIR Measure represents evaluation criteria and quality measures
+     * Transform ComplianceStandard to FHIR Measure resource FHIR Measure represents
+     * evaluation criteria and quality measures
      */
     public Measure transformToFhirMeasure(ComplianceStandard standard) {
         Measure measure = new Measure();
@@ -64,21 +61,21 @@ public class ComplianceFhirTransform {
 
         // Set status based on compliance standard status
         switch (standard.getStatus()) {
-            case ACTIVE:
-                measure.setStatus(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.ACTIVE);
-                break;
-            case DRAFT:
-                measure.setStatus(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.DRAFT);
-                break;
-            case SUPERSEDED:
-            case ARCHIVED:
-                measure.setStatus(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.RETIRED);
-                break;
-            case SUSPENDED:
-                measure.setStatus(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.UNKNOWN);
-                break;
-            default:
-                measure.setStatus(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.DRAFT);
+        case ACTIVE:
+            measure.setStatus(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.ACTIVE);
+            break;
+        case DRAFT:
+            measure.setStatus(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.DRAFT);
+            break;
+        case SUPERSEDED:
+        case ARCHIVED:
+            measure.setStatus(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.RETIRED);
+            break;
+        case SUSPENDED:
+            measure.setStatus(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.UNKNOWN);
+            break;
+        default:
+            measure.setStatus(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.DRAFT);
         }
 
         // Add primary identifier (regulation number)
@@ -98,11 +95,9 @@ public class ComplianceFhirTransform {
         // Set effective period
         if (standard.getEffectiveDate() != null) {
             Period effectivePeriod = new Period();
-            effectivePeriod.setStart(java.sql.Date.valueOf(standard.getEffectiveDate()),
-                                   TemporalPrecisionEnum.DAY);
+            effectivePeriod.setStart(java.sql.Date.valueOf(standard.getEffectiveDate()), TemporalPrecisionEnum.DAY);
             if (standard.getExpiryDate() != null) {
-                effectivePeriod.setEnd(java.sql.Date.valueOf(standard.getExpiryDate()),
-                                     TemporalPrecisionEnum.DAY);
+                effectivePeriod.setEnd(java.sql.Date.valueOf(standard.getExpiryDate()), TemporalPrecisionEnum.DAY);
             }
             measure.setEffectivePeriod(effectivePeriod);
         }
@@ -119,16 +114,14 @@ public class ComplianceFhirTransform {
 
         // Add extensions for compliance-specific fields
         if (standard.getEnforcementAuthority() != null) {
-            Extension enforcementExt = new Extension(
-                COMPLIANCE_EXTENSION_BASE + "enforcement-authority");
+            Extension enforcementExt = new Extension(COMPLIANCE_EXTENSION_BASE + "enforcement-authority");
             enforcementExt.setValue(new StringType(standard.getEnforcementAuthority()));
             measure.addExtension(enforcementExt);
         }
 
         // Add applicable sample types as extension
         if (standard.getApplicableSampleTypes() != null && !standard.getApplicableSampleTypes().isEmpty()) {
-            Extension sampleTypesExt = new Extension(
-                COMPLIANCE_EXTENSION_BASE + "applicable-sample-types");
+            Extension sampleTypesExt = new Extension(COMPLIANCE_EXTENSION_BASE + "applicable-sample-types");
             for (String sampleType : standard.getApplicableSampleTypes()) {
                 Extension sampleTypeExt = new Extension("sample-type");
                 sampleTypeExt.setValue(new StringType(sampleType));
@@ -156,8 +149,8 @@ public class ComplianceFhirTransform {
     }
 
     /**
-     * Transform ComplianceEvaluation to FHIR MeasureReport
-     * FHIR MeasureReport represents the results of evaluating a measure
+     * Transform ComplianceEvaluation to FHIR MeasureReport FHIR MeasureReport
+     * represents the results of evaluating a measure
      */
     public MeasureReport transformToFhirMeasureReport(ComplianceEvaluation evaluation) {
         MeasureReport report = new MeasureReport();
@@ -173,20 +166,20 @@ public class ComplianceFhirTransform {
 
         // Set status based on evaluation status
         switch (evaluation.getStatus()) {
-            case COMPLIANT:
-                report.setStatus(MeasureReport.MeasureReportStatus.COMPLETE);
-                break;
-            case NON_COMPLIANT:
-                report.setStatus(MeasureReport.MeasureReportStatus.COMPLETE);
-                break;
-            case WARNING:
-                report.setStatus(MeasureReport.MeasureReportStatus.PENDING);
-                break;
-            case PENDING:
-                report.setStatus(MeasureReport.MeasureReportStatus.PENDING);
-                break;
-            default:
-                report.setStatus(MeasureReport.MeasureReportStatus.PENDING);
+        case COMPLIANT:
+            report.setStatus(MeasureReport.MeasureReportStatus.COMPLETE);
+            break;
+        case NON_COMPLIANT:
+            report.setStatus(MeasureReport.MeasureReportStatus.COMPLETE);
+            break;
+        case WARNING:
+            report.setStatus(MeasureReport.MeasureReportStatus.PENDING);
+            break;
+        case PENDING:
+            report.setStatus(MeasureReport.MeasureReportStatus.PENDING);
+            break;
+        default:
+            report.setStatus(MeasureReport.MeasureReportStatus.PENDING);
         }
 
         // Set report type
@@ -229,8 +222,8 @@ public class ComplianceFhirTransform {
             // Calculate compliance percentage
             double compliancePercentage = 0.0;
             if (evaluation.getCompliantParameters() != null && evaluation.getTotalParameters() > 0) {
-                compliancePercentage = (evaluation.getCompliantParameters().doubleValue() /
-                                      evaluation.getTotalParameters().doubleValue()) * 100.0;
+                compliancePercentage = (evaluation.getCompliantParameters().doubleValue()
+                        / evaluation.getTotalParameters().doubleValue()) * 100.0;
             }
 
             // Set measure score
@@ -265,8 +258,7 @@ public class ComplianceFhirTransform {
         }
 
         // Add extensions for compliance-specific fields
-        Extension evaluationStatusExt = new Extension(
-            COMPLIANCE_EXTENSION_BASE + "evaluation-status");
+        Extension evaluationStatusExt = new Extension(COMPLIANCE_EXTENSION_BASE + "evaluation-status");
         evaluationStatusExt.setValue(new StringType(evaluation.getStatus().toString()));
         report.addExtension(evaluationStatusExt);
 
@@ -280,7 +272,8 @@ public class ComplianceFhirTransform {
         report.getMeta().addProfile(COMPLIANCE_PROFILE_BASE + "ComplianceEvaluation");
 
         // Add meta tags
-        report.getMeta().addTag(OPENELIS_COMPLIANCE_SYSTEM + "/tag", "evaluation-report", "Compliance Evaluation Report");
+        report.getMeta().addTag(OPENELIS_COMPLIANCE_SYSTEM + "/tag", "evaluation-report",
+                "Compliance Evaluation Report");
 
         return report;
     }
@@ -289,7 +282,7 @@ public class ComplianceFhirTransform {
      * Add parameter group as Measure.group
      */
     public void addParameterGroupToMeasure(Measure measure, ParameterGroup parameterGroup,
-                                         List<ComplianceThreshold> thresholds) {
+            List<ComplianceThreshold> thresholds) {
         Measure.MeasureGroupComponent group = measure.addGroup();
 
         // Set group code
@@ -308,8 +301,8 @@ public class ComplianceFhirTransform {
 
         // Add thresholds as group populations
         for (ComplianceThreshold threshold : thresholds) {
-            if (threshold.getParameterGroupId() != null &&
-                threshold.getParameterGroupId().equals(parameterGroup.getId())) {
+            if (threshold.getParameterGroupId() != null
+                    && threshold.getParameterGroupId().equals(parameterGroup.getId())) {
 
                 Measure.MeasureGroupPopulationComponent population = group.addPopulation();
 
@@ -334,13 +327,16 @@ public class ComplianceFhirTransform {
                 thresholdExt.addExtension("criticality", new StringType(threshold.getCriticalityLevel().toString()));
 
                 if (threshold.getMinValue() != null) {
-                    thresholdExt.addExtension("min-value", new org.hl7.fhir.r4.model.DecimalType(threshold.getMinValue()));
+                    thresholdExt.addExtension("min-value",
+                            new org.hl7.fhir.r4.model.DecimalType(threshold.getMinValue()));
                 }
                 if (threshold.getMaxValue() != null) {
-                    thresholdExt.addExtension("max-value", new org.hl7.fhir.r4.model.DecimalType(threshold.getMaxValue()));
+                    thresholdExt.addExtension("max-value",
+                            new org.hl7.fhir.r4.model.DecimalType(threshold.getMaxValue()));
                 }
                 if (threshold.getExactValue() != null) {
-                    thresholdExt.addExtension("exact-value", new org.hl7.fhir.r4.model.DecimalType(threshold.getExactValue()));
+                    thresholdExt.addExtension("exact-value",
+                            new org.hl7.fhir.r4.model.DecimalType(threshold.getExactValue()));
                 }
 
                 population.addExtension(thresholdExt);
@@ -418,7 +414,7 @@ public class ComplianceFhirTransform {
             persistMeasure(measure, isCreate);
         } catch (Exception e) {
             LogEvent.logError("ComplianceFhirTransform", "syncComplianceStandardToFhir",
-                "Error syncing ComplianceStandard to FHIR: " + e.getMessage());
+                    "Error syncing ComplianceStandard to FHIR: " + e.getMessage());
         }
     }
 
@@ -433,7 +429,7 @@ public class ComplianceFhirTransform {
             persistMeasureReport(report, isCreate);
         } catch (Exception e) {
             LogEvent.logError("ComplianceFhirTransform", "syncComplianceEvaluationToFhir",
-                "Error syncing ComplianceEvaluation to FHIR: " + e.getMessage());
+                    "Error syncing ComplianceEvaluation to FHIR: " + e.getMessage());
         }
     }
 
@@ -444,27 +440,26 @@ public class ComplianceFhirTransform {
         criteria.append(threshold.getParameterName()).append(" ");
 
         switch (threshold.getThresholdType()) {
-            case MAXIMUM:
-                criteria.append("<=").append(threshold.getMaxValue());
-                break;
-            case MINIMUM:
-                criteria.append(">=").append(threshold.getMinValue());
-                break;
-            case RANGE:
-                criteria.append(">=").append(threshold.getMinValue())
-                       .append(" AND <=").append(threshold.getMaxValue());
-                break;
-            case EXACT:
-                criteria.append("=").append(threshold.getExactValue());
-                break;
+        case MAXIMUM:
+            criteria.append("<=").append(threshold.getMaxValue());
+            break;
+        case MINIMUM:
+            criteria.append(">=").append(threshold.getMinValue());
+            break;
+        case RANGE:
+            criteria.append(">=").append(threshold.getMinValue()).append(" AND <=").append(threshold.getMaxValue());
+            break;
+        case EXACT:
+            criteria.append("=").append(threshold.getExactValue());
+            break;
         }
 
         criteria.append(" ").append(threshold.getUnit());
         return criteria.toString();
     }
 
-    private MeasureReport.MeasureReportGroupComponent findOrCreateGroupForResult(
-            MeasureReport report, EvaluationResult result) {
+    private MeasureReport.MeasureReportGroupComponent findOrCreateGroupForResult(MeasureReport report,
+            EvaluationResult result) {
 
         // Look for existing group
         for (MeasureReport.MeasureReportGroupComponent group : report.getGroup()) {
@@ -504,7 +499,7 @@ public class ComplianceFhirTransform {
             }
         } catch (Exception e) {
             LogEvent.logError("ComplianceFhirTransform", "persistMeasure",
-                "Error persisting Measure to FHIR server: " + e.getMessage());
+                    "Error persisting Measure to FHIR server: " + e.getMessage());
             throw new FhirLocalPersistingException(e);
         }
     }
@@ -523,7 +518,7 @@ public class ComplianceFhirTransform {
             }
         } catch (Exception e) {
             LogEvent.logError("ComplianceFhirTransform", "persistMeasureReport",
-                "Error persisting MeasureReport to FHIR server: " + e.getMessage());
+                    "Error persisting MeasureReport to FHIR server: " + e.getMessage());
             throw new FhirLocalPersistingException(e);
         }
     }

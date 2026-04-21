@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import {
   Grid,
   Column,
@@ -23,37 +23,46 @@ import {
   TreeView,
   TreeNode,
   OverflowMenu,
-  OverflowMenuItem
-} from '@carbon/react';
-import { Add, Edit, TrashCan, View, ChevronRight, ChevronDown } from '@carbon/react/icons';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { ConfigurationContext } from '../common/ComponentContext';
-import { getFromOpenElisServer, postToOpenElisServer } from '../utils/Utils';
-import { NotificationContext } from '../common/ComponentContext';
-import './ParameterGroupManagement.css';
+  OverflowMenuItem,
+} from "@carbon/react";
+import {
+  Add,
+  Edit,
+  TrashCan,
+  View,
+  ChevronRight,
+  ChevronDown,
+} from "@carbon/react/icons";
+import { FormattedMessage, useIntl } from "react-intl";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { ConfigurationContext } from "../common/ComponentContext";
+import { getFromOpenElisServer, postToOpenElisServer } from "../utils/Utils";
+import { NotificationContext } from "../common/ComponentContext";
+import "./ParameterGroupManagement.css";
 
 const ParameterGroupManagement = () => {
   const intl = useIntl();
   const { configurationProperties } = useContext(ConfigurationContext);
-  const { notificationVisible, setNotificationVisible, addNotification } = useContext(NotificationContext);
+  const { notificationVisible, setNotificationVisible, addNotification } =
+    useContext(NotificationContext);
 
   // Feature flag check
-  const isComplianceModuleEnabled = configurationProperties?.['compliance.module.enabled'] === 'true';
+  const isComplianceModuleEnabled =
+    configurationProperties?.["compliance.module.enabled"] === "true";
 
   // State management
   const [parameterGroups, setParameterGroups] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
-  const [formMode, setFormMode] = useState('create'); // 'create' | 'edit'
+  const [formMode, setFormMode] = useState("create"); // 'create' | 'edit'
   const [saving, setSaving] = useState(false);
   const [expandedNodes, setExpandedNodes] = useState(new Set());
-  const [viewMode, setViewMode] = useState('tree'); // 'tree' | 'table'
+  const [viewMode, setViewMode] = useState("tree"); // 'tree' | 'table'
 
   // Feature flag guard
   if (!isComplianceModuleEnabled) {
@@ -82,72 +91,88 @@ const ParameterGroupManagement = () => {
   // Validation schema
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .required(intl.formatMessage({
-        id: 'compliance.parameterGroup.form.validation.name.required',
-        defaultMessage: 'Parameter group name is required'
-      }))
-      .min(3, intl.formatMessage({
-        id: 'compliance.parameterGroup.form.validation.name.minLength',
-        defaultMessage: 'Parameter group name must be at least 3 characters'
-      }))
-      .max(100, intl.formatMessage({
-        id: 'compliance.parameterGroup.form.validation.name.maxLength',
-        defaultMessage: 'Parameter group name cannot exceed 100 characters'
-      })),
-    description: Yup.string()
-      .max(500, intl.formatMessage({
-        id: 'compliance.parameterGroup.form.validation.description.maxLength',
-        defaultMessage: 'Description cannot exceed 500 characters'
-      })),
+      .required(
+        intl.formatMessage({
+          id: "compliance.parameterGroup.form.validation.name.required",
+          defaultMessage: "Parameter group name is required",
+        }),
+      )
+      .min(
+        3,
+        intl.formatMessage({
+          id: "compliance.parameterGroup.form.validation.name.minLength",
+          defaultMessage: "Parameter group name must be at least 3 characters",
+        }),
+      )
+      .max(
+        100,
+        intl.formatMessage({
+          id: "compliance.parameterGroup.form.validation.name.maxLength",
+          defaultMessage: "Parameter group name cannot exceed 100 characters",
+        }),
+      ),
+    description: Yup.string().max(
+      500,
+      intl.formatMessage({
+        id: "compliance.parameterGroup.form.validation.description.maxLength",
+        defaultMessage: "Description cannot exceed 500 characters",
+      }),
+    ),
     parentGroupId: Yup.string()
       .nullable()
-      .test('no-circular-reference', intl.formatMessage({
-        id: 'compliance.parameterGroup.form.validation.parentGroup.circular',
-        defaultMessage: 'Cannot select self or child group as parent'
-      }), function(value) {
-        if (!value || formMode === 'create') return true;
-        // Prevent circular references
-        const currentId = selectedGroup?.id;
-        if (value === currentId) return false;
-        // TODO: Add logic to check for child groups
-        return true;
-      })
+      .test(
+        "no-circular-reference",
+        intl.formatMessage({
+          id: "compliance.parameterGroup.form.validation.parentGroup.circular",
+          defaultMessage: "Cannot select self or child group as parent",
+        }),
+        function (value) {
+          if (!value || formMode === "create") return true;
+          // Prevent circular references
+          const currentId = selectedGroup?.id;
+          if (value === currentId) return false;
+          // TODO: Add logic to check for child groups
+          return true;
+        },
+      ),
   });
 
   // Formik setup
   const formik = useFormik({
     initialValues: {
-      name: '',
-      description: '',
-      parentGroupId: '',
-      isActive: true
+      name: "",
+      description: "",
+      parentGroupId: "",
+      isActive: true,
     },
     validationSchema,
     onSubmit: async (values) => {
       await handleSaveGroup(values);
-    }
+    },
   });
 
   // Load parameter groups
   const loadParameterGroups = async () => {
     try {
       setLoading(true);
-      const response = await getFromOpenElisServer('/rest/compliance/parameter-groups');
+      const response = await getFromOpenElisServer(
+        "/rest/compliance/parameter-groups",
+      );
       if (response) {
         setParameterGroups(response);
       }
     } catch (error) {
-      console.error('Error loading parameter groups:', error);
+      console.error("Error loading parameter groups:", error);
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'compliance.parameterGroup.load.error.title',
-          defaultMessage: 'Error Loading Parameter Groups'
+          id: "compliance.parameterGroup.load.error.title",
+          defaultMessage: "Error Loading Parameter Groups",
         }),
         message: intl.formatMessage({
-          id: 'compliance.parameterGroup.load.error.message',
-          defaultMessage: 'Unable to load parameter groups. Please try again.'
-        })
+          id: "compliance.parameterGroup.load.error.message",
+          defaultMessage: "Unable to load parameter groups. Please try again.",
+        }),
       });
     } finally {
       setLoading(false);
@@ -162,19 +187,21 @@ const ParameterGroupManagement = () => {
   // Build hierarchical tree structure
   const buildTreeStructure = (groups, parentId = null) => {
     return groups
-      .filter(group => group.parentGroupId === parentId)
-      .map(group => ({
+      .filter((group) => group.parentGroupId === parentId)
+      .map((group) => ({
         ...group,
-        children: buildTreeStructure(groups, group.id)
+        children: buildTreeStructure(groups, group.id),
       }));
   };
 
   // Get filtered groups for display
   const getFilteredGroups = () => {
     if (!searchTerm) return parameterGroups;
-    return parameterGroups.filter(group =>
-      group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (group.description && group.description.toLowerCase().includes(searchTerm.toLowerCase()))
+    return parameterGroups.filter(
+      (group) =>
+        group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (group.description &&
+          group.description.toLowerCase().includes(searchTerm.toLowerCase())),
     );
   };
 
@@ -182,48 +209,54 @@ const ParameterGroupManagement = () => {
   const handleSaveGroup = async (values) => {
     try {
       setSaving(true);
-      const endpoint = formMode === 'create'
-        ? '/rest/compliance/parameter-groups'
-        : `/rest/compliance/parameter-groups/${selectedGroup.id}`;
+      const endpoint =
+        formMode === "create"
+          ? "/rest/compliance/parameter-groups"
+          : `/rest/compliance/parameter-groups/${selectedGroup.id}`;
 
-      const method = formMode === 'create' ? 'POST' : 'PUT';
+      const method = formMode === "create" ? "POST" : "PUT";
 
       const payload = {
         ...values,
-        parentGroupId: values.parentGroupId || null
+        parentGroupId: values.parentGroupId || null,
       };
 
       await postToOpenElisServer(endpoint, JSON.stringify(payload), method);
 
       addNotification({
-        kind: 'success',
+        kind: "success",
         title: intl.formatMessage({
           id: `compliance.parameterGroup.${formMode}.success.title`,
-          defaultMessage: formMode === 'create' ? 'Parameter Group Created' : 'Parameter Group Updated'
+          defaultMessage:
+            formMode === "create"
+              ? "Parameter Group Created"
+              : "Parameter Group Updated",
         }),
         message: intl.formatMessage({
           id: `compliance.parameterGroup.${formMode}.success.message`,
-          defaultMessage: formMode === 'create'
-            ? 'The parameter group has been created successfully.'
-            : 'The parameter group has been updated successfully.'
-        })
+          defaultMessage:
+            formMode === "create"
+              ? "The parameter group has been created successfully."
+              : "The parameter group has been updated successfully.",
+        }),
       });
 
       setIsFormModalOpen(false);
       resetForm();
       await loadParameterGroups();
     } catch (error) {
-      console.error('Error saving parameter group:', error);
+      console.error("Error saving parameter group:", error);
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
           id: `compliance.parameterGroup.${formMode}.error.title`,
-          defaultMessage: 'Error Saving Parameter Group'
+          defaultMessage: "Error Saving Parameter Group",
         }),
         message: intl.formatMessage({
           id: `compliance.parameterGroup.${formMode}.error.message`,
-          defaultMessage: 'Unable to save the parameter group. Please try again.'
-        })
+          defaultMessage:
+            "Unable to save the parameter group. Please try again.",
+        }),
       });
     } finally {
       setSaving(false);
@@ -237,36 +270,37 @@ const ParameterGroupManagement = () => {
       await postToOpenElisServer(
         `/rest/compliance/parameter-groups/${selectedGroup.id}`,
         null,
-        'DELETE'
+        "DELETE",
       );
 
       addNotification({
-        kind: 'success',
+        kind: "success",
         title: intl.formatMessage({
-          id: 'compliance.parameterGroup.delete.success.title',
-          defaultMessage: 'Parameter Group Deleted'
+          id: "compliance.parameterGroup.delete.success.title",
+          defaultMessage: "Parameter Group Deleted",
         }),
         message: intl.formatMessage({
-          id: 'compliance.parameterGroup.delete.success.message',
-          defaultMessage: 'The parameter group has been deleted successfully.'
-        })
+          id: "compliance.parameterGroup.delete.success.message",
+          defaultMessage: "The parameter group has been deleted successfully.",
+        }),
       });
 
       setIsDeleteModalOpen(false);
       setSelectedGroup(null);
       await loadParameterGroups();
     } catch (error) {
-      console.error('Error deleting parameter group:', error);
+      console.error("Error deleting parameter group:", error);
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'compliance.parameterGroup.delete.error.title',
-          defaultMessage: 'Error Deleting Parameter Group'
+          id: "compliance.parameterGroup.delete.error.title",
+          defaultMessage: "Error Deleting Parameter Group",
         }),
         message: intl.formatMessage({
-          id: 'compliance.parameterGroup.delete.error.message',
-          defaultMessage: 'Unable to delete the parameter group. It may have dependent data.'
-        })
+          id: "compliance.parameterGroup.delete.error.message",
+          defaultMessage:
+            "Unable to delete the parameter group. It may have dependent data.",
+        }),
       });
     } finally {
       setSaving(false);
@@ -277,7 +311,7 @@ const ParameterGroupManagement = () => {
   const resetForm = () => {
     formik.resetForm();
     setSelectedGroup(null);
-    setFormMode('create');
+    setFormMode("create");
   };
 
   // Handle create new
@@ -289,12 +323,12 @@ const ParameterGroupManagement = () => {
   // Handle edit
   const handleEdit = (group) => {
     setSelectedGroup(group);
-    setFormMode('edit');
+    setFormMode("edit");
     formik.setValues({
-      name: group.name || '',
-      description: group.description || '',
-      parentGroupId: group.parentGroupId || '',
-      isActive: group.isActive !== false
+      name: group.name || "",
+      description: group.description || "",
+      parentGroupId: group.parentGroupId || "",
+      isActive: group.isActive !== false,
     });
     setIsFormModalOpen(true);
   };
@@ -349,22 +383,22 @@ const ParameterGroupManagement = () => {
               <OverflowMenu ariaLabel="Parameter group actions" size="sm">
                 <OverflowMenuItem
                   itemText={intl.formatMessage({
-                    id: 'compliance.parameterGroup.action.view',
-                    defaultMessage: 'View'
+                    id: "compliance.parameterGroup.action.view",
+                    defaultMessage: "View",
                   })}
                   onClick={() => handleView(group)}
                 />
                 <OverflowMenuItem
                   itemText={intl.formatMessage({
-                    id: 'compliance.parameterGroup.action.edit',
-                    defaultMessage: 'Edit'
+                    id: "compliance.parameterGroup.action.edit",
+                    defaultMessage: "Edit",
                   })}
                   onClick={() => handleEdit(group)}
                 />
                 <OverflowMenuItem
                   itemText={intl.formatMessage({
-                    id: 'compliance.parameterGroup.action.delete',
-                    defaultMessage: 'Delete'
+                    id: "compliance.parameterGroup.action.delete",
+                    defaultMessage: "Delete",
                   })}
                   hasDivider
                   isDelete
@@ -377,7 +411,7 @@ const ParameterGroupManagement = () => {
         isExpanded={isExpanded}
         onToggle={() => toggleNodeExpansion(group.id)}
       >
-        {hasChildren && group.children.map(child => renderTreeNode(child))}
+        {hasChildren && group.children.map((child) => renderTreeNode(child))}
       </TreeNode>
     );
   };
@@ -385,49 +419,50 @@ const ParameterGroupManagement = () => {
   // Table headers
   const tableHeaders = [
     {
-      key: 'name',
+      key: "name",
       header: intl.formatMessage({
-        id: 'compliance.parameterGroup.table.header.name',
-        defaultMessage: 'Name'
-      })
+        id: "compliance.parameterGroup.table.header.name",
+        defaultMessage: "Name",
+      }),
     },
     {
-      key: 'description',
+      key: "description",
       header: intl.formatMessage({
-        id: 'compliance.parameterGroup.table.header.description',
-        defaultMessage: 'Description'
-      })
+        id: "compliance.parameterGroup.table.header.description",
+        defaultMessage: "Description",
+      }),
     },
     {
-      key: 'parentGroup',
+      key: "parentGroup",
       header: intl.formatMessage({
-        id: 'compliance.parameterGroup.table.header.parentGroup',
-        defaultMessage: 'Parent Group'
-      })
+        id: "compliance.parameterGroup.table.header.parentGroup",
+        defaultMessage: "Parent Group",
+      }),
     },
     {
-      key: 'status',
+      key: "status",
       header: intl.formatMessage({
-        id: 'compliance.parameterGroup.table.header.status',
-        defaultMessage: 'Status'
-      })
+        id: "compliance.parameterGroup.table.header.status",
+        defaultMessage: "Status",
+      }),
     },
     {
-      key: 'actions',
+      key: "actions",
       header: intl.formatMessage({
-        id: 'compliance.parameterGroup.table.header.actions',
-        defaultMessage: 'Actions'
-      })
-    }
+        id: "compliance.parameterGroup.table.header.actions",
+        defaultMessage: "Actions",
+      }),
+    },
   ];
 
   // Prepare table data
-  const tableData = getFilteredGroups().map(group => ({
+  const tableData = getFilteredGroups().map((group) => ({
     ...group,
     parentGroup: group.parentGroupId
-      ? parameterGroups.find(p => p.id === group.parentGroupId)?.name || 'Unknown'
-      : '',
-    status: group.isActive ? 'Active' : 'Inactive'
+      ? parameterGroups.find((p) => p.id === group.parentGroupId)?.name ||
+        "Unknown"
+      : "",
+    status: group.isActive ? "Active" : "Inactive",
   }));
 
   const treeData = buildTreeStructure(getFilteredGroups());
@@ -436,10 +471,12 @@ const ParameterGroupManagement = () => {
     return (
       <Grid className="parameter-group-management">
         <Column lg={16}>
-          <InlineLoading description={intl.formatMessage({
-            id: 'compliance.parameterGroup.loading',
-            defaultMessage: 'Loading parameter groups...'
-          })} />
+          <InlineLoading
+            description={intl.formatMessage({
+              id: "compliance.parameterGroup.loading",
+              defaultMessage: "Loading parameter groups...",
+            })}
+          />
         </Column>
       </Grid>
     );
@@ -465,11 +502,7 @@ const ParameterGroupManagement = () => {
             </p>
           </div>
           <div className="parameter-group-management__actions">
-            <Button
-              kind="primary"
-              renderIcon={Add}
-              onClick={handleCreateNew}
-            >
+            <Button kind="primary" renderIcon={Add} onClick={handleCreateNew}>
               <FormattedMessage
                 id="compliance.parameterGroup.action.create"
                 defaultMessage="Create Parameter Group"
@@ -477,11 +510,15 @@ const ParameterGroupManagement = () => {
             </Button>
             <Button
               kind="secondary"
-              onClick={() => setViewMode(viewMode === 'tree' ? 'table' : 'tree')}
+              onClick={() =>
+                setViewMode(viewMode === "tree" ? "table" : "tree")
+              }
             >
               <FormattedMessage
-                id={`compliance.parameterGroup.view.${viewMode === 'tree' ? 'table' : 'tree'}`}
-                defaultMessage={viewMode === 'tree' ? 'Table View' : 'Tree View'}
+                id={`compliance.parameterGroup.view.${viewMode === "tree" ? "table" : "tree"}`}
+                defaultMessage={
+                  viewMode === "tree" ? "Table View" : "Tree View"
+                }
               />
             </Button>
           </div>
@@ -492,21 +529,21 @@ const ParameterGroupManagement = () => {
           <Search
             size="lg"
             placeholder={intl.formatMessage({
-              id: 'compliance.parameterGroup.search.placeholder',
-              defaultMessage: 'Search parameter groups...'
+              id: "compliance.parameterGroup.search.placeholder",
+              defaultMessage: "Search parameter groups...",
             })}
             labelText={intl.formatMessage({
-              id: 'compliance.parameterGroup.search.label',
-              defaultMessage: 'Search'
+              id: "compliance.parameterGroup.search.label",
+              defaultMessage: "Search",
             })}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            onClear={() => setSearchTerm('')}
+            onClear={() => setSearchTerm("")}
           />
         </div>
 
         {/* Content */}
-        {viewMode === 'tree' ? (
+        {viewMode === "tree" ? (
           /* Tree View */
           <div className="parameter-group-management__tree">
             {treeData.length > 0 ? (
@@ -516,7 +553,7 @@ const ParameterGroupManagement = () => {
                 selected={[]}
                 onSelect={() => {}}
               >
-                {treeData.map(group => renderTreeNode(group))}
+                {treeData.map((group) => renderTreeNode(group))}
               </TreeView>
             ) : (
               <div className="parameter-group-management__empty">
@@ -539,19 +576,19 @@ const ParameterGroupManagement = () => {
                 getHeaderProps,
                 getRowProps,
                 getTableProps,
-                getTableContainerProps
+                getTableContainerProps,
               }) => (
                 <TableContainer
                   title={intl.formatMessage({
-                    id: 'compliance.parameterGroup.table.title',
-                    defaultMessage: 'Parameter Groups'
+                    id: "compliance.parameterGroup.table.title",
+                    defaultMessage: "Parameter Groups",
                   })}
                   {...getTableContainerProps()}
                 >
                   <Table {...getTableProps()}>
                     <TableHead>
                       <TableRow>
-                        {headers.map(header => (
+                        {headers.map((header) => (
                           <TableHeader {...getHeaderProps({ header })}>
                             {header.header}
                           </TableHeader>
@@ -559,17 +596,19 @@ const ParameterGroupManagement = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {rows.map(row => (
+                      {rows.map((row) => (
                         <TableRow {...getRowProps({ row })}>
-                          {row.cells.map(cell => {
-                            if (cell.info.header === 'status') {
+                          {row.cells.map((cell) => {
+                            if (cell.info.header === "status") {
                               return (
                                 <TableCell key={cell.id}>
                                   <Tag
-                                    type={cell.value === 'Active' ? 'green' : 'red'}
+                                    type={
+                                      cell.value === "Active" ? "green" : "red"
+                                    }
                                     size="sm"
                                   >
-                                    {cell.value === 'Active' ? (
+                                    {cell.value === "Active" ? (
                                       <FormattedMessage
                                         id="compliance.parameterGroup.status.active"
                                         defaultMessage="Active"
@@ -583,8 +622,10 @@ const ParameterGroupManagement = () => {
                                   </Tag>
                                 </TableCell>
                               );
-                            } else if (cell.info.header === 'actions') {
-                              const group = parameterGroups.find(g => g.id === row.id);
+                            } else if (cell.info.header === "actions") {
+                              const group = parameterGroups.find(
+                                (g) => g.id === row.id,
+                              );
                               return (
                                 <TableCell key={cell.id}>
                                   <div className="parameter-group__actions">
@@ -594,8 +635,8 @@ const ParameterGroupManagement = () => {
                                       renderIcon={View}
                                       onClick={() => handleView(group)}
                                       iconDescription={intl.formatMessage({
-                                        id: 'compliance.parameterGroup.action.view',
-                                        defaultMessage: 'View'
+                                        id: "compliance.parameterGroup.action.view",
+                                        defaultMessage: "View",
                                       })}
                                       hasIconOnly
                                     />
@@ -605,8 +646,8 @@ const ParameterGroupManagement = () => {
                                       renderIcon={Edit}
                                       onClick={() => handleEdit(group)}
                                       iconDescription={intl.formatMessage({
-                                        id: 'compliance.parameterGroup.action.edit',
-                                        defaultMessage: 'Edit'
+                                        id: "compliance.parameterGroup.action.edit",
+                                        defaultMessage: "Edit",
                                       })}
                                       hasIconOnly
                                     />
@@ -616,8 +657,8 @@ const ParameterGroupManagement = () => {
                                       renderIcon={TrashCan}
                                       onClick={() => handleDeleteConfirm(group)}
                                       iconDescription={intl.formatMessage({
-                                        id: 'compliance.parameterGroup.action.delete',
-                                        defaultMessage: 'Delete'
+                                        id: "compliance.parameterGroup.action.delete",
+                                        defaultMessage: "Delete",
                                       })}
                                       hasIconOnly
                                     />
@@ -653,18 +694,25 @@ const ParameterGroupManagement = () => {
           }}
           modalHeading={intl.formatMessage({
             id: `compliance.parameterGroup.form.title.${formMode}`,
-            defaultMessage: formMode === 'create' ? 'Create Parameter Group' : 'Edit Parameter Group'
+            defaultMessage:
+              formMode === "create"
+                ? "Create Parameter Group"
+                : "Edit Parameter Group",
           })}
-          primaryButtonText={saving ? intl.formatMessage({
-            id: 'compliance.parameterGroup.form.saving',
-            defaultMessage: 'Saving...'
-          }) : intl.formatMessage({
-            id: `compliance.parameterGroup.form.${formMode}`,
-            defaultMessage: formMode === 'create' ? 'Create' : 'Update'
-          })}
+          primaryButtonText={
+            saving
+              ? intl.formatMessage({
+                  id: "compliance.parameterGroup.form.saving",
+                  defaultMessage: "Saving...",
+                })
+              : intl.formatMessage({
+                  id: `compliance.parameterGroup.form.${formMode}`,
+                  defaultMessage: formMode === "create" ? "Create" : "Update",
+                })
+          }
           secondaryButtonText={intl.formatMessage({
-            id: 'compliance.parameterGroup.form.cancel',
-            defaultMessage: 'Cancel'
+            id: "compliance.parameterGroup.form.cancel",
+            defaultMessage: "Cancel",
           })}
           onRequestSubmit={formik.handleSubmit}
           primaryButtonDisabled={saving || !formik.isValid}
@@ -674,12 +722,12 @@ const ParameterGroupManagement = () => {
               id="name"
               name="name"
               labelText={intl.formatMessage({
-                id: 'compliance.parameterGroup.form.name.label',
-                defaultMessage: 'Parameter Group Name'
+                id: "compliance.parameterGroup.form.name.label",
+                defaultMessage: "Parameter Group Name",
               })}
               placeholder={intl.formatMessage({
-                id: 'compliance.parameterGroup.form.name.placeholder',
-                defaultMessage: 'Enter parameter group name'
+                id: "compliance.parameterGroup.form.name.placeholder",
+                defaultMessage: "Enter parameter group name",
               })}
               value={formik.values.name}
               onChange={formik.handleChange}
@@ -687,8 +735,8 @@ const ParameterGroupManagement = () => {
               invalid={formik.touched.name && !!formik.errors.name}
               invalidText={formik.touched.name && formik.errors.name}
               helperText={intl.formatMessage({
-                id: 'compliance.parameterGroup.form.name.help',
-                defaultMessage: 'A descriptive name for the parameter group'
+                id: "compliance.parameterGroup.form.name.help",
+                defaultMessage: "A descriptive name for the parameter group",
               })}
             />
 
@@ -696,18 +744,22 @@ const ParameterGroupManagement = () => {
               id="description"
               name="description"
               labelText={intl.formatMessage({
-                id: 'compliance.parameterGroup.form.description.label',
-                defaultMessage: 'Description'
+                id: "compliance.parameterGroup.form.description.label",
+                defaultMessage: "Description",
               })}
               placeholder={intl.formatMessage({
-                id: 'compliance.parameterGroup.form.description.placeholder',
-                defaultMessage: 'Describe the purpose of this parameter group'
+                id: "compliance.parameterGroup.form.description.placeholder",
+                defaultMessage: "Describe the purpose of this parameter group",
               })}
               value={formik.values.description}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              invalid={formik.touched.description && !!formik.errors.description}
-              invalidText={formik.touched.description && formik.errors.description}
+              invalid={
+                formik.touched.description && !!formik.errors.description
+              }
+              invalidText={
+                formik.touched.description && formik.errors.description
+              }
               rows={3}
               maxCount={500}
               enableCounter
@@ -717,29 +769,37 @@ const ParameterGroupManagement = () => {
               id="parentGroupId"
               name="parentGroupId"
               labelText={intl.formatMessage({
-                id: 'compliance.parameterGroup.form.parentGroup.label',
-                defaultMessage: 'Parent Group'
+                id: "compliance.parameterGroup.form.parentGroup.label",
+                defaultMessage: "Parent Group",
               })}
               value={formik.values.parentGroupId}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              invalid={formik.touched.parentGroupId && !!formik.errors.parentGroupId}
-              invalidText={formik.touched.parentGroupId && formik.errors.parentGroupId}
+              invalid={
+                formik.touched.parentGroupId && !!formik.errors.parentGroupId
+              }
+              invalidText={
+                formik.touched.parentGroupId && formik.errors.parentGroupId
+              }
               helperText={intl.formatMessage({
-                id: 'compliance.parameterGroup.form.parentGroup.help',
-                defaultMessage: 'Optional: Select a parent group to create hierarchy'
+                id: "compliance.parameterGroup.form.parentGroup.help",
+                defaultMessage:
+                  "Optional: Select a parent group to create hierarchy",
               })}
             >
               <SelectItem
                 value=""
                 text={intl.formatMessage({
-                  id: 'compliance.parameterGroup.form.parentGroup.none',
-                  defaultMessage: 'No parent group (root level)'
+                  id: "compliance.parameterGroup.form.parentGroup.none",
+                  defaultMessage: "No parent group (root level)",
                 })}
               />
               {parameterGroups
-                .filter(group => formMode === 'create' || group.id !== selectedGroup?.id)
-                .map(group => (
+                .filter(
+                  (group) =>
+                    formMode === "create" || group.id !== selectedGroup?.id,
+                )
+                .map((group) => (
                   <SelectItem
                     key={group.id}
                     value={group.id}
@@ -755,8 +815,8 @@ const ParameterGroupManagement = () => {
           open={isViewModalOpen}
           onRequestClose={() => setIsViewModalOpen(false)}
           modalHeading={intl.formatMessage({
-            id: 'compliance.parameterGroup.view.title',
-            defaultMessage: 'Parameter Group Details'
+            id: "compliance.parameterGroup.view.title",
+            defaultMessage: "Parameter Group Details",
           })}
           passiveModal
         >
@@ -768,7 +828,7 @@ const ParameterGroupManagement = () => {
                     id="compliance.parameterGroup.view.name"
                     defaultMessage="Name:"
                   />
-                </strong>{' '}
+                </strong>{" "}
                 {selectedGroup.name}
               </p>
               <p>
@@ -777,11 +837,12 @@ const ParameterGroupManagement = () => {
                     id="compliance.parameterGroup.view.description"
                     defaultMessage="Description:"
                   />
-                </strong>{' '}
-                {selectedGroup.description || intl.formatMessage({
-                  id: 'compliance.parameterGroup.view.noDescription',
-                  defaultMessage: 'No description provided'
-                })}
+                </strong>{" "}
+                {selectedGroup.description ||
+                  intl.formatMessage({
+                    id: "compliance.parameterGroup.view.noDescription",
+                    defaultMessage: "No description provided",
+                  })}
               </p>
               <p>
                 <strong>
@@ -789,12 +850,14 @@ const ParameterGroupManagement = () => {
                     id="compliance.parameterGroup.view.parentGroup"
                     defaultMessage="Parent Group:"
                   />
-                </strong>{' '}
+                </strong>{" "}
                 {selectedGroup.parentGroupId
-                  ? parameterGroups.find(p => p.id === selectedGroup.parentGroupId)?.name || 'Unknown'
+                  ? parameterGroups.find(
+                      (p) => p.id === selectedGroup.parentGroupId,
+                    )?.name || "Unknown"
                   : intl.formatMessage({
-                      id: 'compliance.parameterGroup.view.rootLevel',
-                      defaultMessage: 'Root level'
+                      id: "compliance.parameterGroup.view.rootLevel",
+                      defaultMessage: "Root level",
                     })}
               </p>
               <p>
@@ -803,11 +866,8 @@ const ParameterGroupManagement = () => {
                     id="compliance.parameterGroup.view.status"
                     defaultMessage="Status:"
                   />
-                </strong>{' '}
-                <Tag
-                  type={selectedGroup.isActive ? 'green' : 'red'}
-                  size="sm"
-                >
+                </strong>{" "}
+                <Tag type={selectedGroup.isActive ? "green" : "red"} size="sm">
                   {selectedGroup.isActive ? (
                     <FormattedMessage
                       id="compliance.parameterGroup.status.active"
@@ -836,19 +896,23 @@ const ParameterGroupManagement = () => {
             }
           }}
           modalHeading={intl.formatMessage({
-            id: 'compliance.parameterGroup.delete.title',
-            defaultMessage: 'Delete Parameter Group'
+            id: "compliance.parameterGroup.delete.title",
+            defaultMessage: "Delete Parameter Group",
           })}
-          primaryButtonText={saving ? intl.formatMessage({
-            id: 'compliance.parameterGroup.delete.deleting',
-            defaultMessage: 'Deleting...'
-          }) : intl.formatMessage({
-            id: 'compliance.parameterGroup.delete.confirm',
-            defaultMessage: 'Delete'
-          })}
+          primaryButtonText={
+            saving
+              ? intl.formatMessage({
+                  id: "compliance.parameterGroup.delete.deleting",
+                  defaultMessage: "Deleting...",
+                })
+              : intl.formatMessage({
+                  id: "compliance.parameterGroup.delete.confirm",
+                  defaultMessage: "Delete",
+                })
+          }
           secondaryButtonText={intl.formatMessage({
-            id: 'compliance.parameterGroup.delete.cancel',
-            defaultMessage: 'Cancel'
+            id: "compliance.parameterGroup.delete.cancel",
+            defaultMessage: "Cancel",
           })}
           onRequestSubmit={handleDeleteGroup}
           primaryButtonDisabled={saving}
@@ -864,12 +928,13 @@ const ParameterGroupManagement = () => {
             <InlineNotification
               kind="warning"
               title={intl.formatMessage({
-                id: 'compliance.parameterGroup.delete.warning.title',
-                defaultMessage: 'Warning'
+                id: "compliance.parameterGroup.delete.warning.title",
+                defaultMessage: "Warning",
               })}
               subtitle={intl.formatMessage({
-                id: 'compliance.parameterGroup.delete.warning.message',
-                defaultMessage: 'Deleting this parameter group may affect compliance evaluations that reference it.'
+                id: "compliance.parameterGroup.delete.warning.message",
+                defaultMessage:
+                  "Deleting this parameter group may affect compliance evaluations that reference it.",
               })}
               hideCloseButton
             />

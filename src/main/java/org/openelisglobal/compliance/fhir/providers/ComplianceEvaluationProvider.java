@@ -1,27 +1,5 @@
 package org.openelisglobal.compliance.fhir.providers;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.IdType;
-import org.hl7.fhir.r4.model.MeasureReport;
-import org.hl7.fhir.r4.model.Reference;
-import org.openelisglobal.compliance.fhir.ComplianceFhirTransform;
-import org.openelisglobal.compliance.service.ComplianceEvaluationService;
-import org.openelisglobal.compliance.service.EvaluationResultService;
-import org.openelisglobal.compliance.valueholder.ComplianceEvaluation;
-import org.openelisglobal.compliance.valueholder.EvaluationResult;
-import org.openelisglobal.compliance.valueholder.EvaluationStatus;
-import org.openelisglobal.fhir.providers.FhirProviderUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import ca.uhn.fhir.rest.annotation.Create;
 import ca.uhn.fhir.rest.annotation.IdParam;
 import ca.uhn.fhir.rest.annotation.OptionalParam;
@@ -29,6 +7,7 @@ import ca.uhn.fhir.rest.annotation.Read;
 import ca.uhn.fhir.rest.annotation.ResourceParam;
 import ca.uhn.fhir.rest.annotation.Search;
 import ca.uhn.fhir.rest.annotation.Update;
+import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.param.DateRangeParam;
 import ca.uhn.fhir.rest.param.ReferenceParam;
 import ca.uhn.fhir.rest.param.StringParam;
@@ -37,19 +16,37 @@ import ca.uhn.fhir.rest.server.IResourceProvider;
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import ca.uhn.fhir.rest.server.exceptions.InvalidRequestException;
 import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
-import org.openelisglobal.dataexchange.fhir.exception.FhirLocalPersistingException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+import org.hl7.fhir.instance.model.api.IBaseResource;
+import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.IdType;
+import org.hl7.fhir.r4.model.MeasureReport;
 import org.openelisglobal.common.log.LogEvent;
-import ca.uhn.fhir.rest.api.MethodOutcome;
+import org.openelisglobal.compliance.fhir.ComplianceFhirTransform;
+import org.openelisglobal.compliance.service.ComplianceEvaluationService;
+import org.openelisglobal.compliance.service.EvaluationResultService;
+import org.openelisglobal.compliance.valueholder.ComplianceEvaluation;
+import org.openelisglobal.compliance.valueholder.EvaluationResult;
+import org.openelisglobal.compliance.valueholder.EvaluationStatus;
+import org.openelisglobal.dataexchange.fhir.exception.FhirLocalPersistingException;
+import org.openelisglobal.fhir.providers.FhirProviderUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
- * FHIR Resource Provider for ComplianceEvaluation (mapped to FHIR MeasureReport)
- * Provides REST API endpoints for accessing compliance evaluation results
+ * FHIR Resource Provider for ComplianceEvaluation (mapped to FHIR
+ * MeasureReport) Provides REST API endpoints for accessing compliance
+ * evaluation results
  *
- * Endpoints:
- * - GET /fhir/MeasureReport/{id} - Read specific evaluation
- * - POST /fhir/MeasureReport - Create new evaluation (usually system-generated)
- * - PUT /fhir/MeasureReport/{id} - Update existing evaluation
- * - GET /fhir/MeasureReport?measure={standard}&subject={sample}&date={period} - Search evaluations
+ * Endpoints: - GET /fhir/MeasureReport/{id} - Read specific evaluation - POST
+ * /fhir/MeasureReport - Create new evaluation (usually system-generated) - PUT
+ * /fhir/MeasureReport/{id} - Update existing evaluation - GET
+ * /fhir/MeasureReport?measure={standard}&subject={sample}&date={period} -
+ * Search evaluations
  */
 @Component
 public class ComplianceEvaluationProvider implements IResourceProvider {
@@ -69,30 +66,28 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
     }
 
     /**
-     * READ: GET /fhir/MeasureReport/{id}
-     * Retrieve a specific compliance evaluation by FHIR UUID
+     * READ: GET /fhir/MeasureReport/{id} Retrieve a specific compliance evaluation
+     * by FHIR UUID
      */
     @Read
     public MeasureReport readComplianceEvaluation(@IdParam IdType theId) {
         String method = "Read";
         try {
-            FhirProviderUtils.validateIdParam(theId, "MeasureReport",
-                this.getClass().getSimpleName(), method);
+            FhirProviderUtils.validateIdParam(theId, "MeasureReport", this.getClass().getSimpleName(), method);
 
             LogEvent.logDebug(this.getClass().getSimpleName(), method,
-                "Reading ComplianceEvaluation with FHIR ID: " + theId.getIdPart());
+                    "Reading ComplianceEvaluation with FHIR ID: " + theId.getIdPart());
 
             ComplianceEvaluation evaluation = complianceEvaluationService
-                .getComplianceEvaluationByFhirId(theId.getIdPart());
+                    .getComplianceEvaluationByFhirId(theId.getIdPart());
 
             if (evaluation == null) {
                 throw new ResourceNotFoundException(
-                    "ComplianceEvaluation not found with FHIR ID: " + theId.getIdPart());
+                        "ComplianceEvaluation not found with FHIR ID: " + theId.getIdPart());
             }
 
             // Get associated evaluation results
-            List<EvaluationResult> results = evaluationResultService
-                .getResultsByEvaluationId(evaluation.getId());
+            List<EvaluationResult> results = evaluationResultService.getResultsByEvaluationId(evaluation.getId());
 
             // Transform to FHIR MeasureReport
             MeasureReport fhirReport = fhirTransform.transformToFhirMeasureReport(evaluation);
@@ -103,7 +98,7 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
             }
 
             LogEvent.logDebug(this.getClass().getSimpleName(), method,
-                "Successfully retrieved ComplianceEvaluation for sample: " + evaluation.getSampleId());
+                    "Successfully retrieved ComplianceEvaluation for sample: " + evaluation.getSampleId());
 
             return fhirReport;
 
@@ -111,24 +106,23 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
             throw e;
         } catch (Exception e) {
             LogEvent.logError(this.getClass().getSimpleName(), method,
-                "Unexpected error while reading ComplianceEvaluation: " + e.getMessage());
-            throw new InternalErrorException(
-                "Unexpected server error while reading ComplianceEvaluation", e);
+                    "Unexpected error while reading ComplianceEvaluation: " + e.getMessage());
+            throw new InternalErrorException("Unexpected server error while reading ComplianceEvaluation", e);
         }
     }
 
     /**
-     * CREATE: POST /fhir/MeasureReport
-     * Create a new compliance evaluation from FHIR MeasureReport resource
-     * Note: Usually evaluations are system-generated, but this supports external submissions
+     * CREATE: POST /fhir/MeasureReport Create a new compliance evaluation from FHIR
+     * MeasureReport resource Note: Usually evaluations are system-generated, but
+     * this supports external submissions
      */
     @Create
-    public MethodOutcome createComplianceEvaluation(@ResourceParam MeasureReport fhirReport,
-            HttpServletRequest request) throws FhirLocalPersistingException {
+    public MethodOutcome createComplianceEvaluation(@ResourceParam MeasureReport fhirReport, HttpServletRequest request)
+            throws FhirLocalPersistingException {
 
         String method = "create";
         LogEvent.logDebug(this.getClass().getSimpleName(), method,
-            "Received FHIR CREATE request for ComplianceEvaluation");
+                "Received FHIR CREATE request for ComplianceEvaluation");
 
         try {
             if (fhirReport == null) {
@@ -162,9 +156,8 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
                 throw new InternalErrorException("Failed to save ComplianceEvaluation");
             }
 
-            LogEvent.logInfo(this.getClass().getSimpleName(), method,
-                "Created ComplianceEvaluation for sample: " + savedEvaluation.getSampleId() +
-                " with ID: " + savedEvaluation.getId());
+            LogEvent.logInfo(this.getClass().getSimpleName(), method, "Created ComplianceEvaluation for sample: "
+                    + savedEvaluation.getSampleId() + " with ID: " + savedEvaluation.getId());
 
             // Transform back to FHIR and return
             MeasureReport response = fhirTransform.transformToFhirMeasureReport(savedEvaluation);
@@ -175,40 +168,36 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
             throw e;
         } catch (Exception e) {
             LogEvent.logError(this.getClass().getSimpleName(), method,
-                "Error creating ComplianceEvaluation: " + e.getMessage());
-            throw new InternalErrorException(
-                "Unexpected server error while creating ComplianceEvaluation", e);
+                    "Error creating ComplianceEvaluation: " + e.getMessage());
+            throw new InternalErrorException("Unexpected server error while creating ComplianceEvaluation", e);
         }
     }
 
     /**
-     * UPDATE: PUT /fhir/MeasureReport/{id}
-     * Update an existing compliance evaluation
+     * UPDATE: PUT /fhir/MeasureReport/{id} Update an existing compliance evaluation
      */
     @Update
-    public MethodOutcome updateComplianceEvaluation(@IdParam IdType theId,
-            @ResourceParam MeasureReport fhirReport, HttpServletRequest request)
-            throws FhirLocalPersistingException {
+    public MethodOutcome updateComplianceEvaluation(@IdParam IdType theId, @ResourceParam MeasureReport fhirReport,
+            HttpServletRequest request) throws FhirLocalPersistingException {
 
         String method = "update";
         try {
-            FhirProviderUtils.validateIdParam(theId, "MeasureReport",
-                this.getClass().getSimpleName(), method);
+            FhirProviderUtils.validateIdParam(theId, "MeasureReport", this.getClass().getSimpleName(), method);
 
             if (fhirReport == null) {
                 throw new InvalidRequestException("MeasureReport resource cannot be null");
             }
 
             LogEvent.logDebug(this.getClass().getSimpleName(), method,
-                "Updating ComplianceEvaluation with FHIR ID: " + theId.getIdPart());
+                    "Updating ComplianceEvaluation with FHIR ID: " + theId.getIdPart());
 
             // Find existing evaluation
             ComplianceEvaluation existingEvaluation = complianceEvaluationService
-                .getComplianceEvaluationByFhirId(theId.getIdPart());
+                    .getComplianceEvaluationByFhirId(theId.getIdPart());
 
             if (existingEvaluation == null) {
                 throw new ResourceNotFoundException(
-                    "ComplianceEvaluation not found with FHIR ID: " + theId.getIdPart());
+                        "ComplianceEvaluation not found with FHIR ID: " + theId.getIdPart());
             }
 
             // Transform FHIR updates to entity
@@ -223,7 +212,7 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
             ComplianceEvaluation savedEvaluation = complianceEvaluationService.update(updatedEvaluation);
 
             LogEvent.logInfo(this.getClass().getSimpleName(), method,
-                "Updated ComplianceEvaluation for sample: " + savedEvaluation.getSampleId());
+                    "Updated ComplianceEvaluation for sample: " + savedEvaluation.getSampleId());
 
             // Transform back to FHIR and return
             MeasureReport response = fhirTransform.transformToFhirMeasureReport(savedEvaluation);
@@ -234,37 +223,34 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
             throw e;
         } catch (Exception e) {
             LogEvent.logError(this.getClass().getSimpleName(), method,
-                "Error updating ComplianceEvaluation: " + e.getMessage());
-            throw new InternalErrorException(
-                "Unexpected server error while updating ComplianceEvaluation", e);
+                    "Error updating ComplianceEvaluation: " + e.getMessage());
+            throw new InternalErrorException("Unexpected server error while updating ComplianceEvaluation", e);
         }
     }
 
     /**
-     * SEARCH: GET /fhir/MeasureReport?measure={standard}&subject={sample}&date={period}&status={status}
+     * SEARCH: GET
+     * /fhir/MeasureReport?measure={standard}&subject={sample}&date={period}&status={status}
      * Search compliance evaluations by various criteria
      */
     @Search
-    public Bundle searchComplianceEvaluations(
-            @OptionalParam(name = "measure") ReferenceParam measure,
+    public Bundle searchComplianceEvaluations(@OptionalParam(name = "measure") ReferenceParam measure,
             @OptionalParam(name = "subject") ReferenceParam subject,
-            @OptionalParam(name = "date") DateRangeParam dateRange,
-            @OptionalParam(name = "status") TokenParam status,
+            @OptionalParam(name = "date") DateRangeParam dateRange, @OptionalParam(name = "status") TokenParam status,
             @OptionalParam(name = "identifier") TokenParam identifier) {
 
         String method = "search";
         try {
             LogEvent.logDebug(this.getClass().getSimpleName(), method,
-                "Searching ComplianceEvaluations with parameters - measure: " + measure +
-                ", subject: " + subject + ", date: " + dateRange + ", status: " + status);
+                    "Searching ComplianceEvaluations with parameters - measure: " + measure + ", subject: " + subject
+                            + ", date: " + dateRange + ", status: " + status);
 
             List<ComplianceEvaluation> evaluations = new ArrayList<>();
 
             if (measure != null) {
                 // Search by compliance standard (Measure reference)
                 String measureId = extractIdFromReference(measure.getValue());
-                evaluations.addAll(complianceEvaluationService
-                    .getEvaluationsByComplianceStandardFhirId(measureId));
+                evaluations.addAll(complianceEvaluationService.getEvaluationsByComplianceStandardFhirId(measureId));
             } else if (subject != null) {
                 // Search by sample/specimen (subject reference)
                 String sampleId = extractIdFromReference(subject.getValue());
@@ -280,17 +266,22 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
 
             // Filter by date range if specified
             if (dateRange != null && !evaluations.isEmpty()) {
-                Date lowerBound = dateRange.getLowerBoundAsInstant() != null ?
-                    Date.from(dateRange.getLowerBoundAsInstant()) : null;
-                Date upperBound = dateRange.getUpperBoundAsInstant() != null ?
-                    Date.from(dateRange.getUpperBoundAsInstant()) : null;
+                Date lowerBound = dateRange.getLowerBoundAsInstant() != null
+                        ? Date.from(dateRange.getLowerBoundAsInstant())
+                        : null;
+                Date upperBound = dateRange.getUpperBoundAsInstant() != null
+                        ? Date.from(dateRange.getUpperBoundAsInstant())
+                        : null;
 
                 evaluations.removeIf(evaluation -> {
                     Date evalDate = evaluation.getEvaluationDate();
-                    if (evalDate == null) return true;
+                    if (evalDate == null)
+                        return true;
 
-                    if (lowerBound != null && evalDate.before(lowerBound)) return true;
-                    if (upperBound != null && evalDate.after(upperBound)) return true;
+                    if (lowerBound != null && evalDate.before(lowerBound))
+                        return true;
+                    if (upperBound != null && evalDate.after(upperBound))
+                        return true;
 
                     return false;
                 });
@@ -312,7 +303,7 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
                 try {
                     // Get associated results
                     List<EvaluationResult> results = evaluationResultService
-                        .getResultsByEvaluationId(evaluation.getId());
+                            .getResultsByEvaluationId(evaluation.getId());
 
                     MeasureReport report = fhirTransform.transformToFhirMeasureReport(evaluation);
 
@@ -326,31 +317,29 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
                     entry.setFullUrl("MeasureReport/" + report.getId());
                 } catch (Exception e) {
                     LogEvent.logError(this.getClass().getSimpleName(), method,
-                        "Error transforming ComplianceEvaluation to FHIR: " + e.getMessage());
+                            "Error transforming ComplianceEvaluation to FHIR: " + e.getMessage());
                     // Continue with other evaluations
                 }
             }
 
             LogEvent.logDebug(this.getClass().getSimpleName(), method,
-                "Search completed, returning " + bundle.getEntry().size() + " results");
+                    "Search completed, returning " + bundle.getEntry().size() + " results");
 
             return bundle;
 
         } catch (Exception e) {
             LogEvent.logError(this.getClass().getSimpleName(), method,
-                "Error searching ComplianceEvaluations: " + e.getMessage());
-            throw new InternalErrorException(
-                "Unexpected server error while searching ComplianceEvaluations", e);
+                    "Error searching ComplianceEvaluations: " + e.getMessage());
+            throw new InternalErrorException("Unexpected server error while searching ComplianceEvaluations", e);
         }
     }
 
     /**
-     * GET /fhir/MeasureReport?measure={standardId}&_summary=count
-     * Get compliance statistics for a specific standard
+     * GET /fhir/MeasureReport?measure={standardId}&_summary=count Get compliance
+     * statistics for a specific standard
      */
     @Search
-    public Bundle getComplianceStatistics(
-            @OptionalParam(name = "measure") ReferenceParam measure,
+    public Bundle getComplianceStatistics(@OptionalParam(name = "measure") ReferenceParam measure,
             @OptionalParam(name = "_summary") StringParam summary) {
 
         String method = "getComplianceStatistics";
@@ -361,19 +350,16 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
 
             String measureId = extractIdFromReference(measure.getValue());
             List<ComplianceEvaluation> evaluations = complianceEvaluationService
-                .getEvaluationsByComplianceStandardFhirId(measureId);
+                    .getEvaluationsByComplianceStandardFhirId(measureId);
 
             // Calculate statistics
             long totalEvaluations = evaluations.size();
             long compliantCount = evaluations.stream()
-                .mapToLong(e -> EvaluationStatus.COMPLIANT.equals(e.getStatus()) ? 1 : 0)
-                .sum();
+                    .mapToLong(e -> EvaluationStatus.COMPLIANT.equals(e.getStatus()) ? 1 : 0).sum();
             long nonCompliantCount = evaluations.stream()
-                .mapToLong(e -> EvaluationStatus.NON_COMPLIANT.equals(e.getStatus()) ? 1 : 0)
-                .sum();
+                    .mapToLong(e -> EvaluationStatus.NON_COMPLIANT.equals(e.getStatus()) ? 1 : 0).sum();
             long warningCount = evaluations.stream()
-                .mapToLong(e -> EvaluationStatus.WARNING.equals(e.getStatus()) ? 1 : 0)
-                .sum();
+                    .mapToLong(e -> EvaluationStatus.WARNING.equals(e.getStatus()) ? 1 : 0).sum();
 
             // Create summary Bundle
             Bundle bundle = new Bundle();
@@ -382,15 +368,14 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
 
             // Add statistics as Bundle metadata (extensions)
             bundle.getMeta().addExtension("http://openelis.org/fhir/extension/compliance-statistics")
-                .addExtension("total", new org.hl7.fhir.r4.model.IntegerType((int) totalEvaluations))
-                .addExtension("compliant", new org.hl7.fhir.r4.model.IntegerType((int) compliantCount))
-                .addExtension("non-compliant", new org.hl7.fhir.r4.model.IntegerType((int) nonCompliantCount))
-                .addExtension("warning", new org.hl7.fhir.r4.model.IntegerType((int) warningCount));
+                    .addExtension("total", new org.hl7.fhir.r4.model.IntegerType((int) totalEvaluations))
+                    .addExtension("compliant", new org.hl7.fhir.r4.model.IntegerType((int) compliantCount))
+                    .addExtension("non-compliant", new org.hl7.fhir.r4.model.IntegerType((int) nonCompliantCount))
+                    .addExtension("warning", new org.hl7.fhir.r4.model.IntegerType((int) warningCount));
 
             LogEvent.logDebug(this.getClass().getSimpleName(), method,
-                "Statistics for standard " + measureId + ": Total=" + totalEvaluations +
-                ", Compliant=" + compliantCount + ", Non-Compliant=" + nonCompliantCount +
-                ", Warning=" + warningCount);
+                    "Statistics for standard " + measureId + ": Total=" + totalEvaluations + ", Compliant="
+                            + compliantCount + ", Non-Compliant=" + nonCompliantCount + ", Warning=" + warningCount);
 
             return bundle;
 
@@ -398,9 +383,8 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
             throw e;
         } catch (Exception e) {
             LogEvent.logError(this.getClass().getSimpleName(), method,
-                "Error getting compliance statistics: " + e.getMessage());
-            throw new InternalErrorException(
-                "Unexpected server error while getting compliance statistics", e);
+                    "Error getting compliance statistics: " + e.getMessage());
+            throw new InternalErrorException("Unexpected server error while getting compliance statistics", e);
         }
     }
 
@@ -444,14 +428,14 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
         // Set status
         if (fhirReport.hasStatus()) {
             switch (fhirReport.getStatus()) {
-                case COMPLETE:
-                    evaluation.setStatus(EvaluationStatus.COMPLIANT); // Default to compliant for complete
-                    break;
-                case PENDING:
-                    evaluation.setStatus(EvaluationStatus.PENDING);
-                    break;
-                default:
-                    evaluation.setStatus(EvaluationStatus.PENDING);
+            case COMPLETE:
+                evaluation.setStatus(EvaluationStatus.COMPLIANT); // Default to compliant for complete
+                break;
+            case PENDING:
+                evaluation.setStatus(EvaluationStatus.PENDING);
+                break;
+            default:
+                evaluation.setStatus(EvaluationStatus.PENDING);
             }
         }
 
@@ -490,8 +474,8 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
         // Extract notes from extensions
         if (fhirReport.hasExtension()) {
             for (org.hl7.fhir.r4.model.Extension extension : fhirReport.getExtension()) {
-                if (extension.getUrl().contains("evaluation-notes") &&
-                    extension.hasValue() && extension.getValue() instanceof org.hl7.fhir.r4.model.StringType) {
+                if (extension.getUrl().contains("evaluation-notes") && extension.hasValue()
+                        && extension.getValue() instanceof org.hl7.fhir.r4.model.StringType) {
                     evaluation.setEvaluationNotes(((org.hl7.fhir.r4.model.StringType) extension.getValue()).getValue());
                     break;
                 }
@@ -505,7 +489,8 @@ public class ComplianceEvaluationProvider implements IResourceProvider {
      * Extract ID part from FHIR reference (e.g., "Measure/123" -> "123")
      */
     private String extractIdFromReference(String reference) {
-        if (reference == null) return null;
+        if (reference == null)
+            return null;
         if (reference.contains("/")) {
             return reference.substring(reference.lastIndexOf("/") + 1);
         }

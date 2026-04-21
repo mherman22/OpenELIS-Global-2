@@ -1,9 +1,10 @@
 package org.openelisglobal.compliance.valueholder;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,26 +19,19 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
 import org.hibernate.annotations.Type;
+import org.openelisglobal.common.util.ValidationHelper;
 import org.openelisglobal.common.util.validator.SafeHtml;
 import org.openelisglobal.common.valueholder.BaseObject;
 import org.openelisglobal.common.valueholder.SimpleBaseEntity;
-import org.openelisglobal.common.util.ValidationHelper;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
- * ParameterGroup value holder representing groups of related parameters
- * within a compliance standard.
+ * ParameterGroup value holder representing groups of related parameters within
+ * a compliance standard.
  *
- * Follows constitutional requirements:
- * - Extends BaseObject for audit trail support
- * - Includes FHIR UUID for interoperability
- * - Uses JPA annotations (no XML mappings)
- * - Implements validation annotations
+ * Follows constitutional requirements: - Extends BaseObject for audit trail
+ * support - Includes FHIR UUID for interoperability - Uses JPA annotations (no
+ * XML mappings) - Implements validation annotations
  */
 @Entity
 @Table(name = "parameter_group")
@@ -264,12 +258,7 @@ public class ParameterGroup extends BaseObject<String> implements SimpleBaseEnti
 
     @Override
     public String toString() {
-        return "ParameterGroup{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", sortOrder=" + sortOrder +
-                ", standardId='" + getStandardId() + '\'' +
-                ", thresholdCount=" + getThresholdCount() +
-                '}';
+        return "ParameterGroup{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", sortOrder=" + sortOrder
+                + ", standardId='" + getStandardId() + '\'' + ", thresholdCount=" + getThresholdCount() + '}';
     }
 }

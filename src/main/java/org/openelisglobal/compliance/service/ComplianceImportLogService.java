@@ -2,7 +2,6 @@ package org.openelisglobal.compliance.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.openelisglobal.common.service.BaseObjectService;
 import org.openelisglobal.compliance.valueholder.ComplianceImportLog;
 import org.openelisglobal.compliance.valueholder.ComplianceImportStatus;
@@ -12,7 +11,8 @@ import org.openelisglobal.compliance.valueholder.ComplianceImportType;
  * Service interface for ComplianceImportLog operations.
  *
  * Provides business logic for compliance import audit trail functionality,
- * including logging, monitoring, and reporting of compliance standard import operations.
+ * including logging, monitoring, and reporting of compliance standard import
+ * operations.
  */
 public interface ComplianceImportLogService extends BaseObjectService<ComplianceImportLog, String> {
 
@@ -21,9 +21,9 @@ public interface ComplianceImportLogService extends BaseObjectService<Compliance
     /**
      * Start a new import operation log
      *
-     * @param importType Type of import operation
+     * @param importType   Type of import operation
      * @param importSource Source of import (file path, URL, etc.)
-     * @param initiatedBy User ID who initiated the import
+     * @param initiatedBy  User ID who initiated the import
      * @return Created import log
      */
     ComplianceImportLog startImportOperation(ComplianceImportType importType, String importSource, String initiatedBy);
@@ -31,67 +31,67 @@ public interface ComplianceImportLogService extends BaseObjectService<Compliance
     /**
      * Start a new import operation log with additional details
      *
-     * @param importType Type of import operation
+     * @param importType   Type of import operation
      * @param importSource Source of import
-     * @param fileName Name of the imported file
-     * @param fileSize Size of the imported file
+     * @param fileName     Name of the imported file
+     * @param fileSize     Size of the imported file
      * @param fileChecksum Checksum of the imported file
-     * @param initiatedBy User ID who initiated the import
+     * @param initiatedBy  User ID who initiated the import
      * @return Created import log
      */
-    ComplianceImportLog startImportOperation(ComplianceImportType importType, String importSource,
-                                           String fileName, Long fileSize, String fileChecksum, String initiatedBy);
+    ComplianceImportLog startImportOperation(ComplianceImportType importType, String importSource, String fileName,
+            Long fileSize, String fileChecksum, String initiatedBy);
 
     /**
      * Complete an import operation successfully
      *
-     * @param importLogId Import log ID
-     * @param recordsProcessed Total records processed
+     * @param importLogId       Import log ID
+     * @param recordsProcessed  Total records processed
      * @param recordsSuccessful Records successfully imported
-     * @param recordsFailed Records that failed to import
-     * @param recordsSkipped Records that were skipped
-     * @param summary Summary message
+     * @param recordsFailed     Records that failed to import
+     * @param recordsSkipped    Records that were skipped
+     * @param summary           Summary message
      */
-    void completeImportOperation(String importLogId, int recordsProcessed, int recordsSuccessful,
-                               int recordsFailed, int recordsSkipped, String summary);
+    void completeImportOperation(String importLogId, int recordsProcessed, int recordsSuccessful, int recordsFailed,
+            int recordsSkipped, String summary);
 
     /**
      * Mark an import operation as failed
      *
-     * @param importLogId Import log ID
-     * @param recordsProcessed Total records processed before failure
+     * @param importLogId       Import log ID
+     * @param recordsProcessed  Total records processed before failure
      * @param recordsSuccessful Records successfully imported before failure
-     * @param recordsFailed Records that failed to import
-     * @param errorDetails Detailed error message
+     * @param recordsFailed     Records that failed to import
+     * @param errorDetails      Detailed error message
      */
-    void markImportOperationFailed(String importLogId, int recordsProcessed, int recordsSuccessful,
-                                 int recordsFailed, String errorDetails);
+    void markImportOperationFailed(String importLogId, int recordsProcessed, int recordsSuccessful, int recordsFailed,
+            String errorDetails);
 
     /**
      * Complete an import operation with warnings
      *
-     * @param importLogId Import log ID
-     * @param recordsProcessed Total records processed
+     * @param importLogId       Import log ID
+     * @param recordsProcessed  Total records processed
      * @param recordsSuccessful Records successfully imported
-     * @param recordsFailed Records that failed to import
-     * @param recordsSkipped Records that were skipped
-     * @param summary Summary message
-     * @param warnings Warning details
+     * @param recordsFailed     Records that failed to import
+     * @param recordsSkipped    Records that were skipped
+     * @param summary           Summary message
+     * @param warnings          Warning details
      */
     void completeImportOperationWithWarnings(String importLogId, int recordsProcessed, int recordsSuccessful,
-                                            int recordsFailed, int recordsSkipped, String summary, String warnings);
+            int recordsFailed, int recordsSkipped, String summary, String warnings);
 
     /**
      * Update import operation progress
      *
-     * @param importLogId Import log ID
-     * @param recordsProcessed Total records processed so far
+     * @param importLogId       Import log ID
+     * @param recordsProcessed  Total records processed so far
      * @param recordsSuccessful Records successfully imported so far
-     * @param recordsFailed Records that failed to import so far
-     * @param status Current import status
+     * @param recordsFailed     Records that failed to import so far
+     * @param status            Current import status
      */
-    void updateImportProgress(String importLogId, int recordsProcessed, int recordsSuccessful,
-                            int recordsFailed, ComplianceImportStatus status);
+    void updateImportProgress(String importLogId, int recordsProcessed, int recordsSuccessful, int recordsFailed,
+            ComplianceImportStatus status);
 
     /**
      * Get import logs by import type
@@ -121,7 +121,7 @@ public interface ComplianceImportLogService extends BaseObjectService<Compliance
      * Get import logs within a date range
      *
      * @param startDate Start date/time (inclusive)
-     * @param endDate End date/time (inclusive)
+     * @param endDate   End date/time (inclusive)
      * @return List of import logs within the specified date range
      */
     List<ComplianceImportLog> getLogsByDateRange(LocalDateTime startDate, LocalDateTime endDate);
@@ -153,7 +153,7 @@ public interface ComplianceImportLogService extends BaseObjectService<Compliance
      * Get import logs with pagination
      *
      * @param startingRecNo Starting record number (0-based)
-     * @param pageSize Number of records per page
+     * @param pageSize      Number of records per page
      * @return List of import logs for the specified page
      */
     List<ComplianceImportLog> getPageOfImportLogs(int startingRecNo, int pageSize);
@@ -170,7 +170,7 @@ public interface ComplianceImportLogService extends BaseObjectService<Compliance
      *
      * @param sourcePattern Pattern to search in import source field
      * @param startingRecNo Starting record number (0-based)
-     * @param pageSize Number of records per page
+     * @param pageSize      Number of records per page
      * @return List of matching import logs
      */
     List<ComplianceImportLog> searchLogsBySource(String sourcePattern, int startingRecNo, int pageSize);
@@ -187,8 +187,9 @@ public interface ComplianceImportLogService extends BaseObjectService<Compliance
      * Get import statistics for a specific date range
      *
      * @param startDate Start date/time (inclusive)
-     * @param endDate End date/time (inclusive)
-     * @return Import statistics [totalCount, successCount, failureCount, averageDuration]
+     * @param endDate   End date/time (inclusive)
+     * @return Import statistics [totalCount, successCount, failureCount,
+     *         averageDuration]
      */
     Object[] getImportStatistics(LocalDateTime startDate, LocalDateTime endDate);
 
@@ -196,9 +197,10 @@ public interface ComplianceImportLogService extends BaseObjectService<Compliance
      * Get import statistics by type for a specific date range
      *
      * @param importType The import type
-     * @param startDate Start date/time (inclusive)
-     * @param endDate End date/time (inclusive)
-     * @return Import statistics [totalCount, successCount, failureCount, averageDuration]
+     * @param startDate  Start date/time (inclusive)
+     * @param endDate    End date/time (inclusive)
+     * @return Import statistics [totalCount, successCount, failureCount,
+     *         averageDuration]
      */
     Object[] getImportStatisticsByType(ComplianceImportType importType, LocalDateTime startDate, LocalDateTime endDate);
 
@@ -238,7 +240,7 @@ public interface ComplianceImportLogService extends BaseObjectService<Compliance
      * Cancel a running import operation
      *
      * @param importLogId Import log ID
-     * @param reason Reason for cancellation
+     * @param reason      Reason for cancellation
      */
     void cancelImportOperation(String importLogId, String reason);
 

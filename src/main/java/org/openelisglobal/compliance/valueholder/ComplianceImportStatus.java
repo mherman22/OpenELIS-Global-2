@@ -85,8 +85,7 @@ public enum ComplianceImportStatus {
      * Check if the status indicates the operation is still active/running
      */
     public boolean isActive() {
-        return this == STARTED || this == IN_PROGRESS || this == QUEUED ||
-               this == VALIDATING || this == ROLLING_BACK;
+        return this == STARTED || this == IN_PROGRESS || this == QUEUED || this == VALIDATING || this == ROLLING_BACK;
     }
 
     /**
@@ -100,8 +99,7 @@ public enum ComplianceImportStatus {
      * Check if the status indicates the operation failed
      */
     public boolean isFailure() {
-        return this == FAILED || this == VALIDATION_FAILED ||
-               this == CANCELLED || this == TIMEOUT;
+        return this == FAILED || this == VALIDATION_FAILED || this == CANCELLED || this == TIMEOUT;
     }
 
     /**
@@ -128,25 +126,25 @@ public enum ComplianceImportStatus {
      */
     public String getStatusColor() {
         switch (this) {
-            case COMPLETED:
-                return "green";
-            case COMPLETED_WITH_WARNINGS:
-                return "orange";
-            case FAILED:
-            case VALIDATION_FAILED:
-            case TIMEOUT:
-                return "red";
-            case CANCELLED:
-            case ROLLED_BACK:
-                return "gray";
-            case STARTED:
-            case IN_PROGRESS:
-            case QUEUED:
-            case VALIDATING:
-            case ROLLING_BACK:
-                return "blue";
-            default:
-                return "gray";
+        case COMPLETED:
+            return "green";
+        case COMPLETED_WITH_WARNINGS:
+            return "orange";
+        case FAILED:
+        case VALIDATION_FAILED:
+        case TIMEOUT:
+            return "red";
+        case CANCELLED:
+        case ROLLED_BACK:
+            return "gray";
+        case STARTED:
+        case IN_PROGRESS:
+        case QUEUED:
+        case VALIDATING:
+        case ROLLING_BACK:
+            return "blue";
+        default:
+            return "gray";
         }
     }
 

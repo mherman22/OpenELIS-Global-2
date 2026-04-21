@@ -1,7 +1,6 @@
 package org.openelisglobal.compliance.service;
 
 import java.util.List;
-
 import org.openelisglobal.common.exception.LIMSRuntimeException;
 import org.openelisglobal.common.service.BaseObjectService;
 import org.openelisglobal.compliance.valueholder.ComplianceStandard;
@@ -11,10 +10,9 @@ import org.openelisglobal.test.valueholder.Test;
 /**
  * Service interface for TestComplianceStandard entity.
  *
- * Follows OpenELIS service patterns:
- * - Extends BaseObjectService for standard CRUD operations
- * - Provides domain-specific business logic methods
- * - Handles relationship management between Test and ComplianceStandard
+ * Follows OpenELIS service patterns: - Extends BaseObjectService for standard
+ * CRUD operations - Provides domain-specific business logic methods - Handles
+ * relationship management between Test and ComplianceStandard
  */
 public interface TestComplianceStandardService extends BaseObjectService<TestComplianceStandard, String> {
 
@@ -39,7 +37,7 @@ public interface TestComplianceStandardService extends BaseObjectService<TestCom
     /**
      * Get a specific test-compliance standard association
      *
-     * @param testId The test ID
+     * @param testId               The test ID
      * @param complianceStandardId The compliance standard ID
      * @return TestComplianceStandard association or null if not found
      */
@@ -72,12 +70,12 @@ public interface TestComplianceStandardService extends BaseObjectService<TestCom
      * Update test-compliance standard associations for a test
      *
      * @param testComplianceStandards New list of associations
-     * @param test The test entity
-     * @param currentUser Current user ID
-     * @param newStandards List of newly added compliance standards
+     * @param test                    The test entity
+     * @param currentUser             Current user ID
+     * @param newStandards            List of newly added compliance standards
      */
     void updateTestComplianceStandards(List<TestComplianceStandard> testComplianceStandards, Test test,
-                                      String currentUser, List<ComplianceStandard> newStandards);
+            String currentUser, List<ComplianceStandard> newStandards);
 
     /**
      * Remove all compliance standard associations for a test
@@ -112,14 +110,16 @@ public interface TestComplianceStandardService extends BaseObjectService<TestCom
     /**
      * Get all test-compliance standard associations with full entity details
      *
-     * @return List of TestComplianceStandard with Test and ComplianceStandard entities loaded
+     * @return List of TestComplianceStandard with Test and ComplianceStandard
+     *         entities loaded
      */
     List<TestComplianceStandard> getAllWithEntities();
 
     /**
      * Get tests associated with active compliance standards only
      *
-     * @return List of TestComplianceStandard where compliance standard status is ACTIVE
+     * @return List of TestComplianceStandard where compliance standard status is
+     *         ACTIVE
      */
     List<TestComplianceStandard> getTestsWithActiveCompliance();
 
@@ -136,21 +136,20 @@ public interface TestComplianceStandardService extends BaseObjectService<TestCom
     /**
      * Associate a test with a compliance standard
      *
-     * @param testId The test ID
+     * @param testId               The test ID
      * @param complianceStandardId The compliance standard ID
-     * @param mandatory Whether compliance is mandatory
+     * @param mandatory            Whether compliance is mandatory
      * @param applicableParameters Applicable parameters (optional)
-     * @param currentUser Current user ID
+     * @param currentUser          Current user ID
      * @return The created association
      */
     TestComplianceStandard associateTestWithComplianceStandard(String testId, String complianceStandardId,
-                                                               boolean mandatory, String applicableParameters,
-                                                               String currentUser);
+            boolean mandatory, String applicableParameters, String currentUser);
 
     /**
      * Disassociate a test from a compliance standard
      *
-     * @param testId The test ID
+     * @param testId               The test ID
      * @param complianceStandardId The compliance standard ID
      * @return true if association was removed
      */

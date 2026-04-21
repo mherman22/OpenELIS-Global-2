@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.openelisglobal.BaseWebContextSensitiveTest;
@@ -18,8 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * TDD Test Suite for ParameterGroupService
  *
- * Tests the parameter group management functionality within compliance standards.
- * Follows constitutional TDD requirements and tests proper transaction boundaries.
+ * Tests the parameter group management functionality within compliance
+ * standards. Follows constitutional TDD requirements and tests proper
+ * transaction boundaries.
  */
 public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
 
@@ -51,12 +51,8 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
     @Test
     public void testSaveParameterGroup_shouldCreateNewGroup() {
         // RED: Will fail - service doesn't exist
-        ParameterGroup newGroup = createValidParameterGroup(
-            testStandardId,
-            "Physical Parameters",
-            "Temperature, pH, turbidity, color parameters",
-            1
-        );
+        ParameterGroup newGroup = createValidParameterGroup(testStandardId, "Physical Parameters",
+                "Temperature, pH, turbidity, color parameters", 1);
 
         String savedId = parameterGroupService.save(newGroup);
 
@@ -89,8 +85,7 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
         assertEquals("Third group should be Biological", "Biological Parameters", groups.get(2).getName());
 
         // Inversion test: verify proper ordering logic
-        assertTrue("Sort orders should be ascending",
-            groups.get(0).getSortOrder() < groups.get(1).getSortOrder());
+        assertTrue("Sort orders should be ascending", groups.get(0).getSortOrder() < groups.get(1).getSortOrder());
     }
 
     @Test
@@ -125,8 +120,7 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
             parameterGroupService.delete(groupId);
             // If group has thresholds, deletion should fail
         } catch (Exception e) {
-            assertTrue("Should prevent deletion when thresholds exist",
-                e.getMessage().contains("linked thresholds"));
+            assertTrue("Should prevent deletion when thresholds exist", e.getMessage().contains("linked thresholds"));
         }
     }
 
@@ -138,27 +132,25 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
         String group3Id = createAndSaveParameterGroup(testStandardId, "Group 3", 3);
 
         // Reorder: move group 3 to position 1
-        String[] newOrder = {group3Id, group1Id, group2Id};
+        String[] newOrder = { group3Id, group1Id, group2Id };
         parameterGroupService.reorderGroups(testStandardId, newOrder);
 
-        List<ParameterGroup> reorderedGroups = parameterGroupService
-            .getGroupsByStandardId(testStandardId);
+        List<ParameterGroup> reorderedGroups = parameterGroupService.getGroupsByStandardId(testStandardId);
 
         assertEquals("Group 3 should be first", "Group 3", reorderedGroups.get(0).getName());
         assertEquals("Group 1 should be second", "Group 1", reorderedGroups.get(1).getName());
         assertEquals("Group 2 should be third", "Group 2", reorderedGroups.get(2).getName());
 
         // Verify sort order values were updated
-        assertEquals("First group sort order should be 1", Integer.valueOf(1),
-            reorderedGroups.get(0).getSortOrder());
-        assertEquals("Second group sort order should be 2", Integer.valueOf(2),
-            reorderedGroups.get(1).getSortOrder());
+        assertEquals("First group sort order should be 1", Integer.valueOf(1), reorderedGroups.get(0).getSortOrder());
+        assertEquals("Second group sort order should be 2", Integer.valueOf(2), reorderedGroups.get(1).getSortOrder());
     }
 
     @Test
     public void testGetGroupWithThresholds_shouldEagerLoadThresholds() {
         // RED: Will fail - method doesn't exist
-        // Tests constitutional requirement: services must compile data within transaction
+        // Tests constitutional requirement: services must compile data within
+        // transaction
         String groupId = parameterGroupService.save(testParameterGroup);
 
         ParameterGroup groupWithThresholds = parameterGroupService.getGroupWithThresholds(groupId);
@@ -178,19 +170,14 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
         createAndSaveParameterGroup(testStandardId, "Physical Parameters", 1);
 
         // Try to create duplicate group name in same standard
-        ParameterGroup duplicate = createValidParameterGroup(
-            testStandardId,
-            "Physical Parameters", // Same name
-            "Different description",
-            2
-        );
+        ParameterGroup duplicate = createValidParameterGroup(testStandardId, "Physical Parameters", // Same name
+                "Different description", 2);
 
         try {
             parameterGroupService.save(duplicate);
             fail("Should not allow duplicate group name within same standard");
         } catch (Exception e) {
-            assertTrue("Should throw uniqueness constraint violation",
-                e.getMessage().contains("already exists"));
+            assertTrue("Should throw uniqueness constraint violation", e.getMessage().contains("already exists"));
         }
     }
 
@@ -222,16 +209,11 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
     }
 
     private ParameterGroup createTestParameterGroup(String standardId) {
-        return createValidParameterGroup(
-            standardId,
-            "Test Parameter Group",
-            "Test group for parameter management",
-            1
-        );
+        return createValidParameterGroup(standardId, "Test Parameter Group", "Test group for parameter management", 1);
     }
 
-    private ParameterGroup createValidParameterGroup(String standardId, String name,
-                                                     String description, int sortOrder) {
+    private ParameterGroup createValidParameterGroup(String standardId, String name, String description,
+            int sortOrder) {
         ParameterGroup group = new ParameterGroup();
         group.setStandardId(standardId);
         group.setName(name);
@@ -241,8 +223,7 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
     }
 
     private String createAndSaveParameterGroup(String standardId, String name, int sortOrder) {
-        ParameterGroup group = createValidParameterGroup(
-            standardId, name, "Test description", sortOrder);
+        ParameterGroup group = createValidParameterGroup(standardId, name, "Test description", sortOrder);
         return parameterGroupService.save(group);
     }
 }

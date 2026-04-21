@@ -3,7 +3,6 @@ package org.openelisglobal.compliance.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-
 import org.openelisglobal.common.service.BaseObjectService;
 import org.openelisglobal.compliance.valueholder.ComplianceStandard;
 import org.openelisglobal.compliance.valueholder.ComplianceStandardStatus;
@@ -11,14 +10,13 @@ import org.openelisglobal.compliance.valueholder.ComplianceStandardStatus;
 /**
  * Service interface for ComplianceStandard operations.
  *
- * Follows OpenELIS service patterns extending BaseObjectService for standard CRUD operations
- * and providing domain-specific business logic for compliance standards management.
+ * Follows OpenELIS service patterns extending BaseObjectService for standard
+ * CRUD operations and providing domain-specific business logic for compliance
+ * standards management.
  *
- * Constitutional compliance:
- * - Extends BaseObjectService for standardized operations
- * - Declares transaction boundaries at service level
- * - Provides business logic validation methods
- * - Supports FHIR integration requirements
+ * Constitutional compliance: - Extends BaseObjectService for standardized
+ * operations - Declares transaction boundaries at service level - Provides
+ * business logic validation methods - Supports FHIR integration requirements
  */
 public interface ComplianceStandardService extends BaseObjectService<ComplianceStandard, String> {
 
@@ -28,7 +26,8 @@ public interface ComplianceStandardService extends BaseObjectService<ComplianceS
     ComplianceStandard getStandardByFhirId(UUID fhirUuid);
 
     /**
-     * Get compliance standard by natural key (issuing body, regulation number, version)
+     * Get compliance standard by natural key (issuing body, regulation number,
+     * version)
      */
     ComplianceStandard getStandardByNaturalKey(String issuingBody, String regulationNumber, String version);
 
@@ -58,8 +57,8 @@ public interface ComplianceStandardService extends BaseObjectService<ComplianceS
     List<ComplianceStandard> getStandardsEffectiveInRange(LocalDate startDate, LocalDate endDate);
 
     /**
-     * Get standard with eagerly loaded parameter groups
-     * (Constitutional requirement: compile data within transaction)
+     * Get standard with eagerly loaded parameter groups (Constitutional
+     * requirement: compile data within transaction)
      */
     ComplianceStandard getStandardWithParameterGroups(String standardId);
 
@@ -127,7 +126,7 @@ public interface ComplianceStandardService extends BaseObjectService<ComplianceS
      * Search standards by multiple criteria
      */
     List<ComplianceStandard> searchStandards(String name, String issuingBody, String regulationNumber,
-                                           ComplianceStandardStatus status, String countryRegion, String sampleType);
+            ComplianceStandardStatus status, String countryRegion, String sampleType);
 
     /**
      * Get standards expiring within specified days
@@ -165,8 +164,8 @@ public interface ComplianceStandardService extends BaseObjectService<ComplianceS
     void bulkUpdateStatus(List<String> standardIds, ComplianceStandardStatus newStatus, String userId);
 
     /**
-     * Get version for evaluation (version-lock semantics)
-     * Constitutional requirement: preserve version at evaluation time
+     * Get version for evaluation (version-lock semantics) Constitutional
+     * requirement: preserve version at evaluation time
      */
     String getVersionForEvaluation(String standardId);
 
@@ -193,8 +192,8 @@ public interface ComplianceStandardService extends BaseObjectService<ComplianceS
     // FHIR R4 integration methods
 
     /**
-     * Get compliance standard by FHIR UUID string
-     * (Convenience method for FHIR providers expecting string ID)
+     * Get compliance standard by FHIR UUID string (Convenience method for FHIR
+     * providers expecting string ID)
      */
     ComplianceStandard getComplianceStandardByFhirId(String fhirIdString);
 

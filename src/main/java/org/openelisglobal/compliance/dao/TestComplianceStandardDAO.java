@@ -1,17 +1,15 @@
 package org.openelisglobal.compliance.dao;
 
 import java.util.List;
-
 import org.openelisglobal.common.dao.BaseDAO;
 import org.openelisglobal.compliance.valueholder.TestComplianceStandard;
 
 /**
  * DAO interface for TestComplianceStandard entity.
  *
- * Follows OpenELIS DAO patterns:
- * - Extends BaseDAO for standard CRUD operations
- * - Provides domain-specific query methods
- * - Supports relationship queries between Test and ComplianceStandard
+ * Follows OpenELIS DAO patterns: - Extends BaseDAO for standard CRUD operations
+ * - Provides domain-specific query methods - Supports relationship queries
+ * between Test and ComplianceStandard
  */
 public interface TestComplianceStandardDAO extends BaseDAO<TestComplianceStandard, String> {
 
@@ -34,7 +32,7 @@ public interface TestComplianceStandardDAO extends BaseDAO<TestComplianceStandar
     /**
      * Get a specific test-compliance standard association
      *
-     * @param testId The test ID
+     * @param testId               The test ID
      * @param complianceStandardId The compliance standard ID
      * @return TestComplianceStandard association or null if not found
      */
@@ -96,14 +94,16 @@ public interface TestComplianceStandardDAO extends BaseDAO<TestComplianceStandar
     /**
      * Get all test-compliance standard associations with full entity details
      *
-     * @return List of TestComplianceStandard with Test and ComplianceStandard entities loaded
+     * @return List of TestComplianceStandard with Test and ComplianceStandard
+     *         entities loaded
      */
     List<TestComplianceStandard> getAllWithEntities();
 
     /**
      * Get tests associated with active compliance standards only
      *
-     * @return List of TestComplianceStandard where compliance standard status is ACTIVE
+     * @return List of TestComplianceStandard where compliance standard status is
+     *         ACTIVE
      */
     List<TestComplianceStandard> getTestsWithActiveCompliance();
 }

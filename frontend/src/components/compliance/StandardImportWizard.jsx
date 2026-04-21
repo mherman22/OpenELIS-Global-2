@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef } from "react";
 import {
   Grid,
   Column,
@@ -27,8 +27,8 @@ import {
   Tag,
   Link,
   CodeSnippet,
-  SkeletonText
-} from '@carbon/react';
+  SkeletonText,
+} from "@carbon/react";
 import {
   Upload,
   CloudUpload,
@@ -38,12 +38,15 @@ import {
   Download,
   DocumentImport,
   Reset,
-  View
-} from '@carbon/react/icons';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { ConfigurationContext, NotificationContext } from '../common/ComponentContext';
-import { postToOpenElisServer, getFromOpenElisServer } from '../utils/Utils';
-import './StandardImportWizard.css';
+  View,
+} from "@carbon/react/icons";
+import { FormattedMessage, useIntl } from "react-intl";
+import {
+  ConfigurationContext,
+  NotificationContext,
+} from "../common/ComponentContext";
+import { postToOpenElisServer, getFromOpenElisServer } from "../utils/Utils";
+import "./StandardImportWizard.css";
 
 const StandardImportWizard = ({ onComplete = () => {} }) => {
   const intl = useIntl();
@@ -52,7 +55,8 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
   const fileUploaderRef = useRef(null);
 
   // Feature flag check
-  const isComplianceModuleEnabled = configurationProperties?.['compliance.module.enabled'] === 'true';
+  const isComplianceModuleEnabled =
+    configurationProperties?.["compliance.module.enabled"] === "true";
 
   // Wizard state
   const [currentStep, setCurrentStep] = useState(0);
@@ -72,8 +76,8 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
     updateExisting: false,
     validateThresholds: true,
     createMissingParameters: false,
-    organization: '',
-    description: ''
+    organization: "",
+    description: "",
   });
 
   // Confirmation modal
@@ -108,44 +112,44 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
   const wizardSteps = [
     {
       label: intl.formatMessage({
-        id: 'compliance.import.wizard.step.upload.title',
-        defaultMessage: 'Upload File'
+        id: "compliance.import.wizard.step.upload.title",
+        defaultMessage: "Upload File",
       }),
       description: intl.formatMessage({
-        id: 'compliance.import.wizard.step.upload.description',
-        defaultMessage: 'Select and upload your CSV file'
-      })
+        id: "compliance.import.wizard.step.upload.description",
+        defaultMessage: "Select and upload your CSV file",
+      }),
     },
     {
       label: intl.formatMessage({
-        id: 'compliance.import.wizard.step.preview.title',
-        defaultMessage: 'Preview & Validate'
+        id: "compliance.import.wizard.step.preview.title",
+        defaultMessage: "Preview & Validate",
       }),
       description: intl.formatMessage({
-        id: 'compliance.import.wizard.step.preview.description',
-        defaultMessage: 'Review data and validation results'
-      })
+        id: "compliance.import.wizard.step.preview.description",
+        defaultMessage: "Review data and validation results",
+      }),
     },
     {
       label: intl.formatMessage({
-        id: 'compliance.import.wizard.step.settings.title',
-        defaultMessage: 'Import Settings'
+        id: "compliance.import.wizard.step.settings.title",
+        defaultMessage: "Import Settings",
       }),
       description: intl.formatMessage({
-        id: 'compliance.import.wizard.step.settings.description',
-        defaultMessage: 'Configure import options'
-      })
+        id: "compliance.import.wizard.step.settings.description",
+        defaultMessage: "Configure import options",
+      }),
     },
     {
       label: intl.formatMessage({
-        id: 'compliance.import.wizard.step.import.title',
-        defaultMessage: 'Import'
+        id: "compliance.import.wizard.step.import.title",
+        defaultMessage: "Import",
       }),
       description: intl.formatMessage({
-        id: 'compliance.import.wizard.step.import.description',
-        defaultMessage: 'Process and import data'
-      })
-    }
+        id: "compliance.import.wizard.step.import.description",
+        defaultMessage: "Process and import data",
+      }),
+    },
   ];
 
   // Handle file selection
@@ -155,17 +159,17 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
       const file = files[0];
 
       // Validate file type
-      if (!file.name.toLowerCase().endsWith('.csv')) {
+      if (!file.name.toLowerCase().endsWith(".csv")) {
         addNotification({
-          kind: 'error',
+          kind: "error",
           title: intl.formatMessage({
-            id: 'compliance.import.file.error.invalidType.title',
-            defaultMessage: 'Invalid File Type'
+            id: "compliance.import.file.error.invalidType.title",
+            defaultMessage: "Invalid File Type",
           }),
           message: intl.formatMessage({
-            id: 'compliance.import.file.error.invalidType.message',
-            defaultMessage: 'Please select a CSV file.'
-          })
+            id: "compliance.import.file.error.invalidType.message",
+            defaultMessage: "Please select a CSV file.",
+          }),
         });
         return;
       }
@@ -173,15 +177,15 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
       // Validate file size (max 10MB)
       if (file.size > 10 * 1024 * 1024) {
         addNotification({
-          kind: 'error',
+          kind: "error",
           title: intl.formatMessage({
-            id: 'compliance.import.file.error.tooLarge.title',
-            defaultMessage: 'File Too Large'
+            id: "compliance.import.file.error.tooLarge.title",
+            defaultMessage: "File Too Large",
           }),
           message: intl.formatMessage({
-            id: 'compliance.import.file.error.tooLarge.message',
-            defaultMessage: 'File size cannot exceed 10MB.'
-          })
+            id: "compliance.import.file.error.tooLarge.message",
+            defaultMessage: "File size cannot exceed 10MB.",
+          }),
         });
         return;
       }
@@ -199,12 +203,12 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
       setUploadProgress(0);
 
       const formData = new FormData();
-      formData.append('file', selectedFile);
-      formData.append('validateOnly', 'true');
+      formData.append("file", selectedFile);
+      formData.append("validateOnly", "true");
 
       // Simulate upload progress
       const progressInterval = setInterval(() => {
-        setUploadProgress(prev => {
+        setUploadProgress((prev) => {
           if (prev >= 90) {
             clearInterval(progressInterval);
             return 90;
@@ -214,10 +218,10 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
       }, 200);
 
       const response = await postToOpenElisServer(
-        '/rest/compliance/import/upload',
+        "/rest/compliance/import/upload",
         formData,
-        'POST',
-        { 'Content-Type': 'multipart/form-data' }
+        "POST",
+        { "Content-Type": "multipart/form-data" },
       );
 
       clearInterval(progressInterval);
@@ -232,17 +236,18 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
         }, 500);
       }
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error("Error uploading file:", error);
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'compliance.import.upload.error.title',
-          defaultMessage: 'Upload Failed'
+          id: "compliance.import.upload.error.title",
+          defaultMessage: "Upload Failed",
         }),
         message: intl.formatMessage({
-          id: 'compliance.import.upload.error.message',
-          defaultMessage: 'Unable to upload and validate file. Please try again.'
-        })
+          id: "compliance.import.upload.error.message",
+          defaultMessage:
+            "Unable to upload and validate file. Please try again.",
+        }),
       });
     } finally {
       setIsUploading(false);
@@ -256,13 +261,13 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
 
       const payload = {
         fileId: importPreview.fileId,
-        settings: importSettings
+        settings: importSettings,
       };
 
       const response = await postToOpenElisServer(
-        '/rest/compliance/import/execute',
+        "/rest/compliance/import/execute",
         JSON.stringify(payload),
-        'POST'
+        "POST",
       );
 
       if (response) {
@@ -270,29 +275,31 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
         setCurrentStep(3);
 
         addNotification({
-          kind: 'success',
+          kind: "success",
           title: intl.formatMessage({
-            id: 'compliance.import.success.title',
-            defaultMessage: 'Import Completed'
+            id: "compliance.import.success.title",
+            defaultMessage: "Import Completed",
           }),
           message: intl.formatMessage({
-            id: 'compliance.import.success.message',
-            defaultMessage: 'Standards and thresholds have been imported successfully.'
-          })
+            id: "compliance.import.success.message",
+            defaultMessage:
+              "Standards and thresholds have been imported successfully.",
+          }),
         });
       }
     } catch (error) {
-      console.error('Error executing import:', error);
+      console.error("Error executing import:", error);
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'compliance.import.execute.error.title',
-          defaultMessage: 'Import Failed'
+          id: "compliance.import.execute.error.title",
+          defaultMessage: "Import Failed",
         }),
         message: intl.formatMessage({
-          id: 'compliance.import.execute.error.message',
-          defaultMessage: 'Unable to complete import. Please check the data and try again.'
-        })
+          id: "compliance.import.execute.error.message",
+          defaultMessage:
+            "Unable to complete import. Please check the data and try again.",
+        }),
       });
     } finally {
       setIsProcessing(false);
@@ -334,31 +341,31 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
   const handleDownloadTemplate = async () => {
     try {
       const response = await getFromOpenElisServer(
-        '/rest/compliance/import/template',
-        { responseType: 'blob' }
+        "/rest/compliance/import/template",
+        { responseType: "blob" },
       );
 
       // Create download link
       const url = window.URL.createObjectURL(new Blob([response]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', 'compliance-standards-template.csv');
+      link.setAttribute("download", "compliance-standards-template.csv");
       document.body.appendChild(link);
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Error downloading template:', error);
+      console.error("Error downloading template:", error);
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'compliance.import.template.error.title',
-          defaultMessage: 'Download Failed'
+          id: "compliance.import.template.error.title",
+          defaultMessage: "Download Failed",
         }),
         message: intl.formatMessage({
-          id: 'compliance.import.template.error.message',
-          defaultMessage: 'Unable to download template file. Please try again.'
-        })
+          id: "compliance.import.template.error.message",
+          defaultMessage: "Unable to download template file. Please try again.",
+        }),
       });
     }
   };
@@ -366,24 +373,27 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
   // Get validation error severity
   const getErrorSeverity = (error) => {
     const severityMap = {
-      ERROR: { type: 'red', icon: ErrorFilled },
-      WARNING: { type: 'yellow', icon: WarningFilled },
-      INFO: { type: 'blue', icon: CheckmarkFilled }
+      ERROR: { type: "red", icon: ErrorFilled },
+      WARNING: { type: "yellow", icon: WarningFilled },
+      INFO: { type: "blue", icon: CheckmarkFilled },
     };
     return severityMap[error.severity] || severityMap.INFO;
   };
 
   // Get step status
   const getStepStatus = (index) => {
-    if (index < currentStep) return 'complete';
-    if (index === currentStep) return 'current';
-    return 'incomplete';
+    if (index < currentStep) return "complete";
+    if (index === currentStep) return "current";
+    return "incomplete";
   };
 
   // Check if next button should be enabled
   const isNextEnabled = () => {
     if (currentStep === 0) return selectedFile !== null && !isUploading;
-    if (currentStep === 1) return validationErrors.filter(e => e.severity === 'ERROR').length === 0;
+    if (currentStep === 1)
+      return (
+        validationErrors.filter((e) => e.severity === "ERROR").length === 0
+      );
     if (currentStep === 2) return true;
     return false;
   };
@@ -415,12 +425,12 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                 key={index}
                 label={step.label}
                 description={step.description}
-                complete={getStepStatus(index) === 'complete'}
-                current={getStepStatus(index) === 'current'}
+                complete={getStepStatus(index) === "complete"}
+                current={getStepStatus(index) === "current"}
                 invalid={
                   index === 1 &&
                   validationErrors.length > 0 &&
-                  validationErrors.some(e => e.severity === 'ERROR')
+                  validationErrors.some((e) => e.severity === "ERROR")
                 }
               />
             ))}
@@ -444,22 +454,23 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                 <InlineNotification
                   kind="info"
                   title={intl.formatMessage({
-                    id: 'compliance.import.template.info.title',
-                    defaultMessage: 'Need a template?'
+                    id: "compliance.import.template.info.title",
+                    defaultMessage: "Need a template?",
                   })}
                   subtitle={intl.formatMessage({
-                    id: 'compliance.import.template.info.message',
-                    defaultMessage: 'Download our CSV template to ensure your data is properly formatted.'
+                    id: "compliance.import.template.info.message",
+                    defaultMessage:
+                      "Download our CSV template to ensure your data is properly formatted.",
                   })}
                   hideCloseButton
                   actions={[
                     {
                       label: intl.formatMessage({
-                        id: 'compliance.import.template.download',
-                        defaultMessage: 'Download Template'
+                        id: "compliance.import.template.download",
+                        defaultMessage: "Download Template",
                       }),
-                      onClick: handleDownloadTemplate
-                    }
+                      onClick: handleDownloadTemplate,
+                    },
                   ]}
                 />
               </div>
@@ -470,21 +481,22 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                   ref={fileUploaderRef}
                   accept=".csv"
                   buttonLabel={intl.formatMessage({
-                    id: 'compliance.import.file.select',
-                    defaultMessage: 'Select CSV file'
+                    id: "compliance.import.file.select",
+                    defaultMessage: "Select CSV file",
                   })}
                   filenameStatus="edit"
                   iconDescription={intl.formatMessage({
-                    id: 'compliance.import.file.clear',
-                    defaultMessage: 'Clear file'
+                    id: "compliance.import.file.clear",
+                    defaultMessage: "Clear file",
                   })}
                   labelDescription={intl.formatMessage({
-                    id: 'compliance.import.file.description',
-                    defaultMessage: 'Only CSV files are supported. Maximum file size is 10MB.'
+                    id: "compliance.import.file.description",
+                    defaultMessage:
+                      "Only CSV files are supported. Maximum file size is 10MB.",
                   })}
                   labelTitle={intl.formatMessage({
-                    id: 'compliance.import.file.label',
-                    defaultMessage: 'Upload'
+                    id: "compliance.import.file.label",
+                    defaultMessage: "Upload",
                   })}
                   multiple={false}
                   name="importFile"
@@ -498,10 +510,14 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
               {isUploading && (
                 <div className="standard-import-wizard__upload-progress">
                   <InlineLoading
-                    description={intl.formatMessage({
-                      id: 'compliance.import.uploading',
-                      defaultMessage: 'Uploading and validating file... {progress}%'
-                    }, { progress: uploadProgress })}
+                    description={intl.formatMessage(
+                      {
+                        id: "compliance.import.uploading",
+                        defaultMessage:
+                          "Uploading and validating file... {progress}%",
+                      },
+                      { progress: uploadProgress },
+                    )}
                   />
                 </div>
               )}
@@ -510,8 +526,8 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
               <Accordion>
                 <AccordionItem
                   title={intl.formatMessage({
-                    id: 'compliance.import.format.guidelines.title',
-                    defaultMessage: 'CSV Format Guidelines'
+                    id: "compliance.import.format.guidelines.title",
+                    defaultMessage: "CSV Format Guidelines",
                   })}
                 >
                   <div className="standard-import-wizard__guidelines">
@@ -523,9 +539,14 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                     </h4>
                     <ul>
                       <li>standard_name: Name of the compliance standard</li>
-                      <li>organization_name: Organization that issued the standard</li>
+                      <li>
+                        organization_name: Organization that issued the standard
+                      </li>
                       <li>parameter_name: Name of the testing parameter</li>
-                      <li>threshold_type: Type of threshold (MAXIMUM, MINIMUM, RANGE, EXACT)</li>
+                      <li>
+                        threshold_type: Type of threshold (MAXIMUM, MINIMUM,
+                        RANGE, EXACT)
+                      </li>
                       <li>unit: Unit of measurement</li>
                     </ul>
 
@@ -537,19 +558,31 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                     </h4>
                     <ul>
                       <li>description: Description of the standard</li>
-                      <li>effective_date: When the standard becomes effective</li>
-                      <li>min_value: Minimum threshold value (for MINIMUM, RANGE)</li>
-                      <li>max_value: Maximum threshold value (for MAXIMUM, RANGE)</li>
+                      <li>
+                        effective_date: When the standard becomes effective
+                      </li>
+                      <li>
+                        min_value: Minimum threshold value (for MINIMUM, RANGE)
+                      </li>
+                      <li>
+                        max_value: Maximum threshold value (for MAXIMUM, RANGE)
+                      </li>
                       <li>exact_value: Exact threshold value (for EXACT)</li>
                       <li>tolerance: Acceptable tolerance percentage</li>
-                      <li>criticality_level: Impact level (LOW, MEDIUM, HIGH, CRITICAL)</li>
+                      <li>
+                        criticality_level: Impact level (LOW, MEDIUM, HIGH,
+                        CRITICAL)
+                      </li>
                     </ul>
 
-                    <CodeSnippet type="multi" feedback={intl.formatMessage({
-                      id: 'compliance.import.format.example.copied',
-                      defaultMessage: 'Example copied to clipboard'
-                    })}>
-{`standard_name,organization_name,parameter_name,threshold_type,unit,max_value,criticality_level
+                    <CodeSnippet
+                      type="multi"
+                      feedback={intl.formatMessage({
+                        id: "compliance.import.format.example.copied",
+                        defaultMessage: "Example copied to clipboard",
+                      })}
+                    >
+                      {`standard_name,organization_name,parameter_name,threshold_type,unit,max_value,criticality_level
 "WHO Guidelines","World Health Organization","pH","RANGE","pH Units","8.5","MEDIUM"
 "EPA Standards","US Environmental Protection Agency","Turbidity","MAXIMUM","NTU","4","HIGH"`}
                     </CodeSnippet>
@@ -601,7 +634,10 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                   <Column lg={4} md={2} sm={2}>
                     <div className="standard-import-wizard__stat">
                       <span className="standard-import-wizard__stat-value">
-                        {validationErrors.filter(e => e.severity === 'ERROR').length}
+                        {
+                          validationErrors.filter((e) => e.severity === "ERROR")
+                            .length
+                        }
                       </span>
                       <span className="standard-import-wizard__stat-label">
                         <FormattedMessage
@@ -614,7 +650,11 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                   <Column lg={4} md={2} sm={2}>
                     <div className="standard-import-wizard__stat">
                       <span className="standard-import-wizard__stat-value">
-                        {validationErrors.filter(e => e.severity === 'WARNING').length}
+                        {
+                          validationErrors.filter(
+                            (e) => e.severity === "WARNING",
+                          ).length
+                        }
                       </span>
                       <span className="standard-import-wizard__stat-label">
                         <FormattedMessage
@@ -639,62 +679,77 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                   <DataTable
                     rows={validationErrors.map((error, index) => ({
                       id: index,
-                      row: error.rowNumber || 'N/A',
-                      field: error.fieldName || 'N/A',
+                      row: error.rowNumber || "N/A",
+                      field: error.fieldName || "N/A",
                       severity: error.severity,
-                      message: error.message
+                      message: error.message,
                     }))}
                     headers={[
                       {
-                        key: 'row',
+                        key: "row",
                         header: intl.formatMessage({
-                          id: 'compliance.import.validation.row',
-                          defaultMessage: 'Row'
-                        })
+                          id: "compliance.import.validation.row",
+                          defaultMessage: "Row",
+                        }),
                       },
                       {
-                        key: 'field',
+                        key: "field",
                         header: intl.formatMessage({
-                          id: 'compliance.import.validation.field',
-                          defaultMessage: 'Field'
-                        })
+                          id: "compliance.import.validation.field",
+                          defaultMessage: "Field",
+                        }),
                       },
                       {
-                        key: 'severity',
+                        key: "severity",
                         header: intl.formatMessage({
-                          id: 'compliance.import.validation.severity',
-                          defaultMessage: 'Severity'
-                        })
+                          id: "compliance.import.validation.severity",
+                          defaultMessage: "Severity",
+                        }),
                       },
                       {
-                        key: 'message',
+                        key: "message",
                         header: intl.formatMessage({
-                          id: 'compliance.import.validation.message',
-                          defaultMessage: 'Message'
-                        })
-                      }
+                          id: "compliance.import.validation.message",
+                          defaultMessage: "Message",
+                        }),
+                      },
                     ]}
-                    render={({ rows, headers, getHeaderProps, getRowProps, getTableProps, getTableContainerProps }) => (
+                    render={({
+                      rows,
+                      headers,
+                      getHeaderProps,
+                      getRowProps,
+                      getTableProps,
+                      getTableContainerProps,
+                    }) => (
                       <TableContainer {...getTableContainerProps()}>
                         <Table {...getTableProps()}>
                           <TableHead>
                             <TableRow>
-                              {headers.map(header => (
-                                <TableHeader key={header.key} {...getHeaderProps({ header })}>
+                              {headers.map((header) => (
+                                <TableHeader
+                                  key={header.key}
+                                  {...getHeaderProps({ header })}
+                                >
                                   {header.header}
                                 </TableHeader>
                               ))}
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            {rows.map(row => (
+                            {rows.map((row) => (
                               <TableRow key={row.id} {...getRowProps({ row })}>
-                                {row.cells.map(cell => {
-                                  if (cell.info.header === 'severity') {
-                                    const { type, icon: IconComponent } = getErrorSeverity(cell.value);
+                                {row.cells.map((cell) => {
+                                  if (cell.info.header === "severity") {
+                                    const { type, icon: IconComponent } =
+                                      getErrorSeverity(cell.value);
                                     return (
                                       <TableCell key={cell.id}>
-                                        <Tag type={type} size="sm" renderIcon={IconComponent}>
+                                        <Tag
+                                          type={type}
+                                          size="sm"
+                                          renderIcon={IconComponent}
+                                        >
                                           {cell.value}
                                         </Tag>
                                       </TableCell>
@@ -739,17 +794,18 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                   </Button>
                 </div>
 
-                {importPreview.previewData && importPreview.previewData.length > 0 && (
-                  <div className="standard-import-wizard__preview-table">
-                    <SkeletonText />
-                    <p className="standard-import-wizard__preview-note">
-                      <FormattedMessage
-                        id="compliance.import.preview.data.note"
-                        defaultMessage="Showing first 5 records. Click 'View All' to see complete data."
-                      />
-                    </p>
-                  </div>
-                )}
+                {importPreview.previewData &&
+                  importPreview.previewData.length > 0 && (
+                    <div className="standard-import-wizard__preview-table">
+                      <SkeletonText />
+                      <p className="standard-import-wizard__preview-note">
+                        <FormattedMessage
+                          id="compliance.import.preview.data.note"
+                          defaultMessage="Showing first 5 records. Click 'View All' to see complete data."
+                        />
+                      </p>
+                    </div>
+                  )}
               </div>
             </div>
           )}
@@ -769,18 +825,25 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                   <TextInput
                     id="organization"
                     labelText={intl.formatMessage({
-                      id: 'compliance.import.settings.organization.label',
-                      defaultMessage: 'Default Organization'
+                      id: "compliance.import.settings.organization.label",
+                      defaultMessage: "Default Organization",
                     })}
                     placeholder={intl.formatMessage({
-                      id: 'compliance.import.settings.organization.placeholder',
-                      defaultMessage: 'Enter organization name for standards without one'
+                      id: "compliance.import.settings.organization.placeholder",
+                      defaultMessage:
+                        "Enter organization name for standards without one",
                     })}
                     value={importSettings.organization}
-                    onChange={(e) => setImportSettings(prev => ({ ...prev, organization: e.target.value }))}
+                    onChange={(e) =>
+                      setImportSettings((prev) => ({
+                        ...prev,
+                        organization: e.target.value,
+                      }))
+                    }
                     helperText={intl.formatMessage({
-                      id: 'compliance.import.settings.organization.help',
-                      defaultMessage: 'Used when organization_name is not specified in CSV'
+                      id: "compliance.import.settings.organization.help",
+                      defaultMessage:
+                        "Used when organization_name is not specified in CSV",
                     })}
                   />
                 </Column>
@@ -789,15 +852,20 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                   <TextArea
                     id="description"
                     labelText={intl.formatMessage({
-                      id: 'compliance.import.settings.description.label',
-                      defaultMessage: 'Import Description'
+                      id: "compliance.import.settings.description.label",
+                      defaultMessage: "Import Description",
                     })}
                     placeholder={intl.formatMessage({
-                      id: 'compliance.import.settings.description.placeholder',
-                      defaultMessage: 'Describe this import batch'
+                      id: "compliance.import.settings.description.placeholder",
+                      defaultMessage: "Describe this import batch",
                     })}
                     value={importSettings.description}
-                    onChange={(e) => setImportSettings(prev => ({ ...prev, description: e.target.value }))}
+                    onChange={(e) =>
+                      setImportSettings((prev) => ({
+                        ...prev,
+                        description: e.target.value,
+                      }))
+                    }
                     rows={3}
                   />
                 </Column>
@@ -815,11 +883,16 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                   <Toggle
                     id="skip-duplicates"
                     labelText={intl.formatMessage({
-                      id: 'compliance.import.settings.skipDuplicates.label',
-                      defaultMessage: 'Skip Duplicate Records'
+                      id: "compliance.import.settings.skipDuplicates.label",
+                      defaultMessage: "Skip Duplicate Records",
                     })}
                     toggled={importSettings.skipDuplicates}
-                    onToggle={(toggled) => setImportSettings(prev => ({ ...prev, skipDuplicates: toggled }))}
+                    onToggle={(toggled) =>
+                      setImportSettings((prev) => ({
+                        ...prev,
+                        skipDuplicates: toggled,
+                      }))
+                    }
                   />
                   <p className="standard-import-wizard__setting-description">
                     <FormattedMessage
@@ -833,11 +906,16 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                   <Toggle
                     id="update-existing"
                     labelText={intl.formatMessage({
-                      id: 'compliance.import.settings.updateExisting.label',
-                      defaultMessage: 'Update Existing Records'
+                      id: "compliance.import.settings.updateExisting.label",
+                      defaultMessage: "Update Existing Records",
                     })}
                     toggled={importSettings.updateExisting}
-                    onToggle={(toggled) => setImportSettings(prev => ({ ...prev, updateExisting: toggled }))}
+                    onToggle={(toggled) =>
+                      setImportSettings((prev) => ({
+                        ...prev,
+                        updateExisting: toggled,
+                      }))
+                    }
                   />
                   <p className="standard-import-wizard__setting-description">
                     <FormattedMessage
@@ -851,11 +929,16 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                   <Toggle
                     id="validate-thresholds"
                     labelText={intl.formatMessage({
-                      id: 'compliance.import.settings.validateThresholds.label',
-                      defaultMessage: 'Validate Threshold Logic'
+                      id: "compliance.import.settings.validateThresholds.label",
+                      defaultMessage: "Validate Threshold Logic",
                     })}
                     toggled={importSettings.validateThresholds}
-                    onToggle={(toggled) => setImportSettings(prev => ({ ...prev, validateThresholds: toggled }))}
+                    onToggle={(toggled) =>
+                      setImportSettings((prev) => ({
+                        ...prev,
+                        validateThresholds: toggled,
+                      }))
+                    }
                   />
                   <p className="standard-import-wizard__setting-description">
                     <FormattedMessage
@@ -869,11 +952,16 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                   <Toggle
                     id="create-missing-parameters"
                     labelText={intl.formatMessage({
-                      id: 'compliance.import.settings.createMissingParameters.label',
-                      defaultMessage: 'Create Missing Parameters'
+                      id: "compliance.import.settings.createMissingParameters.label",
+                      defaultMessage: "Create Missing Parameters",
                     })}
                     toggled={importSettings.createMissingParameters}
-                    onToggle={(toggled) => setImportSettings(prev => ({ ...prev, createMissingParameters: toggled }))}
+                    onToggle={(toggled) =>
+                      setImportSettings((prev) => ({
+                        ...prev,
+                        createMissingParameters: toggled,
+                      }))
+                    }
                   />
                   <p className="standard-import-wizard__setting-description">
                     <FormattedMessage
@@ -900,12 +988,13 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
                 <InlineNotification
                   kind="success"
                   title={intl.formatMessage({
-                    id: 'compliance.import.results.success.title',
-                    defaultMessage: 'Import Successful'
+                    id: "compliance.import.results.success.title",
+                    defaultMessage: "Import Successful",
                   })}
                   subtitle={intl.formatMessage({
-                    id: 'compliance.import.results.success.message',
-                    defaultMessage: 'Your compliance standards have been imported successfully.'
+                    id: "compliance.import.results.success.message",
+                    defaultMessage:
+                      "Your compliance standards have been imported successfully.",
                   })}
                   hideCloseButton
                 />
@@ -1032,19 +1121,23 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
           open={isConfirmModalOpen}
           onRequestClose={() => setIsConfirmModalOpen(false)}
           modalHeading={intl.formatMessage({
-            id: 'compliance.import.confirm.title',
-            defaultMessage: 'Confirm Import'
+            id: "compliance.import.confirm.title",
+            defaultMessage: "Confirm Import",
           })}
-          primaryButtonText={isProcessing ? intl.formatMessage({
-            id: 'compliance.import.confirm.processing',
-            defaultMessage: 'Processing...'
-          }) : intl.formatMessage({
-            id: 'compliance.import.confirm.import',
-            defaultMessage: 'Import Data'
-          })}
+          primaryButtonText={
+            isProcessing
+              ? intl.formatMessage({
+                  id: "compliance.import.confirm.processing",
+                  defaultMessage: "Processing...",
+                })
+              : intl.formatMessage({
+                  id: "compliance.import.confirm.import",
+                  defaultMessage: "Import Data",
+                })
+          }
           secondaryButtonText={intl.formatMessage({
-            id: 'compliance.import.confirm.cancel',
-            defaultMessage: 'Cancel'
+            id: "compliance.import.confirm.cancel",
+            defaultMessage: "Cancel",
           })}
           onRequestSubmit={async () => {
             setIsConfirmModalOpen(false);
@@ -1059,17 +1152,26 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
               values={{ count: importPreview?.validRecords || 0 }}
             />
           </p>
-          {validationErrors.filter(e => e.severity === 'WARNING').length > 0 && (
+          {validationErrors.filter((e) => e.severity === "WARNING").length >
+            0 && (
             <InlineNotification
               kind="warning"
               title={intl.formatMessage({
-                id: 'compliance.import.confirm.warnings.title',
-                defaultMessage: 'Warnings Detected'
+                id: "compliance.import.confirm.warnings.title",
+                defaultMessage: "Warnings Detected",
               })}
-              subtitle={intl.formatMessage({
-                id: 'compliance.import.confirm.warnings.message',
-                defaultMessage: 'There are {count} warnings. Import will continue but please review the results.'
-              }, { count: validationErrors.filter(e => e.severity === 'WARNING').length })}
+              subtitle={intl.formatMessage(
+                {
+                  id: "compliance.import.confirm.warnings.message",
+                  defaultMessage:
+                    "There are {count} warnings. Import will continue but please review the results.",
+                },
+                {
+                  count: validationErrors.filter(
+                    (e) => e.severity === "WARNING",
+                  ).length,
+                },
+              )}
               hideCloseButton
             />
           )}
@@ -1080,8 +1182,8 @@ const StandardImportWizard = ({ onComplete = () => {} }) => {
           open={isPreviewModalOpen}
           onRequestClose={() => setIsPreviewModalOpen(false)}
           modalHeading={intl.formatMessage({
-            id: 'compliance.import.preview.modal.title',
-            defaultMessage: 'Full Data Preview'
+            id: "compliance.import.preview.modal.title",
+            defaultMessage: "Full Data Preview",
           })}
           size="lg"
           passiveModal

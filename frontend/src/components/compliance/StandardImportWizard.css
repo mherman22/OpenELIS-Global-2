@@ -304,16 +304,22 @@
   color: var(--cds-text-01);
 }
 
-.standard-import-wizard .cds--progress-step--current .cds--progress-step-button {
+.standard-import-wizard
+  .cds--progress-step--current
+  .cds--progress-step-button {
   color: var(--cds-interactive-01);
   font-weight: 600;
 }
 
-.standard-import-wizard .cds--progress-step--complete .cds--progress-step-button {
+.standard-import-wizard
+  .cds--progress-step--complete
+  .cds--progress-step-button {
   color: var(--cds-support-02);
 }
 
-.standard-import-wizard .cds--progress-step--invalid .cds--progress-step-button {
+.standard-import-wizard
+  .cds--progress-step--invalid
+  .cds--progress-step-button {
   color: var(--cds-support-01);
 }
 

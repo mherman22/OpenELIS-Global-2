@@ -8,14 +8,13 @@ import org.openelisglobal.test.valueholder.Test;
 /**
  * Junction entity for Test-ComplianceStandard many-to-many relationship.
  *
- * Follows OpenELIS patterns:
- * - Extends EnumValueItemImpl like PanelItem
- * - Uses ValueHolder pattern for relationships
- * - Provides convenience methods for entity access
+ * Follows OpenELIS patterns: - Extends EnumValueItemImpl like PanelItem - Uses
+ * ValueHolder pattern for relationships - Provides convenience methods for
+ * entity access
  *
- * Represents the association between a Test and a ComplianceStandard,
- * allowing tests to be linked to multiple compliance standards and
- * compliance standards to apply to multiple tests.
+ * Represents the association between a Test and a ComplianceStandard, allowing
+ * tests to be linked to multiple compliance standards and compliance standards
+ * to apply to multiple tests.
  */
 public class TestComplianceStandard extends EnumValueItemImpl {
 
@@ -156,8 +155,7 @@ public class TestComplianceStandard extends EnumValueItemImpl {
      */
     public String getComplianceStandardStatus() {
         ComplianceStandard standard = getComplianceStandard();
-        return standard != null && standard.getStatus() != null ?
-            standard.getStatus().toString() : null;
+        return standard != null && standard.getStatus() != null ? standard.getStatus().toString() : null;
     }
 
     /**
@@ -170,11 +168,7 @@ public class TestComplianceStandard extends EnumValueItemImpl {
 
     @Override
     public String toString() {
-        return "TestComplianceStandard{" +
-                "id='" + id + '\'' +
-                ", testName='" + testName + '\'' +
-                ", complianceStandardName='" + complianceStandardName + '\'' +
-                ", mandatory=" + mandatory +
-                '}';
+        return "TestComplianceStandard{" + "id='" + id + '\'' + ", testName='" + testName + '\''
+                + ", complianceStandardName='" + complianceStandardName + '\'' + ", mandatory=" + mandatory + '}';
     }
 }

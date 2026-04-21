@@ -3,7 +3,6 @@ package org.openelisglobal.compliance.daoimpl;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -20,11 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * DAO implementation for ComplianceImportLog entity.
  *
- * Follows OpenELIS DAO patterns:
- * - Extends BaseDAOImpl<ComplianceImportLog, String>
- * - Uses Hibernate Session for database operations
- * - Proper error handling with LIMSRuntimeException
- * - @Transactional annotations for transaction boundaries
+ * Follows OpenELIS DAO patterns: - Extends BaseDAOImpl<ComplianceImportLog,
+ * String> - Uses Hibernate Session for database operations - Proper error
+ * handling with LIMSRuntimeException - @Transactional annotations for
+ * transaction boundaries
  */
 @Component
 @Transactional
@@ -39,8 +37,8 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     @Transactional(readOnly = true)
     public void getData(ComplianceImportLog complianceImportLog) throws LIMSRuntimeException {
         try {
-            ComplianceImportLog data = entityManager.unwrap(Session.class)
-                .get(ComplianceImportLog.class, complianceImportLog.getId());
+            ComplianceImportLog data = entityManager.unwrap(Session.class).get(ComplianceImportLog.class,
+                    complianceImportLog.getId());
             if (data != null) {
                 PropertyUtils.copyProperties(complianceImportLog, data);
             } else {
@@ -57,8 +55,8 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     public List<ComplianceImportLog> getLogsByImportType(ComplianceImportType importType) throws LIMSRuntimeException {
         try {
             String sql = "FROM ComplianceImportLog cil WHERE cil.importType = :importType ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setParameter("importType", importType);
             return query.list();
         } catch (RuntimeException e) {
@@ -69,11 +67,12 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
 
     @Override
     @Transactional(readOnly = true)
-    public List<ComplianceImportLog> getLogsByImportStatus(ComplianceImportStatus importStatus) throws LIMSRuntimeException {
+    public List<ComplianceImportLog> getLogsByImportStatus(ComplianceImportStatus importStatus)
+            throws LIMSRuntimeException {
         try {
             String sql = "FROM ComplianceImportLog cil WHERE cil.importStatus = :importStatus ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setParameter("importStatus", importStatus);
             return query.list();
         } catch (RuntimeException e) {
@@ -87,8 +86,8 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     public List<ComplianceImportLog> getLogsByInitiatedBy(String initiatedBy) throws LIMSRuntimeException {
         try {
             String sql = "FROM ComplianceImportLog cil WHERE cil.initiatedBy = :initiatedBy ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setParameter("initiatedBy", initiatedBy);
             return query.list();
         } catch (RuntimeException e) {
@@ -102,10 +101,10 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     public List<ComplianceImportLog> getLogsByDateRange(LocalDateTime startDate, LocalDateTime endDate)
             throws LIMSRuntimeException {
         try {
-            String sql = "FROM ComplianceImportLog cil WHERE cil.importStartTime >= :startDate " +
-                        "AND cil.importStartTime <= :endDate ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            String sql = "FROM ComplianceImportLog cil WHERE cil.importStartTime >= :startDate "
+                    + "AND cil.importStartTime <= :endDate ORDER BY cil.importStartTime DESC";
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setParameter("startDate", startDate);
             query.setParameter("endDate", endDate);
             return query.list();
@@ -120,8 +119,8 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     public List<ComplianceImportLog> getLogsByCorrelationId(String correlationId) throws LIMSRuntimeException {
         try {
             String sql = "FROM ComplianceImportLog cil WHERE cil.correlationId = :correlationId ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setParameter("correlationId", correlationId);
             return query.list();
         } catch (RuntimeException e) {
@@ -135,8 +134,8 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     public List<ComplianceImportLog> getLogsByFileChecksum(String fileChecksum) throws LIMSRuntimeException {
         try {
             String sql = "FROM ComplianceImportLog cil WHERE cil.fileChecksum = :fileChecksum ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setParameter("fileChecksum", fileChecksum);
             return query.list();
         } catch (RuntimeException e) {
@@ -149,10 +148,10 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     @Transactional(readOnly = true)
     public List<ComplianceImportLog> getActiveImportOperations() throws LIMSRuntimeException {
         try {
-            String sql = "FROM ComplianceImportLog cil WHERE cil.importStatus IN ('STARTED', 'IN_PROGRESS', 'QUEUED', 'VALIDATING') " +
-                        "ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            String sql = "FROM ComplianceImportLog cil WHERE cil.importStatus IN ('STARTED', 'IN_PROGRESS', 'QUEUED', 'VALIDATING') "
+                    + "ORDER BY cil.importStartTime DESC";
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             return query.list();
         } catch (RuntimeException e) {
             LogEvent.logError(e);
@@ -165,10 +164,10 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     public List<ComplianceImportLog> getRecentFailedImports(int hours) throws LIMSRuntimeException {
         try {
             LocalDateTime cutoffTime = LocalDateTime.now().minusHours(hours);
-            String sql = "FROM ComplianceImportLog cil WHERE cil.importStatus = 'FAILED' " +
-                        "AND cil.importStartTime >= :cutoffTime ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            String sql = "FROM ComplianceImportLog cil WHERE cil.importStatus = 'FAILED' "
+                    + "AND cil.importStartTime >= :cutoffTime ORDER BY cil.importStartTime DESC";
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setParameter("cutoffTime", cutoffTime);
             return query.list();
         } catch (RuntimeException e) {
@@ -182,10 +181,10 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     public List<ComplianceImportLog> getRecentSuccessfulImports(int hours) throws LIMSRuntimeException {
         try {
             LocalDateTime cutoffTime = LocalDateTime.now().minusHours(hours);
-            String sql = "FROM ComplianceImportLog cil WHERE cil.importStatus IN ('COMPLETED', 'COMPLETED_WITH_WARNINGS') " +
-                        "AND cil.importStartTime >= :cutoffTime ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            String sql = "FROM ComplianceImportLog cil WHERE cil.importStatus IN ('COMPLETED', 'COMPLETED_WITH_WARNINGS') "
+                    + "AND cil.importStartTime >= :cutoffTime ORDER BY cil.importStartTime DESC";
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setParameter("cutoffTime", cutoffTime);
             return query.list();
         } catch (RuntimeException e) {
@@ -199,8 +198,8 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     public List<ComplianceImportLog> getPageOfImportLogs(int startingRecNo, int pageSize) throws LIMSRuntimeException {
         try {
             String sql = "FROM ComplianceImportLog cil ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setFirstResult(startingRecNo);
             query.setMaxResults(pageSize);
             return query.list();
@@ -229,10 +228,10 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     public List<ComplianceImportLog> searchLogsBySource(String sourcePattern, int startingRecNo, int pageSize)
             throws LIMSRuntimeException {
         try {
-            String sql = "FROM ComplianceImportLog cil WHERE LOWER(cil.importSource) LIKE LOWER(:pattern) " +
-                        "ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            String sql = "FROM ComplianceImportLog cil WHERE LOWER(cil.importSource) LIKE LOWER(:pattern) "
+                    + "ORDER BY cil.importStartTime DESC";
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setParameter("pattern", "%" + sourcePattern + "%");
             query.setFirstResult(startingRecNo);
             query.setMaxResults(pageSize);
@@ -262,14 +261,13 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     @Transactional(readOnly = true)
     public Object[] getImportStatistics(LocalDateTime startDate, LocalDateTime endDate) throws LIMSRuntimeException {
         try {
-            String sql = "SELECT " +
-                        "COUNT(*) as totalCount, " +
-                        "SUM(CASE WHEN cil.importStatus IN ('COMPLETED', 'COMPLETED_WITH_WARNINGS') THEN 1 ELSE 0 END) as successCount, " +
-                        "SUM(CASE WHEN cil.importStatus = 'FAILED' THEN 1 ELSE 0 END) as failureCount, " +
-                        "AVG(CASE WHEN cil.importEndTime IS NOT NULL THEN " +
-                        "EXTRACT(EPOCH FROM (cil.importEndTime - cil.importStartTime)) ELSE NULL END) as averageDuration " +
-                        "FROM ComplianceImportLog cil WHERE cil.importStartTime >= :startDate " +
-                        "AND cil.importStartTime <= :endDate";
+            String sql = "SELECT " + "COUNT(*) as totalCount, "
+                    + "SUM(CASE WHEN cil.importStatus IN ('COMPLETED', 'COMPLETED_WITH_WARNINGS') THEN 1 ELSE 0 END) as successCount, "
+                    + "SUM(CASE WHEN cil.importStatus = 'FAILED' THEN 1 ELSE 0 END) as failureCount, "
+                    + "AVG(CASE WHEN cil.importEndTime IS NOT NULL THEN "
+                    + "EXTRACT(EPOCH FROM (cil.importEndTime - cil.importStartTime)) ELSE NULL END) as averageDuration "
+                    + "FROM ComplianceImportLog cil WHERE cil.importStartTime >= :startDate "
+                    + "AND cil.importStartTime <= :endDate";
             Query<Object[]> query = entityManager.unwrap(Session.class).createQuery(sql, Object[].class);
             query.setParameter("startDate", startDate);
             query.setParameter("endDate", endDate);
@@ -282,17 +280,16 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
 
     @Override
     @Transactional(readOnly = true)
-    public Object[] getImportStatisticsByType(ComplianceImportType importType, LocalDateTime startDate, LocalDateTime endDate)
-            throws LIMSRuntimeException {
+    public Object[] getImportStatisticsByType(ComplianceImportType importType, LocalDateTime startDate,
+            LocalDateTime endDate) throws LIMSRuntimeException {
         try {
-            String sql = "SELECT " +
-                        "COUNT(*) as totalCount, " +
-                        "SUM(CASE WHEN cil.importStatus IN ('COMPLETED', 'COMPLETED_WITH_WARNINGS') THEN 1 ELSE 0 END) as successCount, " +
-                        "SUM(CASE WHEN cil.importStatus = 'FAILED' THEN 1 ELSE 0 END) as failureCount, " +
-                        "AVG(CASE WHEN cil.importEndTime IS NOT NULL THEN " +
-                        "EXTRACT(EPOCH FROM (cil.importEndTime - cil.importStartTime)) ELSE NULL END) as averageDuration " +
-                        "FROM ComplianceImportLog cil WHERE cil.importType = :importType " +
-                        "AND cil.importStartTime >= :startDate AND cil.importStartTime <= :endDate";
+            String sql = "SELECT " + "COUNT(*) as totalCount, "
+                    + "SUM(CASE WHEN cil.importStatus IN ('COMPLETED', 'COMPLETED_WITH_WARNINGS') THEN 1 ELSE 0 END) as successCount, "
+                    + "SUM(CASE WHEN cil.importStatus = 'FAILED' THEN 1 ELSE 0 END) as failureCount, "
+                    + "AVG(CASE WHEN cil.importEndTime IS NOT NULL THEN "
+                    + "EXTRACT(EPOCH FROM (cil.importEndTime - cil.importStartTime)) ELSE NULL END) as averageDuration "
+                    + "FROM ComplianceImportLog cil WHERE cil.importType = :importType "
+                    + "AND cil.importStartTime >= :startDate AND cil.importStartTime <= :endDate";
             Query<Object[]> query = entityManager.unwrap(Session.class).createQuery(sql, Object[].class);
             query.setParameter("importType", importType);
             query.setParameter("startDate", startDate);
@@ -310,8 +307,8 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
             throws LIMSRuntimeException {
         try {
             String sql = "FROM ComplianceImportLog cil WHERE cil.initiatedBy = :initiatedBy ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setParameter("initiatedBy", initiatedBy);
             query.setFirstResult(startingRecNo);
             query.setMaxResults(pageSize);
@@ -357,8 +354,8 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     public List<ComplianceImportLog> getRecentImportLogs(int limit) throws LIMSRuntimeException {
         try {
             String sql = "FROM ComplianceImportLog cil ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setMaxResults(limit);
             return query.list();
         } catch (RuntimeException e) {
@@ -386,10 +383,10 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
     @Transactional(readOnly = true)
     public List<ComplianceImportLog> getLogsWithErrorText(String errorText) throws LIMSRuntimeException {
         try {
-            String sql = "FROM ComplianceImportLog cil WHERE LOWER(cil.errorDetails) LIKE LOWER(:errorText) " +
-                        "ORDER BY cil.importStartTime DESC";
-            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, ComplianceImportLog.class);
+            String sql = "FROM ComplianceImportLog cil WHERE LOWER(cil.errorDetails) LIKE LOWER(:errorText) "
+                    + "ORDER BY cil.importStartTime DESC";
+            Query<ComplianceImportLog> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    ComplianceImportLog.class);
             query.setParameter("errorText", "%" + errorText + "%");
             return query.list();
         } catch (RuntimeException e) {

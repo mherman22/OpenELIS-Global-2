@@ -5,7 +5,6 @@ import jakarta.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-
 import org.openelisglobal.common.exception.LIMSDuplicateRecordException;
 import org.openelisglobal.common.service.AuditableBaseObjectServiceImpl;
 import org.openelisglobal.compliance.dao.ComplianceStandardDAO;
@@ -22,12 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
  * for standard CRUD operations with proper transaction boundaries and
  * domain-specific business logic.
  *
- * Constitutional compliance:
- * - Extends AuditableBaseObjectServiceImpl<ComplianceStandard, String>
- * - Uses @Service annotation for Spring component scanning
- * - @Transactional boundaries at service level (not controller)
- * - Delegates to DAO layer for data access
- * - Implements business logic validation
+ * Constitutional compliance: - Extends
+ * AuditableBaseObjectServiceImpl<ComplianceStandard, String> - Uses @Service
+ * annotation for Spring component scanning - @Transactional boundaries at
+ * service level (not controller) - Delegates to DAO layer for data access -
+ * Implements business logic validation
  */
 @Service
 public class ComplianceStandardServiceImpl extends AuditableBaseObjectServiceImpl<ComplianceStandard, String>
@@ -186,7 +184,7 @@ public class ComplianceStandardServiceImpl extends AuditableBaseObjectServiceImp
     @Override
     @Transactional(readOnly = true)
     public List<ComplianceStandard> searchStandards(String name, String issuingBody, String regulationNumber,
-                                                   ComplianceStandardStatus status, String countryRegion, String sampleType) {
+            ComplianceStandardStatus status, String countryRegion, String sampleType) {
         return baseObjectDAO.searchStandards(name, issuingBody, regulationNumber, status, countryRegion, sampleType);
     }
 
@@ -317,7 +315,8 @@ public class ComplianceStandardServiceImpl extends AuditableBaseObjectServiceImp
 
         // Check for duplicates
         if (duplicateStandardExists(standard)) {
-            throw new LIMSDuplicateRecordException("A compliance standard with this issuing body, regulation number, and version already exists");
+            throw new LIMSDuplicateRecordException(
+                    "A compliance standard with this issuing body, regulation number, and version already exists");
         }
     }
 

@@ -1,10 +1,11 @@
 package org.openelisglobal.compliance.valueholder;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,26 +24,20 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
 import org.hibernate.annotations.Type;
+import org.openelisglobal.common.util.ValidationHelper;
 import org.openelisglobal.common.util.validator.SafeHtml;
 import org.openelisglobal.common.valueholder.BaseObject;
 import org.openelisglobal.common.valueholder.SimpleBaseEntity;
-import org.openelisglobal.common.util.ValidationHelper;
 import org.openelisglobal.spring.util.SpringContext;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * ComplianceStandard value holder representing regulatory compliance standards
  * for environmental and vector testing.
  *
- * Follows constitutional requirements:
- * - Extends BaseObject for audit trail support
- * - Includes FHIR UUID for interoperability
- * - Uses JPA annotations (no XML mappings)
- * - Implements validation annotations
+ * Follows constitutional requirements: - Extends BaseObject for audit trail
+ * support - Includes FHIR UUID for interoperability - Uses JPA annotations (no
+ * XML mappings) - Implements validation annotations
  */
 @Entity
 @Table(name = "compliance_standard")
@@ -105,7 +100,7 @@ public class ComplianceStandard extends BaseObject<String> implements SimpleBase
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "superseded_by_id")
-    @JsonIgnoreProperties({"supersededByStandard", "parameterGroups"})
+    @JsonIgnoreProperties({ "supersededByStandard", "parameterGroups" })
     private ComplianceStandard supersededByStandard;
 
     @SafeHtml(level = SafeHtml.SafeListLevel.NONE)
@@ -364,13 +359,8 @@ public class ComplianceStandard extends BaseObject<String> implements SimpleBase
 
     @Override
     public String toString() {
-        return "ComplianceStandard{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", regulationNumber='" + regulationNumber + '\'' +
-                ", version='" + version + '\'' +
-                ", status=" + status +
-                '}';
+        return "ComplianceStandard{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", regulationNumber='"
+                + regulationNumber + '\'' + ", version='" + version + '\'' + ", status=" + status + '}';
     }
 
     /**
@@ -380,16 +370,15 @@ public class ComplianceStandard extends BaseObject<String> implements SimpleBase
     @PostPersist
     public void onPostPersist() {
         try {
-            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform =
-                SpringContext.getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
+            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform = SpringContext
+                    .getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
             if (fhirTransform != null) {
                 fhirTransform.syncComplianceStandardToFhir(this, true);
             }
         } catch (Exception e) {
             // Log error but don't fail transaction
-            org.openelisglobal.common.log.LogEvent.logError(
-                "ComplianceStandard", "onPostPersist",
-                "Failed to sync to FHIR on create: " + e.getMessage());
+            org.openelisglobal.common.log.LogEvent.logError("ComplianceStandard", "onPostPersist",
+                    "Failed to sync to FHIR on create: " + e.getMessage());
         }
     }
 
@@ -399,16 +388,15 @@ public class ComplianceStandard extends BaseObject<String> implements SimpleBase
     @PostUpdate
     public void onPostUpdate() {
         try {
-            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform =
-                SpringContext.getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
+            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform = SpringContext
+                    .getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
             if (fhirTransform != null) {
                 fhirTransform.syncComplianceStandardToFhir(this, false);
             }
         } catch (Exception e) {
             // Log error but don't fail transaction
-            org.openelisglobal.common.log.LogEvent.logError(
-                "ComplianceStandard", "onPostUpdate",
-                "Failed to sync to FHIR on update: " + e.getMessage());
+            org.openelisglobal.common.log.LogEvent.logError("ComplianceStandard", "onPostUpdate",
+                    "Failed to sync to FHIR on update: " + e.getMessage());
         }
     }
 

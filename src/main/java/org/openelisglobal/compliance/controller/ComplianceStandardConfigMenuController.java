@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.openelisglobal.common.controller.BaseMenuController;
-import org.openelisglobal.common.form.AdminOptionMenuForm;
 import org.openelisglobal.common.log.LogEvent;
 import org.openelisglobal.compliance.form.ComplianceStandardConfigMenuForm;
 import org.openelisglobal.compliance.service.ComplianceEvaluationService;
@@ -31,17 +29,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Controller for compliance standard configuration menu integrated with Test Editor.
+ * Controller for compliance standard configuration menu integrated with Test
+ * Editor.
  *
- * This controller provides a menu interface for configuring compliance standards
- * and linking them to laboratory tests. Follows OpenELIS Test Editor integration patterns
- * as established by TestNotificationConfigMenuController and other test management menus.
+ * This controller provides a menu interface for configuring compliance
+ * standards and linking them to laboratory tests. Follows OpenELIS Test Editor
+ * integration patterns as established by TestNotificationConfigMenuController
+ * and other test management menus.
  *
- * Constitutional compliance:
- * - Extends BaseMenuController following established patterns
- * - Uses @Transactional only in service layer (not controller)
- * - Follows 5-layer architecture
- * - Integrates with existing Test Editor workflow
+ * Constitutional compliance: - Extends BaseMenuController following established
+ * patterns - Uses @Transactional only in service layer (not controller) -
+ * Follows 5-layer architecture - Integrates with existing Test Editor workflow
  */
 @Controller
 public class ComplianceStandardConfigMenuController extends BaseMenuController<ComplianceStandard> {
@@ -63,14 +61,8 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.setAllowedFields(
-            "sampleTypeId",
-            "testSectionId",
-            "showInactiveStandards",
-            "selectedComplianceStandardIds*",
-            "activeStatusFlags*",
-            "complianceStandardConfigs*"
-        );
+        binder.setAllowedFields("sampleTypeId", "testSectionId", "showInactiveStandards",
+                "selectedComplianceStandardIds*", "activeStatusFlags*", "complianceStandardConfigs*");
     }
 
     @RequestMapping(value = "/ComplianceStandardConfigMenu", method = RequestMethod.GET)
@@ -84,15 +76,14 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
 
         } catch (Exception e) {
             LogEvent.logError("ComplianceStandardConfigMenuController", "showComplianceStandardConfigMenu",
-                            e.getMessage());
+                    e.getMessage());
             return findForward(FWD_FAIL, form);
         }
     }
 
     @RequestMapping(value = "/ComplianceStandardConfigMenu", method = RequestMethod.POST)
     public ModelAndView processComplianceStandardConfigMenu(
-            @Valid @ModelAttribute("form") ComplianceStandardConfigMenuForm form,
-            BindingResult result,
+            @Valid @ModelAttribute("form") ComplianceStandardConfigMenuForm form, BindingResult result,
             HttpServletRequest request) {
 
         if (result.hasErrors()) {
@@ -111,11 +102,11 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
 
             // Redirect to avoid resubmission
             return getForwardWithParameters(findForward(FWD_SUCCESS, form),
-                                          "?saved=true&type=" + form.getSampleTypeId());
+                    "?saved=true&type=" + form.getSampleTypeId());
 
         } catch (Exception e) {
             LogEvent.logError("ComplianceStandardConfigMenuController", "processComplianceStandardConfigMenu",
-                            e.getMessage());
+                    e.getMessage());
             addErrorMessage(request, "complianceStandard.config.save.error");
             setupFormForDisplay(form);
             return findForward(FWD_FAIL, form);
@@ -151,7 +142,8 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
         // Sort by issuing body and name for better organization
         allStandards.sort((s1, s2) -> {
             int bodyCompare = s1.getIssuingBody().compareTo(s2.getIssuingBody());
-            if (bodyCompare != 0) return bodyCompare;
+            if (bodyCompare != 0)
+                return bodyCompare;
             return s1.getName().compareTo(s2.getName());
         });
 
@@ -165,11 +157,13 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
         Map<String, List<String>> testComplianceMap = new HashMap<>();
 
         try {
-            // Get recent evaluations to determine which standards are being used with which tests
+            // Get recent evaluations to determine which standards are being used with which
+            // tests
             List<ComplianceEvaluation> recentEvaluations = complianceEvaluationService.getRecentEvaluations();
 
             for (ComplianceEvaluation evaluation : recentEvaluations) {
-                String testId = evaluation.getSampleId(); // Note: This might need adjustment based on actual test linking
+                String testId = evaluation.getSampleId(); // Note: This might need adjustment based on actual test
+                                                          // linking
                 String standardId = evaluation.getComplianceStandard().getId();
 
                 testComplianceMap.computeIfAbsent(testId, k -> new ArrayList<>()).add(standardId);
@@ -179,7 +173,7 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
 
         } catch (Exception e) {
             LogEvent.logWarn("ComplianceStandardConfigMenuController", "loadExistingComplianceRelationships",
-                           "Could not load existing compliance relationships: " + e.getMessage());
+                    "Could not load existing compliance relationships: " + e.getMessage());
             form.setTestComplianceMap(new HashMap<>());
         }
     }
@@ -221,7 +215,8 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
      * Get tests applicable to a specific sample type
      */
     private List<Test> getTestsForSampleType(String sampleTypeId) {
-        // This would need to be implemented based on OpenELIS test-sample type relationships
+        // This would need to be implemented based on OpenELIS test-sample type
+        // relationships
         // For now, return all active orderable tests
         // TODO: Filter by actual sample type relationship
         return testService.getAllActiveOrderableTests();
@@ -238,22 +233,22 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
         // 3. Clearing cached compliance data
 
         LogEvent.logInfo("ComplianceStandardConfigMenuController", "removeComplianceStandardAssociations",
-                        "Removed compliance associations for " + tests.size() + " tests");
+                "Removed compliance associations for " + tests.size() + " tests");
     }
 
     /**
      * Create compliance standard associations for tests
      */
     private void createComplianceStandardAssociations(List<Test> tests, List<ComplianceStandard> standards) {
-        // Implementation would create the actual linkage between tests and compliance standards
+        // Implementation would create the actual linkage between tests and compliance
+        // standards
         // This might involve:
         // 1. Creating records in a linking table (test_compliance_standard)
         // 2. Updating test records with compliance references
         // 3. Triggering FHIR synchronization for updated relationships
 
         LogEvent.logInfo("ComplianceStandardConfigMenuController", "createComplianceStandardAssociations",
-                        "Created compliance associations: " + tests.size() + " tests, " +
-                        standards.size() + " standards");
+                "Created compliance associations: " + tests.size() + " tests, " + standards.size() + " standards");
     }
 
     /**

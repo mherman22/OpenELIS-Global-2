@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import {
   Grid,
   Column,
@@ -27,8 +27,8 @@ import {
   Toggle,
   TextInput,
   Dropdown,
-  MultiSelect
-} from '@carbon/react';
+  MultiSelect,
+} from "@carbon/react";
 import {
   Link,
   Unlink,
@@ -36,14 +36,14 @@ import {
   CheckmarkFilled,
   WarningFilled,
   Information,
-  Add
-} from '@carbon/icons-react';
-import { FormattedMessage, useIntl } from 'react-intl';
+  Add,
+} from "@carbon/icons-react";
+import { FormattedMessage, useIntl } from "react-intl";
 
-import PageBreadCrumb from '../common/PageBreadCrumb';
-import { getFromOpenElisServer, postToOpenElisServer } from '../utils/Utils';
-import { NotificationContext } from '../layout/Layout';
-import './TestComplianceIntegration.css';
+import PageBreadCrumb from "../common/PageBreadCrumb";
+import { getFromOpenElisServer, postToOpenElisServer } from "../utils/Utils";
+import { NotificationContext } from "../layout/Layout";
+import "./TestComplianceIntegration.css";
 
 /**
  * TestComplianceIntegration - Component for managing Test-Compliance Standard associations
@@ -64,7 +64,7 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
   const [test, setTest] = useState(null);
   const [assignedStandards, setAssignedStandards] = useState([]);
   const [availableStandards, setAvailableStandards] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const [selectedTab, setSelectedTab] = useState(0);
   const [assignModalOpen, setAssignModalOpen] = useState(false);
   const [selectedStandards, setSelectedStandards] = useState([]);
@@ -86,68 +86,71 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
 
       // Load assigned compliance standards
       const assignedResponse = await getFromOpenElisServer(
-        `/rest/test/${testId}/compliance-standards`
+        `/rest/test/${testId}/compliance-standards`,
       );
       setAssignedStandards(assignedResponse || []);
 
       // Load available standards
       const availableResponse = await getFromOpenElisServer(
-        `/rest/available-compliance-standards`
+        `/rest/available-compliance-standards`,
       );
       setAvailableStandards(availableResponse || []);
-
     } catch (error) {
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'test.compliance.load.error.title',
-          defaultMessage: 'Loading Error'
+          id: "test.compliance.load.error.title",
+          defaultMessage: "Loading Error",
         }),
         message: intl.formatMessage({
-          id: 'test.compliance.load.error.message',
-          defaultMessage: 'Failed to load test compliance data'
-        })
+          id: "test.compliance.load.error.message",
+          defaultMessage: "Failed to load test compliance data",
+        }),
       });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAssignStandard = async (standardId, mandatory = false, applicableParameters = '') => {
+  const handleAssignStandard = async (
+    standardId,
+    mandatory = false,
+    applicableParameters = "",
+  ) => {
     try {
       const payload = {
         complianceStandardId: standardId,
         mandatory: mandatory,
-        applicableParameters: applicableParameters
+        applicableParameters: applicableParameters,
       };
 
       const response = await postToOpenElisServer(
         `/rest/test/${testId}/compliance-standards`,
-        JSON.stringify(payload)
+        JSON.stringify(payload),
       );
 
       if (response) {
         loadTestComplianceData(); // Refresh data
         addNotification({
-          kind: 'success',
+          kind: "success",
           title: intl.formatMessage({
-            id: 'test.compliance.assign.success.title',
-            defaultMessage: 'Standard Assigned'
+            id: "test.compliance.assign.success.title",
+            defaultMessage: "Standard Assigned",
           }),
           message: intl.formatMessage({
-            id: 'test.compliance.assign.success.message',
-            defaultMessage: 'Compliance standard successfully assigned to test'
-          })
+            id: "test.compliance.assign.success.message",
+            defaultMessage: "Compliance standard successfully assigned to test",
+          }),
         });
       }
     } catch (error) {
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'test.compliance.assign.error.title',
-          defaultMessage: 'Assignment Error'
+          id: "test.compliance.assign.error.title",
+          defaultMessage: "Assignment Error",
         }),
-        message: error.message || 'Failed to assign compliance standard'
+        message: error.message || "Failed to assign compliance standard",
       });
     }
   };
@@ -156,38 +159,42 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
     try {
       await postToOpenElisServer(
         `/rest/test/${testId}/compliance-standards/${standardId}/remove`,
-        ''
+        "",
       );
 
       loadTestComplianceData(); // Refresh data
       addNotification({
-        kind: 'success',
+        kind: "success",
         title: intl.formatMessage({
-          id: 'test.compliance.remove.success.title',
-          defaultMessage: 'Standard Removed'
+          id: "test.compliance.remove.success.title",
+          defaultMessage: "Standard Removed",
         }),
         message: intl.formatMessage({
-          id: 'test.compliance.remove.success.message',
-          defaultMessage: 'Compliance standard removed from test'
-        })
+          id: "test.compliance.remove.success.message",
+          defaultMessage: "Compliance standard removed from test",
+        }),
       });
     } catch (error) {
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'test.compliance.remove.error.title',
-          defaultMessage: 'Removal Error'
+          id: "test.compliance.remove.error.title",
+          defaultMessage: "Removal Error",
         }),
-        message: error.message || 'Failed to remove compliance standard'
+        message: error.message || "Failed to remove compliance standard",
       });
     }
   };
 
   const renderComplianceStatus = (standard) => {
     const statusMap = {
-      COMPLIANT: { type: 'green', icon: CheckmarkFilled, label: 'Compliant' },
-      NON_COMPLIANT: { type: 'red', icon: WarningFilled, label: 'Non-Compliant' },
-      PENDING: { type: 'gray', icon: Information, label: 'Pending Evaluation' }
+      COMPLIANT: { type: "green", icon: CheckmarkFilled, label: "Compliant" },
+      NON_COMPLIANT: {
+        type: "red",
+        icon: WarningFilled,
+        label: "Non-Compliant",
+      },
+      PENDING: { type: "gray", icon: Information, label: "Pending Evaluation" },
     };
 
     const status = statusMap[standard.complianceStatus] || statusMap.PENDING;
@@ -195,7 +202,7 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
     return (
       <Tag type={status.type} renderIcon={status.icon}>
         <FormattedMessage
-          id={`test.compliance.status.${standard.complianceStatus?.toLowerCase() || 'pending'}`}
+          id={`test.compliance.status.${standard.complianceStatus?.toLowerCase() || "pending"}`}
           defaultMessage={status.label}
         />
       </Tag>
@@ -204,53 +211,59 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
 
   const assignedHeaders = [
     {
-      key: 'standardName',
+      key: "standardName",
       header: intl.formatMessage({
-        id: 'test.compliance.table.header.standardName',
-        defaultMessage: 'Standard Name'
-      })
+        id: "test.compliance.table.header.standardName",
+        defaultMessage: "Standard Name",
+      }),
     },
     {
-      key: 'regulationNumber',
+      key: "regulationNumber",
       header: intl.formatMessage({
-        id: 'test.compliance.table.header.regulationNumber',
-        defaultMessage: 'Regulation Number'
-      })
+        id: "test.compliance.table.header.regulationNumber",
+        defaultMessage: "Regulation Number",
+      }),
     },
     {
-      key: 'mandatory',
+      key: "mandatory",
       header: intl.formatMessage({
-        id: 'test.compliance.table.header.mandatory',
-        defaultMessage: 'Mandatory'
-      })
+        id: "test.compliance.table.header.mandatory",
+        defaultMessage: "Mandatory",
+      }),
     },
     {
-      key: 'complianceStatus',
+      key: "complianceStatus",
       header: intl.formatMessage({
-        id: 'test.compliance.table.header.status',
-        defaultMessage: 'Compliance Status'
-      })
+        id: "test.compliance.table.header.status",
+        defaultMessage: "Compliance Status",
+      }),
     },
     {
-      key: 'actions',
+      key: "actions",
       header: intl.formatMessage({
-        id: 'test.compliance.table.header.actions',
-        defaultMessage: 'Actions'
-      })
-    }
+        id: "test.compliance.table.header.actions",
+        defaultMessage: "Actions",
+      }),
+    },
   ];
 
-  const assignedRows = assignedStandards.map(standard => ({
+  const assignedRows = assignedStandards.map((standard) => ({
     id: standard.id,
     standardName: standard.complianceStandardName,
     regulationNumber: standard.complianceStandardRegulationNumber,
     mandatory: standard.mandatory ? (
       <Tag type="red">
-        <FormattedMessage id="test.compliance.mandatory" defaultMessage="Mandatory" />
+        <FormattedMessage
+          id="test.compliance.mandatory"
+          defaultMessage="Mandatory"
+        />
       </Tag>
     ) : (
       <Tag type="gray">
-        <FormattedMessage id="test.compliance.optional" defaultMessage="Optional" />
+        <FormattedMessage
+          id="test.compliance.optional"
+          defaultMessage="Optional"
+        />
       </Tag>
     ),
     complianceStatus: renderComplianceStatus(standard),
@@ -260,22 +273,22 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
         size="sm"
         renderIcon={Unlink}
         iconDescription={intl.formatMessage({
-          id: 'test.compliance.action.remove',
-          defaultMessage: 'Remove standard'
+          id: "test.compliance.action.remove",
+          defaultMessage: "Remove standard",
         })}
         onClick={() => handleRemoveStandard(standard.complianceStandardId)}
       >
         <FormattedMessage id="button.remove" defaultMessage="Remove" />
       </Button>
-    )
+    ),
   }));
 
   if (loading) {
     return (
       <Loading
         description={intl.formatMessage({
-          id: 'test.compliance.loading',
-          defaultMessage: 'Loading test compliance data...'
+          id: "test.compliance.loading",
+          defaultMessage: "Loading test compliance data...",
         })}
       />
     );
@@ -284,25 +297,30 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
   return (
     <Grid fullWidth className="test-compliance-integration">
       <Column lg={16}>
-        <PageBreadCrumb breadcrumbs={[
-          {
-            label: intl.formatMessage({ id: 'breadcrumb.home', defaultMessage: 'Home' }),
-            link: '/'
-          },
-          {
-            label: intl.formatMessage({
-              id: 'test.catalog.breadcrumb',
-              defaultMessage: 'Test Catalog'
-            }),
-            link: '/tests'
-          },
-          {
-            label: intl.formatMessage({
-              id: 'test.compliance.breadcrumb',
-              defaultMessage: 'Compliance Integration'
-            })
-          }
-        ]} />
+        <PageBreadCrumb
+          breadcrumbs={[
+            {
+              label: intl.formatMessage({
+                id: "breadcrumb.home",
+                defaultMessage: "Home",
+              }),
+              link: "/",
+            },
+            {
+              label: intl.formatMessage({
+                id: "test.catalog.breadcrumb",
+                defaultMessage: "Test Catalog",
+              }),
+              link: "/tests",
+            },
+            {
+              label: intl.formatMessage({
+                id: "test.compliance.breadcrumb",
+                defaultMessage: "Compliance Integration",
+              }),
+            },
+          ]}
+        />
       </Column>
 
       <Column lg={16} className="test-compliance-integration__header">
@@ -317,7 +335,7 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
             <FormattedMessage
               id="test.compliance.integration.description"
               defaultMessage="Configure compliance standards for {testName}"
-              values={{ testName: test?.name || 'test' }}
+              values={{ testName: test?.name || "test" }}
             />
           </p>
         </div>
@@ -348,7 +366,10 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
       </Column>
 
       <Column lg={16} className="test-compliance-integration__content">
-        <Tabs selectedIndex={selectedTab} onChange={(index) => setSelectedTab(index)}>
+        <Tabs
+          selectedIndex={selectedTab}
+          onChange={(index) => setSelectedTab(index)}
+        >
           <TabList>
             <Tab>
               <FormattedMessage
@@ -377,8 +398,8 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
                 <Search
                   size="lg"
                   placeholder={intl.formatMessage({
-                    id: 'test.compliance.search.placeholder',
-                    defaultMessage: 'Search assigned standards...'
+                    id: "test.compliance.search.placeholder",
+                    defaultMessage: "Search assigned standards...",
                   })}
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
@@ -387,22 +408,31 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
                 <DataTable
                   rows={assignedRows}
                   headers={assignedHeaders}
-                  render={({ rows, headers, getHeaderProps, getRowProps, getTableProps }) => (
+                  render={({
+                    rows,
+                    headers,
+                    getHeaderProps,
+                    getRowProps,
+                    getTableProps,
+                  }) => (
                     <TableContainer
                       title={intl.formatMessage({
-                        id: 'test.compliance.assigned.table.title',
-                        defaultMessage: 'Assigned Compliance Standards'
+                        id: "test.compliance.assigned.table.title",
+                        defaultMessage: "Assigned Compliance Standards",
                       })}
                       description={intl.formatMessage({
-                        id: 'test.compliance.assigned.table.description',
-                        defaultMessage: `${assignedStandards.length} standards assigned to this test`
+                        id: "test.compliance.assigned.table.description",
+                        defaultMessage: `${assignedStandards.length} standards assigned to this test`,
                       })}
                     >
                       <Table {...getTableProps()}>
                         <TableHead>
                           <TableRow>
                             {headers.map((header) => (
-                              <TableHeader {...getHeaderProps({ header })} key={header.key}>
+                              <TableHeader
+                                {...getHeaderProps({ header })}
+                                key={header.key}
+                              >
                                 {header.header}
                               </TableHeader>
                             ))}
@@ -412,7 +442,9 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
                           {rows.map((row) => (
                             <TableRow {...getRowProps({ row })} key={row.id}>
                               {row.cells.map((cell) => (
-                                <TableCell key={cell.id}>{cell.value}</TableCell>
+                                <TableCell key={cell.id}>
+                                  {cell.value}
+                                </TableCell>
                               ))}
                             </TableRow>
                           ))}
@@ -456,16 +488,16 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
         open={assignModalOpen}
         onRequestClose={() => setAssignModalOpen(false)}
         modalHeading={intl.formatMessage({
-          id: 'test.compliance.assign.modal.title',
-          defaultMessage: 'Assign Compliance Standard'
+          id: "test.compliance.assign.modal.title",
+          defaultMessage: "Assign Compliance Standard",
         })}
         primaryButtonText={intl.formatMessage({
-          id: 'button.assign',
-          defaultMessage: 'Assign'
+          id: "button.assign",
+          defaultMessage: "Assign",
         })}
         secondaryButtonText={intl.formatMessage({
-          id: 'button.cancel',
-          defaultMessage: 'Cancel'
+          id: "button.cancel",
+          defaultMessage: "Cancel",
         })}
         size="md"
         onRequestSubmit={() => {
@@ -477,16 +509,17 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
           <Select
             id="standard-select"
             labelText={intl.formatMessage({
-              id: 'test.compliance.assign.standard.label',
-              defaultMessage: 'Select Compliance Standard'
+              id: "test.compliance.assign.standard.label",
+              defaultMessage: "Select Compliance Standard",
             })}
             helperText={intl.formatMessage({
-              id: 'test.compliance.assign.standard.helper',
-              defaultMessage: 'Choose a compliance standard to assign to this test'
+              id: "test.compliance.assign.standard.helper",
+              defaultMessage:
+                "Choose a compliance standard to assign to this test",
             })}
           >
             <SelectItem value="" text="Choose a standard..." />
-            {availableStandards.map(standard => (
+            {availableStandards.map((standard) => (
               <SelectItem
                 key={standard.id}
                 value={standard.id}
@@ -498,24 +531,26 @@ const TestComplianceIntegration = ({ testId, onClose }) => {
           <Toggle
             id="mandatory-toggle"
             labelText={intl.formatMessage({
-              id: 'test.compliance.assign.mandatory.label',
-              defaultMessage: 'Mandatory Compliance'
+              id: "test.compliance.assign.mandatory.label",
+              defaultMessage: "Mandatory Compliance",
             })}
             helperText={intl.formatMessage({
-              id: 'test.compliance.assign.mandatory.helper',
-              defaultMessage: 'When enabled, compliance with this standard is required'
+              id: "test.compliance.assign.mandatory.helper",
+              defaultMessage:
+                "When enabled, compliance with this standard is required",
             })}
           />
 
           <TextInput
             id="parameters-input"
             labelText={intl.formatMessage({
-              id: 'test.compliance.assign.parameters.label',
-              defaultMessage: 'Applicable Parameters'
+              id: "test.compliance.assign.parameters.label",
+              defaultMessage: "Applicable Parameters",
             })}
             helperText={intl.formatMessage({
-              id: 'test.compliance.assign.parameters.helper',
-              defaultMessage: 'Specify which test parameters this standard applies to (optional)'
+              id: "test.compliance.assign.parameters.helper",
+              defaultMessage:
+                "Specify which test parameters this standard applies to (optional)",
             })}
             placeholder="e.g., pH, turbidity, coliform count"
           />

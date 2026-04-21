@@ -8,7 +8,6 @@ import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.openelisglobal.BaseWebContextSensitiveTest;
@@ -21,9 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * TDD Test Suite for ComplianceThresholdService
  *
- * Tests threshold management functionality within compliance standards.
- * Follows constitutional TDD requirements and validates proper transaction boundaries.
- * Tests threshold value validation, parameter associations, and evaluation logic.
+ * Tests threshold management functionality within compliance standards. Follows
+ * constitutional TDD requirements and validates proper transaction boundaries.
+ * Tests threshold value validation, parameter associations, and evaluation
+ * logic.
  */
 public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest {
 
@@ -62,15 +62,8 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
     @Test
     public void testSaveThreshold_shouldCreateNewThreshold() {
         // RED: Will fail - service doesn't exist
-        ComplianceThreshold newThreshold = createValidThreshold(
-            testGroupId,
-            "pH",
-            "pH Level",
-            ThresholdType.RANGE,
-            new BigDecimal("6.5"),
-            new BigDecimal("8.5"),
-            "pH units"
-        );
+        ComplianceThreshold newThreshold = createValidThreshold(testGroupId, "pH", "pH Level", ThresholdType.RANGE,
+                new BigDecimal("6.5"), new BigDecimal("8.5"), "pH units");
 
         String savedId = complianceThresholdService.save(newThreshold);
 
@@ -104,7 +97,7 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
 
         // Inversion test: verify proper ordering logic
         assertTrue("Sort orders should be ascending",
-            thresholds.get(0).getSortOrder() < thresholds.get(1).getSortOrder());
+                thresholds.get(0).getSortOrder() < thresholds.get(1).getSortOrder());
     }
 
     @Test
@@ -124,8 +117,7 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
         assertEquals("Min value should be updated", newMinValue, updatedThreshold.getMinValue());
 
         // Inversion test
-        assertFalse("Updated min value should differ from original",
-            originalMinValue.equals(newMinValue));
+        assertFalse("Updated min value should differ from original", originalMinValue.equals(newMinValue));
     }
 
     @Test
@@ -134,36 +126,30 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
         String thresholdId = complianceThresholdService.save(testThreshold);
 
         // Simulate threshold with linked evaluations
-        // (In real implementation, this would be checked via ComplianceEvaluation table)
+        // (In real implementation, this would be checked via ComplianceEvaluation
+        // table)
 
         try {
             complianceThresholdService.delete(thresholdId);
             // If threshold has evaluations, deletion should fail
         } catch (Exception e) {
-            assertTrue("Should prevent deletion when evaluations exist",
-                e.getMessage().contains("linked evaluations"));
+            assertTrue("Should prevent deletion when evaluations exist", e.getMessage().contains("linked evaluations"));
         }
     }
 
     @Test
     public void testValidateThresholdValues_shouldEnforceBusinessRules() {
         // RED: Will fail - validation doesn't exist
-        ComplianceThreshold invalidRangeThreshold = createValidThreshold(
-            testGroupId,
-            "pH",
-            "pH Level",
-            ThresholdType.RANGE,
-            new BigDecimal("8.5"), // min > max (invalid)
-            new BigDecimal("6.5"),
-            "pH units"
-        );
+        ComplianceThreshold invalidRangeThreshold = createValidThreshold(testGroupId, "pH", "pH Level",
+                ThresholdType.RANGE, new BigDecimal("8.5"), // min > max (invalid)
+                new BigDecimal("6.5"), "pH units");
 
         try {
             complianceThresholdService.save(invalidRangeThreshold);
             fail("Should not allow min value greater than max value");
         } catch (Exception e) {
             assertTrue("Should throw validation error for invalid range",
-                e.getMessage().contains("minimum value cannot exceed maximum"));
+                    e.getMessage().contains("minimum value cannot exceed maximum"));
         }
     }
 
@@ -174,8 +160,7 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
         createAndSaveThreshold(testGroupId, "pH", ThresholdType.MAXIMUM, 2);
         createAndSaveThreshold(testGroupId, "Temperature", ThresholdType.MAXIMUM, 3);
 
-        List<ComplianceThreshold> pHThresholds = complianceThresholdService
-            .getThresholdsByParameterCode("pH");
+        List<ComplianceThreshold> pHThresholds = complianceThresholdService.getThresholdsByParameterCode("pH");
 
         assertNotNull("pH thresholds should not be null", pHThresholds);
         assertEquals("Should have 2 pH thresholds", 2, pHThresholds.size());
@@ -189,45 +174,35 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
     @Test
     public void testEvaluateThreshold_shouldReturnComplianceResult() {
         // RED: Will fail - evaluation method doesn't exist
-        ComplianceThreshold rangeThreshold = createValidThreshold(
-            testGroupId,
-            "pH",
-            "pH Level",
-            ThresholdType.RANGE,
-            new BigDecimal("6.5"),
-            new BigDecimal("8.5"),
-            "pH units"
-        );
+        ComplianceThreshold rangeThreshold = createValidThreshold(testGroupId, "pH", "pH Level", ThresholdType.RANGE,
+                new BigDecimal("6.5"), new BigDecimal("8.5"), "pH units");
 
         String thresholdId = complianceThresholdService.save(rangeThreshold);
 
         // Test value within range
-        boolean withinRange = complianceThresholdService.evaluateThreshold(
-            thresholdId, new BigDecimal("7.2"));
+        boolean withinRange = complianceThresholdService.evaluateThreshold(thresholdId, new BigDecimal("7.2"));
         assertTrue("Value 7.2 should be within range 6.5-8.5", withinRange);
 
         // Test value outside range
-        boolean outsideRange = complianceThresholdService.evaluateThreshold(
-            thresholdId, new BigDecimal("9.0"));
+        boolean outsideRange = complianceThresholdService.evaluateThreshold(thresholdId, new BigDecimal("9.0"));
         assertFalse("Value 9.0 should be outside range 6.5-8.5", outsideRange);
 
         // Inversion test
-        assertFalse("Compliance results should differ for different values",
-            withinRange == outsideRange);
+        assertFalse("Compliance results should differ for different values", withinRange == outsideRange);
     }
 
     @Test
     public void testGetThresholdsWithEvaluations_shouldEagerLoadEvaluations() {
         // RED: Will fail - method doesn't exist
-        // Tests constitutional requirement: services must compile data within transaction
+        // Tests constitutional requirement: services must compile data within
+        // transaction
         String thresholdId = complianceThresholdService.save(testThreshold);
 
         ComplianceThreshold thresholdWithEvaluations = complianceThresholdService
-            .getThresholdWithEvaluations(thresholdId);
+                .getThresholdWithEvaluations(thresholdId);
 
         assertNotNull("Threshold should not be null", thresholdWithEvaluations);
-        assertNotNull("Evaluations should be eager loaded",
-            thresholdWithEvaluations.getComplianceEvaluations());
+        assertNotNull("Evaluations should be eager loaded", thresholdWithEvaluations.getComplianceEvaluations());
 
         // Verify no LazyInitializationException occurs outside transaction
         for (var evaluation : thresholdWithEvaluations.getComplianceEvaluations()) {
@@ -239,13 +214,12 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
     public void testBulkImportThresholds_shouldValidateAndSaveThresholds() {
         // RED: Will fail - bulk import doesn't exist
         List<ComplianceThreshold> thresholdsToImport = List.of(
-            createValidThreshold(testGroupId, "pH", "pH Level", ThresholdType.RANGE,
-                new BigDecimal("6.5"), new BigDecimal("8.5"), "pH units"),
-            createValidThreshold(testGroupId, "Temperature", "Water Temperature", ThresholdType.MAXIMUM,
-                null, new BigDecimal("30"), "°C"),
-            createValidThreshold(testGroupId, "Turbidity", "Water Turbidity", ThresholdType.MAXIMUM,
-                null, new BigDecimal("4"), "NTU")
-        );
+                createValidThreshold(testGroupId, "pH", "pH Level", ThresholdType.RANGE, new BigDecimal("6.5"),
+                        new BigDecimal("8.5"), "pH units"),
+                createValidThreshold(testGroupId, "Temperature", "Water Temperature", ThresholdType.MAXIMUM, null,
+                        new BigDecimal("30"), "°C"),
+                createValidThreshold(testGroupId, "Turbidity", "Water Turbidity", ThresholdType.MAXIMUM, null,
+                        new BigDecimal("4"), "NTU"));
 
         List<String> savedIds = complianceThresholdService.bulkImport(testGroupId, thresholdsToImport);
 
@@ -266,22 +240,15 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
         createAndSaveThreshold(testGroupId, "pH", ThresholdType.RANGE, 1);
 
         // Try to create duplicate parameter in same group
-        ComplianceThreshold duplicate = createValidThreshold(
-            testGroupId,
-            "pH", // Same parameter code
-            "Different display name",
-            ThresholdType.MAXIMUM, // Different type but same parameter
-            null,
-            new BigDecimal("8.0"),
-            "pH units"
-        );
+        ComplianceThreshold duplicate = createValidThreshold(testGroupId, "pH", // Same parameter code
+                "Different display name", ThresholdType.MAXIMUM, // Different type but same parameter
+                null, new BigDecimal("8.0"), "pH units");
 
         try {
             complianceThresholdService.save(duplicate);
             fail("Should not allow duplicate parameter code within same group");
         } catch (Exception e) {
-            assertTrue("Should throw uniqueness constraint violation",
-                e.getMessage().contains("already exists"));
+            assertTrue("Should throw uniqueness constraint violation", e.getMessage().contains("already exists"));
         }
     }
 
@@ -293,11 +260,10 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
         String threshold3Id = createAndSaveThreshold(testGroupId, "Turbidity", ThresholdType.MAXIMUM, 3);
 
         // Reorder: move turbidity to position 1
-        String[] newOrder = {threshold3Id, threshold1Id, threshold2Id};
+        String[] newOrder = { threshold3Id, threshold1Id, threshold2Id };
         complianceThresholdService.reorderThresholds(testGroupId, newOrder);
 
-        List<ComplianceThreshold> reorderedThresholds = complianceThresholdService
-            .getThresholdsByGroupId(testGroupId);
+        List<ComplianceThreshold> reorderedThresholds = complianceThresholdService.getThresholdsByGroupId(testGroupId);
 
         assertEquals("Turbidity should be first", "Turbidity", reorderedThresholds.get(0).getParameterCode());
         assertEquals("pH should be second", "pH", reorderedThresholds.get(1).getParameterCode());
@@ -305,9 +271,9 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
 
         // Verify sort order values were updated
         assertEquals("First threshold sort order should be 1", Integer.valueOf(1),
-            reorderedThresholds.get(0).getSortOrder());
+                reorderedThresholds.get(0).getSortOrder());
         assertEquals("Second threshold sort order should be 2", Integer.valueOf(2),
-            reorderedThresholds.get(1).getSortOrder());
+                reorderedThresholds.get(1).getSortOrder());
     }
 
     // ================================
@@ -333,20 +299,12 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
     }
 
     private ComplianceThreshold createTestThreshold(String groupId) {
-        return createValidThreshold(
-            groupId,
-            "pH",
-            "pH Level",
-            ThresholdType.RANGE,
-            new BigDecimal("6.5"),
-            new BigDecimal("8.5"),
-            "pH units"
-        );
+        return createValidThreshold(groupId, "pH", "pH Level", ThresholdType.RANGE, new BigDecimal("6.5"),
+                new BigDecimal("8.5"), "pH units");
     }
 
-    private ComplianceThreshold createValidThreshold(String groupId, String parameterCode,
-                                                   String displayName, ThresholdType thresholdType,
-                                                   BigDecimal minValue, BigDecimal maxValue, String units) {
+    private ComplianceThreshold createValidThreshold(String groupId, String parameterCode, String displayName,
+            ThresholdType thresholdType, BigDecimal minValue, BigDecimal maxValue, String units) {
         ComplianceThreshold threshold = new ComplianceThreshold();
         threshold.setGroupId(groupId);
         threshold.setParameterCode(parameterCode);
@@ -359,11 +317,10 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
         return threshold;
     }
 
-    private String createAndSaveThreshold(String groupId, String parameterCode,
-                                        ThresholdType thresholdType, int sortOrder) {
-        ComplianceThreshold threshold = createValidThreshold(
-            groupId, parameterCode, "Test " + parameterCode, thresholdType,
-            new BigDecimal("1.0"), new BigDecimal("10.0"), "units");
+    private String createAndSaveThreshold(String groupId, String parameterCode, ThresholdType thresholdType,
+            int sortOrder) {
+        ComplianceThreshold threshold = createValidThreshold(groupId, parameterCode, "Test " + parameterCode,
+                thresholdType, new BigDecimal("1.0"), new BigDecimal("10.0"), "units");
         threshold.setSortOrder(sortOrder);
         return complianceThresholdService.save(threshold);
     }

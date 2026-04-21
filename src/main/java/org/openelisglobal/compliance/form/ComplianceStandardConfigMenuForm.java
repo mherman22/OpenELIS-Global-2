@@ -2,7 +2,6 @@ package org.openelisglobal.compliance.form;
 
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
-
 import org.openelisglobal.common.form.AdminOptionMenuForm;
 import org.openelisglobal.common.validator.ValidationHelper;
 import org.openelisglobal.compliance.valueholder.ComplianceStandard;
@@ -15,10 +14,9 @@ import org.openelisglobal.validation.annotations.SafeHtml;
  * Simplified form extending AdminOptionMenuForm with validation annotations
  * following the DictionaryMenuForm pattern.
  *
- * Constitutional compliance:
- * - Extends AdminOptionMenuForm<ComplianceStandard>
- * - Uses proper validation annotations (@SafeHtml, @Pattern)
- * - Simple structure matching existing OpenELIS form patterns
+ * Constitutional compliance: - Extends AdminOptionMenuForm<ComplianceStandard>
+ * - Uses proper validation annotations (@SafeHtml, @Pattern) - Simple structure
+ * matching existing OpenELIS form patterns
  */
 public class ComplianceStandardConfigMenuForm extends AdminOptionMenuForm<ComplianceStandard> {
 

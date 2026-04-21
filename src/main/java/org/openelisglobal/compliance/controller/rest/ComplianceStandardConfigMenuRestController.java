@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.openelisglobal.common.controller.BaseController;
 import org.openelisglobal.common.log.LogEvent;
 import org.openelisglobal.compliance.form.ComplianceStandardConfigMenuForm;
@@ -15,7 +14,6 @@ import org.openelisglobal.compliance.service.ComplianceStandardService;
 import org.openelisglobal.compliance.valueholder.ComplianceEvaluation;
 import org.openelisglobal.compliance.valueholder.ComplianceStandard;
 import org.openelisglobal.internationalization.MessageUtil;
-import org.openelisglobal.spring.util.SpringContext;
 import org.openelisglobal.test.service.TestService;
 import org.openelisglobal.test.valueholder.Test;
 import org.openelisglobal.typeofsample.service.TypeOfSampleService;
@@ -33,17 +31,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * REST Controller for compliance standard configuration menu integrated with Test Editor.
+ * REST Controller for compliance standard configuration menu integrated with
+ * Test Editor.
  *
  * Provides JSON API endpoints for compliance standard configuration management.
- * Follows OpenELIS REST controller patterns as established by TestModifyEntryRestController
- * and other test management REST endpoints.
+ * Follows OpenELIS REST controller patterns as established by
+ * TestModifyEntryRestController and other test management REST endpoints.
  *
- * Constitutional compliance:
- * - Returns JSON responses instead of ModelAndView
- * - Delegates business logic to service layer
- * - Follows RESTful API patterns
- * - Role-based access control to be added later
+ * Constitutional compliance: - Returns JSON responses instead of ModelAndView -
+ * Delegates business logic to service layer - Follows RESTful API patterns -
+ * Role-based access control to be added later
  */
 @Controller
 @RequestMapping("/rest")
@@ -64,18 +61,16 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
     /**
      * Get compliance standard configuration menu data
      *
-     * @param sampleTypeId Optional filter by sample type
+     * @param sampleTypeId  Optional filter by sample type
      * @param testSectionId Optional filter by test section
-     * @param showInactive Whether to include inactive standards
+     * @param showInactive  Whether to include inactive standards
      * @return ComplianceStandardConfigMenuForm with menu data
      */
     @GetMapping(value = "/ComplianceStandardConfigMenu", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<ComplianceStandardConfigMenuForm> getComplianceStandardConfigMenu(
-            @RequestParam(required = false) String sampleTypeId,
-            @RequestParam(required = false) String testSectionId,
-            @RequestParam(required = false, defaultValue = "false") boolean showInactive,
-            HttpServletRequest request) {
+            @RequestParam(required = false) String sampleTypeId, @RequestParam(required = false) String testSectionId,
+            @RequestParam(required = false, defaultValue = "false") boolean showInactive, HttpServletRequest request) {
 
         try {
             ComplianceStandardConfigMenuForm form = new ComplianceStandardConfigMenuForm();
@@ -90,7 +85,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
 
         } catch (Exception e) {
             LogEvent.logError("ComplianceStandardConfigMenuRestController", "getComplianceStandardConfigMenu",
-                            e.getMessage());
+                    e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -101,13 +96,10 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
      * @param form Configuration form with updates
      * @return Response with success/error status
      */
-    @PostMapping(value = "/ComplianceStandardConfigMenu",
-                produces = MediaType.APPLICATION_JSON_VALUE,
-                consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/ComplianceStandardConfigMenu", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> saveComplianceStandardConfig(
-            @Valid @RequestBody ComplianceStandardConfigMenuForm form,
-            HttpServletRequest request) {
+            @Valid @RequestBody ComplianceStandardConfigMenuForm form, HttpServletRequest request) {
 
         Map<String, Object> response = new HashMap<>();
 
@@ -124,14 +116,15 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
 
             response.put("success", true);
             response.put("message", MessageUtil.getMessage("complianceStandard.config.save.success"));
-            response.put("savedCount", form.getSelectedComplianceStandardIds() != null ?
-                        form.getSelectedComplianceStandardIds().size() : 0);
+            response.put("savedCount",
+                    form.getSelectedComplianceStandardIds() != null ? form.getSelectedComplianceStandardIds().size()
+                            : 0);
 
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             LogEvent.logError("ComplianceStandardConfigMenuRestController", "saveComplianceStandardConfig",
-                            e.getMessage());
+                    e.getMessage());
             response.put("success", false);
             response.put("error", MessageUtil.getMessage("complianceStandard.config.save.error"));
             response.put("details", e.getMessage());
@@ -142,7 +135,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
     /**
      * Get compliance standards filtered by sample type
      *
-     * @param sampleTypeId Sample type to filter by
+     * @param sampleTypeId    Sample type to filter by
      * @param includeInactive Whether to include inactive standards
      * @return Filtered list of compliance standards
      */
@@ -168,7 +161,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
 
         } catch (Exception e) {
             LogEvent.logError("ComplianceStandardConfigMenuRestController", "getComplianceStandardsBySampleType",
-                            e.getMessage());
+                    e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -181,18 +174,18 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
      */
     @GetMapping(value = "/ComplianceStandardConfigMenu/tests", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<List<Test>> getTestsUsingComplianceStandard(
-            @RequestParam String standardId) {
+    public ResponseEntity<List<Test>> getTestsUsingComplianceStandard(@RequestParam String standardId) {
 
         try {
             List<Test> testsUsingStandard = new ArrayList<>();
 
             // Get compliance evaluations that use this standard
-            List<ComplianceEvaluation> evaluations =
-                complianceEvaluationService.getEvaluationsByComplianceStandard(standardId);
+            List<ComplianceEvaluation> evaluations = complianceEvaluationService
+                    .getEvaluationsByComplianceStandard(standardId);
 
             // Extract unique test IDs from evaluations
-            // TODO: This logic needs to be updated based on actual test-evaluation relationship
+            // TODO: This logic needs to be updated based on actual test-evaluation
+            // relationship
             Map<String, Test> uniqueTests = new HashMap<>();
 
             for (ComplianceEvaluation evaluation : evaluations) {
@@ -201,7 +194,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
                     // Get the actual test object
                     // Test test = testService.get(testId);
                     // if (test != null) {
-                    //     uniqueTests.put(testId, test);
+                    // uniqueTests.put(testId, test);
                     // }
                 }
             }
@@ -212,7 +205,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
 
         } catch (Exception e) {
             LogEvent.logError("ComplianceStandardConfigMenuRestController", "getTestsUsingComplianceStandard",
-                            e.getMessage());
+                    e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -223,9 +216,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
      * @param form Configuration form to validate
      * @return Validation results
      */
-    @PostMapping(value = "/ComplianceStandardConfigMenu/validate",
-                produces = MediaType.APPLICATION_JSON_VALUE,
-                consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/ComplianceStandardConfigMenu/validate", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> validateComplianceStandardConfig(
             @RequestBody ComplianceStandardConfigMenuForm form) {
@@ -255,7 +246,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
             // Check for conflicts with existing test configurations
             if (form.getSampleTypeId() != null && form.getSelectedComplianceStandardIds() != null) {
                 warnings.addAll(checkForConfigurationConflicts(form.getSampleTypeId(),
-                                                             form.getSelectedComplianceStandardIds()));
+                        form.getSelectedComplianceStandardIds()));
             }
 
             response.put("valid", errors.isEmpty());
@@ -266,7 +257,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
 
         } catch (Exception e) {
             LogEvent.logError("ComplianceStandardConfigMenuRestController", "validateComplianceStandardConfig",
-                            e.getMessage());
+                    e.getMessage());
             response.put("valid", false);
             response.put("errors", List.of("Validation error: " + e.getMessage()));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -278,8 +269,8 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
     /**
      * Setup form for display with filtered data
      */
-    private void setupFormForDisplay(ComplianceStandardConfigMenuForm form, String sampleTypeId,
-                                   String testSectionId, boolean showInactive) {
+    private void setupFormForDisplay(ComplianceStandardConfigMenuForm form, String sampleTypeId, String testSectionId,
+            boolean showInactive) {
 
         // Get available sample types for filtering
         List<TypeOfSample> sampleTypes = typeOfSampleService.getAllTypeOfSamples();
@@ -309,7 +300,8 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
         // Sort standards by issuing body and name
         standards.sort((s1, s2) -> {
             int bodyCompare = s1.getIssuingBody().compareTo(s2.getIssuingBody());
-            if (bodyCompare != 0) return bodyCompare;
+            if (bodyCompare != 0)
+                return bodyCompare;
             return s1.getName().compareTo(s2.getName());
         });
 
@@ -339,7 +331,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
 
         } catch (Exception e) {
             LogEvent.logWarn("ComplianceStandardConfigMenuRestController", "loadExistingComplianceRelationships",
-                           "Could not load existing compliance relationships: " + e.getMessage());
+                    "Could not load existing compliance relationships: " + e.getMessage());
             form.setTestComplianceMap(new HashMap<>());
         }
     }
@@ -401,7 +393,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
      */
     private void removeComplianceStandardAssociations(List<Test> tests) {
         LogEvent.logInfo("ComplianceStandardConfigMenuRestController", "removeComplianceStandardAssociations",
-                        "Removed compliance associations for " + tests.size() + " tests");
+                "Removed compliance associations for " + tests.size() + " tests");
     }
 
     /**
@@ -409,7 +401,6 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
      */
     private void createComplianceStandardAssociations(List<Test> tests, List<ComplianceStandard> standards) {
         LogEvent.logInfo("ComplianceStandardConfigMenuRestController", "createComplianceStandardAssociations",
-                        "Created compliance associations: " + tests.size() + " tests, " +
-                        standards.size() + " standards");
+                "Created compliance associations: " + tests.size() + " tests, " + standards.size() + " standards");
     }
 }

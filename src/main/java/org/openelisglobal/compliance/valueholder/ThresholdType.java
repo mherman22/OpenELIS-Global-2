@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 /**
  * Enumeration for threshold types in compliance evaluations.
  *
- * Defines different types of threshold conditions that can be applied
- * to parameter values during compliance evaluation.
+ * Defines different types of threshold conditions that can be applied to
+ * parameter values during compliance evaluation.
  */
 public enum ThresholdType {
 
@@ -117,23 +117,23 @@ public enum ThresholdType {
         }
 
         switch (this) {
-            case RANGE:
-                return minValue != null && maxValue != null &&
-                       value.compareTo(minValue) >= 0 && value.compareTo(maxValue) <= 0;
-            case MINIMUM:
-                return minValue != null && value.compareTo(minValue) >= 0;
-            case MAXIMUM:
-                return maxValue != null && value.compareTo(maxValue) <= 0;
-            case EXACT:
-                return targetValue != null && value.compareTo(targetValue) == 0;
-            case TARGET:
-                // For target, we might allow some tolerance (could be configurable)
-                return targetValue != null && value.compareTo(targetValue) == 0;
-            case NOT_DETECTED:
-                // For not detected, value should be null, zero, or below detection limit
-                return value.compareTo(BigDecimal.ZERO) == 0;
-            default:
-                return false;
+        case RANGE:
+            return minValue != null && maxValue != null && value.compareTo(minValue) >= 0
+                    && value.compareTo(maxValue) <= 0;
+        case MINIMUM:
+            return minValue != null && value.compareTo(minValue) >= 0;
+        case MAXIMUM:
+            return maxValue != null && value.compareTo(maxValue) <= 0;
+        case EXACT:
+            return targetValue != null && value.compareTo(targetValue) == 0;
+        case TARGET:
+            // For target, we might allow some tolerance (could be configurable)
+            return targetValue != null && value.compareTo(targetValue) == 0;
+        case NOT_DETECTED:
+            // For not detected, value should be null, zero, or below detection limit
+            return value.compareTo(BigDecimal.ZERO) == 0;
+        default:
+            return false;
         }
     }
 
@@ -143,16 +143,13 @@ public enum ThresholdType {
     public boolean evaluate(String value, String expectedValue) {
         if (this == QUALITATIVE) {
             if (expectedValue == null) {
-                return value != null && (value.equalsIgnoreCase("PASS") ||
-                                       value.equalsIgnoreCase("NEGATIVE") ||
-                                       value.equalsIgnoreCase("ABSENT"));
+                return value != null && (value.equalsIgnoreCase("PASS") || value.equalsIgnoreCase("NEGATIVE")
+                        || value.equalsIgnoreCase("ABSENT"));
             }
             return value != null && value.equalsIgnoreCase(expectedValue);
         } else if (this == NOT_DETECTED) {
-            return value == null || value.isEmpty() ||
-                   value.equalsIgnoreCase("NOT DETECTED") ||
-                   value.equalsIgnoreCase("ABSENT") ||
-                   value.equalsIgnoreCase("ND");
+            return value == null || value.isEmpty() || value.equalsIgnoreCase("NOT DETECTED")
+                    || value.equalsIgnoreCase("ABSENT") || value.equalsIgnoreCase("ND");
         } else if (this == EXACT) {
             return value != null && expectedValue != null && value.equalsIgnoreCase(expectedValue);
         }

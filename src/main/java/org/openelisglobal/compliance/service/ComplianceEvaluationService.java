@@ -3,7 +3,6 @@ package org.openelisglobal.compliance.service;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
 import org.openelisglobal.common.service.BaseObjectService;
 import org.openelisglobal.compliance.valueholder.ComplianceEvaluation;
 import org.openelisglobal.compliance.valueholder.EvaluationStatus;
@@ -11,14 +10,13 @@ import org.openelisglobal.compliance.valueholder.EvaluationStatus;
 /**
  * Service interface for ComplianceEvaluation operations.
  *
- * Follows OpenELIS service patterns extending BaseObjectService for standard CRUD operations
- * and providing domain-specific business logic for compliance evaluation management.
+ * Follows OpenELIS service patterns extending BaseObjectService for standard
+ * CRUD operations and providing domain-specific business logic for compliance
+ * evaluation management.
  *
- * Constitutional compliance:
- * - Extends BaseObjectService for standardized operations
- * - Declares transaction boundaries at service level
- * - Provides business logic validation methods
- * - Supports FHIR integration requirements
+ * Constitutional compliance: - Extends BaseObjectService for standardized
+ * operations - Declares transaction boundaries at service level - Provides
+ * business logic validation methods - Supports FHIR integration requirements
  */
 public interface ComplianceEvaluationService extends BaseObjectService<ComplianceEvaluation, String> {
 
@@ -53,8 +51,8 @@ public interface ComplianceEvaluationService extends BaseObjectService<Complianc
     List<ComplianceEvaluation> getEvaluationsSince(Date sinceDate);
 
     /**
-     * Get evaluation with eagerly loaded results
-     * (Constitutional requirement: compile data within transaction)
+     * Get evaluation with eagerly loaded results (Constitutional requirement:
+     * compile data within transaction)
      */
     ComplianceEvaluation getEvaluationWithResults(String evaluationId);
 
@@ -81,8 +79,8 @@ public interface ComplianceEvaluationService extends BaseObjectService<Complianc
     /**
      * Search evaluations by multiple criteria
      */
-    List<ComplianceEvaluation> searchEvaluations(String sampleId, String standardId,
-                                                EvaluationStatus status, Date startDate, Date endDate);
+    List<ComplianceEvaluation> searchEvaluations(String sampleId, String standardId, EvaluationStatus status,
+            Date startDate, Date endDate);
 
     /**
      * Get evaluations for export (minimal data)
@@ -132,8 +130,8 @@ public interface ComplianceEvaluationService extends BaseObjectService<Complianc
     // FHIR R4 integration methods
 
     /**
-     * Get compliance evaluation by FHIR UUID string
-     * (Convenience method for FHIR providers expecting string ID)
+     * Get compliance evaluation by FHIR UUID string (Convenience method for FHIR
+     * providers expecting string ID)
      */
     ComplianceEvaluation getComplianceEvaluationByFhirId(String fhirIdString);
 

@@ -1,14 +1,15 @@
 package org.openelisglobal.compliance.valueholder;
 
 /**
- * ValidationError represents individual validation errors during CSV import operations.
+ * ValidationError represents individual validation errors during CSV import
+ * operations.
  *
  * This class captures detailed information about validation failures including
- * location, field information, and error messages to provide meaningful feedback
- * to users during the import process.
+ * location, field information, and error messages to provide meaningful
+ * feedback to users during the import process.
  *
- * Follows OpenELIS patterns for value objects with proper validation and
- * error reporting capabilities.
+ * Follows OpenELIS patterns for value objects with proper validation and error
+ * reporting capabilities.
  */
 public class ValidationError {
 
@@ -47,8 +48,8 @@ public class ValidationError {
         this.message = message;
     }
 
-    public ValidationError(ValidationErrorType errorType, Integer lineNumber, String fieldName,
-                         String fieldValue, String message, String errorCode) {
+    public ValidationError(ValidationErrorType errorType, Integer lineNumber, String fieldName, String fieldValue,
+            String message, String errorCode) {
         this.errorType = errorType;
         this.lineNumber = lineNumber;
         this.fieldName = fieldName;
@@ -163,61 +164,58 @@ public class ValidationError {
     /**
      * Create a field validation error
      */
-    public static ValidationError fieldError(Integer lineNumber, String fieldName,
-                                           String fieldValue, String message) {
-        return new ValidationError(ValidationErrorType.FIELD_VALIDATION, lineNumber,
-                                 fieldName, fieldValue, message, null);
+    public static ValidationError fieldError(Integer lineNumber, String fieldName, String fieldValue, String message) {
+        return new ValidationError(ValidationErrorType.FIELD_VALIDATION, lineNumber, fieldName, fieldValue, message,
+                null);
     }
 
     /**
      * Create a data type validation error
      */
-    public static ValidationError dataTypeError(Integer lineNumber, String fieldName,
-                                              String fieldValue, String expectedType) {
-        String message = String.format("Invalid data type. Expected %s but got '%s'",
-                                      expectedType, fieldValue);
-        return new ValidationError(ValidationErrorType.DATA_TYPE, lineNumber,
-                                 fieldName, fieldValue, message, "INVALID_DATA_TYPE");
+    public static ValidationError dataTypeError(Integer lineNumber, String fieldName, String fieldValue,
+            String expectedType) {
+        String message = String.format("Invalid data type. Expected %s but got '%s'", expectedType, fieldValue);
+        return new ValidationError(ValidationErrorType.DATA_TYPE, lineNumber, fieldName, fieldValue, message,
+                "INVALID_DATA_TYPE");
     }
 
     /**
      * Create a required field error
      */
     public static ValidationError requiredFieldError(Integer lineNumber, String fieldName) {
-        return new ValidationError(ValidationErrorType.REQUIRED_FIELD, lineNumber,
-                                 fieldName, null, "Required field is missing", "REQUIRED_FIELD");
+        return new ValidationError(ValidationErrorType.REQUIRED_FIELD, lineNumber, fieldName, null,
+                "Required field is missing", "REQUIRED_FIELD");
     }
 
     /**
      * Create a duplicate record error
      */
     public static ValidationError duplicateError(Integer lineNumber, String message) {
-        return new ValidationError(ValidationErrorType.DUPLICATE_RECORD, lineNumber,
-                                 null, null, message, "DUPLICATE_RECORD");
+        return new ValidationError(ValidationErrorType.DUPLICATE_RECORD, lineNumber, null, null, message,
+                "DUPLICATE_RECORD");
     }
 
     /**
      * Create a security violation error
      */
     public static ValidationError securityError(String message) {
-        return new ValidationError(ValidationErrorType.SECURITY_VIOLATION, null,
-                                 null, null, message, "SECURITY_VIOLATION");
+        return new ValidationError(ValidationErrorType.SECURITY_VIOLATION, null, null, null, message,
+                "SECURITY_VIOLATION");
     }
 
     /**
      * Create a business rule violation error
      */
     public static ValidationError businessRuleError(Integer lineNumber, String message) {
-        return new ValidationError(ValidationErrorType.BUSINESS_RULE, lineNumber,
-                                 null, null, message, "BUSINESS_RULE_VIOLATION");
+        return new ValidationError(ValidationErrorType.BUSINESS_RULE, lineNumber, null, null, message,
+                "BUSINESS_RULE_VIOLATION");
     }
 
     /**
      * Create a warning
      */
     public static ValidationError warning(Integer lineNumber, String message) {
-        return new ValidationError(ValidationErrorType.WARNING, lineNumber,
-                                 null, null, message, "WARNING");
+        return new ValidationError(ValidationErrorType.WARNING, lineNumber, null, null, message, "WARNING");
     }
 
     @Override
@@ -227,8 +225,10 @@ public class ValidationError {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
 
         ValidationError that = (ValidationError) obj;
 

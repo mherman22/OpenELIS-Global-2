@@ -9,7 +9,8 @@
   text-align: center;
 }
 
-.compliance-standards-dashboard__disabled .compliance-standards-dashboard__message {
+.compliance-standards-dashboard__disabled
+  .compliance-standards-dashboard__message {
   max-width: 600px;
   margin: 0 auto;
 }
@@ -185,8 +186,8 @@
   }
 
   /* Hide less important columns on mobile */
-  .compliance-standards-dashboard .cds--data-table th:nth-child(n+6),
-  .compliance-standards-dashboard .cds--data-table td:nth-child(n+6) {
+  .compliance-standards-dashboard .cds--data-table th:nth-child(n + 6),
+  .compliance-standards-dashboard .cds--data-table td:nth-child(n + 6) {
     display: none;
   }
 }
@@ -196,8 +197,8 @@
     font-size: 1.5rem;
   }
 
-  .compliance-standards-dashboard .cds--data-table th:nth-child(n+5),
-  .compliance-standards-dashboard .cds--data-table td:nth-child(n+5) {
+  .compliance-standards-dashboard .cds--data-table th:nth-child(n + 5),
+  .compliance-standards-dashboard .cds--data-table td:nth-child(n + 5) {
     display: none;
   }
 }

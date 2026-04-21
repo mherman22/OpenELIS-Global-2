@@ -1,7 +1,5 @@
 package org.openelisglobal.compliance.valueholder;
 
-import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,27 +14,26 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
+import java.util.UUID;
 import org.hibernate.annotations.Type;
 import org.openelisglobal.common.valueholder.BaseObject;
 import org.openelisglobal.common.valueholder.SimpleBaseEntity;
 
 /**
- * Entity representing the relationship between Quality Control rules and Compliance Standards.
+ * Entity representing the relationship between Quality Control rules and
+ * Compliance Standards.
  *
- * This entity links QC rules (control charts, Westgard rules, etc.) to specific compliance
- * standards, enabling automatic compliance evaluation during QC analysis.
+ * This entity links QC rules (control charts, Westgard rules, etc.) to specific
+ * compliance standards, enabling automatic compliance evaluation during QC
+ * analysis.
  *
- * Business Rules:
- * - Each QC rule can be associated with multiple compliance standards
- * - A compliance standard can have multiple QC rules
- * - QC rules are mandatory when specified as required for compliance
- * - Evaluation frequency determines how often compliance is checked
+ * Business Rules: - Each QC rule can be associated with multiple compliance
+ * standards - A compliance standard can have multiple QC rules - QC rules are
+ * mandatory when specified as required for compliance - Evaluation frequency
+ * determines how often compliance is checked
  *
- * Constitutional Compliance:
- * - Extends BaseObject for audit trail
- * - Uses FHIR UUID for interoperability
- * - Follows OpenELIS entity patterns
+ * Constitutional Compliance: - Extends BaseObject for audit trail - Uses FHIR
+ * UUID for interoperability - Follows OpenELIS entity patterns
  */
 @Entity
 @Table(name = "qc_compliance_rule")
@@ -230,19 +227,19 @@ public class QualityControlComplianceRule extends BaseObject<String> implements 
         }
 
         switch (evaluationFrequency) {
-            case EVERY_RESULT:
-                return true;
-            case PER_RUN:
-                // Implement run-based evaluation logic
-                return true;
-            case DAILY:
-                // Implement daily evaluation logic
-                return true;
-            case WEEKLY:
-                // Implement weekly evaluation logic
-                return true;
-            default:
-                return false;
+        case EVERY_RESULT:
+            return true;
+        case PER_RUN:
+            // Implement run-based evaluation logic
+            return true;
+        case DAILY:
+            // Implement daily evaluation logic
+            return true;
+        case WEEKLY:
+            // Implement weekly evaluation logic
+            return true;
+        default:
+            return false;
         }
     }
 
@@ -265,14 +262,9 @@ public class QualityControlComplianceRule extends BaseObject<String> implements 
 
     @Override
     public String toString() {
-        return "QualityControlComplianceRule{" +
-                "id='" + id + '\'' +
-                ", qcRuleName='" + qcRuleName + '\'' +
-                ", qcRuleType='" + qcRuleType + '\'' +
-                ", evaluationFrequency=" + evaluationFrequency +
-                ", isMandatory=" + isMandatory +
-                ", isActive=" + isActive +
-                '}';
+        return "QualityControlComplianceRule{" + "id='" + id + '\'' + ", qcRuleName='" + qcRuleName + '\''
+                + ", qcRuleType='" + qcRuleType + '\'' + ", evaluationFrequency=" + evaluationFrequency
+                + ", isMandatory=" + isMandatory + ", isActive=" + isActive + '}';
     }
 }
 
@@ -280,8 +272,8 @@ public class QualityControlComplianceRule extends BaseObject<String> implements 
  * Enumeration for QC evaluation frequency options
  */
 enum QCEvaluationFrequency {
-    EVERY_RESULT,  // Evaluate with every test result
-    PER_RUN,       // Evaluate once per analytical run
-    DAILY,         // Evaluate once per day
-    WEEKLY         // Evaluate once per week
+    EVERY_RESULT, // Evaluate with every test result
+    PER_RUN, // Evaluate once per analytical run
+    DAILY, // Evaluate once per day
+    WEEKLY // Evaluate once per week
 }

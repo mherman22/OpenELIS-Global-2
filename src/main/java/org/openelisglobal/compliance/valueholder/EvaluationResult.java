@@ -1,9 +1,10 @@
 package org.openelisglobal.compliance.valueholder;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,25 +21,19 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
 import org.hibernate.annotations.Type;
+import org.openelisglobal.common.util.ValidationHelper;
 import org.openelisglobal.common.util.validator.SafeHtml;
 import org.openelisglobal.common.valueholder.BaseObject;
 import org.openelisglobal.common.valueholder.SimpleBaseEntity;
-import org.openelisglobal.common.util.ValidationHelper;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * EvaluationResult value holder representing individual parameter results
  * within compliance evaluations.
  *
- * Follows constitutional requirements:
- * - Extends BaseObject for audit trail support
- * - Includes FHIR UUID for interoperability
- * - Uses JPA annotations (no XML mappings)
- * - Implements validation annotations
+ * Follows constitutional requirements: - Extends BaseObject for audit trail
+ * support - Includes FHIR UUID for interoperability - Uses JPA annotations (no
+ * XML mappings) - Implements validation annotations
  */
 @Entity
 @Table(name = "evaluation_result")
@@ -133,8 +128,8 @@ public class EvaluationResult extends BaseObject<String> implements SimpleBaseEn
         generateFhirUuid();
     }
 
-    public EvaluationResult(ComplianceEvaluation evaluation, ComplianceThreshold threshold,
-                          BigDecimal testedValue, Boolean isCompliant) {
+    public EvaluationResult(ComplianceEvaluation evaluation, ComplianceThreshold threshold, BigDecimal testedValue,
+            Boolean isCompliant) {
         this();
         this.evaluation = evaluation;
         this.threshold = threshold;
@@ -143,8 +138,8 @@ public class EvaluationResult extends BaseObject<String> implements SimpleBaseEn
         calculateVariances();
     }
 
-    public EvaluationResult(ComplianceEvaluation evaluation, ComplianceThreshold threshold,
-                          String testedValueText, Boolean isCompliant) {
+    public EvaluationResult(ComplianceEvaluation evaluation, ComplianceThreshold threshold, String testedValueText,
+            Boolean isCompliant) {
         this();
         this.evaluation = evaluation;
         this.threshold = threshold;
@@ -412,39 +407,38 @@ public class EvaluationResult extends BaseObject<String> implements SimpleBaseEn
         }
 
         switch (type) {
-            case TARGET:
-            case EXACT:
-                BigDecimal targetValue = threshold.getTargetValue();
-                if (targetValue != null) {
-                    this.varianceFromTarget = testedValue.subtract(targetValue);
-                    if (targetValue.compareTo(BigDecimal.ZERO) != 0) {
-                        this.variancePercentage = this.varianceFromTarget
-                                .multiply(new BigDecimal("100"))
-                                .divide(targetValue, 2, BigDecimal.ROUND_HALF_UP);
-                    }
+        case TARGET:
+        case EXACT:
+            BigDecimal targetValue = threshold.getTargetValue();
+            if (targetValue != null) {
+                this.varianceFromTarget = testedValue.subtract(targetValue);
+                if (targetValue.compareTo(BigDecimal.ZERO) != 0) {
+                    this.variancePercentage = this.varianceFromTarget.multiply(new BigDecimal("100"))
+                            .divide(targetValue, 2, BigDecimal.ROUND_HALF_UP);
                 }
-                break;
-            case MAXIMUM:
-                BigDecimal maxValue = threshold.getMaxValue();
-                if (maxValue != null && testedValue.compareTo(maxValue) > 0) {
-                    this.exceededBy = testedValue.subtract(maxValue);
-                }
-                break;
-            case MINIMUM:
-                BigDecimal minValue = threshold.getMinValue();
-                if (minValue != null && testedValue.compareTo(minValue) < 0) {
-                    this.exceededBy = minValue.subtract(testedValue);
-                }
-                break;
-            case RANGE:
-                BigDecimal minVal = threshold.getMinValue();
-                BigDecimal maxVal = threshold.getMaxValue();
-                if (minVal != null && testedValue.compareTo(minVal) < 0) {
-                    this.exceededBy = minVal.subtract(testedValue);
-                } else if (maxVal != null && testedValue.compareTo(maxVal) > 0) {
-                    this.exceededBy = testedValue.subtract(maxVal);
-                }
-                break;
+            }
+            break;
+        case MAXIMUM:
+            BigDecimal maxValue = threshold.getMaxValue();
+            if (maxValue != null && testedValue.compareTo(maxValue) > 0) {
+                this.exceededBy = testedValue.subtract(maxValue);
+            }
+            break;
+        case MINIMUM:
+            BigDecimal minValue = threshold.getMinValue();
+            if (minValue != null && testedValue.compareTo(minValue) < 0) {
+                this.exceededBy = minValue.subtract(testedValue);
+            }
+            break;
+        case RANGE:
+            BigDecimal minVal = threshold.getMinValue();
+            BigDecimal maxVal = threshold.getMaxValue();
+            if (minVal != null && testedValue.compareTo(minVal) < 0) {
+                this.exceededBy = minVal.subtract(testedValue);
+            } else if (maxVal != null && testedValue.compareTo(maxVal) > 0) {
+                this.exceededBy = testedValue.subtract(maxVal);
+            }
+            break;
         }
     }
 
@@ -479,9 +473,9 @@ public class EvaluationResult extends BaseObject<String> implements SimpleBaseEn
      */
     @JsonIgnore
     public boolean hasQualityIssues() {
-        return (qualityFlags != null && !qualityFlags.trim().isEmpty()) ||
-               (validationErrors != null && !validationErrors.trim().isEmpty()) ||
-               Boolean.TRUE.equals(retestRequired);
+        return (qualityFlags != null && !qualityFlags.trim().isEmpty())
+                || (validationErrors != null && !validationErrors.trim().isEmpty())
+                || Boolean.TRUE.equals(retestRequired);
     }
 
     /**
@@ -489,11 +483,9 @@ public class EvaluationResult extends BaseObject<String> implements SimpleBaseEn
      */
     @JsonIgnore
     public boolean isBelowDetectionLimit() {
-        return Boolean.TRUE.equals(detectionLimitApplied) ||
-               (testedValueText != null &&
-                (testedValueText.equalsIgnoreCase("ND") ||
-                 testedValueText.equalsIgnoreCase("NOT DETECTED") ||
-                 testedValueText.equalsIgnoreCase("BDL")));
+        return Boolean.TRUE.equals(detectionLimitApplied) || (testedValueText != null
+                && (testedValueText.equalsIgnoreCase("ND") || testedValueText.equalsIgnoreCase("NOT DETECTED")
+                        || testedValueText.equalsIgnoreCase("BDL")));
     }
 
     /**
@@ -517,12 +509,8 @@ public class EvaluationResult extends BaseObject<String> implements SimpleBaseEn
 
     @Override
     public String toString() {
-        return "EvaluationResult{" +
-                "id='" + id + '\'' +
-                ", parameterCode='" + getParameterCode() + '\'' +
-                ", testedValue=" + testedValue +
-                ", testedValueText='" + testedValueText + '\'' +
-                ", isCompliant=" + isCompliant +
-                '}';
+        return "EvaluationResult{" + "id='" + id + '\'' + ", parameterCode='" + getParameterCode() + '\''
+                + ", testedValue=" + testedValue + ", testedValueText='" + testedValueText + '\'' + ", isCompliant="
+                + isCompliant + '}';
     }
 }

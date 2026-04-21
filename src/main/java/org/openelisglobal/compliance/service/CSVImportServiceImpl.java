@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -17,7 +16,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -28,24 +26,21 @@ import org.openelisglobal.compliance.valueholder.ComplianceStandard;
 import org.openelisglobal.compliance.valueholder.ComplianceStandardStatus;
 import org.openelisglobal.compliance.valueholder.ImportResult;
 import org.openelisglobal.compliance.valueholder.ParameterGroup;
-import org.openelisglobal.compliance.valueholder.ComplianceThreshold;
-import org.openelisglobal.compliance.valueholder.ThresholdType;
-import org.openelisglobal.compliance.valueholder.ComplianceThresholdCriticality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Implementation of CSVImportService for secure compliance standards CSV import.
+ * Implementation of CSVImportService for secure compliance standards CSV
+ * import.
  *
- * Follows OpenELIS security patterns with comprehensive validation, error handling,
- * and progress tracking for bulk compliance standards import operations.
+ * Follows OpenELIS security patterns with comprehensive validation, error
+ * handling, and progress tracking for bulk compliance standards import
+ * operations.
  *
- * Constitutional compliance:
- * - @Transactional boundaries at service level
- * - Comprehensive input validation and sanitization
- * - Business logic validation methods
- * - Security validation patterns from existing OpenELIS CSV imports
+ * Constitutional compliance: - @Transactional boundaries at service level -
+ * Comprehensive input validation and sanitization - Business logic validation
+ * methods - Security validation patterns from existing OpenELIS CSV imports
  */
 @Service
 public class CSVImportServiceImpl implements CSVImportService {
@@ -61,22 +56,16 @@ public class CSVImportServiceImpl implements CSVImportService {
 
     // Security constants
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-    private static final List<String> ALLOWED_CONTENT_TYPES = Arrays.asList(
-        "text/csv",
-        "application/csv",
-        "text/plain"
-    );
-    private static final Pattern DANGEROUS_CONTENT_PATTERN =
-        Pattern.compile("(@|\\+|\\-|=|\\|).*", Pattern.CASE_INSENSITIVE);
+    private static final List<String> ALLOWED_CONTENT_TYPES = Arrays.asList("text/csv", "application/csv",
+            "text/plain");
+    private static final Pattern DANGEROUS_CONTENT_PATTERN = Pattern.compile("(@|\\+|\\-|=|\\|).*",
+            Pattern.CASE_INSENSITIVE);
 
     // CSV headers
-    private static final String[] REQUIRED_HEADERS = {
-        "name", "version", "issuing_body", "regulation_number", "country_region", "status"
-    };
-    private static final String[] OPTIONAL_HEADERS = {
-        "description", "effective_date", "expiry_date", "enforcement_authority",
-        "sample_types", "parameter_groups"
-    };
+    private static final String[] REQUIRED_HEADERS = { "name", "version", "issuing_body", "regulation_number",
+            "country_region", "status" };
+    private static final String[] OPTIONAL_HEADERS = { "description", "effective_date", "expiry_date",
+            "enforcement_authority", "sample_types", "parameter_groups" };
 
     // Thread safety for import operations
     private final AtomicBoolean importInProgress = new AtomicBoolean(false);
@@ -98,7 +87,7 @@ public class CSVImportServiceImpl implements CSVImportService {
     @Override
     @Transactional
     public ImportResult importComplianceStandardsWithProgress(InputStream csvStream, String userId,
-                                                            Consumer<Integer> progressCallback) {
+            Consumer<Integer> progressCallback) {
 
         if (!importInProgress.compareAndSet(false, true)) {
             ImportResult result = new ImportResult();
@@ -136,7 +125,7 @@ public class CSVImportServiceImpl implements CSVImportService {
                 records = parseCSVSafely(csvStream);
             } catch (Exception e) {
                 LogEvent.logError("CSVImportService", "importComplianceStandards",
-                                "CSV parsing failed: " + e.getMessage());
+                        "CSV parsing failed: " + e.getMessage());
                 result.setStatus(ImportStatus.INVALID_FORMAT);
                 result.addValidationError(ValidationError.securityError("Failed to parse CSV file: " + e.getMessage()));
                 result.markAsCompleted();
@@ -173,9 +162,9 @@ public class CSVImportServiceImpl implements CSVImportService {
                 } catch (Exception e) {
                     failedImports.incrementAndGet();
                     result.addValidationError(
-                        ValidationError.fieldError((int) record.getRecordNumber(), null, null, e.getMessage()));
+                            ValidationError.fieldError((int) record.getRecordNumber(), null, null, e.getMessage()));
                     LogEvent.logWarn("CSVImportService", "importComplianceStandards",
-                                   "Failed to process record " + record.getRecordNumber() + ": " + e.getMessage());
+                            "Failed to process record " + record.getRecordNumber() + ": " + e.getMessage());
                 }
 
                 processedCount++;
@@ -218,7 +207,7 @@ public class CSVImportServiceImpl implements CSVImportService {
                     validateRecord(record, result);
                 } catch (Exception e) {
                     result.addValidationError(
-                        ValidationError.fieldError((int) record.getRecordNumber(), null, null, e.getMessage()));
+                            ValidationError.fieldError((int) record.getRecordNumber(), null, null, e.getMessage()));
                 }
             }
 
@@ -238,8 +227,7 @@ public class CSVImportServiceImpl implements CSVImportService {
             return result;
 
         } catch (Exception e) {
-            LogEvent.logError("CSVImportService", "validateCSVFile",
-                            "CSV validation failed: " + e.getMessage());
+            LogEvent.logError("CSVImportService", "validateCSVFile", "CSV validation failed: " + e.getMessage());
             result.setStatus(ImportStatus.INVALID_FORMAT);
             result.addValidationError(ValidationError.securityError("CSV validation failed: " + e.getMessage()));
             result.markAsCompleted();
@@ -256,31 +244,17 @@ public class CSVImportServiceImpl implements CSVImportService {
                 .append("description,effective_date,expiry_date,enforcement_authority,sample_types,parameter_groups\n");
 
         // Example data
-        template.append("\"Indonesian Water Quality Standard PP-22-2021\",")
-                .append("\"2021\",")
-                .append("\"Indonesia Ministry of Environment\",")
-                .append("\"PP-22-2021\",")
-                .append("\"Indonesia\",")
-                .append("\"ACTIVE\",")
-                .append("\"Water quality standards for environmental protection\",")
-                .append("\"2021-04-01\",")
-                .append("\"2031-04-01\",")
-                .append("\"Ministry of Environment and Forestry\",")
-                .append("\"Water;Wastewater\",")
-                .append("\"Physical Parameters;Chemical Parameters\"\n");
+        template.append("\"Indonesian Water Quality Standard PP-22-2021\",").append("\"2021\",")
+                .append("\"Indonesia Ministry of Environment\",").append("\"PP-22-2021\",").append("\"Indonesia\",")
+                .append("\"ACTIVE\",").append("\"Water quality standards for environmental protection\",")
+                .append("\"2021-04-01\",").append("\"2031-04-01\",").append("\"Ministry of Environment and Forestry\",")
+                .append("\"Water;Wastewater\",").append("\"Physical Parameters;Chemical Parameters\"\n");
 
-        template.append("\"WHO Drinking Water Guidelines\",")
-                .append("\"2022\",")
-                .append("\"World Health Organization\",")
-                .append("\"WHO-DW-2022\",")
-                .append("\"Global\",")
-                .append("\"ACTIVE\",")
-                .append("\"WHO guidelines for drinking water quality\",")
-                .append("\"2022-01-01\",")
-                .append("\"\",")
-                .append("\"World Health Organization\",")
-                .append("\"Drinking Water\",")
-                .append("\"Microbiological Parameters;Chemical Parameters\"\n");
+        template.append("\"WHO Drinking Water Guidelines\",").append("\"2022\",")
+                .append("\"World Health Organization\",").append("\"WHO-DW-2022\",").append("\"Global\",")
+                .append("\"ACTIVE\",").append("\"WHO guidelines for drinking water quality\",")
+                .append("\"2022-01-01\",").append("\"\",").append("\"World Health Organization\",")
+                .append("\"Drinking Water\",").append("\"Microbiological Parameters;Chemical Parameters\"\n");
 
         return template.toString();
     }
@@ -309,20 +283,15 @@ public class CSVImportServiceImpl implements CSVImportService {
 
     @Override
     public int[] getImportStatistics() {
-        return new int[]{
-            totalImports.get(),
-            successfulImports.get(),
-            failedImports.get(),
-            pendingImports.get()
-        };
+        return new int[] { totalImports.get(), successfulImports.get(), failedImports.get(), pendingImports.get() };
     }
 
     @Override
     public void validateFileProperties(long fileSize, String contentType, String filename) {
         // File size validation
         if (fileSize > MAX_FILE_SIZE) {
-            throw new IllegalArgumentException("File size exceeds maximum allowed size of " +
-                                             (MAX_FILE_SIZE / 1024 / 1024) + "MB");
+            throw new IllegalArgumentException(
+                    "File size exceeds maximum allowed size of " + (MAX_FILE_SIZE / 1024 / 1024) + "MB");
         }
 
         if (fileSize <= 0) {
@@ -330,8 +299,7 @@ public class CSVImportServiceImpl implements CSVImportService {
         }
 
         // Content type validation
-        if (GenericValidator.isBlankOrNull(contentType) ||
-            !ALLOWED_CONTENT_TYPES.contains(contentType.toLowerCase())) {
+        if (GenericValidator.isBlankOrNull(contentType) || !ALLOWED_CONTENT_TYPES.contains(contentType.toLowerCase())) {
             throw new IllegalArgumentException("Invalid file type. Only CSV files are allowed.");
         }
 
@@ -370,16 +338,14 @@ public class CSVImportServiceImpl implements CSVImportService {
                 String field = fields[j].trim().replaceAll("^\"|\"$", ""); // Remove quotes
 
                 if (DANGEROUS_CONTENT_PATTERN.matcher(field).matches()) {
-                    violations.add("Line " + (i + 1) + ", Column " + (j + 1) +
-                                 ": Potential CSV injection detected - '" +
-                                 StringUtils.abbreviate(field, 50) + "'");
+                    violations.add("Line " + (i + 1) + ", Column " + (j + 1) + ": Potential CSV injection detected - '"
+                            + StringUtils.abbreviate(field, 50) + "'");
                 }
 
                 // Check for suspicious patterns
-                if (field.contains("<script>") || field.contains("javascript:") ||
-                    field.contains("data:") || field.contains("vbscript:")) {
-                    violations.add("Line " + (i + 1) + ", Column " + (j + 1) +
-                                 ": Suspicious script content detected");
+                if (field.contains("<script>") || field.contains("javascript:") || field.contains("data:")
+                        || field.contains("vbscript:")) {
+                    violations.add("Line " + (i + 1) + ", Column " + (j + 1) + ": Suspicious script content detected");
                 }
             }
         }
@@ -406,15 +372,11 @@ public class CSVImportServiceImpl implements CSVImportService {
         // Security validation
         List<String> securityViolations = validateSecurity(csvContent);
         if (!securityViolations.isEmpty()) {
-            throw new SecurityException("Security violations found: " +
-                                      String.join(", ", securityViolations));
+            throw new SecurityException("Security violations found: " + String.join(", ", securityViolations));
         }
 
         // Parse CSV
-        CSVFormat format = CSVFormat.DEFAULT
-            .withFirstRecordAsHeader()
-            .withIgnoreEmptyLines(true)
-            .withTrim(true);
+        CSVFormat format = CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreEmptyLines(true).withTrim(true);
 
         try (CSVParser parser = format.parse(new StringReader(csvContent))) {
 
@@ -429,8 +391,7 @@ public class CSVImportServiceImpl implements CSVImportService {
             }
 
             if (!missingRequired.isEmpty()) {
-                throw new IllegalArgumentException("Missing required headers: " +
-                                                 String.join(", ", missingRequired));
+                throw new IllegalArgumentException("Missing required headers: " + String.join(", ", missingRequired));
             }
 
             return parser.getRecords();
@@ -439,6 +400,7 @@ public class CSVImportServiceImpl implements CSVImportService {
 
     /**
      * Process individual CSV record
+     * 
      * @return Standard ID if successful, null if skipped
      */
     private String processRecord(CSVRecord record, String userId, ImportResult result) throws Exception {
@@ -467,8 +429,8 @@ public class CSVImportServiceImpl implements CSVImportService {
 
         if (record.isSet("effective_date") && StringUtils.isNotBlank(record.get("effective_date"))) {
             try {
-                standard.setEffectiveDate(LocalDate.parse(record.get("effective_date").trim(),
-                                                        DateTimeFormatter.ISO_LOCAL_DATE));
+                standard.setEffectiveDate(
+                        LocalDate.parse(record.get("effective_date").trim(), DateTimeFormatter.ISO_LOCAL_DATE));
             } catch (DateTimeParseException e) {
                 result.addWarning(ValidationError.warning(rowNum, "Invalid effective_date format, skipped"));
             }
@@ -476,8 +438,8 @@ public class CSVImportServiceImpl implements CSVImportService {
 
         if (record.isSet("expiry_date") && StringUtils.isNotBlank(record.get("expiry_date"))) {
             try {
-                standard.setExpiryDate(LocalDate.parse(record.get("expiry_date").trim(),
-                                                     DateTimeFormatter.ISO_LOCAL_DATE));
+                standard.setExpiryDate(
+                        LocalDate.parse(record.get("expiry_date").trim(), DateTimeFormatter.ISO_LOCAL_DATE));
             } catch (DateTimeParseException e) {
                 result.addWarning(ValidationError.warning(rowNum, "Invalid expiry_date format, skipped"));
             }
@@ -523,6 +485,7 @@ public class CSVImportServiceImpl implements CSVImportService {
 
     /**
      * Validate individual record
+     * 
      * @return true if record is valid (may have warnings), false if has errors
      */
     private boolean validateRecord(CSVRecord record, ImportResult result) {
@@ -532,8 +495,7 @@ public class CSVImportServiceImpl implements CSVImportService {
         // Validate required fields
         for (String required : REQUIRED_HEADERS) {
             if (!record.isSet(required) || GenericValidator.isBlankOrNull(record.get(required))) {
-                result.addValidationError(
-                    ValidationError.requiredFieldError(rowNum, required));
+                result.addValidationError(ValidationError.requiredFieldError(rowNum, required));
                 hasErrors = true;
             }
         }
@@ -543,8 +505,7 @@ public class CSVImportServiceImpl implements CSVImportService {
             try {
                 ComplianceStandardStatus.valueOf(record.get("status").trim());
             } catch (IllegalArgumentException e) {
-                result.addValidationError(
-                    ValidationError.dataTypeError(rowNum, "status", record.get("status"),
+                result.addValidationError(ValidationError.dataTypeError(rowNum, "status", record.get("status"),
                         "Valid values: " + Arrays.toString(ComplianceStandardStatus.values())));
                 hasErrors = true;
             }
@@ -555,9 +516,8 @@ public class CSVImportServiceImpl implements CSVImportService {
             try {
                 LocalDate.parse(record.get("effective_date").trim(), DateTimeFormatter.ISO_LOCAL_DATE);
             } catch (DateTimeParseException e) {
-                result.addValidationError(
-                    ValidationError.dataTypeError(rowNum, "effective_date", record.get("effective_date"),
-                        "Date format YYYY-MM-DD"));
+                result.addValidationError(ValidationError.dataTypeError(rowNum, "effective_date",
+                        record.get("effective_date"), "Date format YYYY-MM-DD"));
                 hasErrors = true;
             }
         }
@@ -566,25 +526,22 @@ public class CSVImportServiceImpl implements CSVImportService {
             try {
                 LocalDate.parse(record.get("expiry_date").trim(), DateTimeFormatter.ISO_LOCAL_DATE);
             } catch (DateTimeParseException e) {
-                result.addValidationError(
-                    ValidationError.dataTypeError(rowNum, "expiry_date", record.get("expiry_date"),
-                        "Date format YYYY-MM-DD"));
+                result.addValidationError(ValidationError.dataTypeError(rowNum, "expiry_date",
+                        record.get("expiry_date"), "Date format YYYY-MM-DD"));
                 hasErrors = true;
             }
         }
 
         // Validate field lengths
         if (record.isSet("name") && record.get("name").length() > 255) {
-            result.addValidationError(
-                ValidationError.fieldError(rowNum, "name", record.get("name"),
+            result.addValidationError(ValidationError.fieldError(rowNum, "name", record.get("name"),
                     "Name exceeds maximum length of 255 characters"));
             hasErrors = true;
         }
 
         if (record.isSet("regulation_number") && record.get("regulation_number").length() > 100) {
-            result.addValidationError(
-                ValidationError.fieldError(rowNum, "regulation_number", record.get("regulation_number"),
-                    "Regulation number exceeds maximum length of 100 characters"));
+            result.addValidationError(ValidationError.fieldError(rowNum, "regulation_number",
+                    record.get("regulation_number"), "Regulation number exceeds maximum length of 100 characters"));
             hasErrors = true;
         }
 
@@ -595,7 +552,7 @@ public class CSVImportServiceImpl implements CSVImportService {
      * Process parameter groups from CSV
      */
     private void processParameterGroups(String standardId, String parameterGroupsText, String userId,
-                                      ImportResult result) {
+            ImportResult result) {
         try {
             String[] groupNames = parameterGroupsText.split(";");
 
@@ -615,9 +572,9 @@ public class CSVImportServiceImpl implements CSVImportService {
             }
         } catch (Exception e) {
             result.addWarning(ValidationError.warning(null,
-                "Failed to process parameter groups for standard " + standardId + ": " + e.getMessage()));
+                    "Failed to process parameter groups for standard " + standardId + ": " + e.getMessage()));
             LogEvent.logWarn("CSVImportService", "processParameterGroups",
-                           "Failed to process parameter groups: " + e.getMessage());
+                    "Failed to process parameter groups: " + e.getMessage());
         }
     }
 }

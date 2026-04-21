@@ -97,9 +97,8 @@ public enum ImportStatus {
      * Check if the import failed
      */
     public boolean isFailed() {
-        return this == VALIDATION_FAILED || this == SECURITY_VIOLATION ||
-               this == FILE_TOO_LARGE || this == INVALID_FORMAT ||
-               this == SYSTEM_ERROR || this == PERMISSION_DENIED;
+        return this == VALIDATION_FAILED || this == SECURITY_VIOLATION || this == FILE_TOO_LARGE
+                || this == INVALID_FORMAT || this == SYSTEM_ERROR || this == PERMISSION_DENIED;
     }
 
     /**

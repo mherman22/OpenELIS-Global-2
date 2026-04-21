@@ -409,8 +409,8 @@
   }
 
   /* Hide less important columns on mobile */
-  .compliance-evaluation-viewer .cds--data-table th:nth-child(n+5),
-  .compliance-evaluation-viewer .cds--data-table td:nth-child(n+5) {
+  .compliance-evaluation-viewer .cds--data-table th:nth-child(n + 5),
+  .compliance-evaluation-viewer .cds--data-table td:nth-child(n + 5) {
     display: none;
   }
 
@@ -433,8 +433,8 @@
 }
 
 @media (max-width: 480px) {
-  .compliance-evaluation-viewer .cds--data-table th:nth-child(n+4),
-  .compliance-evaluation-viewer .cds--data-table td:nth-child(n+4) {
+  .compliance-evaluation-viewer .cds--data-table th:nth-child(n + 4),
+  .compliance-evaluation-viewer .cds--data-table td:nth-child(n + 4) {
     display: none;
   }
 

@@ -1,12 +1,14 @@
 package org.openelisglobal.compliance.valueholder;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -29,27 +31,20 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
 import org.hibernate.annotations.Type;
+import org.openelisglobal.common.util.ValidationHelper;
 import org.openelisglobal.common.util.validator.SafeHtml;
 import org.openelisglobal.common.valueholder.BaseObject;
 import org.openelisglobal.common.valueholder.SimpleBaseEntity;
-import org.openelisglobal.common.util.ValidationHelper;
 import org.openelisglobal.spring.util.SpringContext;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * ComplianceEvaluation value holder representing compliance evaluation records
  * for samples against compliance standards.
  *
- * Follows constitutional requirements:
- * - Extends BaseObject for audit trail support
- * - Includes FHIR UUID for interoperability
- * - Uses JPA annotations (no XML mappings)
- * - Implements validation annotations
+ * Follows constitutional requirements: - Extends BaseObject for audit trail
+ * support - Includes FHIR UUID for interoperability - Uses JPA annotations (no
+ * XML mappings) - Implements validation annotations
  */
 @Entity
 @Table(name = "compliance_evaluation")
@@ -381,9 +376,7 @@ public class ComplianceEvaluation extends BaseObject<String> implements SimpleBa
         if (evaluationResults == null) {
             return 0;
         }
-        return (int) evaluationResults.stream()
-                .filter(result -> Boolean.TRUE.equals(result.getIsCompliant()))
-                .count();
+        return (int) evaluationResults.stream().filter(result -> Boolean.TRUE.equals(result.getIsCompliant())).count();
     }
 
     /**
@@ -394,9 +387,7 @@ public class ComplianceEvaluation extends BaseObject<String> implements SimpleBa
         if (evaluationResults == null) {
             return 0;
         }
-        return (int) evaluationResults.stream()
-                .filter(result -> Boolean.FALSE.equals(result.getIsCompliant()))
-                .count();
+        return (int) evaluationResults.stream().filter(result -> Boolean.FALSE.equals(result.getIsCompliant())).count();
     }
 
     /**
@@ -410,9 +401,8 @@ public class ComplianceEvaluation extends BaseObject<String> implements SimpleBa
         }
 
         int compliantResults = getCompliantResultCount();
-        return new BigDecimal(compliantResults)
-                .multiply(new BigDecimal("100"))
-                .divide(new BigDecimal(totalResults), 2, BigDecimal.ROUND_HALF_UP);
+        return new BigDecimal(compliantResults).multiply(new BigDecimal("100")).divide(new BigDecimal(totalResults), 2,
+                BigDecimal.ROUND_HALF_UP);
     }
 
     /**
@@ -506,13 +496,8 @@ public class ComplianceEvaluation extends BaseObject<String> implements SimpleBa
 
     @Override
     public String toString() {
-        return "ComplianceEvaluation{" +
-                "id='" + id + '\'' +
-                ", sampleId='" + sampleId + '\'' +
-                ", standardId='" + getStandardId() + '\'' +
-                ", status=" + status +
-                ", overallCompliance=" + overallCompliance +
-                '}';
+        return "ComplianceEvaluation{" + "id='" + id + '\'' + ", sampleId='" + sampleId + '\'' + ", standardId='"
+                + getStandardId() + '\'' + ", status=" + status + ", overallCompliance=" + overallCompliance + '}';
     }
 
     /**
@@ -522,16 +507,15 @@ public class ComplianceEvaluation extends BaseObject<String> implements SimpleBa
     @PostPersist
     public void onPostPersist() {
         try {
-            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform =
-                SpringContext.getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
+            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform = SpringContext
+                    .getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
             if (fhirTransform != null) {
                 fhirTransform.syncComplianceEvaluationToFhir(this, true);
             }
         } catch (Exception e) {
             // Log error but don't fail transaction
-            org.openelisglobal.common.log.LogEvent.logError(
-                "ComplianceEvaluation", "onPostPersist",
-                "Failed to sync to FHIR on create: " + e.getMessage());
+            org.openelisglobal.common.log.LogEvent.logError("ComplianceEvaluation", "onPostPersist",
+                    "Failed to sync to FHIR on create: " + e.getMessage());
         }
     }
 
@@ -541,16 +525,15 @@ public class ComplianceEvaluation extends BaseObject<String> implements SimpleBa
     @PostUpdate
     public void onPostUpdate() {
         try {
-            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform =
-                SpringContext.getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
+            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform = SpringContext
+                    .getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
             if (fhirTransform != null) {
                 fhirTransform.syncComplianceEvaluationToFhir(this, false);
             }
         } catch (Exception e) {
             // Log error but don't fail transaction
-            org.openelisglobal.common.log.LogEvent.logError(
-                "ComplianceEvaluation", "onPostUpdate",
-                "Failed to sync to FHIR on update: " + e.getMessage());
+            org.openelisglobal.common.log.LogEvent.logError("ComplianceEvaluation", "onPostUpdate",
+                    "Failed to sync to FHIR on update: " + e.getMessage());
         }
     }
 

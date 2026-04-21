@@ -3,15 +3,12 @@ package org.openelisglobal.compliance.controller.rest;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.openelisglobal.common.constants.Constants;
 import org.openelisglobal.common.controller.BaseController;
 import org.openelisglobal.common.log.LogEvent;
 import org.openelisglobal.common.validator.BaseErrors;
 import org.openelisglobal.compliance.service.ComplianceStandardService;
 import org.openelisglobal.compliance.service.TestComplianceStandardService;
 import org.openelisglobal.compliance.valueholder.ComplianceStandard;
-import org.openelisglobal.compliance.valueholder.ComplianceStandardStatus;
 import org.openelisglobal.compliance.valueholder.TestComplianceStandard;
 import org.openelisglobal.test.service.TestService;
 import org.openelisglobal.test.valueholder.Test;
@@ -27,31 +24,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST Controller for Test-Compliance Standard associations.
  *
- * Handles the management of relationships between Tests and Compliance Standards
- * for the Test Catalog Compliance tab functionality.
+ * Handles the management of relationships between Tests and Compliance
+ * Standards for the Test Catalog Compliance tab functionality.
  *
- * Constitutional compliance:
- * - Uses REST API pattern (/rest mapping)
- * - Extends BaseController for standard OpenELIS patterns
- * - Proper error handling and validation
- * - Role-based access control to be added later
+ * Constitutional compliance: - Uses REST API pattern (/rest mapping) - Extends
+ * BaseController for standard OpenELIS patterns - Proper error handling and
+ * validation - Role-based access control to be added later
  */
 @RestController
 @RequestMapping("/rest")
 public class TestComplianceStandardRestController extends BaseController {
 
-    private static final String[] ALLOWED_FIELDS = new String[] {
-        "testId",
-        "complianceStandardId",
-        "mandatory",
-        "applicableParameters"
-    };
+    private static final String[] ALLOWED_FIELDS = new String[] { "testId", "complianceStandardId", "mandatory",
+            "applicableParameters" };
 
     @Autowired
     private TestComplianceStandardService testComplianceStandardService;
@@ -73,8 +63,8 @@ public class TestComplianceStandardRestController extends BaseController {
     @GetMapping(value = "/test/{testId}/compliance-standards", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getComplianceStandardsForTest(@PathVariable String testId) {
         try {
-            List<TestComplianceStandard> associations =
-                testComplianceStandardService.getComplianceStandardsForTestOrdered(testId);
+            List<TestComplianceStandard> associations = testComplianceStandardService
+                    .getComplianceStandardsForTestOrdered(testId);
 
             List<TestComplianceStandardDTO> dtoList = new ArrayList<>();
             for (TestComplianceStandard association : associations) {
@@ -85,9 +75,9 @@ public class TestComplianceStandardRestController extends BaseController {
 
         } catch (Exception e) {
             LogEvent.logError("TestComplianceStandardRestController", "getComplianceStandardsForTest",
-                "Error retrieving compliance standards for test " + testId + ": " + e.getMessage());
+                    "Error retrieving compliance standards for test " + testId + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Failed to retrieve compliance standards");
+                    .body("Failed to retrieve compliance standards");
         }
     }
 
@@ -116,9 +106,9 @@ public class TestComplianceStandardRestController extends BaseController {
 
         } catch (Exception e) {
             LogEvent.logError("TestComplianceStandardRestController", "getAvailableComplianceStandards",
-                "Error retrieving available compliance standards: " + e.getMessage());
+                    "Error retrieving available compliance standards: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Failed to retrieve available compliance standards");
+                    .body("Failed to retrieve available compliance standards");
         }
     }
 
@@ -126,10 +116,8 @@ public class TestComplianceStandardRestController extends BaseController {
      * Associate a test with a compliance standard
      */
     @PostMapping(value = "/test/{testId}/compliance-standards", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> associateTestWithComplianceStandard(
-            @PathVariable String testId,
-            @RequestBody TestComplianceStandardDTO associationDTO,
-            HttpServletRequest request) {
+    public ResponseEntity<?> associateTestWithComplianceStandard(@PathVariable String testId,
+            @RequestBody TestComplianceStandardDTO associationDTO, HttpServletRequest request) {
 
         try {
             // Validate input
@@ -140,20 +128,16 @@ public class TestComplianceStandardRestController extends BaseController {
 
             String currentUser = getSysUserId(request);
             TestComplianceStandard association = testComplianceStandardService.associateTestWithComplianceStandard(
-                testId,
-                associationDTO.getComplianceStandardId(),
-                associationDTO.isMandatory(),
-                associationDTO.getApplicableParameters(),
-                currentUser
-            );
+                    testId, associationDTO.getComplianceStandardId(), associationDTO.isMandatory(),
+                    associationDTO.getApplicableParameters(), currentUser);
 
             return ResponseEntity.ok(convertToDTO(association));
 
         } catch (Exception e) {
             LogEvent.logError("TestComplianceStandardRestController", "associateTestWithComplianceStandard",
-                "Error associating test " + testId + " with compliance standard: " + e.getMessage());
+                    "Error associating test " + testId + " with compliance standard: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Failed to create association: " + e.getMessage());
+                    .body("Failed to create association: " + e.getMessage());
         }
     }
 
@@ -161,8 +145,7 @@ public class TestComplianceStandardRestController extends BaseController {
      * Remove association between test and compliance standard
      */
     @PostMapping(value = "/test/{testId}/compliance-standards/{standardId}/remove", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> removeTestComplianceStandardAssociation(
-            @PathVariable String testId,
+    public ResponseEntity<?> removeTestComplianceStandardAssociation(@PathVariable String testId,
             @PathVariable String standardId) {
 
         try {
@@ -171,15 +154,15 @@ public class TestComplianceStandardRestController extends BaseController {
             if (removed) {
                 return ResponseEntity.ok("Association removed successfully");
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Association not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Association not found");
             }
 
         } catch (Exception e) {
             LogEvent.logError("TestComplianceStandardRestController", "removeTestComplianceStandardAssociation",
-                "Error removing association between test " + testId + " and compliance standard " + standardId + ": " + e.getMessage());
+                    "Error removing association between test " + testId + " and compliance standard " + standardId
+                            + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Failed to remove association: " + e.getMessage());
+                    .body("Failed to remove association: " + e.getMessage());
         }
     }
 
@@ -187,17 +170,14 @@ public class TestComplianceStandardRestController extends BaseController {
      * Update multiple test-compliance standard associations
      */
     @PostMapping(value = "/test/{testId}/compliance-standards/bulk-update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateTestComplianceStandards(
-            @PathVariable String testId,
-            @RequestBody List<TestComplianceStandardDTO> associationDTOs,
-            HttpServletRequest request) {
+    public ResponseEntity<?> updateTestComplianceStandards(@PathVariable String testId,
+            @RequestBody List<TestComplianceStandardDTO> associationDTOs, HttpServletRequest request) {
 
         try {
             // Validate test exists
             Test test = testService.get(testId);
             if (test == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Test not found: " + testId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Test not found: " + testId);
             }
 
             // Convert DTOs to entities
@@ -221,9 +201,9 @@ public class TestComplianceStandardRestController extends BaseController {
 
         } catch (Exception e) {
             LogEvent.logError("TestComplianceStandardRestController", "updateTestComplianceStandards",
-                "Error updating test compliance standards for test " + testId + ": " + e.getMessage());
+                    "Error updating test compliance standards for test " + testId + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Failed to update test compliance standards: " + e.getMessage());
+                    .body("Failed to update test compliance standards: " + e.getMessage());
         }
     }
 
@@ -247,8 +227,8 @@ public class TestComplianceStandardRestController extends BaseController {
         TestComplianceStandardDTO dto = new TestComplianceStandardDTO();
         dto.setId(association.getId());
         dto.setTestId(association.getTest() != null ? association.getTest().getId() : null);
-        dto.setComplianceStandardId(association.getComplianceStandard() != null ?
-            association.getComplianceStandard().getId() : null);
+        dto.setComplianceStandardId(
+                association.getComplianceStandard() != null ? association.getComplianceStandard().getId() : null);
         dto.setComplianceStandardName(association.getComplianceStandardDisplayName());
         dto.setComplianceStandardRegulationNumber(association.getComplianceStandardRegulationNumber());
         dto.setComplianceStandardStatus(association.getComplianceStandardStatus());
@@ -307,32 +287,77 @@ public class TestComplianceStandardRestController extends BaseController {
         private String sortOrder;
 
         // Getters and setters
-        public String getId() { return id; }
-        public void setId(String id) { this.id = id; }
+        public String getId() {
+            return id;
+        }
 
-        public String getTestId() { return testId; }
-        public void setTestId(String testId) { this.testId = testId; }
+        public void setId(String id) {
+            this.id = id;
+        }
 
-        public String getComplianceStandardId() { return complianceStandardId; }
-        public void setComplianceStandardId(String complianceStandardId) { this.complianceStandardId = complianceStandardId; }
+        public String getTestId() {
+            return testId;
+        }
 
-        public String getComplianceStandardName() { return complianceStandardName; }
-        public void setComplianceStandardName(String complianceStandardName) { this.complianceStandardName = complianceStandardName; }
+        public void setTestId(String testId) {
+            this.testId = testId;
+        }
 
-        public String getComplianceStandardRegulationNumber() { return complianceStandardRegulationNumber; }
-        public void setComplianceStandardRegulationNumber(String complianceStandardRegulationNumber) { this.complianceStandardRegulationNumber = complianceStandardRegulationNumber; }
+        public String getComplianceStandardId() {
+            return complianceStandardId;
+        }
 
-        public String getComplianceStandardStatus() { return complianceStandardStatus; }
-        public void setComplianceStandardStatus(String complianceStandardStatus) { this.complianceStandardStatus = complianceStandardStatus; }
+        public void setComplianceStandardId(String complianceStandardId) {
+            this.complianceStandardId = complianceStandardId;
+        }
 
-        public boolean isMandatory() { return mandatory; }
-        public void setMandatory(boolean mandatory) { this.mandatory = mandatory; }
+        public String getComplianceStandardName() {
+            return complianceStandardName;
+        }
 
-        public String getApplicableParameters() { return applicableParameters; }
-        public void setApplicableParameters(String applicableParameters) { this.applicableParameters = applicableParameters; }
+        public void setComplianceStandardName(String complianceStandardName) {
+            this.complianceStandardName = complianceStandardName;
+        }
 
-        public String getSortOrder() { return sortOrder; }
-        public void setSortOrder(String sortOrder) { this.sortOrder = sortOrder; }
+        public String getComplianceStandardRegulationNumber() {
+            return complianceStandardRegulationNumber;
+        }
+
+        public void setComplianceStandardRegulationNumber(String complianceStandardRegulationNumber) {
+            this.complianceStandardRegulationNumber = complianceStandardRegulationNumber;
+        }
+
+        public String getComplianceStandardStatus() {
+            return complianceStandardStatus;
+        }
+
+        public void setComplianceStandardStatus(String complianceStandardStatus) {
+            this.complianceStandardStatus = complianceStandardStatus;
+        }
+
+        public boolean isMandatory() {
+            return mandatory;
+        }
+
+        public void setMandatory(boolean mandatory) {
+            this.mandatory = mandatory;
+        }
+
+        public String getApplicableParameters() {
+            return applicableParameters;
+        }
+
+        public void setApplicableParameters(String applicableParameters) {
+            this.applicableParameters = applicableParameters;
+        }
+
+        public String getSortOrder() {
+            return sortOrder;
+        }
+
+        public void setSortOrder(String sortOrder) {
+            this.sortOrder = sortOrder;
+        }
     }
 
     public static class ComplianceStandardSummaryDTO {
@@ -345,25 +370,60 @@ public class TestComplianceStandardRestController extends BaseController {
         private String status;
 
         // Getters and setters
-        public String getId() { return id; }
-        public void setId(String id) { this.id = id; }
+        public String getId() {
+            return id;
+        }
 
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
+        public void setId(String id) {
+            this.id = id;
+        }
 
-        public String getDisplayName() { return displayName; }
-        public void setDisplayName(String displayName) { this.displayName = displayName; }
+        public String getName() {
+            return name;
+        }
 
-        public String getRegulationNumber() { return regulationNumber; }
-        public void setRegulationNumber(String regulationNumber) { this.regulationNumber = regulationNumber; }
+        public void setName(String name) {
+            this.name = name;
+        }
 
-        public String getVersion() { return version; }
-        public void setVersion(String version) { this.version = version; }
+        public String getDisplayName() {
+            return displayName;
+        }
 
-        public String getIssuingBody() { return issuingBody; }
-        public void setIssuingBody(String issuingBody) { this.issuingBody = issuingBody; }
+        public void setDisplayName(String displayName) {
+            this.displayName = displayName;
+        }
 
-        public String getStatus() { return status; }
-        public void setStatus(String status) { this.status = status; }
+        public String getRegulationNumber() {
+            return regulationNumber;
+        }
+
+        public void setRegulationNumber(String regulationNumber) {
+            this.regulationNumber = regulationNumber;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public void setVersion(String version) {
+            this.version = version;
+        }
+
+        public String getIssuingBody() {
+            return issuingBody;
+        }
+
+        public void setIssuingBody(String issuingBody) {
+            this.issuingBody = issuingBody;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
     }
 }

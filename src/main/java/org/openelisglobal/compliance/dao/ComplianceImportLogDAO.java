@@ -2,7 +2,6 @@ package org.openelisglobal.compliance.dao;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.openelisglobal.common.dao.BaseDAO;
 import org.openelisglobal.compliance.valueholder.ComplianceImportLog;
 import org.openelisglobal.compliance.valueholder.ComplianceImportStatus;
@@ -44,7 +43,7 @@ public interface ComplianceImportLogDAO extends BaseDAO<ComplianceImportLog, Str
      * Get import logs within a date range
      *
      * @param startDate Start date/time (inclusive)
-     * @param endDate End date/time (inclusive)
+     * @param endDate   End date/time (inclusive)
      * @return List of import logs within the specified date range
      */
     List<ComplianceImportLog> getLogsByDateRange(LocalDateTime startDate, LocalDateTime endDate);
@@ -92,7 +91,7 @@ public interface ComplianceImportLogDAO extends BaseDAO<ComplianceImportLog, Str
      * Get import logs with pagination
      *
      * @param startingRecNo Starting record number (0-based)
-     * @param pageSize Number of records per page
+     * @param pageSize      Number of records per page
      * @return List of import logs for the specified page
      */
     List<ComplianceImportLog> getPageOfImportLogs(int startingRecNo, int pageSize);
@@ -109,7 +108,7 @@ public interface ComplianceImportLogDAO extends BaseDAO<ComplianceImportLog, Str
      *
      * @param sourcePattern Pattern to search in import source field
      * @param startingRecNo Starting record number (0-based)
-     * @param pageSize Number of records per page
+     * @param pageSize      Number of records per page
      * @return List of matching import logs
      */
     List<ComplianceImportLog> searchLogsBySource(String sourcePattern, int startingRecNo, int pageSize);
@@ -126,8 +125,9 @@ public interface ComplianceImportLogDAO extends BaseDAO<ComplianceImportLog, Str
      * Get import statistics for a specific date range
      *
      * @param startDate Start date/time (inclusive)
-     * @param endDate End date/time (inclusive)
-     * @return Array of statistics [totalCount, successCount, failureCount, averageDuration]
+     * @param endDate   End date/time (inclusive)
+     * @return Array of statistics [totalCount, successCount, failureCount,
+     *         averageDuration]
      */
     Object[] getImportStatistics(LocalDateTime startDate, LocalDateTime endDate);
 
@@ -135,18 +135,19 @@ public interface ComplianceImportLogDAO extends BaseDAO<ComplianceImportLog, Str
      * Get import statistics by type for a specific date range
      *
      * @param importType The import type
-     * @param startDate Start date/time (inclusive)
-     * @param endDate End date/time (inclusive)
-     * @return Array of statistics [totalCount, successCount, failureCount, averageDuration]
+     * @param startDate  Start date/time (inclusive)
+     * @param endDate    End date/time (inclusive)
+     * @return Array of statistics [totalCount, successCount, failureCount,
+     *         averageDuration]
      */
     Object[] getImportStatisticsByType(ComplianceImportType importType, LocalDateTime startDate, LocalDateTime endDate);
 
     /**
      * Get import logs for a specific user with pagination
      *
-     * @param initiatedBy User ID who initiated the import
+     * @param initiatedBy   User ID who initiated the import
      * @param startingRecNo Starting record number (0-based)
-     * @param pageSize Number of records per page
+     * @param pageSize      Number of records per page
      * @return List of import logs for the specified user and page
      */
     List<ComplianceImportLog> getPageOfUserImportLogs(String initiatedBy, int startingRecNo, int pageSize);

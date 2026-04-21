@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.openelisglobal.common.constants.Constants;
 import org.openelisglobal.common.controller.BaseMenuController;
 import org.openelisglobal.common.exception.LIMSRuntimeException;
@@ -37,21 +36,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * including pagination, search, and bulk operations, following the exact same
  * pattern as DictionaryMenuRestController.
  *
- * Constitutional compliance:
- * - Extends BaseMenuController<ComplianceStandard>
- * - Uses @RestController with /rest mapping
- * - Implements required abstract methods from BaseMenuController
- * - Role-based access control to be added later
+ * Constitutional compliance: - Extends BaseMenuController<ComplianceStandard> -
+ * Uses @RestController with /rest mapping - Implements required abstract
+ * methods from BaseMenuController - Role-based access control to be added later
  */
 @RestController
 @RequestMapping("/rest")
 public class ComplianceStandardMenuRestController extends BaseMenuController<ComplianceStandard> {
 
-    private static final String[] ALLOWED_FIELDS = new String[] {
-        "selectedIDs*",
-        "sampleTypeId",
-        "showInactive"
-    };
+    private static final String[] ALLOWED_FIELDS = new String[] { "selectedIDs*", "sampleTypeId", "showInactive" };
 
     @Autowired
     private ComplianceStandardService complianceStandardService;
@@ -68,11 +61,9 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
      * Show compliance standards menu with pagination and search support
      */
     @RequestMapping(value = { "/ComplianceStandardMenu",
-                             "/SearchComplianceStandardMenu" },
-                   produces = MediaType.APPLICATION_JSON_VALUE,
-                   method = RequestMethod.GET)
+            "/SearchComplianceStandardMenu" }, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public ResponseEntity<?> showComplianceStandardMenu(HttpServletRequest request,
-                                                       RedirectAttributes redirectAttributes)
+            RedirectAttributes redirectAttributes)
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
         ComplianceStandardConfigMenuForm form = new ComplianceStandardConfigMenuForm();
@@ -97,9 +88,7 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
     /**
      * Get sample types for filtering
      */
-    @RequestMapping(value = "/compliance-sample-types",
-                   produces = MediaType.APPLICATION_JSON_VALUE,
-                   method = RequestMethod.GET)
+    @RequestMapping(value = "/compliance-sample-types", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public List<TypeOfSample> fetchSampleTypes() {
         return typeOfSampleService.getAllTypeOfSamples();
     }
@@ -109,7 +98,7 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
      */
     @RequestMapping(value = "/DeleteComplianceStandard", method = RequestMethod.POST)
     public ResponseEntity<?> deleteComplianceStandards(HttpServletRequest request,
-                                                      @RequestParam(value = ID, required = false) String id) {
+            @RequestParam(value = ID, required = false) String id) {
 
         String[] IDs = id.split(",");
         List<String> selectedIDs = new ArrayList<>();
@@ -129,9 +118,8 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
             // Check if standards can be deleted (business rule validation)
             for (ComplianceStandard standard : standards) {
                 if (!complianceStandardService.canDelete(standard.getId())) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Cannot delete compliance standard: " + standard.getId() +
-                              " - it has linked evaluations or parameter groups");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot delete compliance standard: "
+                            + standard.getId() + " - it has linked evaluations or parameter groups");
                 }
             }
 
@@ -141,10 +129,10 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
             LogEvent.logError("ComplianceStandardMenuRestController", "deleteComplianceStandards", e.getMessage());
             if (e.getCause() instanceof org.hibernate.StaleObjectStateException) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Compliance standard was modified by another user. Please refresh and try again.");
+                        .body("Compliance standard was modified by another user. Please refresh and try again.");
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to delete compliance standards: " + e.getMessage());
+                        .body("Failed to delete compliance standards: " + e.getMessage());
             }
         }
 
@@ -156,7 +144,7 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
      */
     @RequestMapping(value = "/ArchiveComplianceStandard", method = RequestMethod.POST)
     public ResponseEntity<?> archiveComplianceStandards(HttpServletRequest request,
-                                                       @RequestParam(value = ID, required = false) String id) {
+            @RequestParam(value = ID, required = false) String id) {
 
         String[] IDs = id.split(",");
         List<String> selectedIDs = new ArrayList<>();
@@ -167,12 +155,12 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
         try {
             String userId = getSysUserId(request);
             complianceStandardService.bulkUpdateStatus(selectedIDs,
-                org.openelisglobal.compliance.valueholder.ComplianceStandardStatus.ARCHIVED, userId);
+                    org.openelisglobal.compliance.valueholder.ComplianceStandardStatus.ARCHIVED, userId);
 
         } catch (Exception e) {
             LogEvent.logError("ComplianceStandardMenuRestController", "archiveComplianceStandards", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Failed to archive compliance standards: " + e.getMessage());
+                    .body("Failed to archive compliance standards: " + e.getMessage());
         }
 
         return ResponseEntity.ok("Compliance standards archived successfully");
@@ -180,7 +168,7 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
 
     @Override
     protected List<ComplianceStandard> createMenuList(AdminOptionMenuForm<ComplianceStandard> form,
-                                                     HttpServletRequest request) {
+            HttpServletRequest request) {
         List<ComplianceStandard> standards;
         int startingRecNo = Integer.parseInt((String) request.getAttribute("startingRecNo"));
         int total;
@@ -204,8 +192,8 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
             total = standards.size();
 
             // Apply pagination manually for filtered results
-            int pageSize = Integer.parseInt(
-                ConfigurationProperties.getInstance().getPropertyValue("page.defaultPageSize"));
+            int pageSize = Integer
+                    .parseInt(ConfigurationProperties.getInstance().getPropertyValue("page.defaultPageSize"));
             int fromIndex = Math.min(startingRecNo, standards.size());
             int toIndex = Math.min(fromIndex + pageSize, standards.size());
             standards = standards.subList(fromIndex, toIndex);
@@ -220,8 +208,8 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
                 total = allActive.size();
 
                 // Apply pagination
-                int pageSize = Integer.parseInt(
-                    ConfigurationProperties.getInstance().getPropertyValue("page.defaultPageSize"));
+                int pageSize = Integer
+                        .parseInt(ConfigurationProperties.getInstance().getPropertyValue("page.defaultPageSize"));
                 int fromIndex = Math.min(startingRecNo, allActive.size());
                 int toIndex = Math.min(fromIndex + pageSize, allActive.size());
                 standards = allActive.subList(fromIndex, toIndex);
@@ -234,8 +222,8 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
         request.setAttribute(MENU_FROM_RECORD, String.valueOf(startingRecNo));
 
         int numOfRecs = 0;
-        int defaultPageSize = Integer.parseInt(
-            ConfigurationProperties.getInstance().getPropertyValue("page.defaultPageSize"));
+        int defaultPageSize = Integer
+                .parseInt(ConfigurationProperties.getInstance().getPropertyValue("page.defaultPageSize"));
 
         if (standards.size() > defaultPageSize) {
             numOfRecs = defaultPageSize;

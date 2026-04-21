@@ -1,7 +1,6 @@
 package org.openelisglobal.compliance.service;
 
 import java.util.List;
-
 import org.openelisglobal.common.exception.LIMSRuntimeException;
 import org.openelisglobal.common.service.AuditableBaseObjectServiceImpl;
 import org.openelisglobal.compliance.dao.TestComplianceStandardDAO;
@@ -15,12 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Service implementation for TestComplianceStandard operations.
  *
- * Follows OpenELIS service patterns:
- * - Extends AuditableBaseObjectServiceImpl for standard CRUD operations
- * - Uses @Service annotation for Spring component scanning
- * - @Transactional boundaries at service level (not controller)
- * - Delegates to DAO layer for data access
- * - Implements business logic validation
+ * Follows OpenELIS service patterns: - Extends AuditableBaseObjectServiceImpl
+ * for standard CRUD operations - Uses @Service annotation for Spring component
+ * scanning - @Transactional boundaries at service level (not controller) -
+ * Delegates to DAO layer for data access - Implements business logic validation
  */
 @Service
 public class TestComplianceStandardServiceImpl extends AuditableBaseObjectServiceImpl<TestComplianceStandard, String>
@@ -83,7 +80,7 @@ public class TestComplianceStandardServiceImpl extends AuditableBaseObjectServic
     @Override
     @Transactional
     public void updateTestComplianceStandards(List<TestComplianceStandard> testComplianceStandards, Test test,
-                                             String currentUser, List<ComplianceStandard> newStandards) {
+            String currentUser, List<ComplianceStandard> newStandards) {
 
         if (test == null || test.getId() == null) {
             throw new IllegalArgumentException("Test cannot be null and must have an ID");
@@ -101,8 +98,8 @@ public class TestComplianceStandardServiceImpl extends AuditableBaseObjectServic
                 association.setSysUserId(currentUser);
 
                 // Validate association
-                if (association.getComplianceStandard() == null ||
-                    association.getComplianceStandard().getId() == null) {
+                if (association.getComplianceStandard() == null
+                        || association.getComplianceStandard().getId() == null) {
                     throw new IllegalArgumentException("ComplianceStandard cannot be null and must have an ID");
                 }
 
@@ -152,20 +149,18 @@ public class TestComplianceStandardServiceImpl extends AuditableBaseObjectServic
     public boolean duplicateTestComplianceStandardExists(TestComplianceStandard testComplianceStandard)
             throws LIMSRuntimeException {
 
-        if (testComplianceStandard == null ||
-            testComplianceStandard.getTest() == null ||
-            testComplianceStandard.getComplianceStandard() == null) {
+        if (testComplianceStandard == null || testComplianceStandard.getTest() == null
+                || testComplianceStandard.getComplianceStandard() == null) {
             return false;
         }
 
-        TestComplianceStandard existing = getTestComplianceStandardAssociation(
-            testComplianceStandard.getTest().getId(),
-            testComplianceStandard.getComplianceStandard().getId()
-        );
+        TestComplianceStandard existing = getTestComplianceStandardAssociation(testComplianceStandard.getTest().getId(),
+                testComplianceStandard.getComplianceStandard().getId());
 
         // If existing association found, check if it's different from the current one
         if (existing != null) {
-            // If we're updating an existing association, make sure we're not comparing it with itself
+            // If we're updating an existing association, make sure we're not comparing it
+            // with itself
             return !existing.getId().equals(testComplianceStandard.getId());
         }
 
@@ -175,8 +170,7 @@ public class TestComplianceStandardServiceImpl extends AuditableBaseObjectServic
     @Override
     @Transactional
     public TestComplianceStandard associateTestWithComplianceStandard(String testId, String complianceStandardId,
-                                                                      boolean mandatory, String applicableParameters,
-                                                                      String currentUser) {
+            boolean mandatory, String applicableParameters, String currentUser) {
 
         if (testId == null || complianceStandardId == null) {
             throw new IllegalArgumentException("Test ID and Compliance Standard ID cannot be null");

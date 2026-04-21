@@ -3,7 +3,6 @@ package org.openelisglobal.compliance.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-
 import org.openelisglobal.common.service.AuditableBaseObjectServiceImpl;
 import org.openelisglobal.compliance.dao.ComplianceImportLogDAO;
 import org.openelisglobal.compliance.valueholder.ComplianceImportLog;
@@ -16,11 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Service implementation for ComplianceImportLog operations.
  *
- * Follows OpenELIS service patterns:
- * - Extends AuditableBaseObjectServiceImpl for standard CRUD operations
- * - Uses @Service annotation for Spring component scanning
- * - @Transactional boundaries at service level
- * - Implements business logic for import audit trail
+ * Follows OpenELIS service patterns: - Extends AuditableBaseObjectServiceImpl
+ * for standard CRUD operations - Uses @Service annotation for Spring component
+ * scanning - @Transactional boundaries at service level - Implements business
+ * logic for import audit trail
  */
 @Service
 public class ComplianceImportLogServiceImpl extends AuditableBaseObjectServiceImpl<ComplianceImportLog, String>
@@ -46,7 +44,8 @@ public class ComplianceImportLogServiceImpl extends AuditableBaseObjectServiceIm
 
     @Override
     @Transactional
-    public ComplianceImportLog startImportOperation(ComplianceImportType importType, String importSource, String initiatedBy) {
+    public ComplianceImportLog startImportOperation(ComplianceImportType importType, String importSource,
+            String initiatedBy) {
         ComplianceImportLog importLog = new ComplianceImportLog(importType, importSource, initiatedBy);
         importLog.setSysUserId(initiatedBy);
         return save(importLog);
@@ -55,7 +54,7 @@ public class ComplianceImportLogServiceImpl extends AuditableBaseObjectServiceIm
     @Override
     @Transactional
     public ComplianceImportLog startImportOperation(ComplianceImportType importType, String importSource,
-                                                  String fileName, Long fileSize, String fileChecksum, String initiatedBy) {
+            String fileName, Long fileSize, String fileChecksum, String initiatedBy) {
         ComplianceImportLog importLog = new ComplianceImportLog(importType, importSource, initiatedBy);
         importLog.setFileName(fileName);
         importLog.setFileSize(fileSize);
@@ -67,7 +66,7 @@ public class ComplianceImportLogServiceImpl extends AuditableBaseObjectServiceIm
     @Override
     @Transactional
     public void completeImportOperation(String importLogId, int recordsProcessed, int recordsSuccessful,
-                                      int recordsFailed, int recordsSkipped, String summary) {
+            int recordsFailed, int recordsSkipped, String summary) {
         ComplianceImportLog importLog = get(importLogId);
         if (importLog != null) {
             importLog.setRecordsProcessed(recordsProcessed);
@@ -83,7 +82,7 @@ public class ComplianceImportLogServiceImpl extends AuditableBaseObjectServiceIm
     @Override
     @Transactional
     public void markImportOperationFailed(String importLogId, int recordsProcessed, int recordsSuccessful,
-                                        int recordsFailed, String errorDetails) {
+            int recordsFailed, String errorDetails) {
         ComplianceImportLog importLog = get(importLogId);
         if (importLog != null) {
             importLog.setRecordsProcessed(recordsProcessed);
@@ -97,7 +96,7 @@ public class ComplianceImportLogServiceImpl extends AuditableBaseObjectServiceIm
     @Override
     @Transactional
     public void completeImportOperationWithWarnings(String importLogId, int recordsProcessed, int recordsSuccessful,
-                                                   int recordsFailed, int recordsSkipped, String summary, String warnings) {
+            int recordsFailed, int recordsSkipped, String summary, String warnings) {
         ComplianceImportLog importLog = get(importLogId);
         if (importLog != null) {
             importLog.setRecordsProcessed(recordsProcessed);
@@ -112,8 +111,8 @@ public class ComplianceImportLogServiceImpl extends AuditableBaseObjectServiceIm
 
     @Override
     @Transactional
-    public void updateImportProgress(String importLogId, int recordsProcessed, int recordsSuccessful,
-                                   int recordsFailed, ComplianceImportStatus status) {
+    public void updateImportProgress(String importLogId, int recordsProcessed, int recordsSuccessful, int recordsFailed,
+            ComplianceImportStatus status) {
         ComplianceImportLog importLog = get(importLogId);
         if (importLog != null) {
             importLog.setRecordsProcessed(recordsProcessed);
@@ -216,7 +215,8 @@ public class ComplianceImportLogServiceImpl extends AuditableBaseObjectServiceIm
 
     @Override
     @Transactional(readOnly = true)
-    public Object[] getImportStatisticsByType(ComplianceImportType importType, LocalDateTime startDate, LocalDateTime endDate) {
+    public Object[] getImportStatisticsByType(ComplianceImportType importType, LocalDateTime startDate,
+            LocalDateTime endDate) {
         return getBaseObjectDAO().getImportStatisticsByType(importType, startDate, endDate);
     }
 
@@ -260,17 +260,15 @@ public class ComplianceImportLogServiceImpl extends AuditableBaseObjectServiceIm
         if (!activeImports.isEmpty()) {
             // Could implement more sophisticated logic here, e.g., allow concurrent imports
             // For now, allow concurrent imports but log the information
-            org.openelisglobal.common.log.LogEvent.logInfo(
-                "ComplianceImportLogService", "canStartImport",
-                "Starting import while " + activeImports.size() + " other imports are active");
+            org.openelisglobal.common.log.LogEvent.logInfo("ComplianceImportLogService", "canStartImport",
+                    "Starting import while " + activeImports.size() + " other imports are active");
         }
 
         // Check for duplicate file if checksum is provided
         if (fileChecksum != null && !fileChecksum.trim().isEmpty()) {
             if (importLogExistsForChecksum(fileChecksum)) {
-                org.openelisglobal.common.log.LogEvent.logWarn(
-                    "ComplianceImportLogService", "canStartImport",
-                    "Import attempt with duplicate file checksum: " + fileChecksum);
+                org.openelisglobal.common.log.LogEvent.logWarn("ComplianceImportLogService", "canStartImport",
+                        "Import attempt with duplicate file checksum: " + fileChecksum);
                 return false;
             }
         }

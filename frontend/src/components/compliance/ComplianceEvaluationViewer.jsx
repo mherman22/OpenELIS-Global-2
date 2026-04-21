@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import {
   Grid,
   Column,
@@ -28,8 +28,8 @@ import {
   OverflowMenu,
   OverflowMenuItem,
   SkeletonText,
-  SkeletonPlaceholder
-} from '@carbon/react';
+  SkeletonPlaceholder,
+} from "@carbon/react";
 import {
   View,
   Download,
@@ -39,12 +39,15 @@ import {
   Information,
   ChevronRight,
   Filter,
-  Reset
-} from '@carbon/react/icons';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { ConfigurationContext, NotificationContext } from '../common/ComponentContext';
-import { getFromOpenElisServer, postToOpenElisServer } from '../utils/Utils';
-import './ComplianceEvaluationViewer.css';
+  Reset,
+} from "@carbon/react/icons";
+import { FormattedMessage, useIntl } from "react-intl";
+import {
+  ConfigurationContext,
+  NotificationContext,
+} from "../common/ComponentContext";
+import { getFromOpenElisServer, postToOpenElisServer } from "../utils/Utils";
+import "./ComplianceEvaluationViewer.css";
 
 const ComplianceEvaluationViewer = () => {
   const intl = useIntl();
@@ -52,12 +55,13 @@ const ComplianceEvaluationViewer = () => {
   const { addNotification } = useContext(NotificationContext);
 
   // Feature flag check
-  const isComplianceModuleEnabled = configurationProperties?.['compliance.module.enabled'] === 'true';
+  const isComplianceModuleEnabled =
+    configurationProperties?.["compliance.module.enabled"] === "true";
 
   // State management
   const [evaluations, setEvaluations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedEvaluation, setSelectedEvaluation] = useState(null);
   const [evaluationResults, setEvaluationResults] = useState([]);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -65,18 +69,18 @@ const ComplianceEvaluationViewer = () => {
 
   // Filter state
   const [filters, setFilters] = useState({
-    status: '',
-    standard: '',
-    sampleId: '',
-    startDate: '',
-    endDate: ''
+    status: "",
+    standard: "",
+    sampleId: "",
+    startDate: "",
+    endDate: "",
   });
 
   // Pagination state
   const [pagination, setPagination] = useState({
     page: 1,
     pageSize: 20,
-    totalItems: 0
+    totalItems: 0,
   });
 
   // Additional data
@@ -114,34 +118,37 @@ const ComplianceEvaluationViewer = () => {
       const queryParams = new URLSearchParams({
         page: page.toString(),
         pageSize: pageSize.toString(),
-        search: searchTerm || '',
+        search: searchTerm || "",
         ...Object.fromEntries(
-          Object.entries(filters).filter(([_, value]) => value !== '')
-        )
+          Object.entries(filters).filter(([_, value]) => value !== ""),
+        ),
       });
 
-      const response = await getFromOpenElisServer(`/rest/compliance/evaluations?${queryParams}`);
+      const response = await getFromOpenElisServer(
+        `/rest/compliance/evaluations?${queryParams}`,
+      );
 
       if (response) {
         setEvaluations(response.content || []);
         setPagination({
           page: response.number + 1,
           pageSize: response.size,
-          totalItems: response.totalElements
+          totalItems: response.totalElements,
         });
       }
     } catch (error) {
-      console.error('Error loading evaluations:', error);
+      console.error("Error loading evaluations:", error);
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'compliance.evaluation.load.error.title',
-          defaultMessage: 'Error Loading Evaluations'
+          id: "compliance.evaluation.load.error.title",
+          defaultMessage: "Error Loading Evaluations",
         }),
         message: intl.formatMessage({
-          id: 'compliance.evaluation.load.error.message',
-          defaultMessage: 'Unable to load compliance evaluations. Please try again.'
-        })
+          id: "compliance.evaluation.load.error.message",
+          defaultMessage:
+            "Unable to load compliance evaluations. Please try again.",
+        }),
       });
     } finally {
       setLoading(false);
@@ -151,12 +158,14 @@ const ComplianceEvaluationViewer = () => {
   // Load compliance standards for filtering
   const loadComplianceStandards = async () => {
     try {
-      const response = await getFromOpenElisServer('/rest/compliance/standards');
+      const response = await getFromOpenElisServer(
+        "/rest/compliance/standards",
+      );
       if (response) {
         setComplianceStandards(response);
       }
     } catch (error) {
-      console.error('Error loading compliance standards:', error);
+      console.error("Error loading compliance standards:", error);
     }
   };
 
@@ -164,23 +173,26 @@ const ComplianceEvaluationViewer = () => {
   const loadEvaluationResults = async (evaluationId) => {
     try {
       setIsLoadingResults(true);
-      const response = await getFromOpenElisServer(`/rest/compliance/evaluations/${evaluationId}/results`);
+      const response = await getFromOpenElisServer(
+        `/rest/compliance/evaluations/${evaluationId}/results`,
+      );
 
       if (response) {
         setEvaluationResults(response);
       }
     } catch (error) {
-      console.error('Error loading evaluation results:', error);
+      console.error("Error loading evaluation results:", error);
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'compliance.evaluation.results.error.title',
-          defaultMessage: 'Error Loading Evaluation Results'
+          id: "compliance.evaluation.results.error.title",
+          defaultMessage: "Error Loading Evaluation Results",
         }),
         message: intl.formatMessage({
-          id: 'compliance.evaluation.results.error.message',
-          defaultMessage: 'Unable to load evaluation results. Please try again.'
-        })
+          id: "compliance.evaluation.results.error.message",
+          defaultMessage:
+            "Unable to load evaluation results. Please try again.",
+        }),
       });
     } finally {
       setIsLoadingResults(false);
@@ -214,42 +226,46 @@ const ComplianceEvaluationViewer = () => {
     try {
       const response = await getFromOpenElisServer(
         `/rest/compliance/evaluations/${evaluation.id}/export`,
-        { responseType: 'blob' }
+        { responseType: "blob" },
       );
 
       // Create download link
       const url = window.URL.createObjectURL(new Blob([response]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', `compliance-evaluation-${evaluation.id}.pdf`);
+      link.setAttribute(
+        "download",
+        `compliance-evaluation-${evaluation.id}.pdf`,
+      );
       document.body.appendChild(link);
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
 
       addNotification({
-        kind: 'success',
+        kind: "success",
         title: intl.formatMessage({
-          id: 'compliance.evaluation.export.success.title',
-          defaultMessage: 'Export Successful'
+          id: "compliance.evaluation.export.success.title",
+          defaultMessage: "Export Successful",
         }),
         message: intl.formatMessage({
-          id: 'compliance.evaluation.export.success.message',
-          defaultMessage: 'Evaluation report has been downloaded successfully.'
-        })
+          id: "compliance.evaluation.export.success.message",
+          defaultMessage: "Evaluation report has been downloaded successfully.",
+        }),
       });
     } catch (error) {
-      console.error('Error exporting evaluation:', error);
+      console.error("Error exporting evaluation:", error);
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'compliance.evaluation.export.error.title',
-          defaultMessage: 'Export Failed'
+          id: "compliance.evaluation.export.error.title",
+          defaultMessage: "Export Failed",
         }),
         message: intl.formatMessage({
-          id: 'compliance.evaluation.export.error.message',
-          defaultMessage: 'Unable to export evaluation report. Please try again.'
-        })
+          id: "compliance.evaluation.export.error.message",
+          defaultMessage:
+            "Unable to export evaluation report. Please try again.",
+        }),
       });
     }
   };
@@ -257,18 +273,18 @@ const ComplianceEvaluationViewer = () => {
   // Handle filter reset
   const handleResetFilters = () => {
     setFilters({
-      status: '',
-      standard: '',
-      sampleId: '',
-      startDate: '',
-      endDate: ''
+      status: "",
+      standard: "",
+      sampleId: "",
+      startDate: "",
+      endDate: "",
     });
-    setSearchTerm('');
+    setSearchTerm("");
   };
 
   // Handle pagination
   const handlePaginationChange = ({ page, pageSize }) => {
-    setPagination(prev => ({ ...prev, page, pageSize }));
+    setPagination((prev) => ({ ...prev, page, pageSize }));
     loadEvaluations(page, pageSize);
   };
 
@@ -276,37 +292,37 @@ const ComplianceEvaluationViewer = () => {
   const getStatusTag = (status) => {
     const statusConfigs = {
       COMPLIANT: {
-        type: 'green',
+        type: "green",
         icon: Checkmark,
         text: intl.formatMessage({
-          id: 'compliance.evaluation.status.compliant',
-          defaultMessage: 'Compliant'
-        })
+          id: "compliance.evaluation.status.compliant",
+          defaultMessage: "Compliant",
+        }),
       },
       NON_COMPLIANT: {
-        type: 'red',
+        type: "red",
         icon: ErrorFilled,
         text: intl.formatMessage({
-          id: 'compliance.evaluation.status.nonCompliant',
-          defaultMessage: 'Non-Compliant'
-        })
+          id: "compliance.evaluation.status.nonCompliant",
+          defaultMessage: "Non-Compliant",
+        }),
       },
       WARNING: {
-        type: 'yellow',
+        type: "yellow",
         icon: Warning,
         text: intl.formatMessage({
-          id: 'compliance.evaluation.status.warning',
-          defaultMessage: 'Warning'
-        })
+          id: "compliance.evaluation.status.warning",
+          defaultMessage: "Warning",
+        }),
       },
       PENDING: {
-        type: 'cyan',
+        type: "cyan",
         icon: Information,
         text: intl.formatMessage({
-          id: 'compliance.evaluation.status.pending',
-          defaultMessage: 'Pending'
-        })
-      }
+          id: "compliance.evaluation.status.pending",
+          defaultMessage: "Pending",
+        }),
+      },
     };
 
     const config = statusConfigs[status] || statusConfigs.PENDING;
@@ -321,84 +337,87 @@ const ComplianceEvaluationViewer = () => {
 
   // Get compliance percentage
   const getCompliancePercentage = (evaluation) => {
-    if (!evaluation.totalParameters || evaluation.totalParameters === 0) return 0;
-    return Math.round((evaluation.compliantParameters / evaluation.totalParameters) * 100);
+    if (!evaluation.totalParameters || evaluation.totalParameters === 0)
+      return 0;
+    return Math.round(
+      (evaluation.compliantParameters / evaluation.totalParameters) * 100,
+    );
   };
 
   // Get compliance percentage color
   const getComplianceColor = (percentage) => {
-    if (percentage >= 95) return 'green';
-    if (percentage >= 80) return 'yellow';
-    return 'red';
+    if (percentage >= 95) return "green";
+    if (percentage >= 80) return "yellow";
+    return "red";
   };
 
   // Format date
   const formatDate = (dateString) => {
-    if (!dateString) return '';
+    if (!dateString) return "";
     return new Date(dateString).toLocaleDateString(intl.locale, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   // Table headers
   const tableHeaders = [
     {
-      key: 'sampleId',
+      key: "sampleId",
       header: intl.formatMessage({
-        id: 'compliance.evaluation.table.header.sampleId',
-        defaultMessage: 'Sample ID'
-      })
+        id: "compliance.evaluation.table.header.sampleId",
+        defaultMessage: "Sample ID",
+      }),
     },
     {
-      key: 'standard',
+      key: "standard",
       header: intl.formatMessage({
-        id: 'compliance.evaluation.table.header.standard',
-        defaultMessage: 'Standard'
-      })
+        id: "compliance.evaluation.table.header.standard",
+        defaultMessage: "Standard",
+      }),
     },
     {
-      key: 'evaluationDate',
+      key: "evaluationDate",
       header: intl.formatMessage({
-        id: 'compliance.evaluation.table.header.evaluationDate',
-        defaultMessage: 'Evaluation Date'
-      })
+        id: "compliance.evaluation.table.header.evaluationDate",
+        defaultMessage: "Evaluation Date",
+      }),
     },
     {
-      key: 'status',
+      key: "status",
       header: intl.formatMessage({
-        id: 'compliance.evaluation.table.header.status',
-        defaultMessage: 'Status'
-      })
+        id: "compliance.evaluation.table.header.status",
+        defaultMessage: "Status",
+      }),
     },
     {
-      key: 'compliance',
+      key: "compliance",
       header: intl.formatMessage({
-        id: 'compliance.evaluation.table.header.compliance',
-        defaultMessage: 'Compliance'
-      })
+        id: "compliance.evaluation.table.header.compliance",
+        defaultMessage: "Compliance",
+      }),
     },
     {
-      key: 'actions',
+      key: "actions",
       header: intl.formatMessage({
-        id: 'compliance.evaluation.table.header.actions',
-        defaultMessage: 'Actions'
-      })
-    }
+        id: "compliance.evaluation.table.header.actions",
+        defaultMessage: "Actions",
+      }),
+    },
   ];
 
   // Prepare table data
-  const tableData = evaluations.map(evaluation => ({
+  const tableData = evaluations.map((evaluation) => ({
     id: evaluation.id,
-    sampleId: evaluation.sampleId || 'N/A',
-    standard: evaluation.complianceStandardName || 'Unknown',
+    sampleId: evaluation.sampleId || "N/A",
+    standard: evaluation.complianceStandardName || "Unknown",
     evaluationDate: evaluation.evaluationDate,
     status: evaluation.status,
     compliance: getCompliancePercentage(evaluation),
-    ...evaluation
+    ...evaluation,
   }));
 
   if (loading && evaluations.length === 0) {
@@ -439,42 +458,59 @@ const ComplianceEvaluationViewer = () => {
         <Accordion>
           <AccordionItem
             title={intl.formatMessage({
-              id: 'compliance.evaluation.filters.title',
-              defaultMessage: 'Filter Options'
+              id: "compliance.evaluation.filters.title",
+              defaultMessage: "Filter Options",
             })}
-            open={Object.values(filters).some(value => value !== '')}
+            open={Object.values(filters).some((value) => value !== "")}
           >
             <Grid>
               <Column lg={4} md={2} sm={2}>
                 <Select
                   id="status-filter"
                   labelText={intl.formatMessage({
-                    id: 'compliance.evaluation.filter.status',
-                    defaultMessage: 'Status'
+                    id: "compliance.evaluation.filter.status",
+                    defaultMessage: "Status",
                   })}
                   value={filters.status}
-                  onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                  onChange={(e) =>
+                    setFilters((prev) => ({ ...prev, status: e.target.value }))
+                  }
                 >
-                  <SelectItem value="" text={intl.formatMessage({
-                    id: 'compliance.evaluation.filter.status.all',
-                    defaultMessage: 'All statuses'
-                  })} />
-                  <SelectItem value="COMPLIANT" text={intl.formatMessage({
-                    id: 'compliance.evaluation.status.compliant',
-                    defaultMessage: 'Compliant'
-                  })} />
-                  <SelectItem value="NON_COMPLIANT" text={intl.formatMessage({
-                    id: 'compliance.evaluation.status.nonCompliant',
-                    defaultMessage: 'Non-Compliant'
-                  })} />
-                  <SelectItem value="WARNING" text={intl.formatMessage({
-                    id: 'compliance.evaluation.status.warning',
-                    defaultMessage: 'Warning'
-                  })} />
-                  <SelectItem value="PENDING" text={intl.formatMessage({
-                    id: 'compliance.evaluation.status.pending',
-                    defaultMessage: 'Pending'
-                  })} />
+                  <SelectItem
+                    value=""
+                    text={intl.formatMessage({
+                      id: "compliance.evaluation.filter.status.all",
+                      defaultMessage: "All statuses",
+                    })}
+                  />
+                  <SelectItem
+                    value="COMPLIANT"
+                    text={intl.formatMessage({
+                      id: "compliance.evaluation.status.compliant",
+                      defaultMessage: "Compliant",
+                    })}
+                  />
+                  <SelectItem
+                    value="NON_COMPLIANT"
+                    text={intl.formatMessage({
+                      id: "compliance.evaluation.status.nonCompliant",
+                      defaultMessage: "Non-Compliant",
+                    })}
+                  />
+                  <SelectItem
+                    value="WARNING"
+                    text={intl.formatMessage({
+                      id: "compliance.evaluation.status.warning",
+                      defaultMessage: "Warning",
+                    })}
+                  />
+                  <SelectItem
+                    value="PENDING"
+                    text={intl.formatMessage({
+                      id: "compliance.evaluation.status.pending",
+                      defaultMessage: "Pending",
+                    })}
+                  />
                 </Select>
               </Column>
 
@@ -482,17 +518,25 @@ const ComplianceEvaluationViewer = () => {
                 <Select
                   id="standard-filter"
                   labelText={intl.formatMessage({
-                    id: 'compliance.evaluation.filter.standard',
-                    defaultMessage: 'Compliance Standard'
+                    id: "compliance.evaluation.filter.standard",
+                    defaultMessage: "Compliance Standard",
                   })}
                   value={filters.standard}
-                  onChange={(e) => setFilters(prev => ({ ...prev, standard: e.target.value }))}
+                  onChange={(e) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      standard: e.target.value,
+                    }))
+                  }
                 >
-                  <SelectItem value="" text={intl.formatMessage({
-                    id: 'compliance.evaluation.filter.standard.all',
-                    defaultMessage: 'All standards'
-                  })} />
-                  {complianceStandards.map(standard => (
+                  <SelectItem
+                    value=""
+                    text={intl.formatMessage({
+                      id: "compliance.evaluation.filter.standard.all",
+                      defaultMessage: "All standards",
+                    })}
+                  />
+                  {complianceStandards.map((standard) => (
                     <SelectItem
                       key={standard.id}
                       value={standard.id}
@@ -508,10 +552,10 @@ const ComplianceEvaluationViewer = () => {
                   datePickerType="range"
                   onChange={(dates) => {
                     const [start, end] = dates;
-                    setFilters(prev => ({
+                    setFilters((prev) => ({
                       ...prev,
-                      startDate: start ? start.toISOString().split('T')[0] : '',
-                      endDate: end ? end.toISOString().split('T')[0] : ''
+                      startDate: start ? start.toISOString().split("T")[0] : "",
+                      endDate: end ? end.toISOString().split("T")[0] : "",
                     }));
                   }}
                 >
@@ -519,16 +563,16 @@ const ComplianceEvaluationViewer = () => {
                     id="start-date"
                     placeholder="dd/mm/yyyy"
                     labelText={intl.formatMessage({
-                      id: 'compliance.evaluation.filter.startDate',
-                      defaultMessage: 'Start Date'
+                      id: "compliance.evaluation.filter.startDate",
+                      defaultMessage: "Start Date",
                     })}
                   />
                   <DatePickerInput
                     id="end-date"
                     placeholder="dd/mm/yyyy"
                     labelText={intl.formatMessage({
-                      id: 'compliance.evaluation.filter.endDate',
-                      defaultMessage: 'End Date'
+                      id: "compliance.evaluation.filter.endDate",
+                      defaultMessage: "End Date",
                     })}
                   />
                 </DatePicker>
@@ -558,26 +602,29 @@ const ComplianceEvaluationViewer = () => {
           <Search
             size="lg"
             placeholder={intl.formatMessage({
-              id: 'compliance.evaluation.search.placeholder',
-              defaultMessage: 'Search by sample ID, standard name, or evaluation details...'
+              id: "compliance.evaluation.search.placeholder",
+              defaultMessage:
+                "Search by sample ID, standard name, or evaluation details...",
             })}
             labelText={intl.formatMessage({
-              id: 'compliance.evaluation.search.label',
-              defaultMessage: 'Search'
+              id: "compliance.evaluation.search.label",
+              defaultMessage: "Search",
             })}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            onClear={() => setSearchTerm('')}
+            onClear={() => setSearchTerm("")}
           />
         </div>
 
         {/* Results Table */}
         <div className="compliance-evaluation-viewer__table">
           {loading ? (
-            <InlineLoading description={intl.formatMessage({
-              id: 'compliance.evaluation.loading',
-              defaultMessage: 'Loading evaluations...'
-            })} />
+            <InlineLoading
+              description={intl.formatMessage({
+                id: "compliance.evaluation.loading",
+                defaultMessage: "Loading evaluations...",
+              })}
+            />
           ) : (
             <DataTable
               rows={tableData}
@@ -588,40 +635,43 @@ const ComplianceEvaluationViewer = () => {
                 getHeaderProps,
                 getRowProps,
                 getTableProps,
-                getTableContainerProps
+                getTableContainerProps,
               }) => (
                 <TableContainer
                   title={intl.formatMessage({
-                    id: 'compliance.evaluation.table.title',
-                    defaultMessage: 'Evaluation Results'
+                    id: "compliance.evaluation.table.title",
+                    defaultMessage: "Evaluation Results",
                   })}
                   description={intl.formatMessage({
-                    id: 'compliance.evaluation.table.description',
-                    defaultMessage: `Showing ${evaluations.length} of ${pagination.totalItems} evaluations`
+                    id: "compliance.evaluation.table.description",
+                    defaultMessage: `Showing ${evaluations.length} of ${pagination.totalItems} evaluations`,
                   })}
                   {...getTableContainerProps()}
                 >
                   <Table {...getTableProps()}>
                     <TableHead>
                       <TableRow>
-                        {headers.map(header => (
-                          <TableHeader key={header.key} {...getHeaderProps({ header })}>
+                        {headers.map((header) => (
+                          <TableHeader
+                            key={header.key}
+                            {...getHeaderProps({ header })}
+                          >
                             {header.header}
                           </TableHeader>
                         ))}
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {rows.map(row => (
+                      {rows.map((row) => (
                         <TableRow key={row.id} {...getRowProps({ row })}>
-                          {row.cells.map(cell => {
-                            if (cell.info.header === 'status') {
+                          {row.cells.map((cell) => {
+                            if (cell.info.header === "status") {
                               return (
                                 <TableCell key={cell.id}>
                                   {getStatusTag(cell.value)}
                                 </TableCell>
                               );
-                            } else if (cell.info.header === 'compliance') {
+                            } else if (cell.info.header === "compliance") {
                               const percentage = cell.value;
                               return (
                                 <TableCell key={cell.id}>
@@ -637,49 +687,57 @@ const ComplianceEvaluationViewer = () => {
                                   </div>
                                 </TableCell>
                               );
-                            } else if (cell.info.header === 'evaluationDate') {
+                            } else if (cell.info.header === "evaluationDate") {
                               return (
                                 <TableCell key={cell.id}>
                                   {formatDate(cell.value)}
                                 </TableCell>
                               );
-                            } else if (cell.info.header === 'actions') {
-                              const evaluation = evaluations.find(e => e.id === row.id);
+                            } else if (cell.info.header === "actions") {
+                              const evaluation = evaluations.find(
+                                (e) => e.id === row.id,
+                              );
                               return (
                                 <TableCell key={cell.id}>
                                   <div className="compliance-evaluation__actions">
                                     <Tooltip
                                       label={intl.formatMessage({
-                                        id: 'compliance.evaluation.action.view.tooltip',
-                                        defaultMessage: 'View evaluation details'
+                                        id: "compliance.evaluation.action.view.tooltip",
+                                        defaultMessage:
+                                          "View evaluation details",
                                       })}
                                     >
                                       <Button
                                         kind="ghost"
                                         size="sm"
                                         renderIcon={View}
-                                        onClick={() => handleViewEvaluation(evaluation)}
+                                        onClick={() =>
+                                          handleViewEvaluation(evaluation)
+                                        }
                                         iconDescription={intl.formatMessage({
-                                          id: 'compliance.evaluation.action.view',
-                                          defaultMessage: 'View'
+                                          id: "compliance.evaluation.action.view",
+                                          defaultMessage: "View",
                                         })}
                                         hasIconOnly
                                       />
                                     </Tooltip>
                                     <Tooltip
                                       label={intl.formatMessage({
-                                        id: 'compliance.evaluation.action.export.tooltip',
-                                        defaultMessage: 'Export evaluation report'
+                                        id: "compliance.evaluation.action.export.tooltip",
+                                        defaultMessage:
+                                          "Export evaluation report",
                                       })}
                                     >
                                       <Button
                                         kind="ghost"
                                         size="sm"
                                         renderIcon={Download}
-                                        onClick={() => handleExportEvaluation(evaluation)}
+                                        onClick={() =>
+                                          handleExportEvaluation(evaluation)
+                                        }
                                         iconDescription={intl.formatMessage({
-                                          id: 'compliance.evaluation.action.export',
-                                          defaultMessage: 'Export'
+                                          id: "compliance.evaluation.action.export",
+                                          defaultMessage: "Export",
                                         })}
                                         hasIconOnly
                                       />
@@ -722,8 +780,8 @@ const ComplianceEvaluationViewer = () => {
           open={isViewModalOpen}
           onRequestClose={() => setIsViewModalOpen(false)}
           modalHeading={intl.formatMessage({
-            id: 'compliance.evaluation.details.title',
-            defaultMessage: 'Evaluation Details'
+            id: "compliance.evaluation.details.title",
+            defaultMessage: "Evaluation Details",
           })}
           size="lg"
           passiveModal
@@ -747,7 +805,7 @@ const ComplianceEvaluationViewer = () => {
                             id="compliance.evaluation.details.sampleId"
                             defaultMessage="Sample ID:"
                           />
-                        </strong>{' '}
+                        </strong>{" "}
                         {selectedEvaluation.sampleId}
                       </p>
                       <p>
@@ -756,7 +814,7 @@ const ComplianceEvaluationViewer = () => {
                             id="compliance.evaluation.details.standard"
                             defaultMessage="Standard:"
                           />
-                        </strong>{' '}
+                        </strong>{" "}
                         {selectedEvaluation.complianceStandardName}
                       </p>
                       <p>
@@ -765,7 +823,7 @@ const ComplianceEvaluationViewer = () => {
                             id="compliance.evaluation.details.date"
                             defaultMessage="Evaluation Date:"
                           />
-                        </strong>{' '}
+                        </strong>{" "}
                         {formatDate(selectedEvaluation.evaluationDate)}
                       </p>
                       <p>
@@ -774,7 +832,7 @@ const ComplianceEvaluationViewer = () => {
                             id="compliance.evaluation.details.status"
                             defaultMessage="Status:"
                           />
-                        </strong>{' '}
+                        </strong>{" "}
                         {getStatusTag(selectedEvaluation.status)}
                       </p>
                     </div>
@@ -791,15 +849,23 @@ const ComplianceEvaluationViewer = () => {
                         value={getCompliancePercentage(selectedEvaluation)}
                         max={100}
                         size="md"
-                        status={getComplianceColor(getCompliancePercentage(selectedEvaluation))}
-                        labelText={intl.formatMessage({
-                          id: 'compliance.evaluation.details.progress.label',
-                          defaultMessage: '{compliant} of {total} parameters compliant ({percentage}%)'
-                        }, {
-                          compliant: selectedEvaluation.compliantParameters || 0,
-                          total: selectedEvaluation.totalParameters || 0,
-                          percentage: getCompliancePercentage(selectedEvaluation)
-                        })}
+                        status={getComplianceColor(
+                          getCompliancePercentage(selectedEvaluation),
+                        )}
+                        labelText={intl.formatMessage(
+                          {
+                            id: "compliance.evaluation.details.progress.label",
+                            defaultMessage:
+                              "{compliant} of {total} parameters compliant ({percentage}%)",
+                          },
+                          {
+                            compliant:
+                              selectedEvaluation.compliantParameters || 0,
+                            total: selectedEvaluation.totalParameters || 0,
+                            percentage:
+                              getCompliancePercentage(selectedEvaluation),
+                          },
+                        )}
                         hideLabel={false}
                       />
                     </div>
@@ -816,14 +882,19 @@ const ComplianceEvaluationViewer = () => {
                   />
                 </h4>
                 {isLoadingResults ? (
-                  <InlineLoading description={intl.formatMessage({
-                    id: 'compliance.evaluation.results.loading',
-                    defaultMessage: 'Loading parameter results...'
-                  })} />
+                  <InlineLoading
+                    description={intl.formatMessage({
+                      id: "compliance.evaluation.results.loading",
+                      defaultMessage: "Loading parameter results...",
+                    })}
+                  />
                 ) : (
                   <div className="compliance-evaluation-details__parameters">
                     {evaluationResults.map((result, index) => (
-                      <div key={index} className="compliance-evaluation-details__parameter">
+                      <div
+                        key={index}
+                        className="compliance-evaluation-details__parameter"
+                      >
                         <div className="compliance-evaluation-details__parameter-header">
                           <span className="compliance-evaluation-details__parameter-name">
                             {result.parameterName}
@@ -837,7 +908,7 @@ const ComplianceEvaluationViewer = () => {
                               defaultMessage="Actual: {value} {unit}"
                               values={{
                                 value: result.actualValue,
-                                unit: result.unit
+                                unit: result.unit,
                               }}
                             />
                           </span>
@@ -846,7 +917,7 @@ const ComplianceEvaluationViewer = () => {
                               id="compliance.evaluation.details.threshold"
                               defaultMessage="Threshold: {threshold}"
                               values={{
-                                threshold: result.thresholdDescription
+                                threshold: result.thresholdDescription,
                               }}
                             />
                           </span>
@@ -858,7 +929,7 @@ const ComplianceEvaluationViewer = () => {
                                 id="compliance.evaluation.details.notes"
                                 defaultMessage="Notes:"
                               />
-                            </strong>{' '}
+                            </strong>{" "}
                             {result.notes}
                           </div>
                         )}

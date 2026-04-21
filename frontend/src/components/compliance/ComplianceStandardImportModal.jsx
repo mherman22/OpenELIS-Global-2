@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from "react";
 import {
   Modal,
   FileUploader,
@@ -18,19 +18,19 @@ import {
   TableRow,
   TableHeader,
   TableBody,
-  TableCell
-} from '@carbon/react';
+  TableCell,
+} from "@carbon/react";
 import {
   CloudUpload,
   DocumentImport,
   CheckmarkFilled,
   WarningFilled,
-  ErrorFilled
-} from '@carbon/icons-react';
-import { FormattedMessage, useIntl } from 'react-intl';
+  ErrorFilled,
+} from "@carbon/icons-react";
+import { FormattedMessage, useIntl } from "react-intl";
 
-import { postToOpenElisServer, postWithFileUpload } from '../utils/Utils';
-import { NotificationContext } from '../layout/Layout';
+import { postToOpenElisServer, postWithFileUpload } from "../utils/Utils";
+import { NotificationContext } from "../layout/Layout";
 
 /**
  * ComplianceStandardImportModal - Advanced CSV import modal with validation and preview
@@ -42,7 +42,11 @@ import { NotificationContext } from '../layout/Layout';
  * - Progress tracking
  * - Error reporting with line-by-line details
  */
-const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete }) => {
+const ComplianceStandardImportModal = ({
+  open,
+  onRequestClose,
+  onImportComplete,
+}) => {
   const intl = useIntl();
   const { addNotification } = useContext(NotificationContext);
 
@@ -52,7 +56,7 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
     updateExisting: true,
     skipErrors: false,
     validateOnly: false,
-    notifyOnCompletion: true
+    notifyOnCompletion: true,
   });
   const [importProgress, setImportProgress] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
@@ -63,17 +67,17 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      if (!file.name.endsWith('.csv')) {
+      if (!file.name.endsWith(".csv")) {
         addNotification({
-          kind: 'error',
+          kind: "error",
           title: intl.formatMessage({
-            id: 'import.file.error.title',
-            defaultMessage: 'Invalid File Type'
+            id: "import.file.error.title",
+            defaultMessage: "Invalid File Type",
           }),
           message: intl.formatMessage({
-            id: 'import.file.error.message',
-            defaultMessage: 'Please select a CSV file'
-          })
+            id: "import.file.error.message",
+            defaultMessage: "Please select a CSV file",
+          }),
         });
         return;
       }
@@ -87,25 +91,28 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
     setCurrentStep(2);
     try {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('validateOnly', 'true');
+      formData.append("file", file);
+      formData.append("validateOnly", "true");
 
-      const response = await postWithFileUpload('/rest/compliance-standards/import/preview', formData);
+      const response = await postWithFileUpload(
+        "/rest/compliance-standards/import/preview",
+        formData,
+      );
 
       if (response.success) {
         setPreviewData(response.previewData || []);
         setValidationErrors(response.validationErrors || []);
       } else {
-        throw new Error(response.message || 'Preview failed');
+        throw new Error(response.message || "Preview failed");
       }
     } catch (error) {
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'import.preview.error.title',
-          defaultMessage: 'Preview Error'
+          id: "import.preview.error.title",
+          defaultMessage: "Preview Error",
         }),
-        message: error.message || 'Failed to preview file'
+        message: error.message || "Failed to preview file",
       });
       setCurrentStep(1);
     }
@@ -120,14 +127,17 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
 
     try {
       const formData = new FormData();
-      formData.append('file', selectedFile);
-      formData.append('updateExisting', importOptions.updateExisting.toString());
-      formData.append('skipErrors', importOptions.skipErrors.toString());
-      formData.append('validateOnly', importOptions.validateOnly.toString());
+      formData.append("file", selectedFile);
+      formData.append(
+        "updateExisting",
+        importOptions.updateExisting.toString(),
+      );
+      formData.append("skipErrors", importOptions.skipErrors.toString());
+      formData.append("validateOnly", importOptions.validateOnly.toString());
 
       // Simulate progress updates
       const progressInterval = setInterval(() => {
-        setImportProgress(prev => {
+        setImportProgress((prev) => {
           if (prev >= 90) {
             clearInterval(progressInterval);
             return 90;
@@ -136,7 +146,10 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
         });
       }, 500);
 
-      const response = await postWithFileUpload('/rest/compliance-standards/import', formData);
+      const response = await postWithFileUpload(
+        "/rest/compliance-standards/import",
+        formData,
+      );
 
       clearInterval(progressInterval);
       setImportProgress(100);
@@ -150,28 +163,28 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
         }
 
         addNotification({
-          kind: 'success',
+          kind: "success",
           title: intl.formatMessage({
-            id: 'import.success.title',
-            defaultMessage: 'Import Completed'
+            id: "import.success.title",
+            defaultMessage: "Import Completed",
           }),
           message: intl.formatMessage({
-            id: 'import.success.message',
-            defaultMessage: 'Compliance standards imported successfully'
-          })
+            id: "import.success.message",
+            defaultMessage: "Compliance standards imported successfully",
+          }),
         });
       } else {
-        throw new Error(response.message || 'Import failed');
+        throw new Error(response.message || "Import failed");
       }
     } catch (error) {
       setImportProgress(0);
       addNotification({
-        kind: 'error',
+        kind: "error",
         title: intl.formatMessage({
-          id: 'import.error.title',
-          defaultMessage: 'Import Error'
+          id: "import.error.title",
+          defaultMessage: "Import Error",
         }),
-        message: error.message || 'Failed to import compliance standards'
+        message: error.message || "Failed to import compliance standards",
       });
     } finally {
       setIsImporting(false);
@@ -197,24 +210,25 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
     <div className="import-modal__upload">
       <FileUploader
         labelTitle={intl.formatMessage({
-          id: 'import.upload.label',
-          defaultMessage: 'Upload CSV File'
+          id: "import.upload.label",
+          defaultMessage: "Upload CSV File",
         })}
         labelDescription={intl.formatMessage({
-          id: 'import.upload.description',
-          defaultMessage: 'Select a CSV file containing compliance standards data'
+          id: "import.upload.description",
+          defaultMessage:
+            "Select a CSV file containing compliance standards data",
         })}
         buttonLabel={intl.formatMessage({
-          id: 'import.upload.button',
-          defaultMessage: 'Add file'
+          id: "import.upload.button",
+          defaultMessage: "Add file",
         })}
         filenameStatus="edit"
-        accept={['.csv']}
+        accept={[".csv"]}
         multiple={false}
         disabled={false}
         iconDescription={intl.formatMessage({
-          id: 'import.upload.icon',
-          defaultMessage: 'Delete file'
+          id: "import.upload.icon",
+          defaultMessage: "Delete file",
         })}
         name="complianceStandardsFile"
         onChange={handleFileUpload}
@@ -285,25 +299,34 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
       <DataTable
         rows={previewData.slice(0, 10)}
         headers={[
-          { key: 'line', header: 'Line' },
-          { key: 'name', header: 'Name' },
-          { key: 'regulationNumber', header: 'Regulation Number' },
-          { key: 'issuingBody', header: 'Issuing Body' },
-          { key: 'status', header: 'Status' },
-          { key: 'validation', header: 'Validation' }
+          { key: "line", header: "Line" },
+          { key: "name", header: "Name" },
+          { key: "regulationNumber", header: "Regulation Number" },
+          { key: "issuingBody", header: "Issuing Body" },
+          { key: "status", header: "Status" },
+          { key: "validation", header: "Validation" },
         ]}
-        render={({ rows, headers, getHeaderProps, getRowProps, getTableProps }) => (
+        render={({
+          rows,
+          headers,
+          getHeaderProps,
+          getRowProps,
+          getTableProps,
+        }) => (
           <TableContainer
             title={intl.formatMessage({
-              id: 'import.preview.table.title',
-              defaultMessage: 'Preview Data (first 10 rows)'
+              id: "import.preview.table.title",
+              defaultMessage: "Preview Data (first 10 rows)",
             })}
           >
             <Table {...getTableProps()}>
               <TableHead>
                 <TableRow>
                   {headers.map((header) => (
-                    <TableHeader {...getHeaderProps({ header })} key={header.key}>
+                    <TableHeader
+                      {...getHeaderProps({ header })}
+                      key={header.key}
+                    >
                       {header.header}
                     </TableHeader>
                   ))}
@@ -327,21 +350,25 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
         <Toggle
           id="update-existing"
           labelText={intl.formatMessage({
-            id: 'import.option.updateExisting',
-            defaultMessage: 'Update existing standards'
+            id: "import.option.updateExisting",
+            defaultMessage: "Update existing standards",
           })}
           toggled={importOptions.updateExisting}
-          onToggle={(checked) => setImportOptions(prev => ({ ...prev, updateExisting: checked }))}
+          onToggle={(checked) =>
+            setImportOptions((prev) => ({ ...prev, updateExisting: checked }))
+          }
         />
 
         <Toggle
           id="skip-errors"
           labelText={intl.formatMessage({
-            id: 'import.option.skipErrors',
-            defaultMessage: 'Skip rows with errors'
+            id: "import.option.skipErrors",
+            defaultMessage: "Skip rows with errors",
           })}
           toggled={importOptions.skipErrors}
-          onToggle={(checked) => setImportOptions(prev => ({ ...prev, skipErrors: checked }))}
+          onToggle={(checked) =>
+            setImportOptions((prev) => ({ ...prev, skipErrors: checked }))
+          }
         />
       </FormGroup>
     </div>
@@ -352,16 +379,16 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
       <InlineLoading
         status="active"
         description={intl.formatMessage({
-          id: 'import.progress.description',
-          defaultMessage: 'Importing compliance standards...'
+          id: "import.progress.description",
+          defaultMessage: "Importing compliance standards...",
         })}
       />
       <ProgressBar
         value={importProgress}
         max={100}
         labelText={intl.formatMessage({
-          id: 'import.progress.label',
-          defaultMessage: 'Import Progress'
+          id: "import.progress.label",
+          defaultMessage: "Import Progress",
         })}
       />
     </div>
@@ -415,28 +442,41 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
       case 1:
         return {
           primaryButtonText: null,
-          secondaryButtonText: intl.formatMessage({ id: 'button.cancel', defaultMessage: 'Cancel' }),
-          primaryButtonDisabled: true
+          secondaryButtonText: intl.formatMessage({
+            id: "button.cancel",
+            defaultMessage: "Cancel",
+          }),
+          primaryButtonDisabled: true,
         };
       case 2:
         return {
-          primaryButtonText: intl.formatMessage({ id: 'button.import', defaultMessage: 'Import' }),
-          secondaryButtonText: intl.formatMessage({ id: 'button.back', defaultMessage: 'Back' }),
-          primaryButtonDisabled: validationErrors.length > 0 && !importOptions.skipErrors,
+          primaryButtonText: intl.formatMessage({
+            id: "button.import",
+            defaultMessage: "Import",
+          }),
+          secondaryButtonText: intl.formatMessage({
+            id: "button.back",
+            defaultMessage: "Back",
+          }),
+          primaryButtonDisabled:
+            validationErrors.length > 0 && !importOptions.skipErrors,
           onRequestSubmit: startImport,
-          onSecondarySubmit: () => setCurrentStep(1)
+          onSecondarySubmit: () => setCurrentStep(1),
         };
       case 3:
         return {
           primaryButtonText: null,
           secondaryButtonText: null,
-          primaryButtonDisabled: true
+          primaryButtonDisabled: true,
         };
       case 4:
         return {
-          primaryButtonText: intl.formatMessage({ id: 'button.done', defaultMessage: 'Done' }),
+          primaryButtonText: intl.formatMessage({
+            id: "button.done",
+            defaultMessage: "Done",
+          }),
           secondaryButtonText: null,
-          onRequestSubmit: handleClose
+          onRequestSubmit: handleClose,
         };
       default:
         return {};
@@ -450,12 +490,12 @@ const ComplianceStandardImportModal = ({ open, onRequestClose, onImportComplete 
       open={open}
       onRequestClose={handleClose}
       modalHeading={intl.formatMessage({
-        id: 'import.modal.title',
-        defaultMessage: 'Import Compliance Standards'
+        id: "import.modal.title",
+        defaultMessage: "Import Compliance Standards",
       })}
       modalLabel={intl.formatMessage({
-        id: 'import.modal.label',
-        defaultMessage: 'CSV Import'
+        id: "import.modal.label",
+        defaultMessage: "CSV Import",
       })}
       size="lg"
       preventCloseOnClickOutside={isImporting}

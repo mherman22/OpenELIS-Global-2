@@ -1,8 +1,8 @@
 package org.openelisglobal.compliance.valueholder;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
 import org.hibernate.annotations.Type;
 import org.openelisglobal.common.util.ValidationHelper;
 import org.openelisglobal.common.util.validator.SafeHtml;
@@ -25,20 +24,17 @@ import org.openelisglobal.common.valueholder.BaseObject;
 import org.openelisglobal.common.valueholder.SimpleBaseEntity;
 import org.openelisglobal.spring.util.SpringContext;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 /**
- * ComplianceImportLog entity for tracking compliance standard import operations.
+ * ComplianceImportLog entity for tracking compliance standard import
+ * operations.
  *
  * Provides audit trail functionality for CSV imports, manual imports, and other
  * data import operations related to compliance standards.
  *
- * Constitutional compliance:
- * - Extends BaseObject for audit trail support
- * - Includes FHIR UUID for interoperability
- * - Uses JPA annotations (no XML mappings)
- * - Implements validation annotations
- * - FHIR R4 integration hooks via @PostPersist/@PostUpdate
+ * Constitutional compliance: - Extends BaseObject for audit trail support -
+ * Includes FHIR UUID for interoperability - Uses JPA annotations (no XML
+ * mappings) - Implements validation annotations - FHIR R4 integration hooks
+ * via @PostPersist/@PostUpdate
  */
 @Entity
 @Table(name = "compliance_import_log")
@@ -348,16 +344,16 @@ public class ComplianceImportLog extends BaseObject<String> implements SimpleBas
      * Check if import is still in progress
      */
     public boolean isInProgress() {
-        return ComplianceImportStatus.STARTED.equals(importStatus) ||
-               ComplianceImportStatus.IN_PROGRESS.equals(importStatus);
+        return ComplianceImportStatus.STARTED.equals(importStatus)
+                || ComplianceImportStatus.IN_PROGRESS.equals(importStatus);
     }
 
     /**
      * Check if import completed successfully (with or without warnings)
      */
     public boolean isCompleted() {
-        return ComplianceImportStatus.COMPLETED.equals(importStatus) ||
-               ComplianceImportStatus.COMPLETED_WITH_WARNINGS.equals(importStatus);
+        return ComplianceImportStatus.COMPLETED.equals(importStatus)
+                || ComplianceImportStatus.COMPLETED_WITH_WARNINGS.equals(importStatus);
     }
 
     /**
@@ -369,15 +365,9 @@ public class ComplianceImportLog extends BaseObject<String> implements SimpleBas
 
     @Override
     public String toString() {
-        return "ComplianceImportLog{" +
-                "id='" + id + '\'' +
-                ", importType=" + importType +
-                ", importSource='" + importSource + '\'' +
-                ", importStatus=" + importStatus +
-                ", recordsProcessed=" + recordsProcessed +
-                ", recordsSuccessful=" + recordsSuccessful +
-                ", recordsFailed=" + recordsFailed +
-                '}';
+        return "ComplianceImportLog{" + "id='" + id + '\'' + ", importType=" + importType + ", importSource='"
+                + importSource + '\'' + ", importStatus=" + importStatus + ", recordsProcessed=" + recordsProcessed
+                + ", recordsSuccessful=" + recordsSuccessful + ", recordsFailed=" + recordsFailed + '}';
     }
 
     /**
@@ -387,16 +377,15 @@ public class ComplianceImportLog extends BaseObject<String> implements SimpleBas
     @PostPersist
     public void onPostPersist() {
         try {
-            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform =
-                SpringContext.getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
+            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform = SpringContext
+                    .getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
             if (fhirTransform != null) {
                 fhirTransform.syncComplianceImportLogToFhir(this, true);
             }
         } catch (Exception e) {
             // Log error but don't fail transaction
-            org.openelisglobal.common.log.LogEvent.logError(
-                "ComplianceImportLog", "onPostPersist",
-                "Failed to sync to FHIR on create: " + e.getMessage());
+            org.openelisglobal.common.log.LogEvent.logError("ComplianceImportLog", "onPostPersist",
+                    "Failed to sync to FHIR on create: " + e.getMessage());
         }
     }
 
@@ -406,16 +395,15 @@ public class ComplianceImportLog extends BaseObject<String> implements SimpleBas
     @PostUpdate
     public void onPostUpdate() {
         try {
-            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform =
-                SpringContext.getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
+            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform = SpringContext
+                    .getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
             if (fhirTransform != null) {
                 fhirTransform.syncComplianceImportLogToFhir(this, false);
             }
         } catch (Exception e) {
             // Log error but don't fail transaction
-            org.openelisglobal.common.log.LogEvent.logError(
-                "ComplianceImportLog", "onPostUpdate",
-                "Failed to sync to FHIR on update: " + e.getMessage());
+            org.openelisglobal.common.log.LogEvent.logError("ComplianceImportLog", "onPostUpdate",
+                    "Failed to sync to FHIR on update: " + e.getMessage());
         }
     }
 

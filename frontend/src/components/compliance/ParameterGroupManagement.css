@@ -323,8 +323,8 @@
   }
 
   /* Hide less important columns on mobile */
-  .parameter-group-management .cds--data-table th:nth-child(n+4),
-  .parameter-group-management .cds--data-table td:nth-child(n+4) {
+  .parameter-group-management .cds--data-table th:nth-child(n + 4),
+  .parameter-group-management .cds--data-table td:nth-child(n + 4) {
     display: none;
   }
 
@@ -338,8 +338,8 @@
 }
 
 @media (max-width: 480px) {
-  .parameter-group-management .cds--data-table th:nth-child(n+3),
-  .parameter-group-management .cds--data-table td:nth-child(n+3) {
+  .parameter-group-management .cds--data-table th:nth-child(n + 3),
+  .parameter-group-management .cds--data-table td:nth-child(n + 3) {
     display: none;
   }
 

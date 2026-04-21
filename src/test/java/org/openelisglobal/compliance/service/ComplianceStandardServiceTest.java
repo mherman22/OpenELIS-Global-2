@@ -4,14 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.openelisglobal.BaseWebContextSensitiveTest;
@@ -22,11 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * TDD Test Suite for ComplianceStandardService
  *
- * Tests follow constitutional requirements:
- * - Test-Driven Development (RED-GREEN-REFACTOR)
- * - Inversion Test principle (V.6) - tests must fail if implementation is replaced with hardcoded return
- * - Service layer transaction boundaries validation
- * - FHIR UUID integration testing
+ * Tests follow constitutional requirements: - Test-Driven Development
+ * (RED-GREEN-REFACTOR) - Inversion Test principle (V.6) - tests must fail if
+ * implementation is replaced with hardcoded return - Service layer transaction
+ * boundaries validation - FHIR UUID integration testing
  */
 public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
 
@@ -68,12 +63,7 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
     @Test
     public void testSaveComplianceStandard_shouldCreateNewStandard() {
         // RED: Will fail - service save method doesn't exist
-        ComplianceStandard newStandard = createValidStandard(
-            "Test Standard",
-            "Test Authority",
-            "TS-2026-001",
-            "1.0"
-        );
+        ComplianceStandard newStandard = createValidStandard("Test Standard", "Test Authority", "TS-2026-001", "1.0");
 
         String savedId = complianceStandardService.save(newStandard);
 
@@ -91,7 +81,8 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
     @Test
     public void testGetStandardById_shouldReturnStandardWithEagerLoadedGroups() {
         // RED: Will fail - method doesn't exist
-        // Tests constitutional requirement: services must compile data within transaction
+        // Tests constitutional requirement: services must compile data within
+        // transaction
         String standardId = "1"; // From test data
 
         ComplianceStandard standard = complianceStandardService.getStandardWithGroups(standardId);
@@ -113,8 +104,7 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
         // RED: Will fail - method doesn't exist
         String sampleType = "Water";
 
-        List<ComplianceStandard> waterStandards = complianceStandardService
-            .getActiveStandardsBySampleType(sampleType);
+        List<ComplianceStandard> waterStandards = complianceStandardService.getActiveStandardsBySampleType(sampleType);
 
         assertNotNull("Water standards should not be null", waterStandards);
 
@@ -122,7 +112,7 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
         for (ComplianceStandard standard : waterStandards) {
             assertEquals("Standard should be active", ComplianceStandardStatus.ACTIVE, standard.getStatus());
             assertTrue("Standard should apply to water samples",
-                standard.getApplicableSampleTypes().contains(sampleType));
+                    standard.getApplicableSampleTypes().contains(sampleType));
         }
     }
 
@@ -156,10 +146,8 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
         complianceStandardService.supersedseStandard(oldStandardId, newStandardId);
 
         ComplianceStandard oldStandard = complianceStandardService.get(oldStandardId);
-        assertEquals("Old standard should be superseded",
-            ComplianceStandardStatus.SUPERSEDED, oldStandard.getStatus());
-        assertEquals("Superseded by should reference new standard",
-            newStandardId, oldStandard.getSupersededById());
+        assertEquals("Old standard should be superseded", ComplianceStandardStatus.SUPERSEDED, oldStandard.getStatus());
+        assertEquals("Superseded by should reference new standard", newStandardId, oldStandard.getSupersededById());
     }
 
     @Test
@@ -171,16 +159,14 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
             complianceStandardService.delete(standardId);
             fail("Should not be able to delete standard with linked thresholds");
         } catch (Exception e) {
-            assertTrue("Should throw appropriate exception",
-                e.getMessage().contains("has linked thresholds"));
+            assertTrue("Should throw appropriate exception", e.getMessage().contains("has linked thresholds"));
         }
 
         // Archive should work instead
         complianceStandardService.archive(standardId);
 
         ComplianceStandard archivedStandard = complianceStandardService.get(standardId);
-        assertEquals("Standard should be archived",
-            ComplianceStandardStatus.ARCHIVED, archivedStandard.getStatus());
+        assertEquals("Standard should be archived", ComplianceStandardStatus.ARCHIVED, archivedStandard.getStatus());
     }
 
     @Test
@@ -191,8 +177,7 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
 
         // Simulate evaluation capturing version
         String evaluationVersion = complianceStandardService.getVersionForEvaluation(standardId);
-        assertEquals("Evaluation should capture current version",
-            standard.getVersion(), evaluationVersion);
+        assertEquals("Evaluation should capture current version", standard.getVersion(), evaluationVersion);
 
         // Update standard to new version
         standard.setVersion("2.0");
@@ -203,7 +188,7 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
         String currentVersion = complianceStandardService.get(standardId).getVersion();
 
         assertFalse("Evaluation version should not change retroactively",
-            unchangedEvaluationVersion.equals(currentVersion));
+                unchangedEvaluationVersion.equals(currentVersion));
     }
 
     @Test
@@ -217,32 +202,28 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
             fail("Should not be able to delete pre-seeded standard");
         } catch (Exception e) {
             assertTrue("Should throw pre-seeded protection exception",
-                e.getMessage().contains("Pre-seeded standards cannot be deleted"));
+                    e.getMessage().contains("Pre-seeded standards cannot be deleted"));
         }
 
         // Archive should still work
         complianceStandardService.archive(preSeededStandard.getId());
         ComplianceStandard archived = complianceStandardService.get(preSeededStandard.getId());
-        assertEquals("Pre-seeded standard should be archivable",
-            ComplianceStandardStatus.ARCHIVED, archived.getStatus());
+        assertEquals("Pre-seeded standard should be archivable", ComplianceStandardStatus.ARCHIVED,
+                archived.getStatus());
     }
 
     @Test
     public void testUniquenessConstraint_shouldPreventDuplicateStandards() {
         // RED: Will fail - uniqueness validation doesn't exist
-        ComplianceStandard duplicate = createValidStandard(
-            "PP No. 22/2021 - Water Quality", // Same as existing standard
-            "Government of Indonesia",
-            "PP 22/2021",
-            "2021"
-        );
+        ComplianceStandard duplicate = createValidStandard("PP No. 22/2021 - Water Quality", // Same as existing
+                                                                                             // standard
+                "Government of Indonesia", "PP 22/2021", "2021");
 
         try {
             complianceStandardService.save(duplicate);
             fail("Should not allow duplicate standard");
         } catch (Exception e) {
-            assertTrue("Should throw uniqueness constraint violation",
-                e.getMessage().contains("already exists"));
+            assertTrue("Should throw uniqueness constraint violation", e.getMessage().contains("already exists"));
         }
     }
 
@@ -251,16 +232,11 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
     // ================================
 
     private ComplianceStandard createTestStandard() {
-        return createValidStandard(
-            "Test Water Quality Standard",
-            "Test Authority",
-            "TEST-001",
-            "1.0"
-        );
+        return createValidStandard("Test Water Quality Standard", "Test Authority", "TEST-001", "1.0");
     }
 
-    private ComplianceStandard createValidStandard(String name, String issuingBody,
-                                                   String regulationNumber, String version) {
+    private ComplianceStandard createValidStandard(String name, String issuingBody, String regulationNumber,
+            String version) {
         ComplianceStandard standard = new ComplianceStandard();
         standard.setName(name);
         standard.setIssuingBody(issuingBody);
@@ -276,12 +252,7 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
     }
 
     private ComplianceStandard createPreSeededStandard() {
-        ComplianceStandard preSeeded = createValidStandard(
-            "Pre-seeded Standard",
-            "System",
-            "PRE-001",
-            "1.0"
-        );
+        ComplianceStandard preSeeded = createValidStandard("Pre-seeded Standard", "System", "PRE-001", "1.0");
         preSeeded.setIsPreSeeded(true);
         return preSeeded;
     }

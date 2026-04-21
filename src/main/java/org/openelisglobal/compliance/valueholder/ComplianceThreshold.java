@@ -1,10 +1,12 @@
 package org.openelisglobal.compliance.valueholder;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -22,26 +24,19 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
 import org.hibernate.annotations.Type;
+import org.openelisglobal.common.util.ValidationHelper;
 import org.openelisglobal.common.util.validator.SafeHtml;
 import org.openelisglobal.common.valueholder.BaseObject;
 import org.openelisglobal.common.valueholder.SimpleBaseEntity;
-import org.openelisglobal.common.util.ValidationHelper;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * ComplianceThreshold value holder representing individual parameter thresholds
  * within parameter groups.
  *
- * Follows constitutional requirements:
- * - Extends BaseObject for audit trail support
- * - Includes FHIR UUID for interoperability
- * - Uses JPA annotations (no XML mappings)
- * - Implements validation annotations
+ * Follows constitutional requirements: - Extends BaseObject for audit trail
+ * support - Includes FHIR UUID for interoperability - Uses JPA annotations (no
+ * XML mappings) - Implements validation annotations
  */
 @Entity
 @Table(name = "compliance_threshold")
@@ -333,22 +328,22 @@ public class ComplianceThreshold extends BaseObject<String> implements SimpleBas
     @JsonIgnore
     public String getThresholdRangeDisplay() {
         switch (thresholdType) {
-            case RANGE:
-                return String.format("%s - %s %s", formatValue(minValue), formatValue(maxValue),
-                                   units != null ? units : "");
-            case MINIMUM:
-                return String.format("≥ %s %s", formatValue(minValue), units != null ? units : "");
-            case MAXIMUM:
-                return String.format("≤ %s %s", formatValue(maxValue), units != null ? units : "");
-            case EXACT:
-            case TARGET:
-                return String.format("= %s %s", formatValue(targetValue), units != null ? units : "");
-            case NOT_DETECTED:
-                return "Not Detected";
-            case QUALITATIVE:
-                return "Pass/Fail";
-            default:
-                return "";
+        case RANGE:
+            return String.format("%s - %s %s", formatValue(minValue), formatValue(maxValue),
+                    units != null ? units : "");
+        case MINIMUM:
+            return String.format("≥ %s %s", formatValue(minValue), units != null ? units : "");
+        case MAXIMUM:
+            return String.format("≤ %s %s", formatValue(maxValue), units != null ? units : "");
+        case EXACT:
+        case TARGET:
+            return String.format("= %s %s", formatValue(targetValue), units != null ? units : "");
+        case NOT_DETECTED:
+            return "Not Detected";
+        case QUALITATIVE:
+            return "Pass/Fail";
+        default:
+            return "";
         }
     }
 
@@ -376,9 +371,8 @@ public class ComplianceThreshold extends BaseObject<String> implements SimpleBas
      * Check if this threshold requires validation
      */
     public boolean requiresValidation() {
-        return thresholdType != null &&
-               (thresholdType.requiresMinValue() || thresholdType.requiresMaxValue() ||
-                thresholdType.requiresTargetValue());
+        return thresholdType != null && (thresholdType.requiresMinValue() || thresholdType.requiresMaxValue()
+                || thresholdType.requiresTargetValue());
     }
 
     /**
@@ -391,20 +385,20 @@ public class ComplianceThreshold extends BaseObject<String> implements SimpleBas
         }
 
         switch (thresholdType) {
-            case RANGE:
-                return minValue != null && maxValue != null && minValue.compareTo(maxValue) <= 0;
-            case MINIMUM:
-                return minValue != null;
-            case MAXIMUM:
-                return maxValue != null;
-            case EXACT:
-            case TARGET:
-                return targetValue != null;
-            case NOT_DETECTED:
-            case QUALITATIVE:
-                return true;
-            default:
-                return false;
+        case RANGE:
+            return minValue != null && maxValue != null && minValue.compareTo(maxValue) <= 0;
+        case MINIMUM:
+            return minValue != null;
+        case MAXIMUM:
+            return maxValue != null;
+        case EXACT:
+        case TARGET:
+            return targetValue != null;
+        case NOT_DETECTED:
+        case QUALITATIVE:
+            return true;
+        default:
+            return false;
         }
     }
 
@@ -422,29 +416,29 @@ public class ComplianceThreshold extends BaseObject<String> implements SimpleBas
         }
 
         switch (thresholdType) {
-            case RANGE:
-                if (minValue == null || maxValue == null) {
-                    return "Range threshold requires both minimum and maximum values";
-                } else if (minValue.compareTo(maxValue) > 0) {
-                    return "Minimum value cannot be greater than maximum value";
-                }
-                break;
-            case MINIMUM:
-                if (minValue == null) {
-                    return "Minimum threshold requires a minimum value";
-                }
-                break;
-            case MAXIMUM:
-                if (maxValue == null) {
-                    return "Maximum threshold requires a maximum value";
-                }
-                break;
-            case EXACT:
-            case TARGET:
-                if (targetValue == null) {
-                    return thresholdType.getDisplayName() + " threshold requires a target value";
-                }
-                break;
+        case RANGE:
+            if (minValue == null || maxValue == null) {
+                return "Range threshold requires both minimum and maximum values";
+            } else if (minValue.compareTo(maxValue) > 0) {
+                return "Minimum value cannot be greater than maximum value";
+            }
+            break;
+        case MINIMUM:
+            if (minValue == null) {
+                return "Minimum threshold requires a minimum value";
+            }
+            break;
+        case MAXIMUM:
+            if (maxValue == null) {
+                return "Maximum threshold requires a maximum value";
+            }
+            break;
+        case EXACT:
+        case TARGET:
+            if (targetValue == null) {
+                return thresholdType.getDisplayName() + " threshold requires a target value";
+            }
+            break;
         }
 
         return "Invalid threshold configuration";
@@ -460,12 +454,8 @@ public class ComplianceThreshold extends BaseObject<String> implements SimpleBas
 
     @Override
     public String toString() {
-        return "ComplianceThreshold{" +
-                "id='" + id + '\'' +
-                ", parameterCode='" + parameterCode + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", thresholdType=" + thresholdType +
-                ", groupId='" + getGroupId() + '\'' +
-                '}';
+        return "ComplianceThreshold{" + "id='" + id + '\'' + ", parameterCode='" + parameterCode + '\''
+                + ", displayName='" + displayName + '\'' + ", thresholdType=" + thresholdType + ", groupId='"
+                + getGroupId() + '\'' + '}';
     }
 }

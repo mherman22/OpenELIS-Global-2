@@ -1,7 +1,6 @@
 package org.openelisglobal.compliance.service;
 
 import java.util.List;
-
 import org.openelisglobal.common.service.BaseObjectService;
 import org.openelisglobal.compliance.valueholder.EvaluationResult;
 import org.openelisglobal.compliance.valueholder.EvaluationStatus;
@@ -9,13 +8,13 @@ import org.openelisglobal.compliance.valueholder.EvaluationStatus;
 /**
  * Service interface for EvaluationResult operations.
  *
- * Follows OpenELIS service patterns extending BaseObjectService for standard CRUD operations
- * and providing domain-specific business logic for evaluation result management.
+ * Follows OpenELIS service patterns extending BaseObjectService for standard
+ * CRUD operations and providing domain-specific business logic for evaluation
+ * result management.
  *
- * Constitutional compliance:
- * - Extends BaseObjectService for standardized operations
- * - Declares transaction boundaries at service level
- * - Provides business logic validation methods
+ * Constitutional compliance: - Extends BaseObjectService for standardized
+ * operations - Declares transaction boundaries at service level - Provides
+ * business logic validation methods
  */
 public interface EvaluationResultService extends BaseObjectService<EvaluationResult, String> {
 

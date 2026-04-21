@@ -2,7 +2,6 @@ package org.openelisglobal.compliance.daoimpl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -17,11 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * DAO implementation for TestComplianceStandard entity.
  *
- * Follows OpenELIS DAO patterns:
- * - Extends BaseDAOImpl<TestComplianceStandard, String>
- * - Uses Hibernate Session for database operations
- * - Proper error handling with LIMSRuntimeException
- * - @Transactional annotations for transaction boundaries
+ * Follows OpenELIS DAO patterns: - Extends BaseDAOImpl<TestComplianceStandard,
+ * String> - Uses Hibernate Session for database operations - Proper error
+ * handling with LIMSRuntimeException - @Transactional annotations for
+ * transaction boundaries
  */
 @Component
 @Transactional
@@ -36,8 +34,8 @@ public class TestComplianceStandardDAOImpl extends BaseDAOImpl<TestComplianceSta
     @Transactional(readOnly = true)
     public void getData(TestComplianceStandard testComplianceStandard) throws LIMSRuntimeException {
         try {
-            TestComplianceStandard data = entityManager.unwrap(Session.class)
-                .get(TestComplianceStandard.class, testComplianceStandard.getId());
+            TestComplianceStandard data = entityManager.unwrap(Session.class).get(TestComplianceStandard.class,
+                    testComplianceStandard.getId());
             if (data != null) {
                 PropertyUtils.copyProperties(testComplianceStandard, data);
             } else {
@@ -54,8 +52,8 @@ public class TestComplianceStandardDAOImpl extends BaseDAOImpl<TestComplianceSta
     public List<TestComplianceStandard> getComplianceStandardsForTest(String testId) throws LIMSRuntimeException {
         try {
             String sql = "FROM TestComplianceStandard tcs WHERE tcs.test.id = :testId ORDER BY tcs.sortOrder";
-            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, TestComplianceStandard.class);
+            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    TestComplianceStandard.class);
             query.setParameter("testId", testId);
             return query.list();
         } catch (RuntimeException e) {
@@ -69,10 +67,10 @@ public class TestComplianceStandardDAOImpl extends BaseDAOImpl<TestComplianceSta
     public List<TestComplianceStandard> getTestsForComplianceStandard(String complianceStandardId)
             throws LIMSRuntimeException {
         try {
-            String sql = "FROM TestComplianceStandard tcs WHERE tcs.complianceStandard.id = :standardId " +
-                        "ORDER BY tcs.test.description, tcs.sortOrder";
-            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, TestComplianceStandard.class);
+            String sql = "FROM TestComplianceStandard tcs WHERE tcs.complianceStandard.id = :standardId "
+                    + "ORDER BY tcs.test.description, tcs.sortOrder";
+            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    TestComplianceStandard.class);
             query.setParameter("standardId", complianceStandardId);
             return query.list();
         } catch (RuntimeException e) {
@@ -86,10 +84,10 @@ public class TestComplianceStandardDAOImpl extends BaseDAOImpl<TestComplianceSta
     public TestComplianceStandard getTestComplianceStandardAssociation(String testId, String complianceStandardId)
             throws LIMSRuntimeException {
         try {
-            String sql = "FROM TestComplianceStandard tcs WHERE tcs.test.id = :testId " +
-                        "AND tcs.complianceStandard.id = :standardId";
-            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, TestComplianceStandard.class);
+            String sql = "FROM TestComplianceStandard tcs WHERE tcs.test.id = :testId "
+                    + "AND tcs.complianceStandard.id = :standardId";
+            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    TestComplianceStandard.class);
             query.setParameter("testId", testId);
             query.setParameter("standardId", complianceStandardId);
             return query.uniqueResult();
@@ -104,15 +102,16 @@ public class TestComplianceStandardDAOImpl extends BaseDAOImpl<TestComplianceSta
     public List<TestComplianceStandard> getMandatoryComplianceStandardsForTest(String testId)
             throws LIMSRuntimeException {
         try {
-            String sql = "FROM TestComplianceStandard tcs WHERE tcs.test.id = :testId " +
-                        "AND tcs.mandatory = true ORDER BY tcs.sortOrder";
-            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, TestComplianceStandard.class);
+            String sql = "FROM TestComplianceStandard tcs WHERE tcs.test.id = :testId "
+                    + "AND tcs.mandatory = true ORDER BY tcs.sortOrder";
+            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    TestComplianceStandard.class);
             query.setParameter("testId", testId);
             return query.list();
         } catch (RuntimeException e) {
             LogEvent.logError(e);
-            throw new LIMSRuntimeException("Error in TestComplianceStandard getMandatoryComplianceStandardsForTest()", e);
+            throw new LIMSRuntimeException("Error in TestComplianceStandard getMandatoryComplianceStandardsForTest()",
+                    e);
         }
     }
 
@@ -120,10 +119,10 @@ public class TestComplianceStandardDAOImpl extends BaseDAOImpl<TestComplianceSta
     @Transactional(readOnly = true)
     public List<TestComplianceStandard> getTestsWithMandatoryCompliance() throws LIMSRuntimeException {
         try {
-            String sql = "FROM TestComplianceStandard tcs WHERE tcs.mandatory = true " +
-                        "ORDER BY tcs.test.description, tcs.sortOrder";
-            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, TestComplianceStandard.class);
+            String sql = "FROM TestComplianceStandard tcs WHERE tcs.mandatory = true "
+                    + "ORDER BY tcs.test.description, tcs.sortOrder";
+            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    TestComplianceStandard.class);
             return query.list();
         } catch (RuntimeException e) {
             LogEvent.logError(e);
@@ -136,10 +135,10 @@ public class TestComplianceStandardDAOImpl extends BaseDAOImpl<TestComplianceSta
     public List<TestComplianceStandard> getComplianceStandardsForTestOrdered(String testId)
             throws LIMSRuntimeException {
         try {
-            String sql = "FROM TestComplianceStandard tcs WHERE tcs.test.id = :testId " +
-                        "ORDER BY CAST(tcs.sortOrder AS INTEGER), tcs.complianceStandard.name";
-            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, TestComplianceStandard.class);
+            String sql = "FROM TestComplianceStandard tcs WHERE tcs.test.id = :testId "
+                    + "ORDER BY CAST(tcs.sortOrder AS INTEGER), tcs.complianceStandard.name";
+            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    TestComplianceStandard.class);
             query.setParameter("testId", testId);
             return query.list();
         } catch (RuntimeException e) {
@@ -210,12 +209,10 @@ public class TestComplianceStandardDAOImpl extends BaseDAOImpl<TestComplianceSta
     @Transactional(readOnly = true)
     public List<TestComplianceStandard> getAllWithEntities() throws LIMSRuntimeException {
         try {
-            String sql = "FROM TestComplianceStandard tcs " +
-                        "JOIN FETCH tcs.test t " +
-                        "JOIN FETCH tcs.complianceStandard cs " +
-                        "ORDER BY t.description, cs.name";
-            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, TestComplianceStandard.class);
+            String sql = "FROM TestComplianceStandard tcs " + "JOIN FETCH tcs.test t "
+                    + "JOIN FETCH tcs.complianceStandard cs " + "ORDER BY t.description, cs.name";
+            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    TestComplianceStandard.class);
             return query.list();
         } catch (RuntimeException e) {
             LogEvent.logError(e);
@@ -227,11 +224,10 @@ public class TestComplianceStandardDAOImpl extends BaseDAOImpl<TestComplianceSta
     @Transactional(readOnly = true)
     public List<TestComplianceStandard> getTestsWithActiveCompliance() throws LIMSRuntimeException {
         try {
-            String sql = "FROM TestComplianceStandard tcs " +
-                        "WHERE tcs.complianceStandard.status = 'ACTIVE' " +
-                        "ORDER BY tcs.test.description, tcs.sortOrder";
-            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class)
-                .createQuery(sql, TestComplianceStandard.class);
+            String sql = "FROM TestComplianceStandard tcs " + "WHERE tcs.complianceStandard.status = 'ACTIVE' "
+                    + "ORDER BY tcs.test.description, tcs.sortOrder";
+            Query<TestComplianceStandard> query = entityManager.unwrap(Session.class).createQuery(sql,
+                    TestComplianceStandard.class);
             return query.list();
         } catch (RuntimeException e) {
             LogEvent.logError(e);

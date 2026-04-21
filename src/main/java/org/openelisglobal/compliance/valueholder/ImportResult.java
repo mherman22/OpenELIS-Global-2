@@ -11,8 +11,8 @@ import java.util.function.Consumer;
  * This class captures comprehensive information about the import process
  * including status, statistics, errors, warnings, and processing details.
  *
- * Follows OpenELIS patterns for result objects with detailed feedback
- * and audit trail capabilities.
+ * Follows OpenELIS patterns for result objects with detailed feedback and audit
+ * trail capabilities.
  */
 public class ImportResult {
 
@@ -436,11 +436,8 @@ public class ImportResult {
 
     @Override
     public String toString() {
-        return summary != null ? summary : "ImportResult{" +
-                "status=" + status +
-                ", imported=" + importedCount +
-                ", errors=" + errorCount +
-                ", warnings=" + warningCount +
-                '}';
+        return summary != null ? summary
+                : "ImportResult{" + "status=" + status + ", imported=" + importedCount + ", errors=" + errorCount
+                        + ", warnings=" + warningCount + '}';
     }
 }

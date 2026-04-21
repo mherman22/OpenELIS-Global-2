@@ -265,8 +265,8 @@ public class TestCatalogRestController extends BaseController {
      */
     private void populateComplianceStandards(TestCatalog catalog, Test test) {
         try {
-            List<TestComplianceStandard> complianceAssociations =
-                testComplianceStandardService.getComplianceStandardsForTestOrdered(test.getId());
+            List<TestComplianceStandard> complianceAssociations = testComplianceStandardService
+                    .getComplianceStandardsForTestOrdered(test.getId());
 
             if (complianceAssociations != null && !complianceAssociations.isEmpty()) {
                 catalog.setHasComplianceStandards(true);
@@ -299,7 +299,7 @@ public class TestCatalogRestController extends BaseController {
 
         } catch (Exception e) {
             LogEvent.logError(this.getClass().getSimpleName(), "populateComplianceStandards",
-                "Error loading compliance standards for test " + test.getId() + ": " + e.getMessage());
+                    "Error loading compliance standards for test " + test.getId() + ": " + e.getMessage());
 
             // Set safe defaults on error
             catalog.setHasComplianceStandards(false);

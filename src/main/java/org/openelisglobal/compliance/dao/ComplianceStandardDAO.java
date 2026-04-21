@@ -3,7 +3,6 @@ package org.openelisglobal.compliance.dao;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-
 import org.openelisglobal.common.dao.BaseDAO;
 import org.openelisglobal.common.exception.LIMSRuntimeException;
 import org.openelisglobal.compliance.valueholder.ComplianceStandard;
@@ -28,7 +27,8 @@ public interface ComplianceStandardDAO extends BaseDAO<ComplianceStandard, Strin
     ComplianceStandard getStandardByFhirId(UUID fhirUuid) throws LIMSRuntimeException;
 
     /**
-     * Retrieve compliance standard by natural key (issuing body, regulation number, version)
+     * Retrieve compliance standard by natural key (issuing body, regulation number,
+     * version)
      */
     ComplianceStandard getStandardByNaturalKey(String issuingBody, String regulationNumber, String version)
             throws LIMSRuntimeException;
@@ -60,8 +60,8 @@ public interface ComplianceStandardDAO extends BaseDAO<ComplianceStandard, Strin
             throws LIMSRuntimeException;
 
     /**
-     * Retrieve standard with eagerly loaded parameter groups
-     * (Constitutional requirement: services compile data within transaction)
+     * Retrieve standard with eagerly loaded parameter groups (Constitutional
+     * requirement: services compile data within transaction)
      */
     ComplianceStandard getStandardWithParameterGroups(String standardId) throws LIMSRuntimeException;
 
@@ -119,15 +119,13 @@ public interface ComplianceStandardDAO extends BaseDAO<ComplianceStandard, Strin
     /**
      * Get version history for a regulation (all versions of same regulation)
      */
-    List<ComplianceStandard> getVersionHistory(String issuingBody, String regulationNumber)
-            throws LIMSRuntimeException;
+    List<ComplianceStandard> getVersionHistory(String issuingBody, String regulationNumber) throws LIMSRuntimeException;
 
     /**
      * Search standards by multiple criteria
      */
     List<ComplianceStandard> searchStandards(String name, String issuingBody, String regulationNumber,
-                                           ComplianceStandardStatus status, String countryRegion,
-                                           String sampleType) throws LIMSRuntimeException;
+            ComplianceStandardStatus status, String countryRegion, String sampleType) throws LIMSRuntimeException;
 
     /**
      * Get standards that will expire within the specified number of days

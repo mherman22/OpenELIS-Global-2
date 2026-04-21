@@ -9,7 +9,6 @@ import static org.junit.Assert.fail;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.openelisglobal.BaseWebContextSensitiveTest;
@@ -25,9 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * TDD Test Suite for ComplianceEvaluationService
  *
- * Tests the compliance evaluation engine functionality.
- * Follows constitutional TDD requirements and validates proper transaction boundaries.
- * Tests evaluation logic, result compilation, and version-lock semantics.
+ * Tests the compliance evaluation engine functionality. Follows constitutional
+ * TDD requirements and validates proper transaction boundaries. Tests
+ * evaluation logic, result compilation, and version-lock semantics.
  */
 public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest {
 
@@ -78,8 +77,8 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
         String sampleId = UUID.randomUUID().toString();
         String standardId = testStandardId;
 
-        ComplianceEvaluation evaluation = complianceEvaluationService
-            .evaluateSampleAgainstStandard(sampleId, standardId);
+        ComplianceEvaluation evaluation = complianceEvaluationService.evaluateSampleAgainstStandard(sampleId,
+                standardId);
 
         assertNotNull("Evaluation should not be null", evaluation);
         assertEquals("Sample ID should match", sampleId, evaluation.getSampleId());
@@ -100,8 +99,7 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
         BigDecimal testValue = new BigDecimal("7.2");
         String thresholdId = testThresholdId;
 
-        EvaluationResult result = complianceEvaluationService
-            .evaluateParameterThreshold(thresholdId, testValue);
+        EvaluationResult result = complianceEvaluationService.evaluateParameterThreshold(thresholdId, testValue);
 
         assertNotNull("Evaluation result should not be null", result);
         assertEquals("Test value should be recorded", testValue, result.getTestedValue());
@@ -110,15 +108,14 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
 
         // Test non-compliant value
         BigDecimal nonCompliantValue = new BigDecimal("9.0");
-        EvaluationResult nonCompliantResult = complianceEvaluationService
-            .evaluateParameterThreshold(thresholdId, nonCompliantValue);
+        EvaluationResult nonCompliantResult = complianceEvaluationService.evaluateParameterThreshold(thresholdId,
+                nonCompliantValue);
 
-        assertFalse("Value 9.0 should be non-compliant for pH range 6.5-8.5",
-            nonCompliantResult.isCompliant());
+        assertFalse("Value 9.0 should be non-compliant for pH range 6.5-8.5", nonCompliantResult.isCompliant());
 
         // Inversion test
         assertFalse("Compliance results should differ for different values",
-            result.isCompliant() == nonCompliantResult.isCompliant());
+                result.isCompliant() == nonCompliantResult.isCompliant());
     }
 
     @Test
@@ -145,8 +142,7 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
         createAndSaveEvaluation(sampleId, testThresholdId, EvaluationStatus.IN_PROGRESS);
         createAndSaveEvaluation(sampleId, testThresholdId, EvaluationStatus.PENDING);
 
-        List<ComplianceEvaluation> evaluations = complianceEvaluationService
-            .getEvaluationsBySampleId(sampleId);
+        List<ComplianceEvaluation> evaluations = complianceEvaluationService.getEvaluationsBySampleId(sampleId);
 
         assertNotNull("Evaluations list should not be null", evaluations);
         assertEquals("Should have 3 evaluations", 3, evaluations.size());
@@ -158,17 +154,17 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
 
         // Verify chronological order (newest first)
         assertTrue("Evaluations should be ordered by date",
-            evaluations.get(0).getEvaluatedDate().after(evaluations.get(1).getEvaluatedDate()));
+                evaluations.get(0).getEvaluatedDate().after(evaluations.get(1).getEvaluatedDate()));
     }
 
     @Test
     public void testGetEvaluationWithResults_shouldEagerLoadResults() {
         // RED: Will fail - method doesn't exist
-        // Tests constitutional requirement: services must compile data within transaction
+        // Tests constitutional requirement: services must compile data within
+        // transaction
         String evaluationId = complianceEvaluationService.save(testEvaluation);
 
-        ComplianceEvaluation evaluationWithResults = complianceEvaluationService
-            .getEvaluationWithResults(evaluationId);
+        ComplianceEvaluation evaluationWithResults = complianceEvaluationService.getEvaluationWithResults(evaluationId);
 
         assertNotNull("Evaluation should not be null", evaluationWithResults);
         assertNotNull("Results should be eager loaded", evaluationWithResults.getEvaluationResults());
@@ -197,8 +193,7 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
         assertNotNull("Completed date should be set", updatedEvaluation.getCompletedDate());
 
         // Inversion test
-        assertFalse("Updated status should differ from original",
-            originalStatus.equals(newStatus));
+        assertFalse("Updated status should differ from original", originalStatus.equals(newStatus));
     }
 
     @Test
@@ -210,22 +205,18 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
         ComplianceEvaluation mixedEvaluation = createEvaluationWithResults(sampleId);
         String evaluationId = complianceEvaluationService.save(mixedEvaluation);
 
-        boolean overallCompliance = complianceEvaluationService
-            .calculateOverallCompliance(evaluationId);
+        boolean overallCompliance = complianceEvaluationService.calculateOverallCompliance(evaluationId);
 
         // Overall compliance should be false if any parameter fails
-        assertFalse("Overall compliance should be false with any non-compliant parameters",
-            overallCompliance);
+        assertFalse("Overall compliance should be false with any non-compliant parameters", overallCompliance);
 
         // Test with all compliant results
         ComplianceEvaluation compliantEvaluation = createAllCompliantEvaluation(sampleId);
         String compliantEvaluationId = complianceEvaluationService.save(compliantEvaluation);
 
-        boolean allCompliant = complianceEvaluationService
-            .calculateOverallCompliance(compliantEvaluationId);
+        boolean allCompliant = complianceEvaluationService.calculateOverallCompliance(compliantEvaluationId);
 
-        assertTrue("Overall compliance should be true with all compliant parameters",
-            allCompliant);
+        assertTrue("Overall compliance should be true with all compliant parameters", allCompliant);
     }
 
     @Test
@@ -252,29 +243,25 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
             fail("Should not be able to delete completed evaluation");
         } catch (Exception e) {
             assertTrue("Should prevent deletion of completed evaluations",
-                e.getMessage().contains("cannot delete completed evaluation"));
+                    e.getMessage().contains("cannot delete completed evaluation"));
         }
     }
 
     @Test
     public void testBulkEvaluateSamples_shouldProcessMultipleSamples() {
         // RED: Will fail - bulk evaluation doesn't exist
-        List<String> sampleIds = List.of(
-            UUID.randomUUID().toString(),
-            UUID.randomUUID().toString(),
-            UUID.randomUUID().toString()
-        );
+        List<String> sampleIds = List.of(UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+                UUID.randomUUID().toString());
 
-        List<ComplianceEvaluation> evaluations = complianceEvaluationService
-            .bulkEvaluateSamples(sampleIds, testStandardId);
+        List<ComplianceEvaluation> evaluations = complianceEvaluationService.bulkEvaluateSamples(sampleIds,
+                testStandardId);
 
         assertNotNull("Evaluations should not be null", evaluations);
         assertEquals("Should evaluate 3 samples", 3, evaluations.size());
 
         // Verify all evaluations were created for the correct standard
         for (ComplianceEvaluation evaluation : evaluations) {
-            assertEquals("All evaluations should use test standard", testStandardId,
-                evaluation.getStandardId());
+            assertEquals("All evaluations should use test standard", testStandardId, evaluation.getStandardId());
             assertNotNull("All evaluations should have FHIR UUID", evaluation.getFhirUuid());
         }
     }
@@ -296,12 +283,12 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
         // Evaluation should maintain original version
         ComplianceEvaluation unchangedEvaluation = complianceEvaluationService.get(evaluationId);
         assertEquals("Evaluation should preserve original version", evaluationVersion,
-            unchangedEvaluation.getStandardVersion());
+                unchangedEvaluation.getStandardVersion());
 
         // Verify version differs from current standard
         String currentVersion = complianceStandardService.get(testStandardId).getVersion();
         assertFalse("Evaluation version should not change with standard updates",
-            unchangedEvaluation.getStandardVersion().equals(currentVersion));
+                unchangedEvaluation.getStandardVersion().equals(currentVersion));
     }
 
     @Test
@@ -311,10 +298,8 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
         createAndSaveEvaluation(testSampleId, testThresholdId, EvaluationStatus.COMPLETED);
 
         // Query for evaluations in date range
-        List<ComplianceEvaluation> evaluations = complianceEvaluationService
-            .getEvaluationsByDateRange(testStandardId,
-                java.time.LocalDate.now().minusDays(1),
-                java.time.LocalDate.now().plusDays(1));
+        List<ComplianceEvaluation> evaluations = complianceEvaluationService.getEvaluationsByDateRange(testStandardId,
+                java.time.LocalDate.now().minusDays(1), java.time.LocalDate.now().plusDays(1));
 
         assertNotNull("Evaluations should not be null", evaluations);
         assertTrue("Should find evaluations in date range", evaluations.size() > 0);
@@ -322,8 +307,7 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
         // Verify all evaluations are within date range
         for (ComplianceEvaluation evaluation : evaluations) {
             assertNotNull("Evaluation date should not be null", evaluation.getEvaluatedDate());
-            assertEquals("All evaluations should be for test standard",
-                testStandardId, evaluation.getStandardId());
+            assertEquals("All evaluations should be for test standard", testStandardId, evaluation.getStandardId());
         }
     }
 
@@ -407,8 +391,7 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
         return evaluation;
     }
 
-    private String createAndSaveEvaluation(String sampleId, String thresholdId,
-                                         EvaluationStatus status) {
+    private String createAndSaveEvaluation(String sampleId, String thresholdId, EvaluationStatus status) {
         ComplianceEvaluation evaluation = createTestEvaluation(sampleId, thresholdId);
         evaluation.setStatus(status);
         return complianceEvaluationService.save(evaluation);

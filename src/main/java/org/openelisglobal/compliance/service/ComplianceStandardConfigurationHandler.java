@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import org.openelisglobal.common.log.LogEvent;
 import org.openelisglobal.compliance.valueholder.ComplianceStandard;
 import org.openelisglobal.compliance.valueholder.ComplianceStandardStatus;
@@ -27,19 +26,21 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Domain configuration handler for compliance standards.
  *
- * Loads compliance standards from CSV files at deployment time,
- * following the OpenELIS domain handler pattern for data initialization.
+ * Loads compliance standards from CSV files at deployment time, following the
+ * OpenELIS domain handler pattern for data initialization.
  *
  * Expected CSV format:
  * name,displayName,regulationNumber,issuingBody,effectiveDate,expirationDate,version,status,description,parameterTypes,thresholds,units,supersededById,isPreSeeded,localization:en,localization:id
- * PM.No.22/2021-Coliform,"Coliform Standards (PP No. 22/2021)","PP No. 22/2021","Kementerian Kesehatan RI",2021-03-15,,1.0,ACTIVE,"Indonesian coliform testing standards","COLIFORM_COUNT","0-50","CFU/100ml",,true,"Coliform Standards","Standar Koliform"
+ * PM.No.22/2021-Coliform,"Coliform Standards (PP No. 22/2021)","PP No.
+ * 22/2021","Kementerian Kesehatan RI",2021-03-15,,1.0,ACTIVE,"Indonesian
+ * coliform testing
+ * standards","COLIFORM_COUNT","0-50","CFU/100ml",,true,"Coliform
+ * Standards","Standar Koliform"
  *
- * Constitutional compliance:
- * - Uses @Component for Spring auto-discovery
- * - Implements DomainConfigurationHandler interface
- * - @Transactional for database operations
- * - Proper error handling and logging
- * - Supports internationalization with localization columns
+ * Constitutional compliance: - Uses @Component for Spring auto-discovery -
+ * Implements DomainConfigurationHandler interface - @Transactional for database
+ * operations - Proper error handling and logging - Supports
+ * internationalization with localization columns
  */
 @Component
 public class ComplianceStandardConfigurationHandler implements DomainConfigurationHandler {
@@ -191,7 +192,7 @@ public class ComplianceStandardConfigurationHandler implements DomainConfigurati
     }
 
     private ComplianceStandard processCsvLine(String[] values, Map<String, Integer> columnIndices,
-                                            Map<String, Integer> localizationColumns) {
+            Map<String, Integer> localizationColumns) {
 
         String name = getValueOrEmpty(values, columnIndices.get("name"));
         String regulationNumber = getValueOrEmpty(values, columnIndices.get("regulationnumber"));
@@ -202,7 +203,8 @@ public class ComplianceStandardConfigurationHandler implements DomainConfigurati
         }
 
         if (regulationNumber.isEmpty()) {
-            LogEvent.logWarn(this.getClass().getSimpleName(), "processCsvLine", "Skipping row with missing regulationNumber");
+            LogEvent.logWarn(this.getClass().getSimpleName(), "processCsvLine",
+                    "Skipping row with missing regulationNumber");
             return null;
         }
 
@@ -224,9 +226,8 @@ public class ComplianceStandardConfigurationHandler implements DomainConfigurati
         }
     }
 
-    private void updateStandardFromCsv(ComplianceStandard standard, String[] values,
-                                     Map<String, Integer> columnIndices,
-                                     Map<String, Integer> localizationColumns) {
+    private void updateStandardFromCsv(ComplianceStandard standard, String[] values, Map<String, Integer> columnIndices,
+            Map<String, Integer> localizationColumns) {
 
         // Set basic fields
         standard.setName(getValueOrEmpty(values, columnIndices.get("name")));
@@ -304,10 +305,11 @@ public class ComplianceStandardConfigurationHandler implements DomainConfigurati
     }
 
     /**
-     * Processes localization columns and sets up translations for the compliance standard
+     * Processes localization columns and sets up translations for the compliance
+     * standard
      */
     private void processLocalization(ComplianceStandard standard, String[] values,
-                                   Map<String, Integer> localizationColumns) {
+            Map<String, Integer> localizationColumns) {
 
         if (localizationColumns.isEmpty()) {
             return; // No localization to process

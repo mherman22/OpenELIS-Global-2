@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import {
   Grid,
   Column,
@@ -15,17 +15,17 @@ import {
   Tag,
   Modal,
   Loading,
-  Pagination
-} from '@carbon/react';
-import { Add, View, Edit, Download, Upload } from '@carbon/icons-react';
-import { FormattedMessage, useIntl } from 'react-intl';
+  Pagination,
+} from "@carbon/react";
+import { Add, View, Edit, Download, Upload } from "@carbon/icons-react";
+import { FormattedMessage, useIntl } from "react-intl";
 
-import PageBreadCrumb from '../common/PageBreadCrumb';
-import { getFromOpenElisServer, postToOpenElisServer } from '../utils/Utils';
-import { NotificationContext } from '../layout/Layout';
-import { ConfigurationContext } from '../../UserSessionDetailsContext';
-import ComplianceStandardImportModal from './ComplianceStandardImportModal';
-import './ComplianceStandardsDashboard.css';
+import PageBreadCrumb from "../common/PageBreadCrumb";
+import { getFromOpenElisServer, postToOpenElisServer } from "../utils/Utils";
+import { NotificationContext } from "../layout/Layout";
+import { ConfigurationContext } from "../../UserSessionDetailsContext";
+import ComplianceStandardImportModal from "./ComplianceStandardImportModal";
+import "./ComplianceStandardsDashboard.css";
 
 /**
  * ComplianceStandardsDashboard - Main dashboard for compliance standards administration
@@ -39,16 +39,18 @@ import './ComplianceStandardsDashboard.css';
  */
 const ComplianceStandardsDashboard = () => {
   const intl = useIntl();
-  const { notificationVisible, setNotificationVisible, addNotification } = useContext(NotificationContext);
+  const { notificationVisible, setNotificationVisible, addNotification } =
+    useContext(NotificationContext);
   const { configurationProperties } = useContext(ConfigurationContext);
 
   // Feature flag check (constitutional requirement for gradual rollout)
-  const isComplianceModuleEnabled = configurationProperties?.['compliance.module.enabled'] === 'true';
+  const isComplianceModuleEnabled =
+    configurationProperties?.["compliance.module.enabled"] === "true";
 
   const [standards, setStandards] = useState([]);
   const [filteredStandards, setFilteredStandards] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize] = useState(25);
@@ -59,61 +61,61 @@ const ComplianceStandardsDashboard = () => {
   // Carbon DataTable headers with React Intl
   const headers = [
     {
-      key: 'name',
+      key: "name",
       header: intl.formatMessage({
-        id: 'compliance.standards.table.header.name',
-        defaultMessage: 'Standard Name'
-      })
+        id: "compliance.standards.table.header.name",
+        defaultMessage: "Standard Name",
+      }),
     },
     {
-      key: 'issuingBody',
+      key: "issuingBody",
       header: intl.formatMessage({
-        id: 'compliance.standards.table.header.issuingBody',
-        defaultMessage: 'Issuing Body'
-      })
+        id: "compliance.standards.table.header.issuingBody",
+        defaultMessage: "Issuing Body",
+      }),
     },
     {
-      key: 'regulationNumber',
+      key: "regulationNumber",
       header: intl.formatMessage({
-        id: 'compliance.standards.table.header.regulationNumber',
-        defaultMessage: 'Regulation Number'
-      })
+        id: "compliance.standards.table.header.regulationNumber",
+        defaultMessage: "Regulation Number",
+      }),
     },
     {
-      key: 'version',
+      key: "version",
       header: intl.formatMessage({
-        id: 'compliance.standards.table.header.version',
-        defaultMessage: 'Version'
-      })
+        id: "compliance.standards.table.header.version",
+        defaultMessage: "Version",
+      }),
     },
     {
-      key: 'effectiveDate',
+      key: "effectiveDate",
       header: intl.formatMessage({
-        id: 'compliance.standards.table.header.effectiveDate',
-        defaultMessage: 'Effective Date'
-      })
+        id: "compliance.standards.table.header.effectiveDate",
+        defaultMessage: "Effective Date",
+      }),
     },
     {
-      key: 'status',
+      key: "status",
       header: intl.formatMessage({
-        id: 'compliance.standards.table.header.status',
-        defaultMessage: 'Status'
-      })
+        id: "compliance.standards.table.header.status",
+        defaultMessage: "Status",
+      }),
     },
     {
-      key: 'countryRegion',
+      key: "countryRegion",
       header: intl.formatMessage({
-        id: 'compliance.standards.table.header.countryRegion',
-        defaultMessage: 'Country/Region'
-      })
+        id: "compliance.standards.table.header.countryRegion",
+        defaultMessage: "Country/Region",
+      }),
     },
     {
-      key: 'actions',
+      key: "actions",
       header: intl.formatMessage({
-        id: 'compliance.standards.table.header.actions',
-        defaultMessage: 'Actions'
-      })
-    }
+        id: "compliance.standards.table.header.actions",
+        defaultMessage: "Actions",
+      }),
+    },
   ];
 
   // Load compliance standards on component mount
@@ -125,13 +127,18 @@ const ComplianceStandardsDashboard = () => {
 
   // Filter standards based on search
   useEffect(() => {
-    if (searchValue.trim() === '') {
+    if (searchValue.trim() === "") {
       setFilteredStandards(standards);
     } else {
-      const filtered = standards.filter(standard =>
-        standard.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        standard.issuingBody.toLowerCase().includes(searchValue.toLowerCase()) ||
-        standard.regulationNumber.toLowerCase().includes(searchValue.toLowerCase())
+      const filtered = standards.filter(
+        (standard) =>
+          standard.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          standard.issuingBody
+            .toLowerCase()
+            .includes(searchValue.toLowerCase()) ||
+          standard.regulationNumber
+            .toLowerCase()
+            .includes(searchValue.toLowerCase()),
       );
       setFilteredStandards(filtered);
     }
@@ -148,15 +155,16 @@ const ComplianceStandardsDashboard = () => {
         setLoading(false);
       } else {
         addNotification({
-          kind: 'error',
+          kind: "error",
           title: intl.formatMessage({
-            id: 'compliance.standards.load.error.title',
-            defaultMessage: 'Error Loading Standards'
+            id: "compliance.standards.load.error.title",
+            defaultMessage: "Error Loading Standards",
           }),
           message: intl.formatMessage({
-            id: 'compliance.standards.load.error.message',
-            defaultMessage: 'Failed to load compliance standards. Please try again.'
-          })
+            id: "compliance.standards.load.error.message",
+            defaultMessage:
+              "Failed to load compliance standards. Please try again.",
+          }),
         });
         setLoading(false);
       }
@@ -173,19 +181,20 @@ const ComplianceStandardsDashboard = () => {
   };
 
   const handleExportStandards = () => {
-    const endpoint = '/rest/compliance-standards/export';
-    postToOpenElisServer(endpoint, '', (status) => {
+    const endpoint = "/rest/compliance-standards/export";
+    postToOpenElisServer(endpoint, "", (status) => {
       if (status === 200) {
         addNotification({
-          kind: 'success',
+          kind: "success",
           title: intl.formatMessage({
-            id: 'compliance.standards.export.success.title',
-            defaultMessage: 'Export Started'
+            id: "compliance.standards.export.success.title",
+            defaultMessage: "Export Started",
           }),
           message: intl.formatMessage({
-            id: 'compliance.standards.export.success.message',
-            defaultMessage: 'Standards export has been initiated. You will receive a notification when ready.'
-          })
+            id: "compliance.standards.export.success.message",
+            defaultMessage:
+              "Standards export has been initiated. You will receive a notification when ready.",
+          }),
         });
       }
     });
@@ -193,14 +202,14 @@ const ComplianceStandardsDashboard = () => {
 
   const renderStatusTag = (status) => {
     const statusConfig = {
-      ACTIVE: { type: 'green', label: 'Active' },
-      DRAFT: { type: 'gray', label: 'Draft' },
-      SUPERSEDED: { type: 'red', label: 'Superseded' },
-      ARCHIVED: { type: 'outline', label: 'Archived' },
-      SUSPENDED: { type: 'yellow', label: 'Suspended' }
+      ACTIVE: { type: "green", label: "Active" },
+      DRAFT: { type: "gray", label: "Draft" },
+      SUPERSEDED: { type: "red", label: "Superseded" },
+      ARCHIVED: { type: "outline", label: "Archived" },
+      SUSPENDED: { type: "yellow", label: "Suspended" },
     };
 
-    const config = statusConfig[status] || { type: 'outline', label: status };
+    const config = statusConfig[status] || { type: "outline", label: status };
 
     return (
       <Tag type={config.type}>
@@ -219,24 +228,26 @@ const ComplianceStandardsDashboard = () => {
         size="sm"
         renderIcon={View}
         iconDescription={intl.formatMessage({
-          id: 'compliance.standards.action.view',
-          defaultMessage: 'View standard details'
+          id: "compliance.standards.action.view",
+          defaultMessage: "View standard details",
         })}
         onClick={() => handleViewStandard(standard)}
       >
         <FormattedMessage id="button.view" defaultMessage="View" />
       </Button>
 
-      {standard.status !== 'ARCHIVED' && (
+      {standard.status !== "ARCHIVED" && (
         <Button
           kind="ghost"
           size="sm"
           renderIcon={Edit}
           iconDescription={intl.formatMessage({
-            id: 'compliance.standards.action.edit',
-            defaultMessage: 'Edit standard'
+            id: "compliance.standards.action.edit",
+            defaultMessage: "Edit standard",
           })}
-          onClick={() => {/* Navigate to edit */}}
+          onClick={() => {
+            /* Navigate to edit */
+          }}
         >
           <FormattedMessage id="button.edit" defaultMessage="Edit" />
         </Button>
@@ -244,7 +255,7 @@ const ComplianceStandardsDashboard = () => {
     </div>
   );
 
-  const rows = filteredStandards.map(standard => ({
+  const rows = filteredStandards.map((standard) => ({
     id: standard.id,
     name: standard.name,
     issuingBody: standard.issuingBody,
@@ -253,7 +264,7 @@ const ComplianceStandardsDashboard = () => {
     effectiveDate: new Date(standard.effectiveDate).toLocaleDateString(),
     status: renderStatusTag(standard.status),
     countryRegion: standard.countryRegion,
-    actions: renderActionButtons(standard)
+    actions: renderActionButtons(standard),
   }));
 
   // Feature flag guard
@@ -283,17 +294,37 @@ const ComplianceStandardsDashboard = () => {
   return (
     <Grid fullWidth className="compliance-standards-dashboard">
       <Column lg={16}>
-        <PageBreadCrumb breadcrumbs={[
-          { label: intl.formatMessage({ id: 'breadcrumb.home', defaultMessage: 'Home' }), link: '/' },
-          { label: intl.formatMessage({ id: 'breadcrums.admin.managment', defaultMessage: 'Administration' }), link: '/MasterListsPage' },
-          { label: intl.formatMessage({ id: 'master.lists.page.test.management', defaultMessage: 'Test Management' }), link: '/MasterListsPage/testManagementConfigMenu' },
-          {
-            label: intl.formatMessage({
-              id: 'compliance.standards.breadcrumb',
-              defaultMessage: 'Compliance Standards'
-            })
-          }
-        ]} />
+        <PageBreadCrumb
+          breadcrumbs={[
+            {
+              label: intl.formatMessage({
+                id: "breadcrumb.home",
+                defaultMessage: "Home",
+              }),
+              link: "/",
+            },
+            {
+              label: intl.formatMessage({
+                id: "breadcrums.admin.managment",
+                defaultMessage: "Administration",
+              }),
+              link: "/MasterListsPage",
+            },
+            {
+              label: intl.formatMessage({
+                id: "master.lists.page.test.management",
+                defaultMessage: "Test Management",
+              }),
+              link: "/MasterListsPage/testManagementConfigMenu",
+            },
+            {
+              label: intl.formatMessage({
+                id: "compliance.standards.breadcrumb",
+                defaultMessage: "Compliance Standards",
+              }),
+            },
+          ]}
+        />
       </Column>
 
       <Column lg={16} className="compliance-standards-dashboard__header">
@@ -318,7 +349,10 @@ const ComplianceStandardsDashboard = () => {
             renderIcon={Upload}
             onClick={() => setImportModalOpen(true)}
           >
-            <FormattedMessage id="compliance.standards.action.import" defaultMessage="Import Standards" />
+            <FormattedMessage
+              id="compliance.standards.action.import"
+              defaultMessage="Import Standards"
+            />
           </Button>
 
           <Button
@@ -326,15 +360,23 @@ const ComplianceStandardsDashboard = () => {
             renderIcon={Download}
             onClick={handleExportStandards}
           >
-            <FormattedMessage id="compliance.standards.action.export" defaultMessage="Export Standards" />
+            <FormattedMessage
+              id="compliance.standards.action.export"
+              defaultMessage="Export Standards"
+            />
           </Button>
 
           <Button
             kind="primary"
             renderIcon={Add}
-            onClick={() => {/* Navigate to create */}}
+            onClick={() => {
+              /* Navigate to create */
+            }}
           >
-            <FormattedMessage id="compliance.standards.action.add" defaultMessage="Add Standard" />
+            <FormattedMessage
+              id="compliance.standards.action.add"
+              defaultMessage="Add Standard"
+            />
           </Button>
         </div>
       </Column>
@@ -343,12 +385,13 @@ const ComplianceStandardsDashboard = () => {
         <Search
           size="lg"
           placeholder={intl.formatMessage({
-            id: 'compliance.standards.search.placeholder',
-            defaultMessage: 'Search standards by name, issuing body, or regulation number...'
+            id: "compliance.standards.search.placeholder",
+            defaultMessage:
+              "Search standards by name, issuing body, or regulation number...",
           })}
           labelText={intl.formatMessage({
-            id: 'compliance.standards.search.label',
-            defaultMessage: 'Search compliance standards'
+            id: "compliance.standards.search.label",
+            defaultMessage: "Search compliance standards",
           })}
           value={searchValue}
           onChange={handleSearch}
@@ -357,31 +400,42 @@ const ComplianceStandardsDashboard = () => {
 
       <Column lg={16} className="compliance-standards-dashboard__table">
         {loading ? (
-          <Loading description={intl.formatMessage({
-            id: 'compliance.standards.loading',
-            defaultMessage: 'Loading compliance standards...'
-          })} />
+          <Loading
+            description={intl.formatMessage({
+              id: "compliance.standards.loading",
+              defaultMessage: "Loading compliance standards...",
+            })}
+          />
         ) : (
           <>
             <DataTable
               rows={rows}
               headers={headers}
-              render={({ rows, headers, getHeaderProps, getRowProps, getTableProps }) => (
+              render={({
+                rows,
+                headers,
+                getHeaderProps,
+                getRowProps,
+                getTableProps,
+              }) => (
                 <TableContainer
                   title={intl.formatMessage({
-                    id: 'compliance.standards.table.title',
-                    defaultMessage: 'Compliance Standards'
+                    id: "compliance.standards.table.title",
+                    defaultMessage: "Compliance Standards",
                   })}
                   description={intl.formatMessage({
-                    id: 'compliance.standards.table.description',
-                    defaultMessage: `Showing ${filteredStandards.length} of ${standards.length} standards`
+                    id: "compliance.standards.table.description",
+                    defaultMessage: `Showing ${filteredStandards.length} of ${standards.length} standards`,
                   })}
                 >
                   <Table {...getTableProps()}>
                     <TableHead>
                       <TableRow>
                         {headers.map((header) => (
-                          <TableHeader {...getHeaderProps({ header })} key={header.key}>
+                          <TableHeader
+                            {...getHeaderProps({ header })}
+                            key={header.key}
+                          >
                             {header.header}
                           </TableHeader>
                         ))}
@@ -402,11 +456,23 @@ const ComplianceStandardsDashboard = () => {
             />
 
             <Pagination
-              backwardText={intl.formatMessage({ id: 'pagination.backward', defaultMessage: 'Previous page' })}
-              forwardText={intl.formatMessage({ id: 'pagination.forward', defaultMessage: 'Next page' })}
-              itemsPerPageText={intl.formatMessage({ id: 'pagination.itemsPerPage', defaultMessage: 'Items per page:' })}
+              backwardText={intl.formatMessage({
+                id: "pagination.backward",
+                defaultMessage: "Previous page",
+              })}
+              forwardText={intl.formatMessage({
+                id: "pagination.forward",
+                defaultMessage: "Next page",
+              })}
+              itemsPerPageText={intl.formatMessage({
+                id: "pagination.itemsPerPage",
+                defaultMessage: "Items per page:",
+              })}
               page={currentPage}
-              pageNumberText={intl.formatMessage({ id: 'pagination.pageNumber', defaultMessage: 'Page Number' })}
+              pageNumberText={intl.formatMessage({
+                id: "pagination.pageNumber",
+                defaultMessage: "Page Number",
+              })}
               pageSize={pageSize}
               pageSizes={[10, 25, 50, 100]}
               totalItems={standards.length}
@@ -421,19 +487,28 @@ const ComplianceStandardsDashboard = () => {
         open={viewModalOpen}
         onRequestClose={() => setViewModalOpen(false)}
         modalHeading={intl.formatMessage({
-          id: 'compliance.standards.view.modal.title',
-          defaultMessage: 'View Compliance Standard'
+          id: "compliance.standards.view.modal.title",
+          defaultMessage: "View Compliance Standard",
         })}
         modalLabel={selectedStandard?.regulationNumber}
-        primaryButtonText={intl.formatMessage({ id: 'button.close', defaultMessage: 'Close' })}
+        primaryButtonText={intl.formatMessage({
+          id: "button.close",
+          defaultMessage: "Close",
+        })}
         size="lg"
       >
         {selectedStandard && (
           <div className="compliance-standard-view">
             {/* Standard details will be implemented in a separate component */}
-            <p><strong>Name:</strong> {selectedStandard.name}</p>
-            <p><strong>Issuing Body:</strong> {selectedStandard.issuingBody}</p>
-            <p><strong>Status:</strong> {selectedStandard.status}</p>
+            <p>
+              <strong>Name:</strong> {selectedStandard.name}
+            </p>
+            <p>
+              <strong>Issuing Body:</strong> {selectedStandard.issuingBody}
+            </p>
+            <p>
+              <strong>Status:</strong> {selectedStandard.status}
+            </p>
             {/* More details to be added */}
           </div>
         )}
@@ -444,7 +519,7 @@ const ComplianceStandardsDashboard = () => {
         open={importModalOpen}
         onRequestClose={() => setImportModalOpen(false)}
         onImportComplete={(results) => {
-          console.log('Import completed:', results);
+          console.log("Import completed:", results);
           loadComplianceStandards(); // Refresh the list
         }}
       />
