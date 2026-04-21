@@ -231,14 +231,13 @@ public class ComplianceStandardConfigurationHandler implements DomainConfigurati
 
         // Set basic fields
         standard.setName(getValueOrEmpty(values, columnIndices.get("name")));
-        standard.setDisplayName(getValueOrEmpty(values, columnIndices.get("displayname")));
+        // Note: setDisplayName() method not implemented - using name
         standard.setRegulationNumber(getValueOrEmpty(values, columnIndices.get("regulationnumber")));
         standard.setIssuingBody(getValueOrEmpty(values, columnIndices.get("issuingbody")));
         standard.setVersion(getValueOrEmpty(values, columnIndices.get("version")));
         standard.setDescription(getValueOrEmpty(values, columnIndices.get("description")));
-        standard.setParameterTypes(getValueOrEmpty(values, columnIndices.get("parametertypes")));
-        standard.setThresholds(getValueOrEmpty(values, columnIndices.get("thresholds")));
-        standard.setUnits(getValueOrEmpty(values, columnIndices.get("units")));
+        // Note: setParameterTypes(), setThresholds(), setUnits() methods not implemented
+        // These fields would be set through parameter groups and thresholds relationships
         standard.setSupersededById(getValueOrEmpty(values, columnIndices.get("supersededbyid")));
 
         // Handle dates
@@ -287,7 +286,7 @@ public class ComplianceStandardConfigurationHandler implements DomainConfigurati
                 if ("effectiveDate".equals(fieldName)) {
                     standard.setEffectiveDate(date);
                 } else if ("expirationDate".equals(fieldName)) {
-                    standard.setExpirationDate(date);
+                    standard.setExpiryDate(date);
                 }
             } catch (DateTimeParseException e) {
                 LogEvent.logWarn(this.getClass().getSimpleName(), "setDateField",
@@ -315,7 +314,9 @@ public class ComplianceStandardConfigurationHandler implements DomainConfigurati
             return; // No localization to process
         }
 
-        // Get or create localization
+        // Note: Localization not implemented for ComplianceStandard yet
+        // TODO: Implement localization support when ComplianceStandard supports localized names
+        /*
         Localization localization = standard.getLocalizedName();
         boolean isNewLocalization = false;
 
@@ -366,5 +367,6 @@ public class ComplianceStandardConfigurationHandler implements DomainConfigurati
                 localizationValueService.setTranslation(localizationId, entry.getKey(), entry.getValue(), "1");
             }
         }
+        */
     }
 }

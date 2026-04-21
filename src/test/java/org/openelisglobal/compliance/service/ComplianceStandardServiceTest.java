@@ -65,7 +65,8 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
         // RED: Will fail - service save method doesn't exist
         ComplianceStandard newStandard = createValidStandard("Test Standard", "Test Authority", "TS-2026-001", "1.0");
 
-        String savedId = complianceStandardService.save(newStandard);
+        ComplianceStandard savedStandard = complianceStandardService.save(newStandard);
+        String savedId = savedStandard.getId();
 
         assertNotNull("Saved ID should not be null", savedId);
         assertEquals("Standard ID should match", newStandard.getId(), savedId);
@@ -156,7 +157,8 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
         String standardId = "1"; // Assume this has linked thresholds
 
         try {
-            complianceStandardService.delete(standardId);
+            ComplianceStandard standardToDelete = complianceStandardService.get(standardId);
+            complianceStandardService.delete(standardToDelete);
             fail("Should not be able to delete standard with linked thresholds");
         } catch (Exception e) {
             assertTrue("Should throw appropriate exception", e.getMessage().contains("has linked thresholds"));
@@ -198,7 +200,7 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
         complianceStandardService.save(preSeededStandard);
 
         try {
-            complianceStandardService.delete(preSeededStandard.getId());
+            complianceStandardService.delete(preSeededStandard);
             fail("Should not be able to delete pre-seeded standard");
         } catch (Exception e) {
             assertTrue("Should throw pre-seeded protection exception",
@@ -244,7 +246,7 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
         standard.setVersion(version);
         standard.setEffectiveDate(LocalDate.now());
         standard.setCountryRegion("Indonesia");
-        standard.getApplicableSampleTypes().add("Water");
+        standard.setApplicableSampleTypes("Water");
         standard.setStatus(ComplianceStandardStatus.DRAFT);
         standard.setIsPreSeeded(false);
 

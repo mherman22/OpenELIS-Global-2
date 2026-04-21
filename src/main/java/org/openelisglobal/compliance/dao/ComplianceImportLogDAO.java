@@ -191,4 +191,11 @@ public interface ComplianceImportLogDAO extends BaseDAO<ComplianceImportLog, Str
      * @return List of import logs with matching error text
      */
     List<ComplianceImportLog> getLogsWithErrorText(String errorText);
+
+    /**
+     * Load data for a ComplianceImportLog entity
+     *
+     * @param importLog The entity to load data for
+     */
+    void getData(ComplianceImportLog importLog);
 }

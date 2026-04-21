@@ -25,7 +25,9 @@ import org.openelisglobal.common.util.validator.GenericValidator;
 import org.openelisglobal.compliance.valueholder.ComplianceStandard;
 import org.openelisglobal.compliance.valueholder.ComplianceStandardStatus;
 import org.openelisglobal.compliance.valueholder.ImportResult;
+import org.openelisglobal.compliance.valueholder.ImportStatus;
 import org.openelisglobal.compliance.valueholder.ParameterGroup;
+import org.openelisglobal.compliance.valueholder.ValidationError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,8 +53,6 @@ public class CSVImportServiceImpl implements CSVImportService {
     @Autowired
     private ParameterGroupService parameterGroupService;
 
-    @Autowired
-    private ComplianceThresholdService complianceThresholdService;
 
     // Security constants
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -459,7 +459,7 @@ public class CSVImportServiceImpl implements CSVImportService {
                     sampleTypeSet.add(trimmed);
                 }
             }
-            standard.setSampleTypes(sampleTypeSet);
+            standard.setApplicableSampleTypesList(new ArrayList<>(sampleTypeSet));
         }
 
         // Set audit fields
@@ -561,9 +561,9 @@ public class CSVImportServiceImpl implements CSVImportService {
                 if (StringUtils.isNotBlank(trimmed)) {
 
                     ParameterGroup group = new ParameterGroup();
-                    group.setComplianceStandardId(standardId);
-                    group.setGroupName(trimmed);
-                    group.setDisplayOrder(1); // Default order
+                    group.setStandardId(standardId);
+                    group.setName(trimmed);
+                    group.setSortOrder(1); // Default order
                     group.setSysUserId(userId);
                     group.setLastupdated(new java.sql.Timestamp(System.currentTimeMillis()));
 

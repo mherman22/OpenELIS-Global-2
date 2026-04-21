@@ -3,7 +3,7 @@ package org.openelisglobal.compliance.daoimpl;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.TypedQuery;
 import org.openelisglobal.common.daoimpl.BaseDAOImpl;
 import org.openelisglobal.common.exception.LIMSRuntimeException;
 import org.openelisglobal.common.log.LogEvent;
@@ -589,6 +589,81 @@ public class ComplianceStandardDAOImpl extends BaseDAOImpl<ComplianceStandard, S
         } catch (RuntimeException e) {
             LogEvent.logError(e);
             throw new LIMSRuntimeException("Error in ComplianceStandard getByRegulationNumberAndName()", e);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ComplianceStandard> getComplianceStandardsByName(String name) throws LIMSRuntimeException {
+        try {
+            String hql = "FROM ComplianceStandard cs WHERE cs.name LIKE :name";
+            List<ComplianceStandard> list = entityManager.createQuery(hql, ComplianceStandard.class)
+                    .setParameter("name", "%" + name + "%")
+                    .getResultList();
+            return list;
+        } catch (RuntimeException e) {
+            LogEvent.logError(e);
+            throw new LIMSRuntimeException("Error in ComplianceStandard getComplianceStandardsByName()", e);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ComplianceStandard getComplianceStandardByRegulationNumber(String regulationNumber) throws LIMSRuntimeException {
+        try {
+            String hql = "FROM ComplianceStandard cs WHERE cs.regulationNumber = :regulationNumber";
+            List<ComplianceStandard> list = entityManager.createQuery(hql, ComplianceStandard.class)
+                    .setParameter("regulationNumber", regulationNumber)
+                    .getResultList();
+            return list.isEmpty() ? null : list.get(0);
+        } catch (RuntimeException e) {
+            LogEvent.logError(e);
+            throw new LIMSRuntimeException("Error in ComplianceStandard getComplianceStandardByRegulationNumber()", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void supersedseStandard(String standardId, String supersedingStandardId) throws LIMSRuntimeException {
+        try {
+            String hql = "UPDATE ComplianceStandard cs SET cs.supersededByStandardId = :supersedingId WHERE cs.id = :id";
+            entityManager.createQuery(hql)
+                    .setParameter("supersedingId", supersedingStandardId)
+                    .setParameter("id", standardId)
+                    .executeUpdate();
+        } catch (RuntimeException e) {
+            LogEvent.logError(e);
+            throw new LIMSRuntimeException("Error in ComplianceStandard supersedseStandard()", e);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public String getVersionForEvaluation(String standardId) throws LIMSRuntimeException {
+        try {
+            String hql = "SELECT cs.version FROM ComplianceStandard cs WHERE cs.id = :id";
+            List<String> list = entityManager.createQuery(hql, String.class)
+                    .setParameter("id", standardId)
+                    .getResultList();
+            return list.isEmpty() ? null : list.get(0);
+        } catch (RuntimeException e) {
+            LogEvent.logError(e);
+            throw new LIMSRuntimeException("Error in ComplianceStandard getVersionForEvaluation()", e);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ComplianceStandard getStandardWithGroups(String standardId) throws LIMSRuntimeException {
+        try {
+            String hql = "FROM ComplianceStandard cs LEFT JOIN FETCH cs.parameterGroups WHERE cs.id = :id";
+            TypedQuery<ComplianceStandard> query = entityManager.createQuery(hql, ComplianceStandard.class);
+            query.setParameter("id", standardId);
+            List<ComplianceStandard> list = query.getResultList();
+            return list.isEmpty() ? null : list.get(0);
+        } catch (RuntimeException e) {
+            LogEvent.logError(e);
+            throw new LIMSRuntimeException("Error in ComplianceStandard getStandardWithGroups()", e);
         }
     }
 }

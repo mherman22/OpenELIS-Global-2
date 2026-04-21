@@ -106,4 +106,11 @@ public interface TestComplianceStandardDAO extends BaseDAO<TestComplianceStandar
      *         ACTIVE
      */
     List<TestComplianceStandard> getTestsWithActiveCompliance();
+
+    /**
+     * Load data for a TestComplianceStandard entity
+     *
+     * @param testComplianceStandard The entity to load data for
+     */
+    void getData(TestComplianceStandard testComplianceStandard);
 }

@@ -38,7 +38,7 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
 
         // Create test standard
         ComplianceStandard testStandard = createTestStandard();
-        testStandardId = complianceStandardService.save(testStandard);
+        testStandardId = complianceStandardService.save(testStandard).getId();
 
         // Create test parameter group
         testParameterGroup = createTestParameterGroup(testStandardId);
@@ -54,7 +54,8 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
         ParameterGroup newGroup = createValidParameterGroup(testStandardId, "Physical Parameters",
                 "Temperature, pH, turbidity, color parameters", 1);
 
-        String savedId = parameterGroupService.save(newGroup);
+        ParameterGroup savedGroup = parameterGroupService.save(newGroup);
+        String savedId = savedGroup.getId();
 
         assertNotNull("Saved ID should not be null", savedId);
         assertEquals("Group ID should match", newGroup.getId(), savedId);
@@ -91,7 +92,7 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
     @Test
     public void testUpdateParameterGroup_shouldUpdateExistingGroup() {
         // RED: Will fail - update method doesn't exist
-        String groupId = parameterGroupService.save(testParameterGroup);
+        String groupId = parameterGroupService.save(testParameterGroup).getId();
         ParameterGroup savedGroup = parameterGroupService.get(groupId);
 
         String originalName = savedGroup.getName();
@@ -111,13 +112,14 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
     @Test
     public void testDeleteParameterGroup_shouldPreventDeletionWithThresholds() {
         // RED: Will fail - deletion protection doesn't exist
-        String groupId = parameterGroupService.save(testParameterGroup);
+        String groupId = parameterGroupService.save(testParameterGroup).getId();
 
         // Simulate group with linked thresholds
         // (In real implementation, this would be checked via ComplianceThreshold table)
 
         try {
-            parameterGroupService.delete(groupId);
+            ParameterGroup groupToDelete = parameterGroupService.get(groupId);
+            parameterGroupService.delete(groupToDelete);
             // If group has thresholds, deletion should fail
         } catch (Exception e) {
             assertTrue("Should prevent deletion when thresholds exist", e.getMessage().contains("linked thresholds"));
@@ -151,7 +153,7 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
         // RED: Will fail - method doesn't exist
         // Tests constitutional requirement: services must compile data within
         // transaction
-        String groupId = parameterGroupService.save(testParameterGroup);
+        String groupId = parameterGroupService.save(testParameterGroup).getId();
 
         ParameterGroup groupWithThresholds = parameterGroupService.getGroupWithThresholds(groupId);
 
@@ -224,6 +226,6 @@ public class ParameterGroupServiceTest extends BaseWebContextSensitiveTest {
 
     private String createAndSaveParameterGroup(String standardId, String name, int sortOrder) {
         ParameterGroup group = createValidParameterGroup(standardId, name, "Test description", sortOrder);
-        return parameterGroupService.save(group);
+        return parameterGroupService.save(group).getId();
     }
 }

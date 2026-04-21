@@ -41,7 +41,22 @@ public enum EvaluationStatus {
     /**
      * Evaluation requires re-evaluation due to issues
      */
-    REQUIRES_RETEST("Requires Retest", "Evaluation requires re-evaluation due to questionable results");
+    REQUIRES_RETEST("Requires Retest", "Evaluation requires re-evaluation due to questionable results"),
+
+    /**
+     * Evaluation concluded with compliant result
+     */
+    COMPLIANT("Compliant", "Evaluation concluded that all requirements are met"),
+
+    /**
+     * Evaluation concluded with non-compliant result
+     */
+    NON_COMPLIANT("Non-Compliant", "Evaluation concluded that requirements are not met"),
+
+    /**
+     * Evaluation concluded with warning result
+     */
+    WARNING("Warning", "Evaluation concluded with compliance concerns requiring attention");
 
     private final String displayName;
     private final String description;
@@ -75,7 +90,8 @@ public enum EvaluationStatus {
      * Check if the evaluation is in a final state
      */
     public boolean isFinalState() {
-        return this == COMPLETED || this == REVIEWED || this == FAILED || this == CANCELLED;
+        return this == COMPLETED || this == REVIEWED || this == FAILED || this == CANCELLED
+                || this == COMPLIANT || this == NON_COMPLIANT || this == WARNING;
     }
 
     /**
@@ -103,14 +119,14 @@ public enum EvaluationStatus {
      * Check if the evaluation results can be used for reporting
      */
     public boolean isValidForReporting() {
-        return this == COMPLETED || this == REVIEWED;
+        return this == COMPLETED || this == REVIEWED || this == COMPLIANT || this == NON_COMPLIANT || this == WARNING;
     }
 
     /**
      * Check if the evaluation requires attention
      */
     public boolean requiresAttention() {
-        return this == FAILED || this == REQUIRES_RETEST;
+        return this == FAILED || this == REQUIRES_RETEST || this == NON_COMPLIANT || this == WARNING;
     }
 
     @Override

@@ -120,9 +120,9 @@ public class ComplianceFhirTransform {
         }
 
         // Add applicable sample types as extension
-        if (standard.getApplicableSampleTypes() != null && !standard.getApplicableSampleTypes().isEmpty()) {
+        if (standard.getApplicableSampleTypesList() != null && !standard.getApplicableSampleTypesList().isEmpty()) {
             Extension sampleTypesExt = new Extension(COMPLIANCE_EXTENSION_BASE + "applicable-sample-types");
-            for (String sampleType : standard.getApplicableSampleTypes()) {
+            for (String sampleType : standard.getApplicableSampleTypesList()) {
                 Extension sampleTypeExt = new Extension("sample-type");
                 sampleTypeExt.setValue(new StringType(sampleType));
                 sampleTypesExt.addExtension(sampleTypeExt);
@@ -160,8 +160,8 @@ public class ComplianceFhirTransform {
 
         // Set reference to the measure being evaluated
         Reference measureRef = new Reference();
-        measureRef.setReference("Measure/" + evaluation.getComplianceStandard().getFhirUuidAsString());
-        measureRef.setDisplay(evaluation.getComplianceStandard().getName());
+        measureRef.setReference("Measure/" + evaluation.getStandard().getFhirUuidAsString());
+        measureRef.setDisplay(evaluation.getStandard().getName());
         report.setMeasure(measureRef.getReference());
 
         // Set status based on evaluation status
@@ -186,16 +186,16 @@ public class ComplianceFhirTransform {
         report.setType(MeasureReport.MeasureReportType.INDIVIDUAL);
 
         // Set evaluation period
-        if (evaluation.getEvaluationDate() != null) {
+        if (evaluation.getEvaluatedDate() != null) {
             Period period = new Period();
-            period.setStart(evaluation.getEvaluationDate(), TemporalPrecisionEnum.DAY);
-            period.setEnd(evaluation.getEvaluationDate(), TemporalPrecisionEnum.DAY);
+            period.setStart(evaluation.getEvaluatedDate(), TemporalPrecisionEnum.DAY);
+            period.setEnd(evaluation.getEvaluatedDate(), TemporalPrecisionEnum.DAY);
             report.setPeriod(period);
         }
 
         // Set date
-        if (evaluation.getEvaluationDate() != null) {
-            report.setDate(evaluation.getEvaluationDate());
+        if (evaluation.getEvaluatedDate() != null) {
+            report.setDate(evaluation.getEvaluatedDate());
         }
 
         // Add subject reference (sample)
@@ -207,7 +207,7 @@ public class ComplianceFhirTransform {
         }
 
         // Add overall compliance score
-        if (evaluation.getTotalParameters() != null && evaluation.getTotalParameters() > 0) {
+        if (evaluation.getCompliancePercentage() != null) {
             MeasureReport.MeasureReportGroupComponent group = report.addGroup();
 
             // Set group identifier
@@ -219,42 +219,13 @@ public class ComplianceFhirTransform {
             groupCode.addCoding(groupCoding);
             group.setCode(groupCode);
 
-            // Calculate compliance percentage
-            double compliancePercentage = 0.0;
-            if (evaluation.getCompliantParameters() != null && evaluation.getTotalParameters() > 0) {
-                compliancePercentage = (evaluation.getCompliantParameters().doubleValue()
-                        / evaluation.getTotalParameters().doubleValue()) * 100.0;
-            }
-
-            // Set measure score
+            // Set measure score using existing compliance percentage
             Quantity measureScore = new Quantity();
-            measureScore.setValue(compliancePercentage);
+            measureScore.setValue(evaluation.getCompliancePercentage());
             measureScore.setUnit("%");
             measureScore.setSystem("http://unitsofmeasure.org");
             measureScore.setCode("%");
             group.setMeasureScore(measureScore);
-
-            // Add population counts
-            MeasureReport.MeasureReportGroupPopulationComponent totalPop = group.addPopulation();
-            CodeableConcept totalPopCode = new CodeableConcept();
-            Coding totalPopCoding = new Coding();
-            totalPopCoding.setSystem("http://terminology.hl7.org/CodeSystem/measure-population");
-            totalPopCoding.setCode("measure-population");
-            totalPopCoding.setDisplay("Measure Population");
-            totalPopCode.addCoding(totalPopCoding);
-            totalPop.setCode(totalPopCode);
-            totalPop.setCount(evaluation.getTotalParameters());
-
-            // Add compliant population
-            MeasureReport.MeasureReportGroupPopulationComponent compliantPop = group.addPopulation();
-            CodeableConcept compliantPopCode = new CodeableConcept();
-            Coding compliantPopCoding = new Coding();
-            compliantPopCoding.setSystem(OPENELIS_COMPLIANCE_SYSTEM + "/population-type");
-            compliantPopCoding.setCode("compliant");
-            compliantPopCoding.setDisplay("Compliant Parameters");
-            compliantPopCode.addCoding(compliantPopCoding);
-            compliantPop.setCode(compliantPopCode);
-            compliantPop.setCount(evaluation.getCompliantParameters());
         }
 
         // Add extensions for compliance-specific fields
@@ -301,8 +272,8 @@ public class ComplianceFhirTransform {
 
         // Add thresholds as group populations
         for (ComplianceThreshold threshold : thresholds) {
-            if (threshold.getParameterGroupId() != null
-                    && threshold.getParameterGroupId().equals(parameterGroup.getId())) {
+            if (threshold.getGroup() != null
+                    && threshold.getGroup().getId().equals(parameterGroup.getId())) {
 
                 Measure.MeasureGroupPopulationComponent population = group.addPopulation();
 
@@ -310,8 +281,8 @@ public class ComplianceFhirTransform {
                 CodeableConcept popCode = new CodeableConcept();
                 Coding popCoding = new Coding();
                 popCoding.setSystem(OPENELIS_COMPLIANCE_SYSTEM + "/threshold-parameter");
-                popCoding.setCode(threshold.getParameterName().replaceAll("\\s+", "-").toLowerCase());
-                popCoding.setDisplay(threshold.getParameterName());
+                popCoding.setCode(threshold.getDisplayName().replaceAll("\\s+", "-").toLowerCase());
+                popCoding.setDisplay(threshold.getDisplayName());
                 popCode.addCoding(popCoding);
                 population.setCode(popCode);
 
@@ -321,10 +292,9 @@ public class ComplianceFhirTransform {
 
                 // Add threshold as extension
                 Extension thresholdExt = new Extension(COMPLIANCE_EXTENSION_BASE + "threshold-definition");
-                thresholdExt.addExtension("parameter-name", new StringType(threshold.getParameterName()));
+                thresholdExt.addExtension("parameter-name", new StringType(threshold.getDisplayName()));
                 thresholdExt.addExtension("threshold-type", new StringType(threshold.getThresholdType().toString()));
-                thresholdExt.addExtension("unit", new StringType(threshold.getUnit()));
-                thresholdExt.addExtension("criticality", new StringType(threshold.getCriticalityLevel().toString()));
+                thresholdExt.addExtension("unit", new StringType(threshold.getUnits()));
 
                 if (threshold.getMinValue() != null) {
                     thresholdExt.addExtension("min-value",
@@ -334,9 +304,9 @@ public class ComplianceFhirTransform {
                     thresholdExt.addExtension("max-value",
                             new org.hl7.fhir.r4.model.DecimalType(threshold.getMaxValue()));
                 }
-                if (threshold.getExactValue() != null) {
-                    thresholdExt.addExtension("exact-value",
-                            new org.hl7.fhir.r4.model.DecimalType(threshold.getExactValue()));
+                if (threshold.getTargetValue() != null) {
+                    thresholdExt.addExtension("target-value",
+                            new org.hl7.fhir.r4.model.DecimalType(threshold.getTargetValue()));
                 }
 
                 population.addExtension(thresholdExt);
@@ -359,8 +329,8 @@ public class ComplianceFhirTransform {
             CodeableConcept stratifierCode = new CodeableConcept();
             Coding stratifierCoding = new Coding();
             stratifierCoding.setSystem(OPENELIS_COMPLIANCE_SYSTEM + "/result-parameter");
-            stratifierCoding.setCode(result.getParameterName().replaceAll("\\s+", "-").toLowerCase());
-            stratifierCoding.setDisplay(result.getParameterName());
+            stratifierCoding.setCode(result.getThreshold().getDisplayName().replaceAll("\\s+", "-").toLowerCase());
+            stratifierCoding.setDisplay(result.getThreshold().getDisplayName());
             stratifierCode.addCoding(stratifierCoding);
             stratifier.addCode(stratifierCode);
 
@@ -371,32 +341,33 @@ public class ComplianceFhirTransform {
             CodeableConcept stratumValue = new CodeableConcept();
             Coding stratumCoding = new Coding();
             stratumCoding.setSystem(OPENELIS_COMPLIANCE_SYSTEM + "/result-status");
-            stratumCoding.setCode(result.getStatus().toString().toLowerCase());
-            stratumCoding.setDisplay(result.getStatus().toString());
+            String complianceStatus = result.getIsCompliant() ? "compliant" : "non-compliant";
+            stratumCoding.setCode(complianceStatus);
+            stratumCoding.setDisplay(complianceStatus);
             stratumValue.addCoding(stratumCoding);
             stratum.setValue(stratumValue);
 
             // Set measure score (actual value)
-            if (result.getActualValue() != null) {
+            if (result.getTestedValue() != null) {
                 Quantity measureScore = new Quantity();
-                measureScore.setValue(result.getActualValue());
-                if (result.getUnit() != null) {
-                    measureScore.setUnit(result.getUnit());
+                measureScore.setValue(result.getTestedValue());
+                if (result.getUnits() != null) {
+                    measureScore.setUnit(result.getUnits());
                     measureScore.setSystem("http://unitsofmeasure.org");
-                    measureScore.setCode(result.getUnit());
+                    measureScore.setCode(result.getUnits());
                 }
                 stratum.setMeasureScore(measureScore);
             }
 
             // Add extensions for detailed result information
             Extension resultExt = new Extension(COMPLIANCE_EXTENSION_BASE + "evaluation-result");
-            resultExt.addExtension("parameter-name", new StringType(result.getParameterName()));
-            resultExt.addExtension("actual-value", new org.hl7.fhir.r4.model.DecimalType(result.getActualValue()));
-            resultExt.addExtension("threshold-description", new StringType(result.getThresholdDescription()));
-            resultExt.addExtension("compliance-status", new StringType(result.getStatus().toString()));
+            resultExt.addExtension("parameter-name", new StringType(result.getThreshold().getDisplayName()));
+            resultExt.addExtension("actual-value", new org.hl7.fhir.r4.model.DecimalType(result.getTestedValue()));
+            resultExt.addExtension("threshold-type", new StringType(result.getThreshold().getThresholdType().toString()));
+            resultExt.addExtension("compliance-status", new StringType(result.getIsCompliant() ? "compliant" : "non-compliant"));
 
-            if (result.getNotes() != null) {
-                resultExt.addExtension("notes", new StringType(result.getNotes()));
+            if (result.getResultNotes() != null) {
+                resultExt.addExtension("notes", new StringType(result.getResultNotes()));
             }
 
             stratum.addExtension(resultExt);
@@ -437,7 +408,7 @@ public class ComplianceFhirTransform {
 
     private String buildThresholdCriteria(ComplianceThreshold threshold) {
         StringBuilder criteria = new StringBuilder();
-        criteria.append(threshold.getParameterName()).append(" ");
+        criteria.append(threshold.getDisplayName()).append(" ");
 
         switch (threshold.getThresholdType()) {
         case MAXIMUM:
@@ -450,11 +421,11 @@ public class ComplianceFhirTransform {
             criteria.append(">=").append(threshold.getMinValue()).append(" AND <=").append(threshold.getMaxValue());
             break;
         case EXACT:
-            criteria.append("=").append(threshold.getExactValue());
+            criteria.append("=").append(threshold.getTargetValue());
             break;
         }
 
-        criteria.append(" ").append(threshold.getUnit());
+        criteria.append(" ").append(threshold.getUnits());
         return criteria.toString();
     }
 

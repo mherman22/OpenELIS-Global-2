@@ -54,13 +54,13 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
 
         // Create test hierarchy
         ComplianceStandard testStandard = createTestStandard();
-        testStandardId = complianceStandardService.save(testStandard);
+        testStandardId = complianceStandardService.save(testStandard).getId();
 
         ParameterGroup testGroup = createTestParameterGroup(testStandardId);
-        testGroupId = parameterGroupService.save(testGroup);
+        testGroupId = parameterGroupService.save(testGroup).getId();
 
         ComplianceThreshold testThreshold = createTestThreshold(testGroupId);
-        testThresholdId = complianceThresholdService.save(testThreshold);
+        testThresholdId = complianceThresholdService.save(testThreshold).getId();
 
         testSampleId = UUID.randomUUID().toString();
         testEvaluation = createTestEvaluation(testSampleId, testThresholdId);
@@ -121,7 +121,8 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
     @Test
     public void testSaveEvaluation_shouldPersistEvaluationWithResults() {
         // RED: Will fail - save method doesn't exist
-        String evaluationId = complianceEvaluationService.save(testEvaluation);
+        ComplianceEvaluation savedEvaluation = complianceEvaluationService.save(testEvaluation);
+        String evaluationId = savedEvaluation.getId();
 
         assertNotNull("Saved ID should not be null", evaluationId);
         assertEquals("Evaluation ID should match", testEvaluation.getId(), evaluationId);
@@ -162,7 +163,7 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
         // RED: Will fail - method doesn't exist
         // Tests constitutional requirement: services must compile data within
         // transaction
-        String evaluationId = complianceEvaluationService.save(testEvaluation);
+        String evaluationId = complianceEvaluationService.save(testEvaluation).getId();
 
         ComplianceEvaluation evaluationWithResults = complianceEvaluationService.getEvaluationWithResults(evaluationId);
 
@@ -179,7 +180,7 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
     @Test
     public void testUpdateEvaluationStatus_shouldUpdateStatusAndTimestamps() {
         // RED: Will fail - status update method doesn't exist
-        String evaluationId = complianceEvaluationService.save(testEvaluation);
+        String evaluationId = complianceEvaluationService.save(testEvaluation).getId();
         ComplianceEvaluation savedEvaluation = complianceEvaluationService.get(evaluationId);
 
         EvaluationStatus originalStatus = savedEvaluation.getStatus();
@@ -203,7 +204,7 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
 
         // Create evaluation with mixed results
         ComplianceEvaluation mixedEvaluation = createEvaluationWithResults(sampleId);
-        String evaluationId = complianceEvaluationService.save(mixedEvaluation);
+        String evaluationId = complianceEvaluationService.save(mixedEvaluation).getId();
 
         boolean overallCompliance = complianceEvaluationService.calculateOverallCompliance(evaluationId);
 
@@ -212,7 +213,7 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
 
         // Test with all compliant results
         ComplianceEvaluation compliantEvaluation = createAllCompliantEvaluation(sampleId);
-        String compliantEvaluationId = complianceEvaluationService.save(compliantEvaluation);
+        String compliantEvaluationId = complianceEvaluationService.save(compliantEvaluation).getId();
 
         boolean allCompliant = complianceEvaluationService.calculateOverallCompliance(compliantEvaluationId);
 
@@ -222,7 +223,7 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
     @Test
     public void testGenerateComplianceReport_shouldCreateDetailedReport() {
         // RED: Will fail - report generation doesn't exist
-        String evaluationId = complianceEvaluationService.save(testEvaluation);
+        String evaluationId = complianceEvaluationService.save(testEvaluation).getId();
 
         String report = complianceEvaluationService.generateComplianceReport(evaluationId);
 
@@ -236,10 +237,11 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
     public void testDeleteEvaluation_shouldPreventDeletionOfCompletedEvaluations() {
         // RED: Will fail - deletion protection doesn't exist
         testEvaluation.setStatus(EvaluationStatus.COMPLETED);
-        String evaluationId = complianceEvaluationService.save(testEvaluation);
+        String evaluationId = complianceEvaluationService.save(testEvaluation).getId();
 
         try {
-            complianceEvaluationService.delete(evaluationId);
+            ComplianceEvaluation evaluationToDelete = complianceEvaluationService.get(evaluationId);
+            complianceEvaluationService.delete(evaluationToDelete);
             fail("Should not be able to delete completed evaluation");
         } catch (Exception e) {
             assertTrue("Should prevent deletion of completed evaluations",
@@ -270,7 +272,7 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
     public void testVersionLockIntegrity_shouldPreserveEvaluationVersion() {
         // RED: Will fail - version lock validation doesn't exist
         // Tests constitutional requirement: version-lock semantics
-        String evaluationId = complianceEvaluationService.save(testEvaluation);
+        String evaluationId = complianceEvaluationService.save(testEvaluation).getId();
         ComplianceEvaluation savedEvaluation = complianceEvaluationService.get(evaluationId);
 
         String evaluationVersion = savedEvaluation.getStandardVersion();
@@ -394,6 +396,6 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
     private String createAndSaveEvaluation(String sampleId, String thresholdId, EvaluationStatus status) {
         ComplianceEvaluation evaluation = createTestEvaluation(sampleId, thresholdId);
         evaluation.setStatus(status);
-        return complianceEvaluationService.save(evaluation);
+        return complianceEvaluationService.save(evaluation).getId();
     }
 }

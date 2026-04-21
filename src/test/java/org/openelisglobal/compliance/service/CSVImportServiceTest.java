@@ -199,7 +199,7 @@ public class CSVImportServiceTest extends BaseWebContextSensitiveTest {
     @Test
     public void testExportTemplate_shouldGenerateValidCSVTemplate() {
         // RED: Will fail - template export doesn't exist
-        String csvTemplate = csvImportService.exportCSVTemplate();
+        String csvTemplate = csvImportService.generateCSVTemplate();
 
         assertNotNull("Template should not be null", csvTemplate);
         assertTrue("Template should contain headers", csvTemplate.contains("Name"));

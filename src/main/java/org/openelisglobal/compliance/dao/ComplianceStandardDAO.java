@@ -162,4 +162,29 @@ public interface ComplianceStandardDAO extends BaseDAO<ComplianceStandard, Strin
      * Get compliance standard by regulation number and name
      */
     ComplianceStandard getByRegulationNumberAndName(String regulationNumber, String name) throws LIMSRuntimeException;
+
+    /**
+     * Get compliance standards by name
+     */
+    List<ComplianceStandard> getComplianceStandardsByName(String name) throws LIMSRuntimeException;
+
+    /**
+     * Get compliance standard by regulation number
+     */
+    ComplianceStandard getComplianceStandardByRegulationNumber(String regulationNumber) throws LIMSRuntimeException;
+
+    /**
+     * Supersede a standard with another standard
+     */
+    void supersedseStandard(String standardId, String supersedingStandardId) throws LIMSRuntimeException;
+
+    /**
+     * Get version for evaluation
+     */
+    String getVersionForEvaluation(String standardId) throws LIMSRuntimeException;
+
+    /**
+     * Get standard with eagerly loaded parameter groups
+     */
+    ComplianceStandard getStandardWithGroups(String standardId) throws LIMSRuntimeException;
 }

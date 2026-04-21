@@ -3,23 +3,23 @@ package org.openelisglobal.compliance.valueholder;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.PostPersist;
-import javax.persistence.PostUpdate;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PostPersist;
+import jakarta.persistence.PostUpdate;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.hibernate.annotations.Type;
-import org.openelisglobal.common.util.ValidationHelper;
-import org.openelisglobal.common.util.validator.SafeHtml;
+import org.openelisglobal.common.validator.ValidationHelper;
+import org.openelisglobal.validation.annotations.SafeHtml;
 import org.openelisglobal.common.valueholder.BaseObject;
 import org.openelisglobal.common.valueholder.SimpleBaseEntity;
 import org.openelisglobal.spring.util.SpringContext;
@@ -377,15 +377,13 @@ public class ComplianceImportLog extends BaseObject<String> implements SimpleBas
     @PostPersist
     public void onPostPersist() {
         try {
-            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform = SpringContext
-                    .getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
-            if (fhirTransform != null) {
-                fhirTransform.syncComplianceImportLogToFhir(this, true);
-            }
+            // FHIR sync for import logs not implemented yet - would require additional FHIR resource mapping
+            org.openelisglobal.common.log.LogEvent.logDebug("ComplianceImportLog", "onPostPersist",
+                    "ComplianceImportLog created with ID: " + this.getId());
         } catch (Exception e) {
             // Log error but don't fail transaction
             org.openelisglobal.common.log.LogEvent.logError("ComplianceImportLog", "onPostPersist",
-                    "Failed to sync to FHIR on create: " + e.getMessage());
+                    "Error in post-persist processing: " + e.getMessage());
         }
     }
 
@@ -395,15 +393,13 @@ public class ComplianceImportLog extends BaseObject<String> implements SimpleBas
     @PostUpdate
     public void onPostUpdate() {
         try {
-            org.openelisglobal.compliance.fhir.ComplianceFhirTransform fhirTransform = SpringContext
-                    .getBean(org.openelisglobal.compliance.fhir.ComplianceFhirTransform.class);
-            if (fhirTransform != null) {
-                fhirTransform.syncComplianceImportLogToFhir(this, false);
-            }
+            // FHIR sync for import logs not implemented yet - would require additional FHIR resource mapping
+            org.openelisglobal.common.log.LogEvent.logDebug("ComplianceImportLog", "onPostUpdate",
+                    "ComplianceImportLog updated with ID: " + this.getId());
         } catch (Exception e) {
             // Log error but don't fail transaction
             org.openelisglobal.common.log.LogEvent.logError("ComplianceImportLog", "onPostUpdate",
-                    "Failed to sync to FHIR on update: " + e.getMessage());
+                    "Error in post-update processing: " + e.getMessage());
         }
     }
 

@@ -1,10 +1,13 @@
 package org.openelisglobal.compliance.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.openelisglobal.common.service.BaseObjectService;
 import org.openelisglobal.compliance.valueholder.ComplianceEvaluation;
+import org.openelisglobal.compliance.valueholder.EvaluationResult;
 import org.openelisglobal.compliance.valueholder.EvaluationStatus;
 
 /**
@@ -149,4 +152,41 @@ public interface ComplianceEvaluationService extends BaseObjectService<Complianc
      * Get evaluations by sample identifier
      */
     List<ComplianceEvaluation> getEvaluationsBySampleIdentifier(String sampleIdentifier);
+
+    // Additional methods required by tests
+
+    /**
+     * Evaluate a sample against a compliance standard
+     */
+    ComplianceEvaluation evaluateSampleAgainstStandard(String sampleId, String standardId);
+
+    /**
+     * Evaluate a parameter threshold against a tested value
+     */
+    EvaluationResult evaluateParameterThreshold(String thresholdId, BigDecimal testedValue);
+
+    /**
+     * Update evaluation status
+     */
+    void updateEvaluationStatus(String evaluationId, EvaluationStatus status);
+
+    /**
+     * Calculate overall compliance for an evaluation
+     */
+    boolean calculateOverallCompliance(String evaluationId);
+
+    /**
+     * Generate compliance report for an evaluation
+     */
+    String generateComplianceReport(String evaluationId);
+
+    /**
+     * Bulk evaluate multiple samples against a standard
+     */
+    List<ComplianceEvaluation> bulkEvaluateSamples(List<String> sampleIds, String standardId);
+
+    /**
+     * Get evaluations by date range for a specific standard
+     */
+    List<ComplianceEvaluation> getEvaluationsByDateRange(String standardId, LocalDate startDate, LocalDate endDate);
 }

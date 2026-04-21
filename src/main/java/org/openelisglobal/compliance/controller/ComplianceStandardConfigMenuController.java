@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.openelisglobal.common.action.IActionConstants;
 import org.openelisglobal.common.controller.BaseMenuController;
+import org.openelisglobal.common.form.AdminOptionMenuForm;
 import org.openelisglobal.common.log.LogEvent;
 import org.openelisglobal.compliance.form.ComplianceStandardConfigMenuForm;
 import org.openelisglobal.compliance.service.ComplianceEvaluationService;
@@ -97,12 +99,14 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
             saveComplianceStandardConfigurations(form);
 
             // Add success message
-            request.getSession().setAttribute(SAVE_DISABLED, IActionConstants.TRUE);
+            request.setAttribute(SAVE_DISABLED, IActionConstants.TRUE);
             addSuccessMessage(request, "complianceStandard.config.save.success");
 
             // Redirect to avoid resubmission
-            return getForwardWithParameters(findForward(FWD_SUCCESS, form),
-                    "?saved=true&type=" + form.getSampleTypeId());
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("saved", "true");
+            parameters.put("type", form.getSampleTypeId());
+            return getForwardWithParameters(findForward(FWD_SUCCESS, form), parameters);
 
         } catch (Exception e) {
             LogEvent.logError("ComplianceStandardConfigMenuController", "processComplianceStandardConfigMenu",
@@ -135,7 +139,6 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
     /**
      * Create menu list of compliance standards organized by category
      */
-    @Override
     protected List<ComplianceStandard> createMenuList() {
         List<ComplianceStandard> allStandards = complianceStandardService.getActiveComplianceStandards();
 
@@ -164,7 +167,7 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
             for (ComplianceEvaluation evaluation : recentEvaluations) {
                 String testId = evaluation.getSampleId(); // Note: This might need adjustment based on actual test
                                                           // linking
-                String standardId = evaluation.getComplianceStandard().getId();
+                String standardId = evaluation.getStandard().getId();
 
                 testComplianceMap.computeIfAbsent(testId, k -> new ArrayList<>()).add(standardId);
             }
@@ -256,7 +259,7 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
      */
     private void addSuccessMessage(HttpServletRequest request, String messageKey) {
         String message = MessageUtil.getMessage(messageKey);
-        request.setAttribute(FWD_SUCCESS_MSG, message);
+        request.setAttribute("message", message);
     }
 
     /**
@@ -264,7 +267,7 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
      */
     private void addErrorMessage(HttpServletRequest request, String messageKey) {
         String message = MessageUtil.getMessage(messageKey);
-        request.setAttribute(FWD_FAIL_MSG, message);
+        request.setAttribute("error", message);
     }
 
     @Override
@@ -285,5 +288,15 @@ public class ComplianceStandardConfigMenuController extends BaseMenuController<C
     @Override
     protected String getPageSubtitleKey() {
         return "complianceStandard.config.subtitle";
+    }
+
+    @Override
+    protected List<ComplianceStandard> createMenuList(AdminOptionMenuForm<ComplianceStandard> form, HttpServletRequest request) {
+        return createMenuList();
+    }
+
+    @Override
+    protected String getDeactivateDisabled() {
+        return "true"; // Deactivation not supported for compliance standards in this menu
     }
 }

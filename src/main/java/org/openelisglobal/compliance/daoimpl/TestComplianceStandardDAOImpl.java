@@ -30,7 +30,6 @@ public class TestComplianceStandardDAOImpl extends BaseDAOImpl<TestComplianceSta
         super(TestComplianceStandard.class);
     }
 
-    @Override
     @Transactional(readOnly = true)
     public void getData(TestComplianceStandard testComplianceStandard) throws LIMSRuntimeException {
         try {

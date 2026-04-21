@@ -76,7 +76,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
             ComplianceStandardConfigMenuForm form = new ComplianceStandardConfigMenuForm();
             form.setSampleTypeId(sampleTypeId);
             form.setTestSectionId(testSectionId);
-            form.setShowInactiveStandards(showInactive);
+            form.setShowInactive(showInactive);
 
             // Setup form data
             setupFormForDisplay(form, sampleTypeId, testSectionId, showInactive);
@@ -322,7 +322,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
 
             for (ComplianceEvaluation evaluation : recentEvaluations) {
                 String testId = evaluation.getSampleId();
-                String standardId = evaluation.getComplianceStandard().getId();
+                String standardId = evaluation.getStandard().getId();
 
                 testComplianceMap.computeIfAbsent(testId, k -> new ArrayList<>()).add(standardId);
             }
@@ -402,5 +402,20 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
     private void createComplianceStandardAssociations(List<Test> tests, List<ComplianceStandard> standards) {
         LogEvent.logInfo("ComplianceStandardConfigMenuRestController", "createComplianceStandardAssociations",
                 "Created compliance associations: " + tests.size() + " tests, " + standards.size() + " standards");
+    }
+
+    @Override
+    protected String findLocalForward(String forward) {
+        return "compliance-standard-config-api";
+    }
+
+    @Override
+    protected String getPageTitleKey() {
+        return "complianceStandard.config.api.title";
+    }
+
+    @Override
+    protected String getPageSubtitleKey() {
+        return "complianceStandard.config.api.subtitle";
     }
 }

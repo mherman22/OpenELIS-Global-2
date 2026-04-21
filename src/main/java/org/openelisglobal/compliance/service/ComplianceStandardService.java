@@ -139,6 +139,26 @@ public interface ComplianceStandardService extends BaseObjectService<ComplianceS
     List<ComplianceStandard> getStandardsForExport();
 
     /**
+     * Get standard with eagerly loaded parameter groups (Constitutional requirement: compile data within transaction)
+     */
+    ComplianceStandard getStandardWithGroups(String standardId);
+
+    /**
+     * Supersede a standard by setting its status and linking to replacement
+     */
+    void supersedseStandard(String oldStandardId, String newStandardId);
+
+    /**
+     * Archive a standard (set status to ARCHIVED)
+     */
+    void archive(String standardId);
+
+    /**
+     * Get version for evaluation (constitutional requirement: version-lock semantics)
+     */
+    String getVersionForEvaluation(String standardId);
+
+    /**
      * Get the latest version of each regulation
      */
     List<ComplianceStandard> getLatestVersionStandards();

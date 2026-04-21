@@ -46,10 +46,10 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
 
         // Create test standard and parameter group
         ComplianceStandard testStandard = createTestStandard();
-        testStandardId = complianceStandardService.save(testStandard);
+        testStandardId = complianceStandardService.save(testStandard).getId();
 
         ParameterGroup testGroup = createTestParameterGroup(testStandardId);
-        testGroupId = parameterGroupService.save(testGroup);
+        testGroupId = parameterGroupService.save(testGroup).getId();
 
         // Create test threshold
         testThreshold = createTestThreshold(testGroupId);
@@ -65,7 +65,8 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
         ComplianceThreshold newThreshold = createValidThreshold(testGroupId, "pH", "pH Level", ThresholdType.RANGE,
                 new BigDecimal("6.5"), new BigDecimal("8.5"), "pH units");
 
-        String savedId = complianceThresholdService.save(newThreshold);
+        ComplianceThreshold savedThreshold = complianceThresholdService.save(newThreshold);
+        String savedId = savedThreshold.getId();
 
         assertNotNull("Saved ID should not be null", savedId);
         assertEquals("Threshold ID should match", newThreshold.getId(), savedId);
@@ -103,7 +104,7 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
     @Test
     public void testUpdateThreshold_shouldUpdateExistingThreshold() {
         // RED: Will fail - update method doesn't exist
-        String thresholdId = complianceThresholdService.save(testThreshold);
+        String thresholdId = complianceThresholdService.save(testThreshold).getId();
         ComplianceThreshold savedThreshold = complianceThresholdService.get(thresholdId);
 
         BigDecimal originalMinValue = savedThreshold.getMinValue();
@@ -123,14 +124,15 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
     @Test
     public void testDeleteThreshold_shouldPreventDeletionWithEvaluations() {
         // RED: Will fail - deletion protection doesn't exist
-        String thresholdId = complianceThresholdService.save(testThreshold);
+        String thresholdId = complianceThresholdService.save(testThreshold).getId();
 
         // Simulate threshold with linked evaluations
         // (In real implementation, this would be checked via ComplianceEvaluation
         // table)
 
         try {
-            complianceThresholdService.delete(thresholdId);
+            ComplianceThreshold thresholdToDelete = complianceThresholdService.get(thresholdId);
+            complianceThresholdService.delete(thresholdToDelete);
             // If threshold has evaluations, deletion should fail
         } catch (Exception e) {
             assertTrue("Should prevent deletion when evaluations exist", e.getMessage().contains("linked evaluations"));
@@ -177,7 +179,7 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
         ComplianceThreshold rangeThreshold = createValidThreshold(testGroupId, "pH", "pH Level", ThresholdType.RANGE,
                 new BigDecimal("6.5"), new BigDecimal("8.5"), "pH units");
 
-        String thresholdId = complianceThresholdService.save(rangeThreshold);
+        String thresholdId = complianceThresholdService.save(rangeThreshold).getId();
 
         // Test value within range
         boolean withinRange = complianceThresholdService.evaluateThreshold(thresholdId, new BigDecimal("7.2"));
@@ -196,7 +198,7 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
         // RED: Will fail - method doesn't exist
         // Tests constitutional requirement: services must compile data within
         // transaction
-        String thresholdId = complianceThresholdService.save(testThreshold);
+        String thresholdId = complianceThresholdService.save(testThreshold).getId();
 
         ComplianceThreshold thresholdWithEvaluations = complianceThresholdService
                 .getThresholdWithEvaluations(thresholdId);
@@ -322,6 +324,6 @@ public class ComplianceThresholdServiceTest extends BaseWebContextSensitiveTest 
         ComplianceThreshold threshold = createValidThreshold(groupId, parameterCode, "Test " + parameterCode,
                 thresholdType, new BigDecimal("1.0"), new BigDecimal("10.0"), "units");
         threshold.setSortOrder(sortOrder);
-        return complianceThresholdService.save(threshold);
+        return complianceThresholdService.save(threshold).getId();
     }
 }

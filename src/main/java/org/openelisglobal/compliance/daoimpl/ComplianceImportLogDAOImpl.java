@@ -33,7 +33,6 @@ public class ComplianceImportLogDAOImpl extends BaseDAOImpl<ComplianceImportLog,
         super(ComplianceImportLog.class);
     }
 
-    @Override
     @Transactional(readOnly = true)
     public void getData(ComplianceImportLog complianceImportLog) throws LIMSRuntimeException {
         try {
