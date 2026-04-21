@@ -1,0 +1,353 @@
+/* ComplianceStandardImportModal.css - Carbon Design System styling */
+
+.compliance-import-modal {
+  padding: 1rem 0;
+  min-height: 400px;
+}
+
+/* Upload Step Styling */
+.import-modal__upload {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.import-modal__format-info {
+  background-color: var(--cds-ui-01);
+  border-radius: var(--cds-border-radius-05);
+  padding: 1.5rem;
+  border: 1px solid var(--cds-border-subtle-01);
+}
+
+.import-modal__format-info h4 {
+  margin: 0 0 1rem 0;
+  color: var(--cds-text-primary);
+  font-weight: var(--cds-font-weight-medium);
+}
+
+.import-modal__format-info p {
+  margin: 0 0 0.75rem 0;
+  color: var(--cds-text-secondary);
+}
+
+.import-modal__format-info ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: var(--cds-text-secondary);
+}
+
+.import-modal__format-info li {
+  margin-bottom: 0.25rem;
+  font-family: var(--cds-font-mono);
+  font-size: var(--cds-code-01-font-size);
+}
+
+/* Preview Step Styling */
+.import-modal__preview {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.import-modal__preview h4 {
+  margin: 0;
+  color: var(--cds-text-primary);
+  font-weight: var(--cds-font-weight-medium);
+}
+
+.import-modal__errors {
+  background-color: var(--cds-support-error-inverse);
+  border: 1px solid var(--cds-support-error);
+  border-radius: var(--cds-border-radius-05);
+  padding: 1rem;
+}
+
+.import-modal__error-detail {
+  margin: 0.5rem 0 0 0;
+  color: var(--cds-text-error);
+  font-size: var(--cds-caption-01-font-size);
+  font-family: var(--cds-font-mono);
+}
+
+.import-modal__error-more {
+  margin: 0.5rem 0 0 0;
+  color: var(--cds-text-secondary);
+  font-style: italic;
+  font-size: var(--cds-caption-01-font-size);
+}
+
+.import-modal__options {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: var(--cds-ui-01);
+  border-radius: var(--cds-border-radius-05);
+  border: 1px solid var(--cds-border-subtle-01);
+}
+
+.import-modal__options .cds--toggle {
+  margin-bottom: 1rem;
+}
+
+.import-modal__options .cds--toggle:last-child {
+  margin-bottom: 0;
+}
+
+/* Import Progress Styling */
+.import-modal__import {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  min-height: 200px;
+}
+
+.import-modal__import .cds--inline-loading {
+  margin-bottom: 1rem;
+}
+
+.import-modal__import .cds--progress-bar {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Results Step Styling */
+.import-modal__results {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.import-modal__results h4 {
+  margin: 0;
+  color: var(--cds-text-primary);
+  font-weight: var(--cds-font-weight-medium);
+}
+
+.import-modal__results-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: var(--cds-ui-01);
+  border-radius: var(--cds-border-radius-05);
+  border: 1px solid var(--cds-border-subtle-01);
+}
+
+/* File Uploader Enhancements */
+.cds--file__container {
+  width: 100%;
+}
+
+.cds--file-browse-btn {
+  background-color: var(--cds-button-tertiary);
+  border: 1px solid var(--cds-button-tertiary);
+}
+
+.cds--file-browse-btn:hover {
+  background-color: var(--cds-button-tertiary-hover);
+}
+
+.cds--file-browse-btn:focus {
+  outline: 2px solid var(--cds-focus);
+  outline-offset: -2px;
+}
+
+.cds--file__drop-container {
+  border: 2px dashed var(--cds-border-subtle-01);
+  border-radius: var(--cds-border-radius-05);
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s;
+}
+
+.cds--file__drop-container:hover {
+  border-color: var(--cds-border-interactive);
+}
+
+.cds--file__drop-container--drag-over {
+  border-color: var(--cds-focus);
+  background-color: var(--cds-ui-01);
+}
+
+/* Data Table in Preview */
+.import-modal__preview .cds--data-table-container {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid var(--cds-border-subtle-01);
+  border-radius: var(--cds-border-radius-05);
+}
+
+.import-modal__preview .cds--data-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--cds-ui-03);
+}
+
+.import-modal__preview .cds--data-table td {
+  font-size: var(--cds-caption-01-font-size);
+  padding: 0.5rem;
+}
+
+/* Validation Status Icons in Table */
+.import-modal__validation-status {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.import-modal__validation-status--valid {
+  color: var(--cds-support-success);
+}
+
+.import-modal__validation-status--error {
+  color: var(--cds-support-error);
+}
+
+.import-modal__validation-status--warning {
+  color: var(--cds-support-warning);
+}
+
+/* Tag Styling */
+.cds--tag {
+  margin-right: 0.5rem;
+}
+
+.cds--tag--red {
+  background-color: var(--cds-support-error);
+  color: var(--cds-inverse-01);
+}
+
+.cds--tag--green {
+  background-color: var(--cds-support-success);
+  color: var(--cds-inverse-01);
+}
+
+.cds--tag--yellow {
+  background-color: var(--cds-support-warning);
+  color: var(--cds-inverse-01);
+}
+
+/* Progress Bar Enhancements */
+.cds--progress-bar__label {
+  margin-bottom: 0.5rem;
+  color: var(--cds-text-primary);
+  font-weight: var(--cds-font-weight-medium);
+}
+
+.cds--progress-bar__bar {
+  background-color: var(--cds-ui-03);
+  border-radius: var(--cds-border-radius-05);
+  height: 8px;
+}
+
+.cds--progress-bar__bar::before {
+  background-color: var(--cds-interactive-01);
+  border-radius: var(--cds-border-radius-05);
+}
+
+/* Modal Footer Enhancements */
+.cds--modal-footer .cds--btn--primary {
+  background-color: var(--cds-button-primary);
+}
+
+.cds--modal-footer .cds--btn--primary:disabled {
+  background-color: var(--cds-button-disabled);
+  color: var(--cds-text-on-color-disabled);
+  cursor: not-allowed;
+}
+
+.cds--modal-footer .cds--btn--secondary {
+  background-color: transparent;
+  border: 1px solid var(--cds-button-secondary);
+  color: var(--cds-button-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .compliance-import-modal {
+    padding: 0.5rem 0;
+  }
+
+  .import-modal__format-info {
+    padding: 1rem;
+  }
+
+  .import-modal__format-info ul {
+    padding-left: 1rem;
+  }
+
+  .import-modal__results-summary {
+    flex-direction: column;
+  }
+
+  .import-modal__preview .cds--data-table-container {
+    font-size: var(--cds-caption-01-font-size);
+  }
+}
+
+/* Loading States */
+.import-modal__import .cds--loading {
+  min-height: auto;
+}
+
+.import-modal__import .cds--loading__stroke {
+  stroke: var(--cds-interactive-01);
+}
+
+/* Dark Theme Support */
+[data-theme="dark"] .import-modal__format-info,
+[data-theme="dark"] .import-modal__options,
+[data-theme="dark"] .import-modal__results-summary {
+  background-color: var(--cds-ui-01);
+  border-color: var(--cds-border-subtle-01);
+}
+
+[data-theme="dark"] .import-modal__errors {
+  background-color: rgba(218, 30, 40, 0.1);
+  border-color: var(--cds-support-error);
+}
+
+[data-theme="dark"] .cds--file__drop-container {
+  border-color: var(--cds-border-subtle-01);
+}
+
+[data-theme="dark"] .cds--file__drop-container:hover {
+  border-color: var(--cds-border-interactive);
+}
+
+/* High Contrast Support */
+@media (prefers-contrast: high) {
+  .import-modal__format-info,
+  .import-modal__options,
+  .import-modal__results-summary {
+    border: 2px solid var(--cds-text-primary);
+  }
+
+  .cds--tag {
+    border: 1px solid var(--cds-text-primary);
+  }
+
+  .cds--file__drop-container {
+    border: 2px solid var(--cds-text-primary);
+  }
+}
+
+/* Animation for step transitions */
+.compliance-import-modal {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

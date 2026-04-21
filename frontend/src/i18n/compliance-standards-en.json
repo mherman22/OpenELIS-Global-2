@@ -1,0 +1,156 @@
+{
+  "compliance.module.enabled": "Compliance module is enabled",
+  "compliance.module.disabled.title": "Compliance Module Disabled",
+  "compliance.module.disabled.message": "The compliance standards module is currently disabled. Please contact your administrator to enable this feature.",
+
+  "compliance.standards.breadcrumb": "Compliance Standards",
+  "compliance.standards.dashboard.title": "Compliance Standards Administration",
+  "compliance.standards.dashboard.description": "Manage regulatory compliance standards for environmental and vector testing",
+
+  "compliance.standards.table.title": "Compliance Standards",
+  "compliance.standards.table.description": "Showing {count} compliance standards",
+  "compliance.standards.table.header.name": "Standard Name",
+  "compliance.standards.table.header.issuingBody": "Issuing Body",
+  "compliance.standards.table.header.regulationNumber": "Regulation Number",
+  "compliance.standards.table.header.version": "Version",
+  "compliance.standards.table.header.effectiveDate": "Effective Date",
+  "compliance.standards.table.header.status": "Status",
+  "compliance.standards.table.header.countryRegion": "Country/Region",
+  "compliance.standards.table.header.actions": "Actions",
+
+  "compliance.standards.status.active": "Active",
+  "compliance.standards.status.draft": "Draft",
+  "compliance.standards.status.superseded": "Superseded",
+  "compliance.standards.status.archived": "Archived",
+  "compliance.standards.status.suspended": "Suspended",
+
+  "compliance.standards.action.view": "View standard details",
+  "compliance.standards.action.edit": "Edit standard",
+  "compliance.standards.action.add": "Add Standard",
+  "compliance.standards.action.import": "Import Standards",
+  "compliance.standards.action.export": "Export Standards",
+
+  "compliance.standards.search.placeholder": "Search standards by name, issuing body, or regulation number...",
+  "compliance.standards.search.label": "Search compliance standards",
+
+  "compliance.standards.loading": "Loading compliance standards...",
+
+  "compliance.standards.load.error.title": "Error Loading Standards",
+  "compliance.standards.load.error.message": "Failed to load compliance standards. Please try again.",
+
+  "compliance.standards.export.success.title": "Export Started",
+  "compliance.standards.export.success.message": "Standards export has been initiated. You will receive a notification when ready.",
+
+  "compliance.standards.view.modal.title": "View Compliance Standard",
+
+  "test.compliance.breadcrumb": "Compliance Integration",
+  "test.compliance.integration.title": "Test Compliance Integration",
+  "test.compliance.integration.description": "Configure compliance standards for {testName}",
+
+  "test.compliance.tab.assigned": "Assigned Standards",
+  "test.compliance.tab.qc": "QC Rules",
+  "test.compliance.tab.protocols": "Sampling Protocols",
+
+  "test.compliance.table.header.standardName": "Standard Name",
+  "test.compliance.table.header.regulationNumber": "Regulation Number",
+  "test.compliance.table.header.mandatory": "Mandatory",
+  "test.compliance.table.header.status": "Compliance Status",
+  "test.compliance.table.header.actions": "Actions",
+
+  "test.compliance.status.compliant": "Compliant",
+  "test.compliance.status.non_compliant": "Non-Compliant",
+  "test.compliance.status.pending": "Pending Evaluation",
+
+  "test.compliance.mandatory": "Mandatory",
+  "test.compliance.optional": "Optional",
+
+  "test.compliance.action.remove": "Remove standard",
+  "test.compliance.action.assign": "Assign Standard",
+  "test.compliance.action.bulkMode": "Bulk Assignment",
+
+  "test.compliance.search.placeholder": "Search assigned standards...",
+
+  "test.compliance.assigned.table.title": "Assigned Compliance Standards",
+  "test.compliance.assigned.table.description": "{count} standards assigned to this test",
+
+  "test.compliance.assign.modal.title": "Assign Compliance Standard",
+  "test.compliance.assign.standard.label": "Select Compliance Standard",
+  "test.compliance.assign.standard.helper": "Choose a compliance standard to assign to this test",
+  "test.compliance.assign.mandatory.label": "Mandatory Compliance",
+  "test.compliance.assign.mandatory.helper": "When enabled, compliance with this standard is required",
+  "test.compliance.assign.parameters.label": "Applicable Parameters",
+  "test.compliance.assign.parameters.helper": "Specify which test parameters this standard applies to (optional)",
+
+  "test.compliance.load.error.title": "Loading Error",
+  "test.compliance.load.error.message": "Failed to load test compliance data",
+
+  "test.compliance.assign.success.title": "Standard Assigned",
+  "test.compliance.assign.success.message": "Compliance standard successfully assigned to test",
+
+  "test.compliance.assign.error.title": "Assignment Error",
+  "test.compliance.remove.success.title": "Standard Removed",
+  "test.compliance.remove.success.message": "Compliance standard removed from test",
+
+  "test.compliance.remove.error.title": "Removal Error",
+
+  "test.compliance.loading": "Loading test compliance data...",
+
+  "test.compliance.qc.placeholder": "QC rule integration will be implemented here. This will allow configuration of Westgard rules, control charts, and other QC methods tied to compliance standards.",
+  "test.compliance.protocols.placeholder": "Sampling protocol association will be implemented here. This will allow linking sampling procedures to regulatory compliance requirements.",
+
+  "import.modal.title": "Import Compliance Standards",
+  "import.modal.label": "CSV Import",
+
+  "import.upload.label": "Upload CSV File",
+  "import.upload.description": "Select a CSV file containing compliance standards data",
+  "import.upload.button": "Add file",
+  "import.upload.icon": "Delete file",
+
+  "import.format.title": "Required CSV Format",
+  "import.format.description": "Your CSV file must include the following columns:",
+
+  "import.preview.title": "Import Preview",
+  "import.preview.errors": "{count} validation errors found",
+  "import.preview.more-errors": "...and {count} more errors",
+  "import.preview.table.title": "Preview Data (first 10 rows)",
+
+  "import.option.updateExisting": "Update existing standards",
+  "import.option.skipErrors": "Skip rows with errors",
+
+  "import.progress.description": "Importing compliance standards...",
+  "import.progress.label": "Import Progress",
+
+  "import.results.title": "Import Results",
+  "import.results.success": "{count} standards imported",
+  "import.results.errors": "{count} errors",
+  "import.results.warnings": "{count} warnings",
+
+  "import.file.error.title": "Invalid File Type",
+  "import.file.error.message": "Please select a CSV file",
+
+  "import.preview.error.title": "Preview Error",
+
+  "import.success.title": "Import Completed",
+  "import.success.message": "Compliance standards imported successfully",
+
+  "import.error.title": "Import Error",
+
+  "button.view": "View",
+  "button.edit": "Edit",
+  "button.remove": "Remove",
+  "button.assign": "Assign",
+  "button.import": "Import",
+  "button.export": "Export",
+  "button.close": "Close",
+  "button.cancel": "Cancel",
+  "button.back": "Back",
+  "button.done": "Done",
+
+  "breadcrumb.home": "Home",
+  "test.catalog.breadcrumb": "Test Catalog",
+
+  "pagination.backward": "Previous page",
+  "pagination.forward": "Next page",
+  "pagination.itemsPerPage": "Items per page:",
+  "pagination.pageNumber": "Page Number"
+}

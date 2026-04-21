@@ -1,0 +1,251 @@
+/* TestComplianceIntegration.css - Carbon Design System styling */
+
+.test-compliance-integration {
+  padding: 1rem;
+  background-color: var(--cds-ui-background);
+}
+
+.test-compliance-integration__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: var(--cds-ui-01);
+  border-radius: var(--cds-border-radius-05);
+}
+
+.test-compliance-integration__title-section h1 {
+  margin: 0 0 0.5rem 0;
+  color: var(--cds-text-primary);
+  font-weight: var(--cds-font-weight-medium);
+}
+
+.test-compliance-integration__title-section p {
+  margin: 0;
+  color: var(--cds-text-secondary);
+  font-size: var(--cds-body-01-font-size);
+}
+
+.test-compliance-integration__actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.test-compliance-integration__content {
+  margin-bottom: 2rem;
+}
+
+.test-compliance-integration__assigned,
+.test-compliance-integration__qc,
+.test-compliance-integration__protocols {
+  padding: 1rem 0;
+}
+
+.test-compliance-integration__assigned .cds--search {
+  margin-bottom: 1.5rem;
+}
+
+/* Status indicators */
+.test-compliance-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.test-compliance-status--compliant {
+  color: var(--cds-support-success);
+}
+
+.test-compliance-status--non-compliant {
+  color: var(--cds-support-error);
+}
+
+.test-compliance-status--pending {
+  color: var(--cds-support-warning);
+}
+
+/* Action buttons */
+.test-compliance-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.test-compliance-actions .cds--btn--ghost {
+  min-height: auto;
+  padding: 0.375rem 0.75rem;
+}
+
+/* Bulk assignment mode */
+.test-compliance-integration--bulk-mode {
+  background-color: var(--cds-ui-02);
+  border: 1px solid var(--cds-border-subtle-01);
+  border-radius: var(--cds-border-radius-05);
+}
+
+.test-compliance-integration--bulk-mode .test-compliance-integration__header {
+  background-color: var(--cds-ui-03);
+}
+
+/* Tab content styling */
+.cds--tab-content {
+  padding: 1.5rem 0;
+}
+
+/* Modal form styling */
+.cds--modal .cds--form-group {
+  margin-bottom: 1.5rem;
+}
+
+.cds--modal .cds--toggle__label {
+  margin-bottom: 0.5rem;
+}
+
+/* Data table enhancements */
+.cds--data-table-container {
+  background-color: var(--cds-ui-01);
+}
+
+.cds--data-table th {
+  background-color: var(--cds-ui-03);
+  color: var(--cds-text-primary);
+  font-weight: var(--cds-font-weight-medium);
+}
+
+.cds--data-table td {
+  border-bottom: 1px solid var(--cds-border-subtle-01);
+}
+
+.cds--data-table tr:hover td {
+  background-color: var(--cds-ui-02);
+}
+
+/* Tag styling in table cells */
+.cds--tag {
+  margin-right: 0.5rem;
+}
+
+.cds--tag--red {
+  background-color: var(--cds-support-error);
+  color: var(--cds-inverse-01);
+}
+
+.cds--tag--green {
+  background-color: var(--cds-support-success);
+  color: var(--cds-inverse-01);
+}
+
+.cds--tag--gray {
+  background-color: var(--cds-ui-04);
+  color: var(--cds-text-primary);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .test-compliance-integration__header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .test-compliance-integration__actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .cds--data-table-container {
+    overflow-x: auto;
+  }
+}
+
+/* Loading state */
+.test-compliance-integration .cds--loading {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Empty state */
+.test-compliance-integration__empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--cds-text-secondary);
+}
+
+.test-compliance-integration__empty h3 {
+  margin-bottom: 0.5rem;
+  color: var(--cds-text-primary);
+}
+
+/* Search enhancements */
+.test-compliance-integration__search {
+  margin-bottom: 1.5rem;
+}
+
+.test-compliance-integration__search .cds--search {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* QC and Protocol placeholder styling */
+.test-compliance-integration__qc,
+.test-compliance-integration__protocols {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--cds-ui-01);
+  border-radius: var(--cds-border-radius-05);
+  border: 1px dashed var(--cds-border-subtle-01);
+}
+
+.test-compliance-integration__qc p,
+.test-compliance-integration__protocols p {
+  color: var(--cds-text-secondary);
+  font-style: italic;
+  text-align: center;
+  max-width: 600px;
+  margin: 0;
+}
+
+/* Focus states and accessibility */
+.cds--btn:focus,
+.cds--search-input:focus,
+.cds--select-input:focus,
+.cds--text-input:focus {
+  outline: 2px solid var(--cds-focus);
+  outline-offset: -2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .test-compliance-integration {
+    border: 1px solid var(--cds-text-primary);
+  }
+
+  .test-compliance-integration__header {
+    border: 1px solid var(--cds-text-primary);
+  }
+
+  .cds--tag {
+    border: 1px solid var(--cds-text-primary);
+  }
+}
+
+/* Dark theme support */
+[data-theme="dark"] .test-compliance-integration {
+  background-color: var(--cds-ui-background);
+}
+
+[data-theme="dark"] .test-compliance-integration__header {
+  background-color: var(--cds-ui-01);
+  border: 1px solid var(--cds-border-subtle-01);
+}
+
+[data-theme="dark"] .cds--data-table-container {
+  background-color: var(--cds-ui-01);
+  border: 1px solid var(--cds-border-subtle-01);
+}

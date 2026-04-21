@@ -1,0 +1,156 @@
+{
+  "compliance.module.enabled": "Modul kepatuhan diaktifkan",
+  "compliance.module.disabled.title": "Modul Kepatuhan Dinonaktifkan",
+  "compliance.module.disabled.message": "Modul standar kepatuhan saat ini dinonaktifkan. Silakan hubungi administrator untuk mengaktifkan fitur ini.",
+
+  "compliance.standards.breadcrumb": "Standar Kepatuhan",
+  "compliance.standards.dashboard.title": "Administrasi Standar Kepatuhan",
+  "compliance.standards.dashboard.description": "Kelola standar kepatuhan regulatori untuk pengujian lingkungan dan vektor",
+
+  "compliance.standards.table.title": "Standar Kepatuhan",
+  "compliance.standards.table.description": "Menampilkan {count} standar kepatuhan",
+  "compliance.standards.table.header.name": "Nama Standar",
+  "compliance.standards.table.header.issuingBody": "Badan Penerbit",
+  "compliance.standards.table.header.regulationNumber": "Nomor Peraturan",
+  "compliance.standards.table.header.version": "Versi",
+  "compliance.standards.table.header.effectiveDate": "Tanggal Berlaku",
+  "compliance.standards.table.header.status": "Status",
+  "compliance.standards.table.header.countryRegion": "Negara/Wilayah",
+  "compliance.standards.table.header.actions": "Aksi",
+
+  "compliance.standards.status.active": "Aktif",
+  "compliance.standards.status.draft": "Rancangan",
+  "compliance.standards.status.superseded": "Digantikan",
+  "compliance.standards.status.archived": "Diarsipkan",
+  "compliance.standards.status.suspended": "Ditangguhkan",
+
+  "compliance.standards.action.view": "Lihat detail standar",
+  "compliance.standards.action.edit": "Edit standar",
+  "compliance.standards.action.add": "Tambah Standar",
+  "compliance.standards.action.import": "Impor Standar",
+  "compliance.standards.action.export": "Ekspor Standar",
+
+  "compliance.standards.search.placeholder": "Cari standar berdasarkan nama, badan penerbit, atau nomor peraturan...",
+  "compliance.standards.search.label": "Cari standar kepatuhan",
+
+  "compliance.standards.loading": "Memuat standar kepatuhan...",
+
+  "compliance.standards.load.error.title": "Kesalahan Memuat Standar",
+  "compliance.standards.load.error.message": "Gagal memuat standar kepatuhan. Silakan coba lagi.",
+
+  "compliance.standards.export.success.title": "Ekspor Dimulai",
+  "compliance.standards.export.success.message": "Ekspor standar telah dimulai. Anda akan menerima notifikasi saat siap.",
+
+  "compliance.standards.view.modal.title": "Lihat Standar Kepatuhan",
+
+  "test.compliance.breadcrumb": "Integrasi Kepatuhan",
+  "test.compliance.integration.title": "Integrasi Kepatuhan Tes",
+  "test.compliance.integration.description": "Konfigurasi standar kepatuhan untuk {testName}",
+
+  "test.compliance.tab.assigned": "Standar yang Ditugaskan",
+  "test.compliance.tab.qc": "Aturan QC",
+  "test.compliance.tab.protocols": "Protokol Sampling",
+
+  "test.compliance.table.header.standardName": "Nama Standar",
+  "test.compliance.table.header.regulationNumber": "Nomor Peraturan",
+  "test.compliance.table.header.mandatory": "Wajib",
+  "test.compliance.table.header.status": "Status Kepatuhan",
+  "test.compliance.table.header.actions": "Aksi",
+
+  "test.compliance.status.compliant": "Patuh",
+  "test.compliance.status.non_compliant": "Tidak Patuh",
+  "test.compliance.status.pending": "Evaluasi Tertunda",
+
+  "test.compliance.mandatory": "Wajib",
+  "test.compliance.optional": "Opsional",
+
+  "test.compliance.action.remove": "Hapus standar",
+  "test.compliance.action.assign": "Tugaskan Standar",
+  "test.compliance.action.bulkMode": "Penugasan Massal",
+
+  "test.compliance.search.placeholder": "Cari standar yang ditugaskan...",
+
+  "test.compliance.assigned.table.title": "Standar Kepatuhan yang Ditugaskan",
+  "test.compliance.assigned.table.description": "{count} standar ditugaskan ke tes ini",
+
+  "test.compliance.assign.modal.title": "Tugaskan Standar Kepatuhan",
+  "test.compliance.assign.standard.label": "Pilih Standar Kepatuhan",
+  "test.compliance.assign.standard.helper": "Pilih standar kepatuhan untuk ditugaskan ke tes ini",
+  "test.compliance.assign.mandatory.label": "Kepatuhan Wajib",
+  "test.compliance.assign.mandatory.helper": "Jika diaktifkan, kepatuhan terhadap standar ini diperlukan",
+  "test.compliance.assign.parameters.label": "Parameter yang Berlaku",
+  "test.compliance.assign.parameters.helper": "Tentukan parameter tes mana yang berlaku untuk standar ini (opsional)",
+
+  "test.compliance.load.error.title": "Kesalahan Memuat",
+  "test.compliance.load.error.message": "Gagal memuat data kepatuhan tes",
+
+  "test.compliance.assign.success.title": "Standar Ditugaskan",
+  "test.compliance.assign.success.message": "Standar kepatuhan berhasil ditugaskan ke tes",
+
+  "test.compliance.assign.error.title": "Kesalahan Penugasan",
+  "test.compliance.remove.success.title": "Standar Dihapus",
+  "test.compliance.remove.success.message": "Standar kepatuhan dihapus dari tes",
+
+  "test.compliance.remove.error.title": "Kesalahan Penghapusan",
+
+  "test.compliance.loading": "Memuat data kepatuhan tes...",
+
+  "test.compliance.qc.placeholder": "Integrasi aturan QC akan diimplementasikan di sini. Ini akan memungkinkan konfigurasi aturan Westgard, grafik kontrol, dan metode QC lainnya yang terkait dengan standar kepatuhan.",
+  "test.compliance.protocols.placeholder": "Asosiasi protokol sampling akan diimplementasikan di sini. Ini akan memungkinkan menghubungkan prosedur sampling dengan persyaratan kepatuhan regulatori.",
+
+  "import.modal.title": "Impor Standar Kepatuhan",
+  "import.modal.label": "Impor CSV",
+
+  "import.upload.label": "Unggah File CSV",
+  "import.upload.description": "Pilih file CSV yang berisi data standar kepatuhan",
+  "import.upload.button": "Tambah file",
+  "import.upload.icon": "Hapus file",
+
+  "import.format.title": "Format CSV yang Diperlukan",
+  "import.format.description": "File CSV Anda harus menyertakan kolom berikut:",
+
+  "import.preview.title": "Pratinjau Impor",
+  "import.preview.errors": "{count} kesalahan validasi ditemukan",
+  "import.preview.more-errors": "...dan {count} kesalahan lainnya",
+  "import.preview.table.title": "Data Pratinjau (10 baris pertama)",
+
+  "import.option.updateExisting": "Perbarui standar yang ada",
+  "import.option.skipErrors": "Lewati baris dengan kesalahan",
+
+  "import.progress.description": "Mengimpor standar kepatuhan...",
+  "import.progress.label": "Progres Impor",
+
+  "import.results.title": "Hasil Impor",
+  "import.results.success": "{count} standar diimpor",
+  "import.results.errors": "{count} kesalahan",
+  "import.results.warnings": "{count} peringatan",
+
+  "import.file.error.title": "Tipe File Tidak Valid",
+  "import.file.error.message": "Silakan pilih file CSV",
+
+  "import.preview.error.title": "Kesalahan Pratinjau",
+
+  "import.success.title": "Impor Selesai",
+  "import.success.message": "Standar kepatuhan berhasil diimpor",
+
+  "import.error.title": "Kesalahan Impor",
+
+  "button.view": "Lihat",
+  "button.edit": "Edit",
+  "button.remove": "Hapus",
+  "button.assign": "Tugaskan",
+  "button.import": "Impor",
+  "button.export": "Ekspor",
+  "button.close": "Tutup",
+  "button.cancel": "Batal",
+  "button.back": "Kembali",
+  "button.done": "Selesai",
+
+  "breadcrumb.home": "Beranda",
+  "test.catalog.breadcrumb": "Katalog Tes",
+
+  "pagination.backward": "Halaman sebelumnya",
+  "pagination.forward": "Halaman berikutnya",
+  "pagination.itemsPerPage": "Item per halaman:",
+  "pagination.pageNumber": "Nomor Halaman"
+}

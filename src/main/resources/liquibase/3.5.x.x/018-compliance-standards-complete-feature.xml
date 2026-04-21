@@ -1,0 +1,890 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!--
+    ========================================================================
+    COMPLIANCE STANDARDS ADMINISTRATION - COMPLETE FEATURE
+    ========================================================================
+    This file contains all database schema changes for the Compliance Standards
+    Administration feature (OGC-528 S-01) in the Vector/Environmental Testing Module.
+
+    Feature Components:
+    1. Compliance Standards registry
+    2. Parameter Groups for logical organization
+    3. Compliance Thresholds for evaluation criteria
+    4. Compliance Evaluations for audit trail
+    5. Evaluation Results for individual measurements
+    6. Test-Compliance Standard associations
+    7. Import/Export audit logging
+    8. QC Rule integration
+
+    All changes are grouped logically with proper rollback support.
+    ========================================================================
+    -->
+
+    <!-- ================================================================ -->
+    <!-- SEQUENCES: Create all sequences for the compliance feature      -->
+    <!-- ================================================================ -->
+
+    <changeSet id="compliance-feature-create-sequences" author="claude-code">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not><sequenceExists sequenceName="compliance_standard_seq"/></not>
+                <not><sequenceExists sequenceName="parameter_group_seq"/></not>
+                <not><sequenceExists sequenceName="compliance_threshold_seq"/></not>
+                <not><sequenceExists sequenceName="compliance_evaluation_seq"/></not>
+                <not><sequenceExists sequenceName="evaluation_result_seq"/></not>
+                <not><sequenceExists sequenceName="test_compliance_standard_seq"/></not>
+                <not><sequenceExists sequenceName="compliance_import_log_seq"/></not>
+                <not><sequenceExists sequenceName="qc_compliance_rule_seq"/></not>
+            </and>
+        </preConditions>
+
+        <createSequence sequenceName="compliance_standard_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="parameter_group_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="compliance_threshold_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="compliance_evaluation_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="evaluation_result_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="test_compliance_standard_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="compliance_import_log_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="qc_compliance_rule_seq" startValue="1" incrementBy="1"/>
+
+        <rollback>
+            <dropSequence sequenceName="compliance_standard_seq"/>
+            <dropSequence sequenceName="parameter_group_seq"/>
+            <dropSequence sequenceName="compliance_threshold_seq"/>
+            <dropSequence sequenceName="compliance_evaluation_seq"/>
+            <dropSequence sequenceName="evaluation_result_seq"/>
+            <dropSequence sequenceName="test_compliance_standard_seq"/>
+            <dropSequence sequenceName="compliance_import_log_seq"/>
+            <dropSequence sequenceName="qc_compliance_rule_seq"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ================================================================ -->
+    <!-- CORE TABLES: Main compliance standards and supporting entities  -->
+    <!-- ================================================================ -->
+
+    <changeSet id="compliance-feature-create-core-tables" author="claude-code">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not><tableExists tableName="compliance_standard"/></not>
+                <not><tableExists tableName="parameter_group"/></not>
+                <not><tableExists tableName="compliance_threshold"/></not>
+                <not><tableExists tableName="compliance_evaluation"/></not>
+                <not><tableExists tableName="evaluation_result"/></not>
+                <not><tableExists tableName="test_compliance_standard"/></not>
+                <not><tableExists tableName="compliance_import_log"/></not>
+                <not><tableExists tableName="qc_compliance_rule"/></not>
+            </and>
+        </preConditions>
+
+        <!-- 1. COMPLIANCE_STANDARD: Main standards registry -->
+        <createTable tableName="compliance_standard">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fhir_uuid" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="display_name" type="VARCHAR(500)"/>
+            <column name="issuing_body" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="regulation_number" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="VARCHAR(50)"/>
+            <column name="effective_date" type="DATE"/>
+            <column name="expiry_date" type="DATE"/>
+            <column name="country_region" type="VARCHAR(100)"/>
+            <column name="applicable_sample_types" type="TEXT"/>
+            <column name="status" type="VARCHAR(50)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="regulatory_context" type="TEXT"/>
+            <column name="enforcement_authority" type="VARCHAR(255)"/>
+            <column name="superseded_by_id" type="INTEGER"/>
+            <column name="parameter_types" type="TEXT"/>
+            <column name="thresholds" type="TEXT"/>
+            <column name="units" type="TEXT"/>
+            <column name="is_pre_seeded" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="localized_name_id" type="INTEGER"/>
+            <column name="created_date" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="INT"/>
+            <column name="archived" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="archived_date" type="TIMESTAMP"/>
+            <column name="sys_user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastupdated" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- 2. PARAMETER_GROUP: Logical grouping of parameters -->
+        <createTable tableName="parameter_group">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fhir_uuid" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="standard_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="sort_order" type="INTEGER" defaultValue="0"/>
+            <column name="is_mandatory" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="created_date" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="INT"/>
+            <column name="archived" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="archived_date" type="TIMESTAMP"/>
+            <column name="sys_user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastupdated" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- 3. COMPLIANCE_THRESHOLD: Individual parameter thresholds -->
+        <createTable tableName="compliance_threshold">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fhir_uuid" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="group_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parameter_code" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="display_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="threshold_type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="min_value" type="DECIMAL(15,6)"/>
+            <column name="max_value" type="DECIMAL(15,6)"/>
+            <column name="target_value" type="DECIMAL(15,6)"/>
+            <column name="units" type="VARCHAR(50)"/>
+            <column name="method_reference" type="VARCHAR(255)"/>
+            <column name="detection_limit" type="DECIMAL(15,6)"/>
+            <column name="is_mandatory" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="sort_order" type="INTEGER" defaultValue="0"/>
+            <column name="validation_rules" type="TEXT"/>
+            <column name="notes" type="TEXT"/>
+            <column name="created_date" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="INT"/>
+            <column name="archived" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="archived_date" type="TIMESTAMP"/>
+            <column name="sys_user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastupdated" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- 4. COMPLIANCE_EVALUATION: Evaluation records -->
+        <createTable tableName="compliance_evaluation">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fhir_uuid" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sample_id" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="standard_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="standard_version" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="evaluation_status" type="VARCHAR(50)" defaultValue="PENDING">
+                <constraints nullable="false"/>
+            </column>
+            <column name="overall_compliance" type="BOOLEAN"/>
+            <column name="compliance_percentage" type="DECIMAL(5,2)"/>
+            <column name="evaluation_date" type="TIMESTAMP"/>
+            <column name="completed_date" type="TIMESTAMP"/>
+            <column name="reviewed_date" type="TIMESTAMP"/>
+            <column name="evaluated_by" type="VARCHAR(100)"/>
+            <column name="reviewed_by" type="VARCHAR(100)"/>
+            <column name="evaluation_notes" type="TEXT"/>
+            <column name="corrective_actions" type="TEXT"/>
+            <column name="follow_up_required" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="follow_up_date" type="DATE"/>
+            <column name="regulatory_notification_sent" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="created_date" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="INT"/>
+            <column name="archived" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="archived_date" type="TIMESTAMP"/>
+            <column name="sys_user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastupdated" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- 5. EVALUATION_RESULT: Individual measurement results -->
+        <createTable tableName="evaluation_result">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fhir_uuid" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="evaluation_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="threshold_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tested_value" type="DECIMAL(15,6)"/>
+            <column name="tested_value_text" type="VARCHAR(255)"/>
+            <column name="is_compliant" type="BOOLEAN"/>
+            <column name="variance_from_target" type="DECIMAL(15,6)"/>
+            <column name="variance_percentage" type="DECIMAL(5,2)"/>
+            <column name="exceeded_by" type="DECIMAL(15,6)"/>
+            <column name="measurement_method" type="VARCHAR(255)"/>
+            <column name="measurement_date" type="TIMESTAMP"/>
+            <column name="measurement_by" type="VARCHAR(100)"/>
+            <column name="quality_flags" type="TEXT"/>
+            <column name="validation_errors" type="TEXT"/>
+            <column name="detection_limit_applied" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="retest_required" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="retest_reason" type="TEXT"/>
+            <column name="created_date" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="INT"/>
+            <column name="archived" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="archived_date" type="TIMESTAMP"/>
+            <column name="sys_user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastupdated" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- 6. TEST_COMPLIANCE_STANDARD: Junction table for test-standard associations -->
+        <createTable tableName="test_compliance_standard">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fhir_uuid" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="test_id" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="compliance_standard_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="applicable_parameters" type="TEXT"/>
+            <column name="mandatory" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="sort_order" type="INTEGER" defaultValue="0"/>
+            <column name="created_date" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="INT"/>
+            <column name="archived" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="archived_date" type="TIMESTAMP"/>
+            <column name="sys_user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastupdated" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- 7. COMPLIANCE_IMPORT_LOG: Audit trail for import/export operations -->
+        <createTable tableName="compliance_import_log">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fhir_uuid" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="import_type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="import_source" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="import_status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="import_start_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="import_end_time" type="TIMESTAMP"/>
+            <column name="records_processed" type="INTEGER" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="records_successful" type="INTEGER" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="records_failed" type="INTEGER" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="records_skipped" type="INTEGER" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="import_summary" type="TEXT"/>
+            <column name="error_details" type="TEXT"/>
+            <column name="file_name" type="VARCHAR(255)"/>
+            <column name="file_size" type="BIGINT"/>
+            <column name="file_checksum" type="VARCHAR(64)"/>
+            <column name="initiated_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="correlation_id" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="INT"/>
+            <column name="archived" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="archived_date" type="TIMESTAMP"/>
+            <column name="sys_user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastupdated" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- 8. QC_COMPLIANCE_RULE: QC rules integration with compliance standards -->
+        <createTable tableName="qc_compliance_rule">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fhir_uuid" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="compliance_standard_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="qc_rule_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="qc_rule_type" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rule_description" type="VARCHAR(1000)"/>
+            <column name="evaluation_frequency" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_mandatory" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="failure_action" type="VARCHAR(500)"/>
+            <column name="notification_recipients" type="VARCHAR(1000)"/>
+            <column name="sort_order" type="INTEGER" defaultValue="0"/>
+            <column name="configuration_json" type="VARCHAR(4000)"/>
+            <column name="created_date" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="INT"/>
+            <column name="archived" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="archived_date" type="TIMESTAMP"/>
+            <column name="sys_user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastupdated" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="qc_compliance_rule"/>
+            <dropTable tableName="compliance_import_log"/>
+            <dropTable tableName="test_compliance_standard"/>
+            <dropTable tableName="evaluation_result"/>
+            <dropTable tableName="compliance_evaluation"/>
+            <dropTable tableName="compliance_threshold"/>
+            <dropTable tableName="parameter_group"/>
+            <dropTable tableName="compliance_standard"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ================================================================ -->
+    <!-- FOREIGN KEY CONSTRAINTS: Establish relationships               -->
+    <!-- ================================================================ -->
+
+    <changeSet id="compliance-feature-add-foreign-keys" author="claude-code">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="compliance_standard"/>
+                <tableExists tableName="parameter_group"/>
+                <tableExists tableName="compliance_threshold"/>
+                <tableExists tableName="compliance_evaluation"/>
+                <tableExists tableName="evaluation_result"/>
+                <tableExists tableName="test_compliance_standard"/>
+                <tableExists tableName="qc_compliance_rule"/>
+            </and>
+        </preConditions>
+
+        <!-- Compliance Standard self-referential FK for supersession -->
+        <addForeignKeyConstraint
+            baseTableName="compliance_standard"
+            baseColumnNames="superseded_by_id"
+            constraintName="fk_compliance_standard_superseded_by"
+            referencedTableName="compliance_standard"
+            referencedColumnNames="id"
+            onDelete="SET NULL"/>
+
+        <!-- Parameter Group → Compliance Standard -->
+        <addForeignKeyConstraint
+            baseTableName="parameter_group"
+            baseColumnNames="standard_id"
+            constraintName="fk_parameter_group_standard"
+            referencedTableName="compliance_standard"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <!-- Compliance Threshold → Parameter Group -->
+        <addForeignKeyConstraint
+            baseTableName="compliance_threshold"
+            baseColumnNames="group_id"
+            constraintName="fk_compliance_threshold_group"
+            referencedTableName="parameter_group"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <!-- Compliance Evaluation → Compliance Standard -->
+        <addForeignKeyConstraint
+            baseTableName="compliance_evaluation"
+            baseColumnNames="standard_id"
+            constraintName="fk_compliance_evaluation_standard"
+            referencedTableName="compliance_standard"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <!-- Evaluation Result → Compliance Evaluation -->
+        <addForeignKeyConstraint
+            baseTableName="evaluation_result"
+            baseColumnNames="evaluation_id"
+            constraintName="fk_evaluation_result_evaluation"
+            referencedTableName="compliance_evaluation"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <!-- Evaluation Result → Compliance Threshold -->
+        <addForeignKeyConstraint
+            baseTableName="evaluation_result"
+            baseColumnNames="threshold_id"
+            constraintName="fk_evaluation_result_threshold"
+            referencedTableName="compliance_threshold"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <!-- Test Compliance Standard → Compliance Standard -->
+        <addForeignKeyConstraint
+            baseTableName="test_compliance_standard"
+            baseColumnNames="compliance_standard_id"
+            constraintName="fk_test_compliance_standard_standard"
+            referencedTableName="compliance_standard"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <!-- QC Compliance Rule → Compliance Standard -->
+        <addForeignKeyConstraint
+            baseTableName="qc_compliance_rule"
+            baseColumnNames="compliance_standard_id"
+            constraintName="fk_qc_compliance_rule_standard"
+            referencedTableName="compliance_standard"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="qc_compliance_rule" constraintName="fk_qc_compliance_rule_standard"/>
+            <dropForeignKeyConstraint baseTableName="test_compliance_standard" constraintName="fk_test_compliance_standard_standard"/>
+            <dropForeignKeyConstraint baseTableName="evaluation_result" constraintName="fk_evaluation_result_threshold"/>
+            <dropForeignKeyConstraint baseTableName="evaluation_result" constraintName="fk_evaluation_result_evaluation"/>
+            <dropForeignKeyConstraint baseTableName="compliance_evaluation" constraintName="fk_compliance_evaluation_standard"/>
+            <dropForeignKeyConstraint baseTableName="compliance_threshold" constraintName="fk_compliance_threshold_group"/>
+            <dropForeignKeyConstraint baseTableName="parameter_group" constraintName="fk_parameter_group_standard"/>
+            <dropForeignKeyConstraint baseTableName="compliance_standard" constraintName="fk_compliance_standard_superseded_by"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ================================================================ -->
+    <!-- INDEXES: Performance optimization for common queries            -->
+    <!-- ================================================================ -->
+
+    <changeSet id="compliance-feature-create-indexes" author="claude-code">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="compliance_standard"/>
+                <tableExists tableName="parameter_group"/>
+                <tableExists tableName="compliance_threshold"/>
+                <tableExists tableName="compliance_evaluation"/>
+                <tableExists tableName="evaluation_result"/>
+                <tableExists tableName="test_compliance_standard"/>
+                <tableExists tableName="compliance_import_log"/>
+                <tableExists tableName="qc_compliance_rule"/>
+            </and>
+        </preConditions>
+
+        <!-- Compliance Standard indexes -->
+        <createIndex tableName="compliance_standard" indexName="idx_compliance_standard_status">
+            <column name="status"/>
+        </createIndex>
+        <createIndex tableName="compliance_standard" indexName="idx_compliance_standard_country">
+            <column name="country_region"/>
+        </createIndex>
+        <createIndex tableName="compliance_standard" indexName="idx_compliance_standard_effective_date">
+            <column name="effective_date"/>
+        </createIndex>
+        <createIndex tableName="compliance_standard" indexName="idx_compliance_standard_issuing_body">
+            <column name="issuing_body"/>
+        </createIndex>
+        <createIndex tableName="compliance_standard" indexName="idx_compliance_standard_regulation_number">
+            <column name="regulation_number"/>
+        </createIndex>
+
+        <!-- Parameter Group indexes -->
+        <createIndex tableName="parameter_group" indexName="idx_parameter_group_standard">
+            <column name="standard_id"/>
+        </createIndex>
+        <createIndex tableName="parameter_group" indexName="idx_parameter_group_sort_order">
+            <column name="sort_order"/>
+        </createIndex>
+
+        <!-- Compliance Threshold indexes -->
+        <createIndex tableName="compliance_threshold" indexName="idx_compliance_threshold_group">
+            <column name="group_id"/>
+        </createIndex>
+        <createIndex tableName="compliance_threshold" indexName="idx_compliance_threshold_parameter_code">
+            <column name="parameter_code"/>
+        </createIndex>
+        <createIndex tableName="compliance_threshold" indexName="idx_compliance_threshold_type">
+            <column name="threshold_type"/>
+        </createIndex>
+
+        <!-- Compliance Evaluation indexes -->
+        <createIndex tableName="compliance_evaluation" indexName="idx_compliance_evaluation_sample">
+            <column name="sample_id"/>
+        </createIndex>
+        <createIndex tableName="compliance_evaluation" indexName="idx_compliance_evaluation_standard">
+            <column name="standard_id"/>
+        </createIndex>
+        <createIndex tableName="compliance_evaluation" indexName="idx_compliance_evaluation_status">
+            <column name="evaluation_status"/>
+        </createIndex>
+        <createIndex tableName="compliance_evaluation" indexName="idx_compliance_evaluation_date">
+            <column name="evaluation_date"/>
+        </createIndex>
+
+        <!-- Evaluation Result indexes -->
+        <createIndex tableName="evaluation_result" indexName="idx_evaluation_result_evaluation">
+            <column name="evaluation_id"/>
+        </createIndex>
+        <createIndex tableName="evaluation_result" indexName="idx_evaluation_result_threshold">
+            <column name="threshold_id"/>
+        </createIndex>
+        <createIndex tableName="evaluation_result" indexName="idx_evaluation_result_compliant">
+            <column name="is_compliant"/>
+        </createIndex>
+
+        <!-- Test Compliance Standard indexes -->
+        <createIndex tableName="test_compliance_standard" indexName="idx_test_compliance_standard_test">
+            <column name="test_id"/>
+        </createIndex>
+        <createIndex tableName="test_compliance_standard" indexName="idx_test_compliance_standard_standard">
+            <column name="compliance_standard_id"/>
+        </createIndex>
+
+        <!-- Compliance Import Log indexes -->
+        <createIndex tableName="compliance_import_log" indexName="idx_compliance_import_log_type">
+            <column name="import_type"/>
+        </createIndex>
+        <createIndex tableName="compliance_import_log" indexName="idx_compliance_import_log_status">
+            <column name="import_status"/>
+        </createIndex>
+        <createIndex tableName="compliance_import_log" indexName="idx_compliance_import_log_start_time">
+            <column name="import_start_time"/>
+        </createIndex>
+        <createIndex tableName="compliance_import_log" indexName="idx_compliance_import_log_initiated_by">
+            <column name="initiated_by"/>
+        </createIndex>
+        <createIndex tableName="compliance_import_log" indexName="idx_compliance_import_log_correlation_id">
+            <column name="correlation_id"/>
+        </createIndex>
+        <createIndex tableName="compliance_import_log" indexName="idx_compliance_import_log_file_checksum">
+            <column name="file_checksum"/>
+        </createIndex>
+
+        <!-- QC Compliance Rule indexes -->
+        <createIndex tableName="qc_compliance_rule" indexName="idx_qc_compliance_rule_standard">
+            <column name="compliance_standard_id"/>
+        </createIndex>
+        <createIndex tableName="qc_compliance_rule" indexName="idx_qc_compliance_rule_active">
+            <column name="is_active"/>
+        </createIndex>
+        <createIndex tableName="qc_compliance_rule" indexName="idx_qc_compliance_rule_type">
+            <column name="qc_rule_type"/>
+        </createIndex>
+        <createIndex tableName="qc_compliance_rule" indexName="idx_qc_compliance_rule_frequency">
+            <column name="evaluation_frequency"/>
+        </createIndex>
+
+        <rollback>
+            <!-- Compliance Standard indexes -->
+            <dropIndex tableName="compliance_standard" indexName="idx_compliance_standard_status"/>
+            <dropIndex tableName="compliance_standard" indexName="idx_compliance_standard_country"/>
+            <dropIndex tableName="compliance_standard" indexName="idx_compliance_standard_effective_date"/>
+            <dropIndex tableName="compliance_standard" indexName="idx_compliance_standard_issuing_body"/>
+            <dropIndex tableName="compliance_standard" indexName="idx_compliance_standard_regulation_number"/>
+
+            <!-- Parameter Group indexes -->
+            <dropIndex tableName="parameter_group" indexName="idx_parameter_group_standard"/>
+            <dropIndex tableName="parameter_group" indexName="idx_parameter_group_sort_order"/>
+
+            <!-- Compliance Threshold indexes -->
+            <dropIndex tableName="compliance_threshold" indexName="idx_compliance_threshold_group"/>
+            <dropIndex tableName="compliance_threshold" indexName="idx_compliance_threshold_parameter_code"/>
+            <dropIndex tableName="compliance_threshold" indexName="idx_compliance_threshold_type"/>
+
+            <!-- Compliance Evaluation indexes -->
+            <dropIndex tableName="compliance_evaluation" indexName="idx_compliance_evaluation_sample"/>
+            <dropIndex tableName="compliance_evaluation" indexName="idx_compliance_evaluation_standard"/>
+            <dropIndex tableName="compliance_evaluation" indexName="idx_compliance_evaluation_status"/>
+            <dropIndex tableName="compliance_evaluation" indexName="idx_compliance_evaluation_date"/>
+
+            <!-- Evaluation Result indexes -->
+            <dropIndex tableName="evaluation_result" indexName="idx_evaluation_result_evaluation"/>
+            <dropIndex tableName="evaluation_result" indexName="idx_evaluation_result_threshold"/>
+            <dropIndex tableName="evaluation_result" indexName="idx_evaluation_result_compliant"/>
+
+            <!-- Test Compliance Standard indexes -->
+            <dropIndex tableName="test_compliance_standard" indexName="idx_test_compliance_standard_test"/>
+            <dropIndex tableName="test_compliance_standard" indexName="idx_test_compliance_standard_standard"/>
+
+            <!-- Import Log indexes -->
+            <dropIndex tableName="compliance_import_log" indexName="idx_compliance_import_log_type"/>
+            <dropIndex tableName="compliance_import_log" indexName="idx_compliance_import_log_status"/>
+            <dropIndex tableName="compliance_import_log" indexName="idx_compliance_import_log_start_time"/>
+            <dropIndex tableName="compliance_import_log" indexName="idx_compliance_import_log_initiated_by"/>
+            <dropIndex tableName="compliance_import_log" indexName="idx_compliance_import_log_correlation_id"/>
+            <dropIndex tableName="compliance_import_log" indexName="idx_compliance_import_log_file_checksum"/>
+
+            <!-- QC Rule indexes -->
+            <dropIndex tableName="qc_compliance_rule" indexName="idx_qc_compliance_rule_standard"/>
+            <dropIndex tableName="qc_compliance_rule" indexName="idx_qc_compliance_rule_active"/>
+            <dropIndex tableName="qc_compliance_rule" indexName="idx_qc_compliance_rule_type"/>
+            <dropIndex tableName="qc_compliance_rule" indexName="idx_qc_compliance_rule_frequency"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ================================================================ -->
+    <!-- UNIQUE CONSTRAINTS: Business rule enforcement                   -->
+    <!-- ================================================================ -->
+
+    <changeSet id="compliance-feature-add-unique-constraints" author="claude-code">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="compliance_standard"/>
+                <tableExists tableName="test_compliance_standard"/>
+            </and>
+        </preConditions>
+
+        <!-- Natural key constraint for compliance standards -->
+        <addUniqueConstraint
+            tableName="compliance_standard"
+            columnNames="issuing_body,regulation_number,version"
+            constraintName="uk_compliance_standard_natural_key"/>
+
+        <!-- Prevent duplicate test-standard associations -->
+        <addUniqueConstraint
+            tableName="test_compliance_standard"
+            columnNames="test_id,compliance_standard_id"
+            constraintName="uk_test_compliance_standard"/>
+
+        <rollback>
+            <dropUniqueConstraint tableName="test_compliance_standard" constraintName="uk_test_compliance_standard"/>
+            <dropUniqueConstraint tableName="compliance_standard" constraintName="uk_compliance_standard_natural_key"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ================================================================ -->
+    <!-- CHECK CONSTRAINTS: Data validation and enum enforcement         -->
+    <!-- ================================================================ -->
+
+    <changeSet id="compliance-feature-add-check-constraints" author="claude-code">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="compliance_standard"/>
+                <tableExists tableName="compliance_threshold"/>
+                <tableExists tableName="compliance_evaluation"/>
+                <tableExists tableName="compliance_import_log"/>
+                <tableExists tableName="qc_compliance_rule"/>
+            </and>
+        </preConditions>
+
+        <!-- Compliance Standard status constraint -->
+        <sql>
+            ALTER TABLE compliance_standard
+            ADD CONSTRAINT chk_compliance_standard_status
+            CHECK (status IN ('DRAFT', 'ACTIVE', 'SUPERSEDED', 'ARCHIVED', 'SUSPENDED'));
+        </sql>
+
+        <!-- Threshold type constraint -->
+        <sql>
+            ALTER TABLE compliance_threshold
+            ADD CONSTRAINT chk_compliance_threshold_type
+            CHECK (threshold_type IN ('RANGE', 'MINIMUM', 'MAXIMUM', 'EXACT', 'TARGET', 'NOT_DETECTED', 'QUALITATIVE'));
+        </sql>
+
+        <!-- Evaluation status constraint -->
+        <sql>
+            ALTER TABLE compliance_evaluation
+            ADD CONSTRAINT chk_compliance_evaluation_status
+            CHECK (evaluation_status IN ('PENDING', 'IN_PROGRESS', 'COMPLETED', 'REVIEWED', 'FAILED', 'CANCELLED', 'REQUIRES_RETEST'));
+        </sql>
+
+        <!-- Compliance percentage constraint -->
+        <sql>
+            ALTER TABLE compliance_evaluation
+            ADD CONSTRAINT chk_compliance_evaluation_percentage
+            CHECK (compliance_percentage IS NULL OR (compliance_percentage >= 0 AND compliance_percentage <= 100));
+        </sql>
+
+        <!-- Import log type constraint -->
+        <sql>
+            ALTER TABLE compliance_import_log
+            ADD CONSTRAINT chk_compliance_import_log_type
+            CHECK (import_type IN ('CSV_FILE', 'MANUAL_ENTRY', 'LIQUIBASE_MIGRATION', 'API_IMPORT',
+                                   'BULK_UPLOAD', 'SYSTEM_INITIALIZATION', 'EXTERNAL_SYNC', 'DATA_MIGRATION'));
+        </sql>
+
+        <!-- Import log status constraint -->
+        <sql>
+            ALTER TABLE compliance_import_log
+            ADD CONSTRAINT chk_compliance_import_log_status
+            CHECK (import_status IN ('STARTED', 'IN_PROGRESS', 'COMPLETED', 'COMPLETED_WITH_WARNINGS',
+                                     'FAILED', 'CANCELLED', 'TIMEOUT', 'QUEUED', 'VALIDATING',
+                                     'VALIDATION_FAILED', 'ROLLING_BACK', 'ROLLED_BACK'));
+        </sql>
+
+        <!-- Import log counts constraint -->
+        <sql>
+            ALTER TABLE compliance_import_log
+            ADD CONSTRAINT chk_compliance_import_log_counts
+            CHECK (records_processed >= 0 AND records_successful >= 0 AND
+                   records_failed >= 0 AND records_skipped >= 0);
+        </sql>
+
+        <!-- Import log file size constraint -->
+        <sql>
+            ALTER TABLE compliance_import_log
+            ADD CONSTRAINT chk_compliance_import_log_file_size
+            CHECK (file_size IS NULL OR file_size >= 0);
+        </sql>
+
+        <!-- QC rule evaluation frequency constraint -->
+        <sql>
+            ALTER TABLE qc_compliance_rule
+            ADD CONSTRAINT chk_qc_compliance_rule_frequency
+            CHECK (evaluation_frequency IN ('EVERY_RESULT', 'PER_RUN', 'DAILY', 'WEEKLY'));
+        </sql>
+
+        <!-- QC rule type constraint -->
+        <sql>
+            ALTER TABLE qc_compliance_rule
+            ADD CONSTRAINT chk_qc_compliance_rule_type
+            CHECK (qc_rule_type IN ('WESTGARD', 'CONTROL_CHART', 'TREND_ANALYSIS', 'LEVEY_JENNINGS',
+                                   'CUSUM', 'MOVING_AVERAGE', 'RANGE', 'DUPLICATE', 'CUSTOM'));
+        </sql>
+
+        <rollback>
+            <sql>ALTER TABLE compliance_standard DROP CONSTRAINT chk_compliance_standard_status</sql>
+            <sql>ALTER TABLE compliance_threshold DROP CONSTRAINT chk_compliance_threshold_type</sql>
+            <sql>ALTER TABLE compliance_evaluation DROP CONSTRAINT chk_compliance_evaluation_status</sql>
+            <sql>ALTER TABLE compliance_evaluation DROP CONSTRAINT chk_compliance_evaluation_percentage</sql>
+            <sql>ALTER TABLE compliance_import_log DROP CONSTRAINT chk_compliance_import_log_type</sql>
+            <sql>ALTER TABLE compliance_import_log DROP CONSTRAINT chk_compliance_import_log_status</sql>
+            <sql>ALTER TABLE compliance_import_log DROP CONSTRAINT chk_compliance_import_log_counts</sql>
+            <sql>ALTER TABLE compliance_import_log DROP CONSTRAINT chk_compliance_import_log_file_size</sql>
+            <sql>ALTER TABLE qc_compliance_rule DROP CONSTRAINT chk_qc_compliance_rule_frequency</sql>
+            <sql>ALTER TABLE qc_compliance_rule DROP CONSTRAINT chk_qc_compliance_rule_type</sql>
+        </rollback>
+    </changeSet>
+
+    <!-- ================================================================ -->
+    <!-- COMMENTS: Documentation for database objects                    -->
+    <!-- ================================================================ -->
+
+    <changeSet id="compliance-feature-add-table-comments" author="claude-code">
+        <sql>
+            COMMENT ON TABLE compliance_standard IS 'Regulatory compliance standards for environmental and vector testing';
+            COMMENT ON TABLE parameter_group IS 'Logical grouping of related parameters within a compliance standard';
+            COMMENT ON TABLE compliance_threshold IS 'Individual parameter thresholds within a parameter group';
+            COMMENT ON TABLE compliance_evaluation IS 'Records of compliance evaluation for samples against standards';
+            COMMENT ON TABLE evaluation_result IS 'Individual measurement results within an evaluation';
+            COMMENT ON TABLE test_compliance_standard IS 'Junction table linking tests to compliance standards';
+            COMMENT ON TABLE compliance_import_log IS 'Audit trail for compliance data import/export operations';
+            COMMENT ON TABLE qc_compliance_rule IS 'Quality control rules integrated with compliance standards';
+        </sql>
+
+        <rollback>
+            <sql>COMMENT ON TABLE compliance_standard IS NULL</sql>
+            <sql>COMMENT ON TABLE parameter_group IS NULL</sql>
+            <sql>COMMENT ON TABLE compliance_threshold IS NULL</sql>
+            <sql>COMMENT ON TABLE compliance_evaluation IS NULL</sql>
+            <sql>COMMENT ON TABLE evaluation_result IS NULL</sql>
+            <sql>COMMENT ON TABLE test_compliance_standard IS NULL</sql>
+            <sql>COMMENT ON TABLE compliance_import_log IS NULL</sql>
+            <sql>COMMENT ON TABLE qc_compliance_rule IS NULL</sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

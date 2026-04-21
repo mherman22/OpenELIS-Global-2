@@ -69,10 +69,6 @@
   <include relativeToChangelogFile="true" file="default-nationality-config.xml"/>
 
   <!-- Compliance Standards Administration (S-01) - Vector & Environmental Testing Module -->
-  <include relativeToChangelogFile="true" file="018-compliance-001-create-compliance-standard-table.xml"/>
-  <include relativeToChangelogFile="true" file="018-compliance-002-create-parameter-group-table.xml"/>
-  <include relativeToChangelogFile="true" file="018-compliance-003-create-compliance-threshold-table.xml"/>
-  <include relativeToChangelogFile="true" file="018-compliance-004-create-compliance-evaluation-table.xml"/>
-  <include relativeToChangelogFile="true" file="018-compliance-005-create-evaluation-result-table.xml"/>
+  <include relativeToChangelogFile="true" file="018-compliance-standards-complete-feature.xml"/>
 
 </databaseChangeLog>

@@ -24,6 +24,7 @@ import PageBreadCrumb from '../common/PageBreadCrumb';
 import { getFromOpenElisServer, postToOpenElisServer } from '../utils/Utils';
 import { NotificationContext } from '../layout/Layout';
 import { ConfigurationContext } from '../../UserSessionDetailsContext';
+import ComplianceStandardImportModal from './ComplianceStandardImportModal';
 import './ComplianceStandardsDashboard.css';
 
 /**
@@ -138,7 +139,7 @@ const ComplianceStandardsDashboard = () => {
 
   const loadComplianceStandards = () => {
     setLoading(true);
-    const endpoint = `/rest/compliance/standards/page/${currentPage}?pageSize=${pageSize}`;
+    const endpoint = `/api/v1/ComplianceStandardMenu?page=${currentPage}&pageSize=${pageSize}`;
 
     getFromOpenElisServer(endpoint, (response) => {
       if (response) {
@@ -172,7 +173,7 @@ const ComplianceStandardsDashboard = () => {
   };
 
   const handleExportStandards = () => {
-    const endpoint = '/rest/compliance/standards/export';
+    const endpoint = '/api/v1/compliance-standards/export';
     postToOpenElisServer(endpoint, '', (status) => {
       if (status === 200) {
         addNotification({
@@ -436,26 +437,15 @@ const ComplianceStandardsDashboard = () => {
         )}
       </Modal>
 
-      {/* Import Modal placeholder */}
-      <Modal
+      {/* Advanced Import Modal */}
+      <ComplianceStandardImportModal
         open={importModalOpen}
         onRequestClose={() => setImportModalOpen(false)}
-        modalHeading={intl.formatMessage({
-          id: 'compliance.standards.import.modal.title',
-          defaultMessage: 'Import Compliance Standards'
-        })}
-        primaryButtonText={intl.formatMessage({ id: 'button.import', defaultMessage: 'Import' })}
-        secondaryButtonText={intl.formatMessage({ id: 'button.cancel', defaultMessage: 'Cancel' })}
-        size="md"
-      >
-        <p>
-          <FormattedMessage
-            id="compliance.standards.import.modal.description"
-            defaultMessage="Import compliance standards from CSV file. Please ensure your file follows the required format."
-          />
-        </p>
-        {/* File upload component will be added */}
-      </Modal>
+        onImportComplete={(results) => {
+          console.log('Import completed:', results);
+          loadComplianceStandards(); // Refresh the list
+        }}
+      />
     </Grid>
   );
 };
