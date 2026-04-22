@@ -229,7 +229,9 @@ export const postWithFileUpload = async (endPoint, formData) => {
   return {
     success: response.ok,
     status: response.status,
-    message: response.ok ? "" : "File upload failed",
+    message: response.ok
+      ? ""
+      : `File upload failed (${response.status}${response.statusText ? `: ${response.statusText}` : ""})`,
   };
 };
 

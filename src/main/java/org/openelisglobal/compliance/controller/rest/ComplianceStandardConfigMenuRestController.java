@@ -416,7 +416,7 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
     }
 
     private void throwComplianceAssociationPersistenceNotImplemented(String methodName, String message) {
-        LogEvent.logInfo("ComplianceStandardConfigMenuRestController", methodName, message);
+        LogEvent.logWarn("ComplianceStandardConfigMenuRestController", methodName, message);
         throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, message);
     }
 

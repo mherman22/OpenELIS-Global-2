@@ -189,7 +189,6 @@ public class ComplianceEvaluationServiceImpl extends AuditableBaseObjectServiceI
         ComplianceEvaluation evaluation = new ComplianceEvaluation();
         evaluation.setSampleId(sampleId);
         evaluation.setStandard(standard); // Set the actual entity, not just the ID
-        evaluation.setStandardId(standardId);
         evaluation.setStandardVersion(standard.getVersion()); // Get version from the loaded standard
         evaluation.setStatus(EvaluationStatus.PENDING);
         evaluation.setEvaluatedDate(new Date());
@@ -297,9 +296,9 @@ public class ComplianceEvaluationServiceImpl extends AuditableBaseObjectServiceI
     @Transactional(readOnly = true)
     public List<ComplianceEvaluation> getEvaluationsByDateRange(String standardId, LocalDate startDate, LocalDate endDate) {
         Date startDateAsDate = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date endExclusiveAsDate = Date.from(endDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDateExclusiveAsDate = Date.from(endDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        return getBaseObjectDAO().getEvaluationsByDateRange(standardId, startDateAsDate, endExclusiveAsDate);
+        return getBaseObjectDAO().getEvaluationsByDateRange(standardId, startDateAsDate, endDateExclusiveAsDate);
     }
 
     @Override
