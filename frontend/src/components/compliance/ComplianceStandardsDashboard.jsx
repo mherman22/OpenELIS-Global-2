@@ -23,7 +23,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import PageBreadCrumb from "../common/PageBreadCrumb";
 import { getFromOpenElisServer, postToOpenElisServer } from "../utils/Utils";
 import { NotificationContext } from "../layout/Layout";
-import { ConfigurationContext } from "../../UserSessionDetailsContext";
+import { ConfigurationContext } from "../layout/Layout";
 import ComplianceStandardImportModal from "./ComplianceStandardImportModal";
 import "./ComplianceStandardsDashboard.css";
 

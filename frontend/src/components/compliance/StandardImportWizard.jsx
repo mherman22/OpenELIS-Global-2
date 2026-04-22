@@ -41,10 +41,7 @@ import {
   View,
 } from "@carbon/react/icons";
 import { FormattedMessage, useIntl } from "react-intl";
-import {
-  ConfigurationContext,
-  NotificationContext,
-} from "../layout/Layout";
+import { ConfigurationContext, NotificationContext } from "../layout/Layout";
 import { postToOpenElisServer, getFromOpenElisServer } from "../utils/Utils";
 import "./StandardImportWizard.css";
 

@@ -23,10 +23,7 @@ import { Save, Reset, Close, Add } from "@carbon/react/icons";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {
-  ConfigurationContext,
-  NotificationContext,
-} from "../layout/Layout";
+import { ConfigurationContext, NotificationContext } from "../layout/Layout";
 import { getFromOpenElisServer, postToOpenElisServer } from "../utils/Utils";
 import "./ComplianceThresholdForm.css";
 

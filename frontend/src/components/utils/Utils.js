@@ -210,6 +210,29 @@ export const postToOpenElisServerJsonResponse = (
     });
 };
 
+export const postWithFileUpload = async (endPoint, formData) => {
+  const response = await fetch(config.serverBaseUrl + endPoint, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "X-CSRF-Token": localStorage.getItem("CSRF"),
+      "Accept-Language": getAcceptLanguageHeader(),
+    },
+    body: formData,
+  });
+
+  const contentType = response.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  return {
+    success: response.ok,
+    status: response.status,
+    message: response.ok ? "" : "File upload failed",
+  };
+};
+
 //provides Synchronous calls to the api
 export const getFromOpenElisServerSync = (endPoint, callback) => {
   const request = new XMLHttpRequest();

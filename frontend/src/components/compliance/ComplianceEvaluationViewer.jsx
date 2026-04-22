@@ -42,10 +42,7 @@ import {
   Reset,
 } from "@carbon/react/icons";
 import { FormattedMessage, useIntl } from "react-intl";
-import {
-  ConfigurationContext,
-  NotificationContext,
-} from "../layout/Layout";
+import { ConfigurationContext, NotificationContext } from "../layout/Layout";
 import { getFromOpenElisServer, postToOpenElisServer } from "../utils/Utils";
 import "./ComplianceEvaluationViewer.css";
 
