@@ -36,9 +36,9 @@ import {
 import { FormattedMessage, useIntl } from "react-intl";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { ConfigurationContext } from "../common/ComponentContext";
+import { ConfigurationContext } from "../layout/Layout";
 import { getFromOpenElisServer, postToOpenElisServer } from "../utils/Utils";
-import { NotificationContext } from "../common/ComponentContext";
+import { NotificationContext } from "../layout/Layout";
 import "./ParameterGroupManagement.css";
 
 const ParameterGroupManagement = () => {

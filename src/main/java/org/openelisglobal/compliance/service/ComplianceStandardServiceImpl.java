@@ -326,7 +326,7 @@ public class ComplianceStandardServiceImpl extends AuditableBaseObjectServiceImp
 
     @Override
     @Transactional
-    public void supersedseStandard(String oldStandardId, String newStandardId) {
+    public void supersedeStandard(String oldStandardId, String newStandardId) {
         ComplianceStandard oldStandard = get(oldStandardId);
         if (oldStandard != null) {
             oldStandard.setStatus(ComplianceStandardStatus.SUPERSEDED);

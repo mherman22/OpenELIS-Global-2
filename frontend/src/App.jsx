@@ -451,6 +451,7 @@ export default function App() {
                   path="/ComplianceStandards"
                   exact
                   component={() => <ComplianceStandardsDashboard />}
+                  role={Roles.GLOBAL_ADMIN}
                 />
                 <SecureRoute
                   path="/PathologyDashboard"

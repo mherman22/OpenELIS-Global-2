@@ -44,7 +44,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import {
   ConfigurationContext,
   NotificationContext,
-} from "../common/ComponentContext";
+} from "../layout/Layout";
 import { postToOpenElisServer, getFromOpenElisServer } from "../utils/Utils";
 import "./StandardImportWizard.css";
 

@@ -26,7 +26,7 @@ import * as Yup from "yup";
 import {
   ConfigurationContext,
   NotificationContext,
-} from "../common/ComponentContext";
+} from "../layout/Layout";
 import { getFromOpenElisServer, postToOpenElisServer } from "../utils/Utils";
 import "./ComplianceThresholdForm.css";
 

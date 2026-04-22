@@ -5522,7 +5522,6 @@
   "compliance.standardForm.validation.effectiveDate.invalid": "Invalid effective date format",
   "compliance.standardForm.validation.expiryDate.invalid": "Invalid expiry date format",
   "compliance.standardForm.validation.duplicate": "A standard with this regulation number and version already exists",
-  "compliance.parameterGroup.title": "Parameter Groups",
   "compliance.parameterGroup.subtitle": "Organize compliance parameters into logical groups",
   "compliance.parameterGroup.add": "Add Parameter Group",
   "compliance.parameterGroup.edit": "Edit Parameter Group",

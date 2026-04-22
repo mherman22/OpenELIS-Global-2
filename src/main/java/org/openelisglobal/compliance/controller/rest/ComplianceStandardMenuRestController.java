@@ -99,6 +99,9 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
     @RequestMapping(value = "/DeleteComplianceStandard", method = RequestMethod.POST)
     public ResponseEntity<?> deleteComplianceStandards(HttpServletRequest request,
             @RequestParam(value = ID, required = false) String id) {
+        if (id == null || id.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("At least one compliance standard ID is required");
+        }
 
         String[] IDs = id.split(",");
         List<String> selectedIDs = new ArrayList<>();
@@ -145,6 +148,9 @@ public class ComplianceStandardMenuRestController extends BaseMenuController<Com
     @RequestMapping(value = "/ArchiveComplianceStandard", method = RequestMethod.POST)
     public ResponseEntity<?> archiveComplianceStandards(HttpServletRequest request,
             @RequestParam(value = ID, required = false) String id) {
+        if (id == null || id.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("At least one compliance standard ID is required");
+        }
 
         String[] IDs = id.split(",");
         List<String> selectedIDs = new ArrayList<>();

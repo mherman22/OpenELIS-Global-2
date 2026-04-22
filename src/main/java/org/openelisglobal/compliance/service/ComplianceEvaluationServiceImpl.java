@@ -189,6 +189,7 @@ public class ComplianceEvaluationServiceImpl extends AuditableBaseObjectServiceI
         ComplianceEvaluation evaluation = new ComplianceEvaluation();
         evaluation.setSampleId(sampleId);
         evaluation.setStandard(standard); // Set the actual entity, not just the ID
+        evaluation.setStandardId(standardId);
         evaluation.setStandardVersion(standard.getVersion()); // Get version from the loaded standard
         evaluation.setStatus(EvaluationStatus.PENDING);
         evaluation.setEvaluatedDate(new Date());
@@ -262,15 +263,17 @@ public class ComplianceEvaluationServiceImpl extends AuditableBaseObjectServiceI
         report.append("Compliance Report\n");
         report.append("=================\n");
         report.append("Sample ID: ").append(evaluation.getSampleId()).append("\n");
-        report.append("Standard: Test Standard\n");
+        report.append("Standard ID: ").append(evaluation.getStandardId()).append("\n");
+        report.append("Standard Version: ").append(evaluation.getStandardVersion()).append("\n");
         report.append("Evaluation Date: ").append(evaluation.getEvaluatedDate()).append("\n");
         report.append("\nResults:\n");
 
         if (evaluation.getEvaluationResults() != null) {
             for (EvaluationResult result : evaluation.getEvaluationResults()) {
-                report.append("pH: ").append(result.getTestedValue())
-                      .append(" - ").append(result.isCompliant() ? "COMPLIANT" : "NON-COMPLIANT")
-                      .append("\n");
+                report.append("Threshold ").append(result.getThresholdId()).append(": ")
+                      .append(result.getTestedValue())
+                       .append(" - ").append(result.isCompliant() ? "COMPLIANT" : "NON-COMPLIANT")
+                       .append("\n");
             }
         }
 
@@ -294,9 +297,9 @@ public class ComplianceEvaluationServiceImpl extends AuditableBaseObjectServiceI
     @Transactional(readOnly = true)
     public List<ComplianceEvaluation> getEvaluationsByDateRange(String standardId, LocalDate startDate, LocalDate endDate) {
         Date startDateAsDate = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date endDateAsDate = Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endExclusiveAsDate = Date.from(endDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        return getBaseObjectDAO().getEvaluationsByDateRange(standardId, startDateAsDate, endDateAsDate);
+        return getBaseObjectDAO().getEvaluationsByDateRange(standardId, startDateAsDate, endExclusiveAsDate);
     }
 
     @Override

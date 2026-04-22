@@ -77,7 +77,7 @@ public class ParameterGroupDAOImpl extends BaseDAOImpl<ParameterGroup, String> i
     @Transactional(readOnly = true)
     public List<ParameterGroup> getGroupsByStandardId(String standardId) throws LIMSRuntimeException {
         try {
-            String hql = "FROM ParameterGroup pg WHERE pg.standardId = :standardId ORDER BY pg.sortOrder, pg.name";
+            String hql = "FROM ParameterGroup pg WHERE pg.standard.id = :standardId ORDER BY pg.sortOrder, pg.name";
             TypedQuery<ParameterGroup> query = entityManager.createQuery(hql, ParameterGroup.class);
             query.setParameter("standardId", standardId);
             return query.getResultList();
@@ -92,7 +92,7 @@ public class ParameterGroupDAOImpl extends BaseDAOImpl<ParameterGroup, String> i
     public void reorderGroups(String standardId, String[] groupIds) throws LIMSRuntimeException {
         try {
             for (int i = 0; i < groupIds.length; i++) {
-                String hql = "UPDATE ParameterGroup pg SET pg.sortOrder = :sortOrder WHERE pg.id = :id AND pg.standardId = :standardId";
+                String hql = "UPDATE ParameterGroup pg SET pg.sortOrder = :sortOrder WHERE pg.id = :id AND pg.standard.id = :standardId";
                 entityManager.createQuery(hql)
                         .setParameter("sortOrder", i + 1)
                         .setParameter("id", groupIds[i])
@@ -124,7 +124,7 @@ public class ParameterGroupDAOImpl extends BaseDAOImpl<ParameterGroup, String> i
     @Transactional(readOnly = true)
     public int countGroupsByStandardId(String standardId) throws LIMSRuntimeException {
         try {
-            String hql = "SELECT COUNT(pg) FROM ParameterGroup pg WHERE pg.standardId = :standardId";
+            String hql = "SELECT COUNT(pg) FROM ParameterGroup pg WHERE pg.standard.id = :standardId";
             TypedQuery<Long> query = entityManager.createQuery(hql, Long.class);
             query.setParameter("standardId", standardId);
             return query.getSingleResult().intValue();
@@ -138,7 +138,7 @@ public class ParameterGroupDAOImpl extends BaseDAOImpl<ParameterGroup, String> i
     @Transactional(readOnly = true)
     public boolean standardHasGroups(String standardId) throws LIMSRuntimeException {
         try {
-            String hql = "SELECT COUNT(pg) FROM ParameterGroup pg WHERE pg.standardId = :standardId";
+            String hql = "SELECT COUNT(pg) FROM ParameterGroup pg WHERE pg.standard.id = :standardId";
             TypedQuery<Long> query = entityManager.createQuery(hql, Long.class);
             query.setParameter("standardId", standardId);
             return query.getSingleResult() > 0;

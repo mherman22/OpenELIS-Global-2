@@ -624,7 +624,7 @@ public class ComplianceStandardDAOImpl extends BaseDAOImpl<ComplianceStandard, S
 
     @Override
     @Transactional
-    public void supersedseStandard(String standardId, String supersedingStandardId) throws LIMSRuntimeException {
+    public void supersedeStandard(String standardId, String supersedingStandardId) throws LIMSRuntimeException {
         try {
             String hql = "UPDATE ComplianceStandard cs SET cs.supersededByStandardId = :supersedingId WHERE cs.id = :id";
             entityManager.createQuery(hql)
@@ -633,7 +633,7 @@ public class ComplianceStandardDAOImpl extends BaseDAOImpl<ComplianceStandard, S
                     .executeUpdate();
         } catch (RuntimeException e) {
             LogEvent.logError(e);
-            throw new LIMSRuntimeException("Error in ComplianceStandard supersedseStandard()", e);
+            throw new LIMSRuntimeException("Error in ComplianceStandard supersedeStandard()", e);
         }
     }
 

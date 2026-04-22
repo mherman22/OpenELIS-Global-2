@@ -75,46 +75,46 @@ public class ComplianceStandardConfigurationHandler implements DomainConfigurati
     @Override
     @Transactional
     public void processConfiguration(InputStream inputStream, String fileName) throws Exception {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-
-        String headerLine = reader.readLine();
-        if (headerLine == null) {
-            throw new IllegalArgumentException("Compliance standards configuration file " + fileName + " is empty");
-        }
-
-        String[] headers = parseCsvLine(headerLine);
-        validateHeaders(headers, fileName);
-
-        // Map column headers to indices
-        Map<String, Integer> columnIndices = createColumnMap(headers);
-        Map<String, Integer> localizationColumns = detectLocalizationColumns(headers);
-
-        List<ComplianceStandard> processedStandards = new ArrayList<>();
-        String line;
-        int lineNumber = 1; // Start at 1 since we already read the header
-
-        while ((line = reader.readLine()) != null) {
-            lineNumber++;
-            // Skip empty lines and comments (lines starting with #)
-            if (line.trim().isEmpty() || line.trim().startsWith("#")) {
-                continue;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            String headerLine = reader.readLine();
+            if (headerLine == null) {
+                throw new IllegalArgumentException("Compliance standards configuration file " + fileName + " is empty");
             }
 
-            try {
-                String[] values = parseCsvLine(line);
-                ComplianceStandard standard = processCsvLine(values, columnIndices, localizationColumns);
-                if (standard != null) {
-                    processedStandards.add(standard);
+            String[] headers = parseCsvLine(headerLine);
+            validateHeaders(headers, fileName);
+
+            // Map column headers to indices
+            Map<String, Integer> columnIndices = createColumnMap(headers);
+            Map<String, Integer> localizationColumns = detectLocalizationColumns(headers);
+
+            List<ComplianceStandard> processedStandards = new ArrayList<>();
+            String line;
+            int lineNumber = 1; // Start at 1 since we already read the header
+
+            while ((line = reader.readLine()) != null) {
+                lineNumber++;
+                // Skip empty lines and comments (lines starting with #)
+                if (line.trim().isEmpty() || line.trim().startsWith("#")) {
+                    continue;
                 }
-            } catch (Exception e) {
-                LogEvent.logError(this.getClass().getSimpleName(), "processConfiguration",
-                        "Error processing line " + lineNumber + " in file " + fileName + ": " + e.getMessage());
-                throw e; // Re-throw to prevent partial loading
-            }
-        }
 
-        LogEvent.logInfo(this.getClass().getSimpleName(), "processConfiguration",
-                "Successfully loaded " + processedStandards.size() + " compliance standards from " + fileName);
+                try {
+                    String[] values = parseCsvLine(line);
+                    ComplianceStandard standard = processCsvLine(values, columnIndices, localizationColumns);
+                    if (standard != null) {
+                        processedStandards.add(standard);
+                    }
+                } catch (Exception e) {
+                    LogEvent.logError(this.getClass().getSimpleName(), "processConfiguration",
+                            "Error processing line " + lineNumber + " in file " + fileName + ": " + e.getMessage());
+                    throw e; // Re-throw to prevent partial loading
+                }
+            }
+
+            LogEvent.logInfo(this.getClass().getSimpleName(), "processConfiguration",
+                    "Successfully loaded " + processedStandards.size() + " compliance standards from " + fileName);
+        }
     }
 
     /**

@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -122,6 +123,12 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
 
             return ResponseEntity.ok(response);
 
+        } catch (ResponseStatusException e) {
+            LogEvent.logError("ComplianceStandardConfigMenuRestController", "saveComplianceStandardConfig",
+                    e.getReason());
+            response.put("success", false);
+            response.put("error", e.getReason());
+            return ResponseEntity.status(e.getStatusCode()).body(response);
         } catch (Exception e) {
             LogEvent.logError("ComplianceStandardConfigMenuRestController", "saveComplianceStandardConfig",
                     e.getMessage());
@@ -322,9 +329,11 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
 
             for (ComplianceEvaluation evaluation : recentEvaluations) {
                 String testId = evaluation.getSampleId();
-                String standardId = evaluation.getStandard().getId();
+                String standardId = evaluation.getStandardId();
 
-                testComplianceMap.computeIfAbsent(testId, k -> new ArrayList<>()).add(standardId);
+                if (standardId != null && !standardId.isBlank()) {
+                    testComplianceMap.computeIfAbsent(testId, k -> new ArrayList<>()).add(standardId);
+                }
             }
 
             form.setTestComplianceMap(testComplianceMap);
@@ -392,16 +401,23 @@ public class ComplianceStandardConfigMenuRestController extends BaseController {
      * Remove compliance standard associations
      */
     private void removeComplianceStandardAssociations(List<Test> tests) {
-        LogEvent.logInfo("ComplianceStandardConfigMenuRestController", "removeComplianceStandardAssociations",
-                "Removed compliance associations for " + tests.size() + " tests");
+        throwComplianceAssociationPersistenceNotImplemented("removeComplianceStandardAssociations",
+                "Compliance standard association removal is not implemented; no changes were persisted for "
+                        + tests.size() + " tests");
     }
 
     /**
      * Create compliance standard associations
      */
     private void createComplianceStandardAssociations(List<Test> tests, List<ComplianceStandard> standards) {
-        LogEvent.logInfo("ComplianceStandardConfigMenuRestController", "createComplianceStandardAssociations",
-                "Created compliance associations: " + tests.size() + " tests, " + standards.size() + " standards");
+        throwComplianceAssociationPersistenceNotImplemented("createComplianceStandardAssociations",
+                "Compliance standard association creation is not implemented; no changes were persisted for "
+                        + tests.size() + " tests and " + standards.size() + " standards");
+    }
+
+    private void throwComplianceAssociationPersistenceNotImplemented(String methodName, String message) {
+        LogEvent.logInfo("ComplianceStandardConfigMenuRestController", methodName, message);
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, message);
     }
 
     @Override

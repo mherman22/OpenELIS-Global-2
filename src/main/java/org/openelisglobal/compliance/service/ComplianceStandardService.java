@@ -146,7 +146,7 @@ public interface ComplianceStandardService extends BaseObjectService<ComplianceS
     /**
      * Supersede a standard by setting its status and linking to replacement
      */
-    void supersedseStandard(String oldStandardId, String newStandardId);
+    void supersedeStandard(String oldStandardId, String newStandardId);
 
     /**
      * Archive a standard (set status to ARCHIVED)

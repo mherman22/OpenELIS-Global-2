@@ -35,12 +35,12 @@ To access Compliance Standards Administration:
 
 **Step 1:** Prepare your CSV file with the following columns:
 - `name` - Standard name
-- `regulation_number` - Official regulation identifier
-- `issuing_body` - Organization that issued the standard
+- `regulationNumber` - Official regulation identifier
+- `issuingBody` - Organization that issued the standard
 - `version` - Standard version
-- `effective_date` - When the standard becomes effective (YYYY-MM-DD)
+- `effectiveDate` - When the standard becomes effective (YYYY-MM-DD)
 - `status` - ACTIVE, DRAFT, SUPERSEDED, ARCHIVED, or SUSPENDED
-- `country_region` - Applicable jurisdiction
+- `countryRegion` - Applicable jurisdiction
 - `description` - Detailed description of the standard
 
 **Step 2:** Import the standards:
@@ -96,7 +96,7 @@ The system supports various regulatory frameworks:
 ## CSV Import Template
 
 ```csv
-name,regulation_number,issuing_body,version,effective_date,status,country_region,description
+name,regulationNumber,issuingBody,version,effectiveDate,status,countryRegion,description
 WHO Water Quality Guidelines,WHO/SDE/WSH/03.04,World Health Organization,4.0,2017-01-01,ACTIVE,Global,Drinking water quality guidelines
 EPA Clean Water Act,40 CFR 141,US EPA,2023.1,2023-01-01,ACTIVE,United States,National primary drinking water regulations
 ISO 17025 Testing,ISO/IEC 17025:2017,ISO,2017,2017-11-01,ACTIVE,International,General requirements for testing laboratories

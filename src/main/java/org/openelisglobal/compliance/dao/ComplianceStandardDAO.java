@@ -176,7 +176,7 @@ public interface ComplianceStandardDAO extends BaseDAO<ComplianceStandard, Strin
     /**
      * Supersede a standard with another standard
      */
-    void supersedseStandard(String standardId, String supersedingStandardId) throws LIMSRuntimeException;
+    void supersedeStandard(String standardId, String supersedingStandardId) throws LIMSRuntimeException;
 
     /**
      * Get version for evaluation
