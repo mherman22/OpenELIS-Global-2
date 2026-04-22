@@ -11,6 +11,7 @@ import org.openelisglobal.common.exception.LIMSRuntimeException;
 import org.openelisglobal.common.service.AuditableBaseObjectServiceImpl;
 import org.openelisglobal.compliance.dao.ComplianceEvaluationDAO;
 import org.openelisglobal.compliance.valueholder.ComplianceEvaluation;
+import org.openelisglobal.compliance.valueholder.ComplianceStandard;
 import org.openelisglobal.compliance.valueholder.ComplianceThreshold;
 import org.openelisglobal.compliance.valueholder.EvaluationResult;
 import org.openelisglobal.compliance.valueholder.EvaluationStatus;
@@ -36,6 +37,9 @@ public class ComplianceEvaluationServiceImpl extends AuditableBaseObjectServiceI
 
     @Autowired
     private ComplianceThresholdService complianceThresholdService;
+
+    @Autowired
+    private ComplianceStandardService complianceStandardService;
 
     ComplianceEvaluationServiceImpl() {
         super(ComplianceEvaluation.class);
@@ -176,14 +180,21 @@ public class ComplianceEvaluationServiceImpl extends AuditableBaseObjectServiceI
     @Override
     @Transactional
     public ComplianceEvaluation evaluateSampleAgainstStandard(String sampleId, String standardId) {
+        // Load the actual ComplianceStandard entity
+        ComplianceStandard standard = complianceStandardService.get(standardId);
+        if (standard == null) {
+            throw new LIMSRuntimeException("ComplianceStandard not found: " + standardId);
+        }
+
         ComplianceEvaluation evaluation = new ComplianceEvaluation();
         evaluation.setSampleId(sampleId);
-        evaluation.setStandardId(standardId);
-        evaluation.setStandardVersion("1.0"); // This would come from the standard
+        evaluation.setStandard(standard); // Set the actual entity, not just the ID
+        evaluation.setStandardVersion(standard.getVersion()); // Get version from the loaded standard
         evaluation.setStatus(EvaluationStatus.PENDING);
         evaluation.setEvaluatedDate(new Date());
         evaluation.setEvaluatedBy("system");
         evaluation.setFhirUuid(UUID.randomUUID());
+        evaluation.setSystemUserId(1); // Set required audit field
 
         return save(evaluation);
     }
@@ -191,12 +202,19 @@ public class ComplianceEvaluationServiceImpl extends AuditableBaseObjectServiceI
     @Override
     @Transactional(readOnly = true)
     public EvaluationResult evaluateParameterThreshold(String thresholdId, BigDecimal testedValue) {
+        // Load the actual ComplianceThreshold entity
+        ComplianceThreshold threshold = complianceThresholdService.get(thresholdId);
+        if (threshold == null) {
+            throw new LIMSRuntimeException("ComplianceThreshold not found: " + thresholdId);
+        }
+
         boolean isCompliant = complianceThresholdService.evaluateThreshold(thresholdId, testedValue);
 
         EvaluationResult result = new EvaluationResult();
-        result.setThresholdId(thresholdId);
+        result.setThreshold(threshold); // Set the actual entity, not just the ID
         result.setTestedValue(testedValue);
         result.setCompliant(isCompliant);
+        result.setSystemUserId(1); // Set required audit field
 
         return result;
     }
@@ -315,7 +333,7 @@ public class ComplianceEvaluationServiceImpl extends AuditableBaseObjectServiceI
         }
 
         // Set audit fields
-        evaluation.setSysUserId("1"); // System user for service operations
+        evaluation.setSystemUserId(1); // System user for service operations
     }
 
     @Override

@@ -242,22 +242,6 @@ public class ComplianceStandardServiceImpl extends AuditableBaseObjectServiceImp
 
     @Override
     @Transactional
-    public void supersedseStandard(String oldStandardId, String newStandardId) {
-        baseObjectDAO.supersedseStandard(oldStandardId, newStandardId);
-    }
-
-    @Override
-    @Transactional
-    public void archive(String standardId) {
-        ComplianceStandard standard = get(standardId);
-        if (standard != null) {
-            standard.setStatus(ComplianceStandardStatus.ARCHIVED);
-            save(standard);
-        }
-    }
-
-    @Override
-    @Transactional
     public void bulkUpdateStatus(List<String> standardIds, ComplianceStandardStatus newStatus, String userId) {
         for (String standardId : standardIds) {
             ComplianceStandard standard = get(standardId);
@@ -269,11 +253,6 @@ public class ComplianceStandardServiceImpl extends AuditableBaseObjectServiceImp
         }
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public String getVersionForEvaluation(String standardId) {
-        return baseObjectDAO.getVersionForEvaluation(standardId);
-    }
 
     @Override
     @Transactional(readOnly = true)

@@ -19,11 +19,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostUpdate;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.openelisglobal.common.validator.ValidationHelper;
 import org.openelisglobal.validation.annotations.SafeHtml;
@@ -46,14 +47,18 @@ public class ComplianceStandard extends BaseObject<String> implements SimpleBase
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "compliance_standard_generator", sequenceName = "compliance_standard_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "compliance_standard_generator")
+    @Column(name = "id", precision = 10, scale = 0)
+    @GeneratedValue(generator = "compliance_standard_seq_gen")
+    @GenericGenerator(
+        name = "compliance_standard_seq_gen",
+        strategy = "org.openelisglobal.hibernate.resources.StringSequenceGenerator",
+        parameters = @Parameter(name = "sequence_name", value = "compliance_standard_seq")
+    )
+    @Type(type = "org.openelisglobal.hibernate.resources.usertype.LIMSStringNumberUserType")
     @Pattern(regexp = ValidationHelper.ID_REGEX)
-    @Column(name = "id")
     private String id;
 
     @NotNull
-    @Type(type = "uuid-char")
     @Column(name = "fhir_uuid", unique = true, nullable = false)
     private UUID fhirUuid;
 
@@ -104,6 +109,10 @@ public class ComplianceStandard extends BaseObject<String> implements SimpleBase
     private ComplianceStandard supersededByStandard;
 
     @SafeHtml(level = SafeHtml.SafeListLevel.NONE)
+    @Column(name = "superseded_by_id", insertable = false, updatable = false)
+    private String supersededByStandardId;
+
+    @SafeHtml(level = SafeHtml.SafeListLevel.NONE)
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
@@ -118,6 +127,9 @@ public class ComplianceStandard extends BaseObject<String> implements SimpleBase
     @NotNull
     @Column(name = "is_pre_seeded", nullable = false)
     private Boolean isPreSeeded = false;
+
+    @Column(name = "sys_user_id", nullable = false)
+    private Integer systemUserId;
 
     // Bidirectional relationship with parameter groups
     @OneToMany(mappedBy = "standard", fetch = FetchType.LAZY)
@@ -261,6 +273,14 @@ public class ComplianceStandard extends BaseObject<String> implements SimpleBase
         }
     }
 
+    public String getSupersededByStandardId() {
+        return supersededByStandardId;
+    }
+
+    public void setSupersededByStandardId(String supersededByStandardId) {
+        this.supersededByStandardId = supersededByStandardId;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -291,6 +311,14 @@ public class ComplianceStandard extends BaseObject<String> implements SimpleBase
 
     public void setIsPreSeeded(Boolean isPreSeeded) {
         this.isPreSeeded = isPreSeeded;
+    }
+
+    public Integer getSystemUserId() {
+        return systemUserId;
+    }
+
+    public void setSystemUserId(Integer systemUserId) {
+        this.systemUserId = systemUserId;
     }
 
     public List<ParameterGroup> getParameterGroups() {

@@ -21,6 +21,8 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.openelisglobal.common.validator.ValidationHelper;
 import org.openelisglobal.validation.annotations.SafeHtml;
@@ -42,14 +44,18 @@ public class EvaluationResult extends BaseObject<String> implements SimpleBaseEn
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "evaluation_result_generator", sequenceName = "evaluation_result_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "evaluation_result_generator")
+    @Column(name = "id", precision = 10, scale = 0)
+    @GeneratedValue(generator = "evaluation_result_seq_gen")
+    @GenericGenerator(
+        name = "evaluation_result_seq_gen",
+        strategy = "org.openelisglobal.hibernate.resources.StringSequenceGenerator",
+        parameters = @Parameter(name = "sequence_name", value = "evaluation_result_seq")
+    )
+    @Type(type = "org.openelisglobal.hibernate.resources.usertype.LIMSStringNumberUserType")
     @Pattern(regexp = ValidationHelper.ID_REGEX)
-    @Column(name = "id")
     private String id;
 
     @NotNull
-    @Type(type = "uuid-char")
     @Column(name = "fhir_uuid", unique = true, nullable = false)
     private UUID fhirUuid;
 
@@ -122,6 +128,9 @@ public class EvaluationResult extends BaseObject<String> implements SimpleBaseEn
     @SafeHtml(level = SafeHtml.SafeListLevel.NONE)
     @Column(name = "retest_reason")
     private String retestReason;
+
+    @Column(name = "sys_user_id", nullable = false)
+    private Integer systemUserId;
 
     public EvaluationResult() {
         super();
@@ -352,6 +361,14 @@ public class EvaluationResult extends BaseObject<String> implements SimpleBaseEn
 
     public void setRetestReason(String retestReason) {
         this.retestReason = retestReason;
+    }
+
+    public Integer getSystemUserId() {
+        return systemUserId;
+    }
+
+    public void setSystemUserId(Integer systemUserId) {
+        this.systemUserId = systemUserId;
     }
 
     // Helper methods

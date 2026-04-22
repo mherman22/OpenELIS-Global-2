@@ -137,6 +137,15 @@
         <class>org.openelisglobal.qc.valueholder.QCRuleViolation</class>
         <class>org.openelisglobal.qc.valueholder.QCAlert</class>
 
+        <class>org.openelisglobal.compliance.valueholder.ComplianceStandard</class>
+        <class>org.openelisglobal.compliance.valueholder.ParameterGroup</class>
+        <class>org.openelisglobal.compliance.valueholder.ComplianceThreshold</class>
+        <class>org.openelisglobal.compliance.valueholder.ComplianceEvaluation</class>
+        <class>org.openelisglobal.compliance.valueholder.EvaluationResult</class>
+        <class>org.openelisglobal.compliance.valueholder.TestComplianceStandard</class>
+        <class>org.openelisglobal.compliance.valueholder.ComplianceImportLog</class>
+        <class>org.openelisglobal.compliance.valueholder.QualityControlComplianceRule</class>
+
         <properties>
             <property name="hibernate.cfg_xml_file"
                 value="classpath:hibernate/hibernate.cfg.xml" />

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <!-- Minimal Compliance Standard Record for Testing -->
+    <compliance_standard
+        id="1"
+        fhir_uuid="550e8400-e29b-41d4-a716-446655440001"
+        name="WHO Water Quality Standard"
+        description="World Health Organization Water Quality Standards for Drinking Water"
+        issuing_body="WHO"
+        regulation_number="WHO-WQ-2023"
+        version="1.0"
+        effective_date="2023-01-01"
+        expiry_date="2025-12-31"
+        country_region="Global"
+        status="ACTIVE"
+        lastupdated="2024-01-01 00:00:00"
+        sys_user_id="1" />
+
+    <compliance_standard
+        id="2"
+        fhir_uuid="550e8400-e29b-41d4-a716-446655440002"
+        name="EPA Drinking Water Standards"
+        description="US Environmental Protection Agency Drinking Water Quality Standards"
+        issuing_body="EPA"
+        regulation_number="EPA-DWS-2023"
+        version="2.1"
+        effective_date="2023-06-01"
+        expiry_date="2026-05-31"
+        country_region="United States"
+        status="ACTIVE"
+        lastupdated="2024-01-01 00:00:00"
+        sys_user_id="1" />
+
+    <compliance_standard
+        id="3"
+        fhir_uuid="550e8400-e29b-41d4-a716-446655440003"
+        name="ISO 17025 Testing Standards"
+        description="International Standard for Testing and Calibration Laboratories"
+        issuing_body="ISO"
+        regulation_number="ISO-17025"
+        version="2017"
+        effective_date="2017-11-15"
+        country_region="International"
+        status="ACTIVE"
+        lastupdated="2024-01-01 00:00:00"
+        sys_user_id="1" />
+</dataset>

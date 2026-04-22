@@ -123,7 +123,7 @@ public class ComplianceEvaluationDAOImpl extends BaseDAOImpl<ComplianceEvaluatio
             TypedQuery<ComplianceEvaluation> query = entityManager.createQuery(hql, ComplianceEvaluation.class);
             query.setParameter("id", evaluationId);
             List<ComplianceEvaluation> list = query.getResultList();
-            return list.isEmpty() ? null : list.get(0);
+            return list.isEmpty() ? null : list.getFirst();
         } catch (RuntimeException e) {
             LogEvent.logError(e);
             throw new LIMSRuntimeException("Error in ComplianceEvaluation getEvaluationWithResults()", e);

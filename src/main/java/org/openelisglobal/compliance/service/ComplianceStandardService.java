@@ -169,25 +169,9 @@ public interface ComplianceStandardService extends BaseObjectService<ComplianceS
     List<ComplianceStandard> getSupersedableStandards();
 
     /**
-     * Supersede a standard with a new one (business logic)
-     */
-    void supersedseStandard(String oldStandardId, String newStandardId);
-
-    /**
-     * Archive a standard (business logic)
-     */
-    void archive(String standardId);
-
-    /**
      * Bulk update status for multiple standards
      */
     void bulkUpdateStatus(List<String> standardIds, ComplianceStandardStatus newStatus, String userId);
-
-    /**
-     * Get version for evaluation (version-lock semantics) Constitutional
-     * requirement: preserve version at evaluation time
-     */
-    String getVersionForEvaluation(String standardId);
 
     /**
      * Get statistics about standards

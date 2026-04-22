@@ -249,6 +249,8 @@ public class ComplianceStandardServiceTest extends BaseWebContextSensitiveTest {
         standard.setApplicableSampleTypes("Water");
         standard.setStatus(ComplianceStandardStatus.DRAFT);
         standard.setIsPreSeeded(false);
+        standard.setSystemUserId(1); // Set required audit field
+        standard.setSysUserId("1"); // Set transient audit field for BaseObject
 
         return standard;
     }

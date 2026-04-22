@@ -29,9 +29,9 @@ public interface EvaluationResultService extends BaseObjectService<EvaluationRes
     List<EvaluationResult> getResultsByParameterName(String parameterName);
 
     /**
-     * Get results by status
+     * Get results by compliance status
      */
-    List<EvaluationResult> getResultsByStatus(EvaluationStatus status);
+    List<EvaluationResult> getResultsByStatus(Boolean isCompliant);
 
     /**
      * Get results by threshold ID
@@ -66,7 +66,7 @@ public interface EvaluationResultService extends BaseObjectService<EvaluationRes
     /**
      * Search results by multiple criteria
      */
-    List<EvaluationResult> searchResults(String evaluationId, String parameterName, EvaluationStatus status);
+    List<EvaluationResult> searchResults(String evaluationId, String parameterName, Boolean isCompliant);
 
     /**
      * Get results for export

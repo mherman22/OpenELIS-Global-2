@@ -85,7 +85,7 @@
 
         <!-- 1. COMPLIANCE_STANDARD: Main standards registry -->
         <createTable tableName="compliance_standard">
-            <column name="id" type="INTEGER">
+            <column name="id" type="VARCHAR(10)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="fhir_uuid" type="UUID">
@@ -112,7 +112,7 @@
             <column name="description" type="TEXT"/>
             <column name="regulatory_context" type="TEXT"/>
             <column name="enforcement_authority" type="VARCHAR(255)"/>
-            <column name="superseded_by_id" type="INTEGER"/>
+            <column name="superseded_by_id" type="VARCHAR(10)"/>
             <column name="parameter_types" type="TEXT"/>
             <column name="thresholds" type="TEXT"/>
             <column name="units" type="TEXT"/>
@@ -136,13 +136,13 @@
 
         <!-- 2. PARAMETER_GROUP: Logical grouping of parameters -->
         <createTable tableName="parameter_group">
-            <column name="id" type="INTEGER">
+            <column name="id" type="VARCHAR(10)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="fhir_uuid" type="UUID">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="standard_id" type="INTEGER">
+            <column name="standard_id" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)">
@@ -169,13 +169,13 @@
 
         <!-- 3. COMPLIANCE_THRESHOLD: Individual parameter thresholds -->
         <createTable tableName="compliance_threshold">
-            <column name="id" type="INTEGER">
+            <column name="id" type="VARCHAR(10)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="fhir_uuid" type="UUID">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="group_id" type="INTEGER">
+            <column name="group_id" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
             <column name="parameter_code" type="VARCHAR(100)">
@@ -215,7 +215,7 @@
 
         <!-- 4. COMPLIANCE_EVALUATION: Evaluation records -->
         <createTable tableName="compliance_evaluation">
-            <column name="id" type="INTEGER">
+            <column name="id" type="VARCHAR(10)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="fhir_uuid" type="UUID">
@@ -224,7 +224,7 @@
             <column name="sample_id" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="standard_id" type="INTEGER">
+            <column name="standard_id" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
             <column name="standard_version" type="VARCHAR(50)">
@@ -235,7 +235,9 @@
             </column>
             <column name="overall_compliance" type="BOOLEAN"/>
             <column name="compliance_percentage" type="DECIMAL(5,2)"/>
-            <column name="evaluation_date" type="TIMESTAMP"/>
+            <column name="evaluated_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
             <column name="completed_date" type="TIMESTAMP"/>
             <column name="reviewed_date" type="TIMESTAMP"/>
             <column name="evaluated_by" type="VARCHAR(100)"/>
@@ -263,16 +265,16 @@
 
         <!-- 5. EVALUATION_RESULT: Individual measurement results -->
         <createTable tableName="evaluation_result">
-            <column name="id" type="INTEGER">
+            <column name="id" type="VARCHAR(10)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="fhir_uuid" type="UUID">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="evaluation_id" type="INTEGER">
+            <column name="evaluation_id" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
-            <column name="threshold_id" type="INTEGER">
+            <column name="threshold_id" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
             <column name="tested_value" type="DECIMAL(15,6)"/>
@@ -307,7 +309,7 @@
 
         <!-- 6. TEST_COMPLIANCE_STANDARD: Junction table for test-standard associations -->
         <createTable tableName="test_compliance_standard">
-            <column name="id" type="INTEGER">
+            <column name="id" type="VARCHAR(10)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="fhir_uuid" type="UUID">
@@ -316,7 +318,7 @@
             <column name="test_id" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="compliance_standard_id" type="INTEGER">
+            <column name="compliance_standard_id" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
             <column name="applicable_parameters" type="TEXT"/>
@@ -340,7 +342,7 @@
 
         <!-- 7. COMPLIANCE_IMPORT_LOG: Audit trail for import/export operations -->
         <createTable tableName="compliance_import_log">
-            <column name="id" type="INTEGER">
+            <column name="id" type="VARCHAR(10)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="fhir_uuid" type="UUID">
@@ -398,13 +400,13 @@
 
         <!-- 8. QC_COMPLIANCE_RULE: QC rules integration with compliance standards -->
         <createTable tableName="qc_compliance_rule">
-            <column name="id" type="INTEGER">
+            <column name="id" type="VARCHAR(10)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="fhir_uuid" type="UUID">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="compliance_standard_id" type="INTEGER">
+            <column name="compliance_standard_id" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
             <column name="qc_rule_name" type="VARCHAR(255)">
@@ -621,7 +623,7 @@
             <column name="evaluation_status"/>
         </createIndex>
         <createIndex tableName="compliance_evaluation" indexName="idx_compliance_evaluation_date">
-            <column name="evaluation_date"/>
+            <column name="evaluated_date"/>
         </createIndex>
 
         <!-- Evaluation Result indexes -->
@@ -793,9 +795,11 @@
 
         <!-- Compliance percentage constraint -->
         <sql>
+            <![CDATA[
             ALTER TABLE compliance_evaluation
             ADD CONSTRAINT chk_compliance_evaluation_percentage
             CHECK (compliance_percentage IS NULL OR (compliance_percentage >= 0 AND compliance_percentage <= 100));
+            ]]>
         </sql>
 
         <!-- Import log type constraint -->
@@ -817,17 +821,21 @@
 
         <!-- Import log counts constraint -->
         <sql>
+            <![CDATA[
             ALTER TABLE compliance_import_log
             ADD CONSTRAINT chk_compliance_import_log_counts
             CHECK (records_processed >= 0 AND records_successful >= 0 AND
                    records_failed >= 0 AND records_skipped >= 0);
+            ]]>
         </sql>
 
         <!-- Import log file size constraint -->
         <sql>
+            <![CDATA[
             ALTER TABLE compliance_import_log
             ADD CONSTRAINT chk_compliance_import_log_file_size
             CHECK (file_size IS NULL OR file_size >= 0);
+            ]]>
         </sql>
 
         <!-- QC rule evaluation frequency constraint -->

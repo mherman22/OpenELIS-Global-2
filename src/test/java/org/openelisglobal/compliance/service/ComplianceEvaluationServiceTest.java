@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Before;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import org.openelisglobal.BaseWebContextSensitiveTest;
 import org.openelisglobal.compliance.valueholder.ComplianceEvaluation;
 import org.openelisglobal.compliance.valueholder.ComplianceStandard;
+import org.openelisglobal.compliance.valueholder.ComplianceStandardStatus;
 import org.openelisglobal.compliance.valueholder.ComplianceThreshold;
 import org.openelisglobal.compliance.valueholder.EvaluationResult;
 import org.openelisglobal.compliance.valueholder.EvaluationStatus;
@@ -47,6 +49,7 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
     private String testThresholdId;
     private String testSampleId;
     private ComplianceEvaluation testEvaluation;
+    private ComplianceStandard savedStandard;
 
     @Before
     public void setUp() throws Exception {
@@ -54,12 +57,14 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
 
         // Create test hierarchy
         ComplianceStandard testStandard = createTestStandard();
-        testStandardId = complianceStandardService.save(testStandard).getId();
+        savedStandard = complianceStandardService.save(testStandard);
+        testStandardId = savedStandard.getId();
 
-        ParameterGroup testGroup = createTestParameterGroup(testStandardId);
-        testGroupId = parameterGroupService.save(testGroup).getId();
+        ParameterGroup testGroup = createTestParameterGroup(savedStandard);
+        ParameterGroup savedGroup = parameterGroupService.save(testGroup);
+        testGroupId = savedGroup.getId();
 
-        ComplianceThreshold testThreshold = createTestThreshold(testGroupId);
+        ComplianceThreshold testThreshold = createTestThreshold(savedGroup);
         testThresholdId = complianceThresholdService.save(testThreshold).getId();
 
         testSampleId = UUID.randomUUID().toString();
@@ -319,25 +324,35 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
 
     private ComplianceStandard createTestStandard() {
         ComplianceStandard standard = new ComplianceStandard();
+        String uniqueId = UUID.randomUUID().toString().substring(0, 8);
         standard.setName("Test Standard for Evaluations");
         standard.setIssuingBody("Test Authority");
-        standard.setRegulationNumber("TE-001");
+        standard.setRegulationNumber("TE-" + uniqueId); // Make unique per test
         standard.setVersion("1.0");
+        standard.setEffectiveDate(LocalDate.now());
+        standard.setCountryRegion("Indonesia");
+        standard.setApplicableSampleTypes("Water");
+        standard.setStatus(ComplianceStandardStatus.DRAFT);
+        standard.setIsPreSeeded(false);
+        // Set audit fields required by BaseObject
+        standard.setSystemUserId(1);
         return standard;
     }
 
-    private ParameterGroup createTestParameterGroup(String standardId) {
+    private ParameterGroup createTestParameterGroup(ComplianceStandard standard) {
         ParameterGroup group = new ParameterGroup();
-        group.setStandardId(standardId);
+        group.setStandard(standard);
         group.setName("Test Parameter Group");
         group.setDescription("Test group for evaluation testing");
         group.setSortOrder(1);
+        // Set audit fields required by BaseObject
+        group.setSystemUserId(1);
         return group;
     }
 
-    private ComplianceThreshold createTestThreshold(String groupId) {
+    private ComplianceThreshold createTestThreshold(ParameterGroup group) {
         ComplianceThreshold threshold = new ComplianceThreshold();
-        threshold.setGroupId(groupId);
+        threshold.setGroup(group);
         threshold.setParameterCode("pH");
         threshold.setDisplayName("pH Level");
         threshold.setThresholdType(ThresholdType.RANGE);
@@ -345,17 +360,21 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
         threshold.setMaxValue(new BigDecimal("8.5"));
         threshold.setUnits("pH units");
         threshold.setSortOrder(1);
+        // Set audit fields required by BaseObject
+        threshold.setSystemUserId(1);
         return threshold;
     }
 
     private ComplianceEvaluation createTestEvaluation(String sampleId, String thresholdId) {
         ComplianceEvaluation evaluation = new ComplianceEvaluation();
         evaluation.setSampleId(sampleId);
-        evaluation.setStandardId(testStandardId);
+        evaluation.setStandard(savedStandard);
         evaluation.setStandardVersion("1.0");
         evaluation.setStatus(EvaluationStatus.PENDING);
         evaluation.setEvaluatedBy("test-user");
         evaluation.setEvaluatedDate(new java.util.Date());
+        // Set audit fields required by BaseObject
+        evaluation.setSystemUserId(1);
         return evaluation;
     }
 
@@ -367,11 +386,15 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
         result1.setThresholdId(testThresholdId);
         result1.setTestedValue(new BigDecimal("7.2")); // Compliant
         result1.setCompliant(true);
+        result1.setSystemUserId(1);
+        result1.setEvaluation(evaluation); // Set bidirectional relationship
 
         EvaluationResult result2 = new EvaluationResult();
         result2.setThresholdId(testThresholdId);
         result2.setTestedValue(new BigDecimal("9.0")); // Non-compliant
         result2.setCompliant(false);
+        result2.setSystemUserId(1);
+        result2.setEvaluation(evaluation); // Set bidirectional relationship
 
         evaluation.getEvaluationResults().add(result1);
         evaluation.getEvaluationResults().add(result2);
@@ -382,11 +405,12 @@ public class ComplianceEvaluationServiceTest extends BaseWebContextSensitiveTest
     private ComplianceEvaluation createAllCompliantEvaluation(String sampleId) {
         ComplianceEvaluation evaluation = createTestEvaluation(sampleId, testThresholdId);
 
-        // Add all compliant results
         EvaluationResult result = new EvaluationResult();
         result.setThresholdId(testThresholdId);
         result.setTestedValue(new BigDecimal("7.2")); // Compliant
         result.setCompliant(true);
+        result.setSystemUserId(1);
+        result.setEvaluation(evaluation); // Set bidirectional relationship
 
         evaluation.getEvaluationResults().add(result);
 

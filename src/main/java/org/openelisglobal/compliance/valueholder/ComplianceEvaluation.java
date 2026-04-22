@@ -22,7 +22,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostUpdate;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -31,6 +30,8 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.openelisglobal.common.validator.ValidationHelper;
 import org.openelisglobal.validation.annotations.SafeHtml;
@@ -53,14 +54,18 @@ public class ComplianceEvaluation extends BaseObject<String> implements SimpleBa
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "compliance_evaluation_generator", sequenceName = "compliance_evaluation_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "compliance_evaluation_generator")
+    @Column(name = "id", precision = 10, scale = 0)
+    @GeneratedValue(generator = "compliance_evaluation_seq_gen")
+    @GenericGenerator(
+        name = "compliance_evaluation_seq_gen",
+        strategy = "org.openelisglobal.hibernate.resources.StringSequenceGenerator",
+        parameters = @Parameter(name = "sequence_name", value = "compliance_evaluation_seq")
+    )
+    @Type(type = "org.openelisglobal.hibernate.resources.usertype.LIMSStringNumberUserType")
     @Pattern(regexp = ValidationHelper.ID_REGEX)
-    @Column(name = "id")
     private String id;
 
     @NotNull
-    @Type(type = "uuid-char")
     @Column(name = "fhir_uuid", unique = true, nullable = false)
     private UUID fhirUuid;
 
@@ -137,6 +142,9 @@ public class ComplianceEvaluation extends BaseObject<String> implements SimpleBa
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "notification_sent_date")
     private Date notificationSentDate;
+
+    @Column(name = "sys_user_id", nullable = false)
+    private Integer systemUserId;
 
     // Bidirectional relationship with evaluation results
     @OneToMany(mappedBy = "evaluation", fetch = FetchType.LAZY)
@@ -343,6 +351,14 @@ public class ComplianceEvaluation extends BaseObject<String> implements SimpleBa
 
     public void setEvaluationResults(List<EvaluationResult> evaluationResults) {
         this.evaluationResults = evaluationResults != null ? evaluationResults : new ArrayList<>();
+    }
+
+    public Integer getSystemUserId() {
+        return systemUserId;
+    }
+
+    public void setSystemUserId(Integer systemUserId) {
+        this.systemUserId = systemUserId;
     }
 
     // Helper methods
