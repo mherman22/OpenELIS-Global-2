@@ -10,8 +10,8 @@ overview:
 todos:
   - id: save-plan-record
     content:
-      Record the agreed workplan in .specify/plans/ on a dedicated
-      branch/worktree before implementation work begins.
+      Record the agreed workplan in specs/plans/ on a dedicated branch/worktree
+      before implementation work begins.
     status: completed
   - id: map-current-trust-boundaries
     content:
@@ -19,7 +19,7 @@ todos:
       Publish, including reusable/manual wrapper entrypoints, packages write,
       statuses write, actions read, inherited secrets, GHCR image transfer, and
       PR-code checkout points. Output a privilege matrix in
-      .specify/plans/e2e-ci-privilege-matrix.md.
+      specs/plans/e2e-ci-privilege-matrix.md.
     status: completed
   - id: classify-required-vs-accidental-privilege
     content:
@@ -329,8 +329,8 @@ Tasks:
 
 Deliverable:
 
-- A privilege matrix in `.specify/plans/e2e-ci-privilege-matrix.md` covering
-  every job, token scope, secret input, and PR-code execution point.
+- A privilege matrix in `specs/plans/e2e-ci-privilege-matrix.md` covering every
+  job, token scope, secret input, and PR-code execution point.
 
 Checkpoint:
 

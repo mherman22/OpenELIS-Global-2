@@ -1,7 +1,7 @@
 # React 18 Frontend Modernization Plan
 
-> **⚠️ Superseded for execution by** >
-> [`pr-3448-react-18-unified-plan.md`](./pr-3448-react-18-unified-plan.md)
+> **⚠️ Superseded for execution by
+> [PR #3448](https://github.com/DIGI-UW/OpenELIS-Global-2/pull/3448)**
 > (2026-04-18). This document remains as the strategic/architectural reference,
 > but several assumptions are outdated:
 >
@@ -10,10 +10,11 @@
 > - **Carbon v11:** The Vite PR did NOT upgrade Carbon; the bump is actually in
 >   #3448 itself.
 > - **Phasing:** The 5-PR phased approach described here was collapsed into a
->   single squashed #3448. Execution now follows the unified plan.
+>   single squashed #3448. Execution now follows the unified plan captured in
+>   the PR description.
 >
-> For any work landing #3448, use the unified plan. Refer back here only for
-> historical context on the original strategy.
+> For any work landing #3448, use the PR description as the current source of
+> truth. Refer back here only for historical context on the original strategy.
 
 ## Context
 
@@ -330,5 +331,6 @@ With Phases 1 and 2 running in parallel: **~5-8 days wall clock**.
 - [React Router v5→v6 Migration](https://reactrouter.com/upgrading/v5)
 - [react-intl v5→v6 Migration](https://formatjs.io/docs/react-intl/upgrade-guide-5x-to-6x)
 - [Testing Library React Migration](https://testing-library.com/docs/react-testing-library/migrate-v13)
-- Prerequisite: `.specify/plans/cra-to-vite-migration.md`
+- Prerequisite: `.specify/plan-archive/cra-to-vite-migration.md` (archived —
+  migration shipped in PR #3349)
 - GitHub Issue: #3312 (Vite migration), TBD (React 18 upgrade)

@@ -9,7 +9,7 @@ overview:
 todos:
   - id: save-plan-to-specify
     content:
-      Copy the finalized plan to .specify/plans/ as the durable project record
+      Copy the finalized plan to specs/plans/ as the durable project record
       before any other execution begins.
     status: in_progress
   - id: adopt-authoritative-base

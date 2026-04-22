@@ -37,7 +37,7 @@ PR-facing E2E validation across trusted and fork-originated contributions.
   - Retags and publishes release/develop images outside PR validation.
 
 See the operator runbook for troubleshooting and expectations:
-[`../../.github/e2e-ci-operator-model.md`](../../.github/e2e-ci-operator-model.md).
+[`./e2e-ci-operator-model.md`](./e2e-ci-operator-model.md).
 
 ## 3. Execution Contract
 
@@ -162,7 +162,7 @@ deterministic tests and helper behavior, not retry masking.
 - [`../../.github/workflows/e2e-tests.yml`](../../.github/workflows/e2e-tests.yml)
 - [`../../.github/workflows/e2e-authoritative-reusable.yml`](../../.github/workflows/e2e-authoritative-reusable.yml)
 - [`../../.github/workflows/publish-images.yml`](../../.github/workflows/publish-images.yml)
-- [`../../.github/e2e-ci-operator-model.md`](../../.github/e2e-ci-operator-model.md)
+- [`./e2e-ci-operator-model.md`](./e2e-ci-operator-model.md)
 
 ### Relevant PR history
 
