@@ -345,30 +345,4 @@ public class ComplianceStandardServiceImpl extends AuditableBaseObjectServiceImp
         return getBaseObjectDAO().getStandardWithGroups(standardId);
     }
 
-    @Override
-    @Transactional
-    public void supersedseStandard(String oldStandardId, String newStandardId) {
-        ComplianceStandard oldStandard = get(oldStandardId);
-        if (oldStandard != null) {
-            oldStandard.setStatus(ComplianceStandardStatus.SUPERSEDED);
-            oldStandard.setSupersededById(newStandardId);
-            update(oldStandard);
-        }
-    }
-
-    @Override
-    @Transactional
-    public void archive(String standardId) {
-        ComplianceStandard standard = get(standardId);
-        if (standard != null) {
-            standard.setStatus(ComplianceStandardStatus.ARCHIVED);
-            update(standard);
-        }
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public String getVersionForEvaluation(String standardId) {
-        return getBaseObjectDAO().getVersionForEvaluation(standardId);
-    }
 }

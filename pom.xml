@@ -801,6 +801,14 @@
                     <!-- move to release when we compile in java versions >= 9 -->
                     <release>${maven.java.release}</release>
                     <parameters>true</parameters>
+                    <proc>full</proc>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.36</version>
+                        </path>
+                    </annotationProcessorPaths>
                     <!-- legacy for java versions < 9 -->
                     <!-- <source>${maven.compiler.source}</source> -->
                     <!-- <target>${maven.compiler.target}</target> -->
