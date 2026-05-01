@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, InlineLoading, Stack, Tile } from "@carbon/react";
-import { Printer } from "@carbon/icons-react";
+import { Printer, Checkmark } from "@carbon/icons-react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 const normalizePrintableLabel = (printableLabel) => {
@@ -66,13 +66,15 @@ const PostSavePrintDialog = ({
   const styles = {
     title: {
       margin: 0,
-      fontSize: "1rem",
+      fontSize: "0.95rem",
       fontWeight: 600,
       color: "#161616",
+      lineHeight: 1.3,
     },
     accession: {
       fontFamily: "'IBM Plex Mono', monospace",
-      fontWeight: 600,
+      fontWeight: 700,
+      whiteSpace: "nowrap",
     },
     list: {
       display: "flex",
@@ -91,10 +93,12 @@ const PostSavePrintDialog = ({
       display: "flex",
       flexDirection: "column",
       lineHeight: 1.25,
+      minWidth: 0,
     },
     rowType: {
       fontWeight: 600,
       color: "#161616",
+      whiteSpace: "nowrap",
     },
     rowQty: {
       fontSize: "0.85rem",
@@ -150,7 +154,12 @@ const PostSavePrintDialog = ({
         {isLoading && <InlineLoading />}
 
         <div style={styles.footer}>
-          <Button kind="secondary" onClick={handleDone}>
+          <Button
+            kind="tertiary"
+            size="sm"
+            renderIcon={Checkmark}
+            onClick={handleDone}
+          >
             <FormattedMessage
               id={
                 printableLabels.length > 0

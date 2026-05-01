@@ -112,7 +112,7 @@ public class BarcodeWorkflowPrintServiceImpl implements BarcodeWorkflowPrintServ
         String encodedType = URLEncoder.encode(typeForUrl == null ? "" : typeForUrl, StandardCharsets.UTF_8);
         // override=true bypasses the persistent barcode_label_info.num_printed cap
         // that would otherwise silently truncate reprints to 1.
-        return String.format("/LabelMakerServlet?labNo=%s&type=%s&quantity=%d&override=true",
-                encodedAccession, encodedType, Math.max(quantity, 1));
+        return String.format("/LabelMakerServlet?labNo=%s&type=%s&quantity=%d&override=true", encodedAccession,
+                encodedType, Math.max(quantity, 1));
     }
 }
