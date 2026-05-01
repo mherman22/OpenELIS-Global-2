@@ -77,7 +77,7 @@ public class BarcodeWorkflowPrintServiceImpl implements BarcodeWorkflowPrintServ
             option.setLabelType(entry.getKey());
             option.setQuantity(entry.getValue());
             option.setDimensionsMm("");
-            option.setPrintUrl(buildPrintUrl(accessionNumber, entry.getKey()));
+            option.setPrintUrl(buildPrintUrl(accessionNumber, entry.getKey(), entry.getValue()));
             printableOptions.add(option);
         }
         dialog.setPrintableLabelTypes(printableOptions);
@@ -100,7 +100,7 @@ public class BarcodeWorkflowPrintServiceImpl implements BarcodeWorkflowPrintServ
         }
     }
 
-    private String buildPrintUrl(String accessionNumber, String labelType) {
+    private String buildPrintUrl(String accessionNumber, String labelType, int quantity) {
         String typeForUrl = labelType;
         if ("block".equals(labelType)) {
             typeForUrl = "blockOrder";
@@ -110,6 +110,9 @@ public class BarcodeWorkflowPrintServiceImpl implements BarcodeWorkflowPrintServ
         String encodedAccession = URLEncoder.encode(accessionNumber == null ? "" : accessionNumber,
                 StandardCharsets.UTF_8);
         String encodedType = URLEncoder.encode(typeForUrl == null ? "" : typeForUrl, StandardCharsets.UTF_8);
-        return String.format("/LabelMakerServlet?labNo=%s&type=%s", encodedAccession, encodedType);
+        // override=true bypasses the persistent barcode_label_info.num_printed cap
+        // that would otherwise silently truncate reprints to 1.
+        return String.format("/LabelMakerServlet?labNo=%s&type=%s&quantity=%d&override=true",
+                encodedAccession, encodedType, Math.max(quantity, 1));
     }
 }

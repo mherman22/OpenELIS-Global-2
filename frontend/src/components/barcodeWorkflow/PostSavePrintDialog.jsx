@@ -37,7 +37,7 @@ const PostSavePrintDialog = ({
 
   const handlePrint = (printableLabel) => {
     if (onPrint) {
-      onPrint(printableLabel.labelType);
+      onPrint(printableLabel.labelType, printableLabel.quantity);
       return;
     }
 

@@ -23,22 +23,32 @@ const OrderSuccessMessage = (props) => {
     dialogModel.printableLabelTypes.length > 0
       ? dialogModel.printableLabelTypes
       : ["order"];
+  // Pass through whatever quantities the backend computed from the user's
+  // LabelsSection input on the AddSample form. The backend's printUrl already
+  // embeds quantity + override=true once BarcodeWorkflowPrintService is fixed,
+  // so prefer it; fall back to a locally constructed URL only if absent.
   const printableLabels = printableTypes.map((labelType) => {
-    const normalizedType =
-      typeof labelType === "string" ? labelType : labelType.labelType;
+    const isObject = typeof labelType !== "string";
+    const normalizedType = isObject ? labelType.labelType : labelType;
+    const quantity = isObject && labelType.quantity > 0 ? labelType.quantity : 1;
+    const backendUrl = isObject ? labelType.printUrl : "";
+    const fallbackUrl =
+      config.serverBaseUrl +
+      `/LabelMakerServlet?labNo=${accessionNumber}&type=${normalizedType}` +
+      `&quantity=${quantity}&override=true`;
     return {
       labelType: normalizedType,
-      quantity: 1,
-      printUrl:
-        config.serverBaseUrl +
-        `/LabelMakerServlet?labNo=${accessionNumber}&type=${normalizedType}`,
+      quantity,
+      printUrl: backendUrl || fallbackUrl,
     };
   });
 
-  const handlePrintByType = (labelType) => {
+  const handlePrintByType = (labelType, quantity = 1) => {
+    const safeQuantity = quantity > 0 ? quantity : 1;
     const printUrl =
       config.serverBaseUrl +
-      `/LabelMakerServlet?labNo=${accessionNumber}&type=${labelType}`;
+      `/LabelMakerServlet?labNo=${accessionNumber}&type=${labelType}` +
+      `&quantity=${safeQuantity}&override=true`;
     window.open(printUrl);
   };
 

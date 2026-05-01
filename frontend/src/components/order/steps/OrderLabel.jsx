@@ -209,24 +209,22 @@ const OrderLabel = () => {
 
     let url;
 
+    // override=true so the user-selected quantity is honored on every reprint;
+    // without it the persistent barcode_label_info.num_printed cap silently
+    // truncates the print job to 1 once a label has been reprinted enough times.
     if (labelType === "order") {
-      // Print order label only
-      url = `/LabelMakerServlet?labNo=${encodeURIComponent(labNumber)}&type=order&quantity=${quantity}`;
+      url = `/LabelMakerServlet?labNo=${encodeURIComponent(labNumber)}&type=order&quantity=${quantity}&override=true`;
     } else if (labelType.startsWith("sample-")) {
-      // Print specimen label for specific sample
-      // Extract sample index from labelType (e.g., "sample-0" -> 0)
+      // Extract sample index from labelType (e.g., "sample-0" -> 0). Specimen
+      // labels need labNo.sortOrder format (sortOrder is 1-based in backend).
       const sampleIndex = parseInt(labelType.replace("sample-", ""), 10);
       const sample = samples[sampleIndex];
-
-      // For specimen labels, we need labNo.sortOrder format (e.g., DEV01260000000000001.1)
-      // sortOrder is 1-based in backend
       const sortOrder = sample?.sortOrder || sampleIndex + 1;
       const specimenLabNo = `${labNumber}.${sortOrder}`;
 
-      url = `/LabelMakerServlet?labNo=${encodeURIComponent(specimenLabNo)}&type=specimen&quantity=${quantity}`;
+      url = `/LabelMakerServlet?labNo=${encodeURIComponent(specimenLabNo)}&type=specimen&quantity=${quantity}&override=true`;
     } else {
-      // Fallback to default (prints both order and all specimen labels)
-      url = `/LabelMakerServlet?labNo=${encodeURIComponent(labNumber)}&type=default&quantity=${quantity}`;
+      url = `/LabelMakerServlet?labNo=${encodeURIComponent(labNumber)}&type=default&quantity=${quantity}&override=true`;
     }
 
     // Open label PDF in new window
