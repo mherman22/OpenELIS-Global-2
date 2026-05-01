@@ -11,7 +11,7 @@
 }
 
 .post-save-dialog__accession-tag {
-  font-family: "IBM Plex Mono", monospace;
+  @include type.type-style("code-01");
   font-weight: 700;
   max-width: 100%;
   height: auto;

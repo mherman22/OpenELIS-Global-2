@@ -1,4 +1,5 @@
 @use "@carbon/styles/scss/type";
+@use "@carbon/styles/scss/colors";
 
 .singleTest {
   padding: 1rem 0.75rem;
@@ -152,8 +153,8 @@
 }
 
 .orderEntrySuccessIcon {
-  // Carbon's support-success token: #24a148
-  color: #24a148;
+  // Carbon's support-success token maps to green-50
+  color: colors.$green-50;
 }
 
 .orderEntrySuccessTitle {
