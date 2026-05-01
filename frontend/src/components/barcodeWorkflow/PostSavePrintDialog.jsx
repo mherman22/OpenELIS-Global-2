@@ -1,60 +1,98 @@
 import React from "react";
 import { Button, InlineLoading, Stack, Tile } from "@carbon/react";
-import { Printer, Checkmark } from "@carbon/icons-react";
+import { Checkmark, Printer } from "@carbon/icons-react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-const normalizePrintableLabel = (printableLabel) => {
-  if (typeof printableLabel === "string") {
-    return {
-      labelType: printableLabel,
-      quantity: 1,
-      dimensionsMm: "",
-      printUrl: "",
-    };
+const normalize = (label) => {
+  if (typeof label === "string") {
+    return { labelType: label, quantity: 1, dimensionsMm: "", printUrl: "" };
   }
-
   return {
-    labelType: printableLabel?.labelType || "",
-    quantity: printableLabel?.quantity ?? 0,
-    dimensionsMm: printableLabel?.dimensionsMm || "",
-    printUrl: printableLabel?.printUrl || "",
+    labelType: label?.labelType ?? "",
+    quantity: label?.quantity ?? 0,
+    dimensionsMm: label?.dimensionsMm ?? "",
+    printUrl: label?.printUrl ?? "",
   };
 };
 
-const formatLabelType = (labelType) => {
-  if (!labelType) return "";
-  return labelType.charAt(0).toUpperCase() + labelType.slice(1) + " label";
+const formatType = (type) =>
+  type ? `${type.charAt(0).toUpperCase()}${type.slice(1)} label` : "";
+
+const styles = {
+  tile: {
+    padding: "1.25rem 1.5rem",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.25rem",
+  },
+  caption: {
+    margin: 0,
+    fontSize: "0.75rem",
+    fontWeight: 500,
+    color: "#6f6f6f",
+    textTransform: "uppercase",
+    letterSpacing: "0.06em",
+  },
+  accession: {
+    fontFamily: "'IBM Plex Mono', monospace",
+    fontSize: "1.05rem",
+    fontWeight: 700,
+    color: "#161616",
+    wordBreak: "break-all",
+  },
+  row: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "1rem",
+  },
+  meta: {
+    minWidth: 0,
+  },
+  type: {
+    fontSize: "0.95rem",
+    fontWeight: 600,
+    color: "#161616",
+    lineHeight: 1.25,
+  },
+  qty: {
+    fontSize: "0.8rem",
+    color: "#6f6f6f",
+    marginTop: "0.15rem",
+  },
+  footer: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
 };
 
 const PostSavePrintDialog = ({
   accessionNumber,
   printableLabelTypes = [],
-  onPrint = undefined,
-  onDone = undefined,
+  onPrint,
+  onDone,
   isLoading = false,
 }) => {
   const intl = useIntl();
 
-  if (!accessionNumber) {
-    return null;
-  }
+  if (!accessionNumber) return null;
 
-  const printableLabels = printableLabelTypes.map(normalizePrintableLabel);
+  const labels = printableLabelTypes.map(normalize);
 
-  const handlePrint = (printableLabel) => {
+  const handlePrint = (label) => {
     if (onPrint) {
-      onPrint(printableLabel.labelType, printableLabel.quantity);
+      onPrint(label.labelType, label.quantity);
       return;
     }
-
-    if (printableLabel.printUrl) {
-      window.open(printableLabel.printUrl);
+    if (label.printUrl) {
+      window.open(label.printUrl);
     }
   };
 
   // Default Done = navigate home so the button is never a no-op when the
-  // caller forgets to pass onDone (the historical behavior across every
-  // consumer of this dialog).
+  // caller forgets to pass onDone.
   const handleDone = () => {
     if (onDone) {
       onDone();
@@ -63,88 +101,39 @@ const PostSavePrintDialog = ({
     window.location.href = "/";
   };
 
-  const styles = {
-    title: {
-      margin: 0,
-      fontSize: "0.95rem",
-      fontWeight: 600,
-      color: "#161616",
-      lineHeight: 1.3,
-    },
-    accession: {
-      fontFamily: "'IBM Plex Mono', monospace",
-      fontWeight: 700,
-      whiteSpace: "nowrap",
-    },
-    row: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      gap: "1rem",
-    },
-    rowMeta: {
-      display: "flex",
-      flexDirection: "column",
-      lineHeight: 1.25,
-      minWidth: 0,
-    },
-    rowType: {
-      fontWeight: 600,
-      color: "#161616",
-      whiteSpace: "nowrap",
-    },
-    rowQty: {
-      fontSize: "0.85rem",
-      color: "#525252",
-    },
-    printButton: {
-      flexShrink: 0,
-    },
-    footer: {
-      display: "flex",
-      justifyContent: "flex-end",
-      marginTop: "0.5rem",
-    },
-  };
-
   return (
-    <Tile>
-      <Stack gap={4}>
-        <h4 style={styles.title}>
-          <FormattedMessage id="barcode.print.dialog.title" />
-          {": "}
+    <Tile style={styles.tile}>
+      <Stack gap={5}>
+        <header style={styles.header}>
+          <span style={styles.caption}>
+            <FormattedMessage id="barcode.print.dialog.title" />
+          </span>
           <span style={styles.accession}>{accessionNumber}</span>
-        </h4>
+        </header>
 
-        {printableLabels.length > 0 && (
-          <Stack gap={3}>
-            {printableLabels.map((printableLabel) => (
-              <div key={printableLabel.labelType} style={styles.row}>
-                <div style={styles.rowMeta}>
-                  <span style={styles.rowType}>
-                    {formatLabelType(printableLabel.labelType)}
-                  </span>
-                  <span style={styles.rowQty}>
+        {labels.length > 0 && (
+          <Stack gap={4}>
+            {labels.map((label) => (
+              <div key={label.labelType} style={styles.row}>
+                <div style={styles.meta}>
+                  <div style={styles.type}>{formatType(label.labelType)}</div>
+                  <div style={styles.qty}>
                     {intl.formatMessage({
                       id: "label.quantity",
                       defaultMessage: "Qty",
                     })}
                     {": "}
-                    {printableLabel.quantity}
-                    {printableLabel.dimensionsMm
-                      ? ` · ${printableLabel.dimensionsMm}`
-                      : ""}
-                  </span>
+                    {label.quantity}
+                    {label.dimensionsMm ? ` · ${label.dimensionsMm}` : ""}
+                  </div>
                 </div>
-                <div style={styles.printButton}>
-                  <Button
-                    size="sm"
-                    renderIcon={Printer}
-                    onClick={() => handlePrint(printableLabel)}
-                  >
-                    <FormattedMessage id="barcode.print.button" />
-                  </Button>
-                </div>
+                <Button
+                  size="sm"
+                  renderIcon={Printer}
+                  onClick={() => handlePrint(label)}
+                >
+                  <FormattedMessage id="barcode.print.button" />
+                </Button>
               </div>
             ))}
           </Stack>
@@ -161,7 +150,7 @@ const PostSavePrintDialog = ({
           >
             <FormattedMessage
               id={
-                printableLabels.length > 0
+                labels.length > 0
                   ? "barcode.print.done"
                   : "barcode.print.skip"
               }
