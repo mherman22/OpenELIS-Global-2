@@ -76,18 +76,11 @@ const PostSavePrintDialog = ({
       fontWeight: 700,
       whiteSpace: "nowrap",
     },
-    list: {
-      display: "flex",
-      flexDirection: "column",
-      borderTop: "1px solid #e0e0e0",
-    },
     row: {
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
       gap: "1rem",
-      padding: "0.65rem 0",
-      borderBottom: "1px solid #f4f4f4",
     },
     rowMeta: {
       display: "flex",
@@ -104,10 +97,13 @@ const PostSavePrintDialog = ({
       fontSize: "0.85rem",
       color: "#525252",
     },
+    printButton: {
+      flexShrink: 0,
+    },
     footer: {
       display: "flex",
       justifyContent: "flex-end",
-      paddingTop: "0.25rem",
+      marginTop: "0.5rem",
     },
   };
 
@@ -121,7 +117,7 @@ const PostSavePrintDialog = ({
         </h4>
 
         {printableLabels.length > 0 && (
-          <div style={styles.list}>
+          <Stack gap={3}>
             {printableLabels.map((printableLabel) => (
               <div key={printableLabel.labelType} style={styles.row}>
                 <div style={styles.rowMeta}>
@@ -129,9 +125,10 @@ const PostSavePrintDialog = ({
                     {formatLabelType(printableLabel.labelType)}
                   </span>
                   <span style={styles.rowQty}>
-                    {intl.formatMessage(
-                      { id: "label.quantity", defaultMessage: "Qty" },
-                    )}
+                    {intl.formatMessage({
+                      id: "label.quantity",
+                      defaultMessage: "Qty",
+                    })}
                     {": "}
                     {printableLabel.quantity}
                     {printableLabel.dimensionsMm
@@ -139,16 +136,18 @@ const PostSavePrintDialog = ({
                       : ""}
                   </span>
                 </div>
-                <Button
-                  size="sm"
-                  renderIcon={Printer}
-                  onClick={() => handlePrint(printableLabel)}
-                >
-                  <FormattedMessage id="barcode.print.button" />
-                </Button>
+                <div style={styles.printButton}>
+                  <Button
+                    size="sm"
+                    renderIcon={Printer}
+                    onClick={() => handlePrint(printableLabel)}
+                  >
+                    <FormattedMessage id="barcode.print.button" />
+                  </Button>
+                </div>
               </div>
             ))}
-          </div>
+          </Stack>
         )}
 
         {isLoading && <InlineLoading />}
