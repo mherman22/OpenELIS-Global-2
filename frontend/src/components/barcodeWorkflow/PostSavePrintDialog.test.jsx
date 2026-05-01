@@ -26,8 +26,8 @@ describe("PostSavePrintDialog", () => {
     );
 
     expect(screen.getByText(/LAB-001/)).toBeInTheDocument();
-    expect(screen.getByText("order")).toBeInTheDocument();
-    expect(screen.getByText("specimen")).toBeInTheDocument();
+    expect(screen.getByText("Order label")).toBeInTheDocument();
+    expect(screen.getByText("Specimen label")).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: "Print" })).toHaveLength(2);
     expect(screen.getByRole("button", { name: "Done" })).toBeInTheDocument();
   });
@@ -48,7 +48,7 @@ describe("PostSavePrintDialog", () => {
     fireEvent.click(screen.getByRole("button", { name: "Print" }));
     fireEvent.click(screen.getByRole("button", { name: "Done" }));
 
-    expect(onPrint).toHaveBeenCalledWith("order");
+    expect(onPrint).toHaveBeenCalledWith("order", 1);
     expect(onDone).toHaveBeenCalled();
   });
 

@@ -1,0 +1,35 @@
+@use "@carbon/styles/scss/type";
+@use "@carbon/styles/scss/spacing";
+@use "@carbon/styles/scss/colors";
+
+.post-save-dialog__caption {
+  margin: 0 0 spacing.$spacing-03 0;
+  @include type.type-style("label-01");
+  color: colors.$cool-gray-60;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.post-save-dialog__accession-tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 700;
+  max-width: 100%;
+  height: auto;
+  white-space: normal;
+  word-break: break-all;
+}
+
+.post-save-dialog__label-name {
+  font-weight: 600;
+  margin-bottom: spacing.$spacing-01;
+}
+
+.post-save-dialog__label-qty {
+  @include type.type-style("label-01");
+  color: colors.$cool-gray-60;
+}
+
+.post-save-dialog__action-cell {
+  text-align: right;
+  vertical-align: middle;
+}

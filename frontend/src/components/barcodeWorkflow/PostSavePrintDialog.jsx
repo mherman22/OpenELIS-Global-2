@@ -1,7 +1,18 @@
 import React from "react";
-import { Button, InlineLoading, Stack, Tile } from "@carbon/react";
+import {
+  Button,
+  InlineLoading,
+  Stack,
+  StructuredList,
+  StructuredListBody,
+  StructuredListCell,
+  StructuredListRow,
+  Tag,
+  Tile,
+} from "@carbon/react";
 import { Checkmark, Printer } from "@carbon/icons-react";
 import { FormattedMessage, useIntl } from "react-intl";
+import "./PostSavePrintDialog.scss";
 
 const normalize = (label) => {
   if (typeof label === "string") {
@@ -17,56 +28,6 @@ const normalize = (label) => {
 
 const formatType = (type) =>
   type ? `${type.charAt(0).toUpperCase()}${type.slice(1)} label` : "";
-
-const styles = {
-  tile: {
-    padding: "1.25rem 1.5rem",
-  },
-  header: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.25rem",
-  },
-  caption: {
-    margin: 0,
-    fontSize: "0.75rem",
-    fontWeight: 500,
-    color: "#6f6f6f",
-    textTransform: "uppercase",
-    letterSpacing: "0.06em",
-  },
-  accession: {
-    fontFamily: "'IBM Plex Mono', monospace",
-    fontSize: "1.05rem",
-    fontWeight: 700,
-    color: "#161616",
-    wordBreak: "break-all",
-  },
-  row: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: "1rem",
-  },
-  meta: {
-    minWidth: 0,
-  },
-  type: {
-    fontSize: "0.95rem",
-    fontWeight: 600,
-    color: "#161616",
-    lineHeight: 1.25,
-  },
-  qty: {
-    fontSize: "0.8rem",
-    color: "#6f6f6f",
-    marginTop: "0.15rem",
-  },
-  footer: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-};
 
 const PostSavePrintDialog = ({
   accessionNumber,
@@ -102,61 +63,63 @@ const PostSavePrintDialog = ({
   };
 
   return (
-    <Tile style={styles.tile}>
+    <Tile>
       <Stack gap={5}>
-        <header style={styles.header}>
-          <span style={styles.caption}>
+        <div>
+          <p className="post-save-dialog__caption">
             <FormattedMessage id="barcode.print.dialog.title" />
-          </span>
-          <span style={styles.accession}>{accessionNumber}</span>
-        </header>
+          </p>
+          <Tag
+            type="cool-gray"
+            className="post-save-dialog__accession-tag"
+          >
+            {accessionNumber}
+          </Tag>
+        </div>
 
         {labels.length > 0 && (
-          <Stack gap={4}>
-            {labels.map((label) => (
-              <div key={label.labelType} style={styles.row}>
-                <div style={styles.meta}>
-                  <div style={styles.type}>{formatType(label.labelType)}</div>
-                  <div style={styles.qty}>
-                    {intl.formatMessage({
-                      id: "label.quantity",
-                      defaultMessage: "Qty",
-                    })}
-                    {": "}
-                    {label.quantity}
-                    {label.dimensionsMm ? ` · ${label.dimensionsMm}` : ""}
-                  </div>
-                </div>
-                <Button
-                  size="sm"
-                  renderIcon={Printer}
-                  onClick={() => handlePrint(label)}
-                >
-                  <FormattedMessage id="barcode.print.button" />
-                </Button>
-              </div>
-            ))}
-          </Stack>
+          <StructuredList condensed flush>
+            <StructuredListBody>
+              {labels.map((label) => (
+                <StructuredListRow key={label.labelType}>
+                  <StructuredListCell>
+                    <p className="post-save-dialog__label-name">
+                      {formatType(label.labelType)}
+                    </p>
+                    <p className="post-save-dialog__label-qty">
+                      {intl.formatMessage({
+                        id: "label.quantity",
+                        defaultMessage: "Quantity",
+                      })}
+                      {": "}
+                      {label.quantity}
+                      {label.dimensionsMm ? ` · ${label.dimensionsMm}` : ""}
+                    </p>
+                  </StructuredListCell>
+                  <StructuredListCell className="post-save-dialog__action-cell">
+                    <Button
+                      size="sm"
+                      renderIcon={Printer}
+                      onClick={() => handlePrint(label)}
+                    >
+                      <FormattedMessage id="barcode.print.button" />
+                    </Button>
+                  </StructuredListCell>
+                </StructuredListRow>
+              ))}
+            </StructuredListBody>
+          </StructuredList>
         )}
 
         {isLoading && <InlineLoading />}
 
-        <div style={styles.footer}>
-          <Button
-            kind="tertiary"
-            size="sm"
-            renderIcon={Checkmark}
-            onClick={handleDone}
-          >
-            <FormattedMessage
-              id={
-                labels.length > 0
-                  ? "barcode.print.done"
-                  : "barcode.print.skip"
-              }
-            />
-          </Button>
-        </div>
+        <Button kind="primary" renderIcon={Checkmark} onClick={handleDone}>
+          <FormattedMessage
+            id={
+              labels.length > 0 ? "barcode.print.done" : "barcode.print.skip"
+            }
+          />
+        </Button>
       </Stack>
     </Tile>
   );

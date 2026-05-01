@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { Button, Row } from "@carbon/react";
+import { Button, Row, Stack } from "@carbon/react";
+import { CheckmarkFilled } from "@carbon/icons-react";
 import config from "../../config.json";
 import { SampleOrderFormValues } from "../formModel/innitialValues/OrderEntryFormValues";
 import { sampleObject } from "./Index";
@@ -94,23 +95,24 @@ const OrderSuccessMessage = (props) => {
   return (
     <div className="orderLegendBody">
       <div className="orderEntrySuccessMsg">
-        <img
-          src={`images/success-icon.png`}
-          alt="Order Entry saved successfully"
-          width="120"
-          height="120"
-        />
-        <h4>
-          <FormattedMessage id="save.success" />
-        </h4>
-        <Row>
+        <Stack gap={4} className="orderEntrySuccessHeader">
+          <CheckmarkFilled
+            size={64}
+            className="orderEntrySuccessIcon"
+            aria-label="Order Entry saved successfully"
+          />
+          <h4 className="orderEntrySuccessTitle">
+            <FormattedMessage id="save.success" />
+          </h4>
+        </Stack>
+        <div className="orderEntrySuccessPrintPanel">
           <PostSavePrintDialog
             accessionNumber={accessionNumber}
             printableLabelTypes={printableLabels}
             onPrint={handlePrintByType}
           />
-        </Row>
-        <Row>
+        </div>
+        <Row className="orderEntrySuccessActions">
           {orderFormValues.rememberSiteAndRequester && (
             <Button
               className="placeAnotherOrderBtn"
