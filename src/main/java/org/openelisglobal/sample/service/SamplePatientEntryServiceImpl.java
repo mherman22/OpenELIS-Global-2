@@ -437,7 +437,9 @@ public class SamplePatientEntryServiceImpl implements SamplePatientEntryService 
         // one child SampleItem per organism under each parent SampleItem.
         // Children carry no analyses — pool-level pathogen tests stay on the
         // parent until deconvolution narrows the pool to individual specimens.
-        // No-op for non-vector orders or pools of one.
+        // No-op for non-vector orders or pools of one. Each child is
+        // registered with one specimen-barcode label so the lab can
+        // physically tag each mosquito's container at intake.
         int vectorPoolCount = updateData.getVectorPoolCount();
         if (vectorPoolCount > 1) {
             List<SampleItem> parents = new ArrayList<>();
@@ -446,7 +448,15 @@ public class SamplePatientEntryServiceImpl implements SamplePatientEntryService 
                     parents.add(stc.item);
                 }
             }
-            vectorPoolFanOutService.fanOutAll(parents, vectorPoolCount, updateData.getCurrentUserId());
+            List<SampleItem> children = vectorPoolFanOutService.fanOutAll(parents, vectorPoolCount,
+                    updateData.getCurrentUserId());
+            for (SampleItem child : children) {
+                // One barcode per organism — a pool of 10 mosquitoes
+                // produces 10 specimen labels, one per child SampleItem,
+                // each printed with its dotted-suffix label
+                // (parent.accession + "." + child.sortOrder).
+                specimenLabelQuantities.put(child, 1);
+            }
         }
 
         persistOrderSpecimenBarcodeCounts(updateData.getSample(), orderLabelQuantity, specimenLabelQuantities);

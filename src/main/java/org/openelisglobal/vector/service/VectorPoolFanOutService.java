@@ -55,15 +55,18 @@ public interface VectorPoolFanOutService {
      * @param parent    the parent pool SampleItem (must already be persisted)
      * @param poolCount number of organisms in the pool; values <= 1 trigger no-op
      * @param sysUserId audit trail user id
-     * @return the number of child SampleItems actually created
+     * @return the persisted child SampleItems (empty list when no fan-out
+     *         occurred). Callers use the returned list to wire downstream
+     *         per-specimen artefacts (e.g. barcode labels) without re-querying.
      */
-    int fanOut(SampleItem parent, int poolCount, String sysUserId);
+    List<SampleItem> fanOut(SampleItem parent, int poolCount, String sysUserId);
 
     /**
      * Convenience wrapper — fan out across every parent SampleItem in a list. Used
      * by the order-entry persist flow which iterates all the order's items.
      *
-     * @return the total number of child SampleItems created across all parents
+     * @return all persisted child SampleItems across every parent (empty when no
+     *         fan-out occurred). Order matches iteration order of {@code parents}.
      */
-    int fanOutAll(List<SampleItem> parents, int poolCount, String sysUserId);
+    List<SampleItem> fanOutAll(List<SampleItem> parents, int poolCount, String sysUserId);
 }

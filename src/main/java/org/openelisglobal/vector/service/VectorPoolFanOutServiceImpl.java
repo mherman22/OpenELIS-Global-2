@@ -1,5 +1,7 @@
 package org.openelisglobal.vector.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import org.openelisglobal.common.log.LogEvent;
@@ -28,17 +30,17 @@ public class VectorPoolFanOutServiceImpl implements VectorPoolFanOutService {
 
     @Override
     @Transactional
-    public int fanOut(SampleItem parent, int poolCount, String sysUserId) {
+    public List<SampleItem> fanOut(SampleItem parent, int poolCount, String sysUserId) {
         if (parent == null || parent.getId() == null) {
-            return 0;
+            return Collections.emptyList();
         }
         if (poolCount <= 1) {
-            return 0;
+            return Collections.emptyList();
         }
         Sample parentSample = parent.getSample();
         String enteredStatusId = SpringContext.getBean(IStatusService.class).getStatusID(SampleStatus.Entered);
 
-        int created = 0;
+        List<SampleItem> created = new ArrayList<>(poolCount);
         for (int i = 1; i <= poolCount; i++) {
             try {
                 SampleItem child = new SampleItem();
@@ -65,8 +67,12 @@ public class VectorPoolFanOutServiceImpl implements VectorPoolFanOutService {
                 // it can be referenced individually in outbound exports.
                 child.setFhirUuid(UUID.randomUUID());
 
-                sampleItemService.insert(child);
-                created++;
+                String childId = sampleItemService.insert(child);
+                // Re-fetch so the returned reference is the managed entity
+                // with its generated id (insert returns the id String, not
+                // the entity).
+                SampleItem persisted = sampleItemService.get(childId);
+                created.add(persisted != null ? persisted : child);
             } catch (RuntimeException e) {
                 LogEvent.logError(this.getClass().getName(), "fanOut", "Failed to create child SampleItem #" + i
                         + " for parent " + parent.getId() + ": " + e.getMessage());
@@ -74,21 +80,21 @@ public class VectorPoolFanOutServiceImpl implements VectorPoolFanOutService {
             }
         }
         LogEvent.logInfo(this.getClass().getName(), "fanOut",
-                "Vector pool fan-out: created " + created + " child SampleItems under parent " + parent.getId()
+                "Vector pool fan-out: created " + created.size() + " child SampleItems under parent " + parent.getId()
                         + " (sample " + (parentSample != null ? parentSample.getId() : "?") + ")");
         return created;
     }
 
     @Override
     @Transactional
-    public int fanOutAll(List<SampleItem> parents, int poolCount, String sysUserId) {
+    public List<SampleItem> fanOutAll(List<SampleItem> parents, int poolCount, String sysUserId) {
         if (parents == null || parents.isEmpty() || poolCount <= 1) {
-            return 0;
+            return Collections.emptyList();
         }
-        int total = 0;
+        List<SampleItem> all = new ArrayList<>();
         for (SampleItem parent : parents) {
-            total += fanOut(parent, poolCount, sysUserId);
+            all.addAll(fanOut(parent, poolCount, sysUserId));
         }
-        return total;
+        return all;
     }
 }
