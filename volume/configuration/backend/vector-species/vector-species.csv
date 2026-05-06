@@ -1,12 +1,3 @@
-# Vector species configuration
-# Columns:
-#   genus              - taxonomic genus (required)
-#   species            - taxonomic species epithet (required)
-#   subspecies         - subspecies or variant (optional)
-#   sampleTypeAbbrev   - localAbbreviation of vector sample type (domain=V, must exist)
-#   isActive           - Y/N (default Y)
-#   pathogenCategory   - dictionary category name whose entries become this species' pathogens
-#   lifecycleCategory  - dictionary category name whose entries become this species' lifecycle stages
 genus,species,subspecies,sampleTypeAbbrev,isActive,pathogenCategory,lifecycleCategory
 Aedes,aegypti,,MOSQUITO,Y,aedesAegyptiPathogens,mosquitoFullCycle
 Aedes,albopictus,,MOSQUITO,Y,aedesAlbopictusPathogens,mosquitoFullCycle

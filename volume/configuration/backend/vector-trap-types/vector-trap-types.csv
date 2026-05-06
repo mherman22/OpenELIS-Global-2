@@ -1,0 +1,20 @@
+name,description,sampleTypeAbbrevs,active
+BG-Sentinel Trap,"CO2-baited adult mosquito trap; widely used for Aedes surveillance",MOSQUITO,Y
+CDC Light Trap,"UV-light trap for nocturnal mosquitoes and sandflies",MOSQUITO;FLY,Y
+Gravid Trap,"Captures egg-laying females; behaviorally distinct from light traps",MOSQUITO,Y
+Ovitrap,Egg trap for Aedes aegypti surveillance,MOSQUITO,Y
+Human-Landing Collection,"Active collection — collector aspirates mosquitoes attempting to bite; drives Human Biting Rate",MOSQUITO,Y
+Aspirator,"Active resting-collection (indoor or outdoor) for adult mosquitoes and flies",MOSQUITO;FLY,Y
+Sweep Net,"Active outdoor collection in vegetation; works for adult mosquitoes and flies",MOSQUITO;FLY,Y
+Pyramid Trap,Sandfly-specific resting trap,FLY,Y
+NZI Trap,Blue-and-black tsetse fly trap,FLY,Y
+Vavoua Trap,Cone tsetse fly trap,FLY,Y
+Sticky Trap,Glue-board trap for flies,FLY,Y
+Sherman Live Trap,Live trap for small rodents,RODENT,Y
+Tomahawk Live Trap,"Larger live trap for medium rodents (e.g. Rattus)",RODENT,Y
+Snap Trap,Kill trap for rodent surveillance,RODENT,Y
+Bait Station,Pre-baited trap station for rodents,RODENT,Y
+Rodent Host Examination,"Comb fleas off live-trapped rodents; standard plague surveillance method",FLEA,Y
+Burrow Flag,Drag cloth through rodent burrow to collect fleas,FLEA,Y
+Nest Examination,Pull fleas from rodent nests and bedding,FLEA,Y
+Other,Free-text fallback for non-standard collection methods,MOSQUITO;FLY;FLEA;RODENT,Y
