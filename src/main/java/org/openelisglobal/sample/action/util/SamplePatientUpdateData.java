@@ -116,6 +116,15 @@ public class SamplePatientUpdateData {
     private List<String> providerEmailNotificationTestIds;
     private List<String> providerSMSNotificationTestIds;
 
+    /**
+     * Vector surveillance pool count. Captured from
+     * {@code envFields["vecPoolCount"]} during {@link #addVectorObservations} so
+     * the persist layer can fan out N child SampleItems per pool without re-parsing
+     * the OH list. Zero means "not a vector pool" or "pool of one" — both
+     * no-fan-out cases.
+     */
+    private int vectorPoolCount;
+
     public SamplePatientUpdateData(String currentUserId) {
         this.currentUserId = currentUserId;
     }
@@ -765,9 +774,18 @@ public class SamplePatientUpdateData {
         createObservation(getStringValue(envFields, "vecPoolingMethod"),
                 observationHistoryService.getObservationTypeIdForType(ObservationType.VS_POOLING_METHOD),
                 ValueType.LITERAL);
-        createObservation(getStringValue(envFields, "vecPoolCount"),
+        String poolCountStr = getStringValue(envFields, "vecPoolCount");
+        createObservation(poolCountStr,
                 observationHistoryService.getObservationTypeIdForType(ObservationType.VS_POOL_COUNT),
                 ValueType.LITERAL);
+        // Stash the parsed pool count so the persist layer can fan out N
+        // child SampleItems per pool without re-reading the OH list.
+        // Non-numeric / missing values become 0 (no fan-out).
+        try {
+            this.vectorPoolCount = poolCountStr == null ? 0 : Integer.parseInt(poolCountStr.trim());
+        } catch (NumberFormatException ignore) {
+            this.vectorPoolCount = 0;
+        }
         createObservation(getStringValue(envFields, "vecSamplesPerPool"),
                 observationHistoryService.getObservationTypeIdForType(ObservationType.VS_SAMPLES_PER_POOL),
                 ValueType.LITERAL);
@@ -865,6 +883,21 @@ public class SamplePatientUpdateData {
 
     public void setCustomNotificationLogic(boolean customNotificationLogic) {
         this.customNotificationLogic = customNotificationLogic;
+    }
+
+    /**
+     * Vector pool count carried over from the order entry payload's
+     * {@code vecPoolCount} env field. Set by {@link #addVectorObservations} when
+     * the workflow is {@code vector}; consumed by the persist-layer fan-out helper
+     * to create N child SampleItems per parent. Returns 0 for non-vector orders or
+     * vector orders with a missing / non-numeric pool count.
+     */
+    public int getVectorPoolCount() {
+        return vectorPoolCount;
+    }
+
+    public void setVectorPoolCount(int vectorPoolCount) {
+        this.vectorPoolCount = vectorPoolCount;
     }
 
     public List<String> getPatientEmailNotificationTestIds() {

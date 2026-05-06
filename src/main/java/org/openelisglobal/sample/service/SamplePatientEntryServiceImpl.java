@@ -127,6 +127,8 @@ public class SamplePatientEntryServiceImpl implements SamplePatientEntryService 
     private BarcodeInfoService barcodeInfoService;
     @Autowired
     private org.springframework.context.ApplicationEventPublisher eventPublisher;
+    @Autowired
+    private org.openelisglobal.vector.service.VectorPoolFanOutService vectorPoolFanOutService;
 
     @Transactional
     @Override
@@ -428,6 +430,23 @@ public class SamplePatientEntryServiceImpl implements SamplePatientEntryService 
                     persistAnalysisNotificationConfigs(analysis, updateData);
                 }
             }
+        }
+
+        // Vector surveillance pool fan-out (V-02 Phase 3.5).
+        // When the order is for a vector pool with N > 1 organisms, create
+        // one child SampleItem per organism under each parent SampleItem.
+        // Children carry no analyses — pool-level pathogen tests stay on the
+        // parent until deconvolution narrows the pool to individual specimens.
+        // No-op for non-vector orders or pools of one.
+        int vectorPoolCount = updateData.getVectorPoolCount();
+        if (vectorPoolCount > 1) {
+            List<SampleItem> parents = new ArrayList<>();
+            for (SampleTestCollection stc : updateData.getSampleItemsTests()) {
+                if (stc.item != null && stc.item.getId() != null) {
+                    parents.add(stc.item);
+                }
+            }
+            vectorPoolFanOutService.fanOutAll(parents, vectorPoolCount, updateData.getCurrentUserId());
         }
 
         persistOrderSpecimenBarcodeCounts(updateData.getSample(), orderLabelQuantity, specimenLabelQuantities);
