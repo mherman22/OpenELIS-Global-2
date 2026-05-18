@@ -18,19 +18,12 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { NotificationKinds } from "../common/CustomNotification";
 import { ConfigurationContext, NotificationContext } from "../layout/Layout";
 
-/**
- * GPS Coordinates Capture Component
- *
- * Compact inline design — shows a summary by default and expands to a
- * full form when the "Expand" button is clicked. Used for environmental
- * sample workflows where lab technicians record where a sample was
- * collected.
- */
 const GpsCoordinatesCapture = ({
   index,
   sampleXml,
   onChange,
   disabled = false,
+  context = "sample", // "sample" | "patient"
 }) => {
   const intl = useIntl();
   const { configurationProperties } = useContext(ConfigurationContext);
@@ -245,7 +238,14 @@ const GpsCoordinatesCapture = ({
                 fontSize: "0.875rem",
               }}
             >
-              <FormattedMessage id="gps.section.title" />:
+              <FormattedMessage
+                id={
+                  context === "patient"
+                    ? "gps.section.title.patient"
+                    : "gps.section.title"
+                }
+              />
+              :
             </span>
             <span
               style={{
@@ -301,7 +301,13 @@ const GpsCoordinatesCapture = ({
             }}
           >
             <h4 style={{ margin: 0, fontSize: "1rem", fontWeight: "600" }}>
-              <FormattedMessage id="gps.section.title" />
+              <FormattedMessage
+                id={
+                  context === "patient"
+                    ? "gps.section.title.patient"
+                    : "gps.section.title"
+                }
+              />
             </h4>
             <Button
               kind="ghost"
@@ -323,9 +329,10 @@ const GpsCoordinatesCapture = ({
               defaultMessage: "GPS Coordinates",
             })}
             subtitle={intl.formatMessage({
-              id: "gps.info.description",
-              defaultMessage:
-                "GPS coordinates record the geographic location where the sample was collected. This supports epidemiological surveillance and disease mapping.",
+              id:
+                context === "patient"
+                  ? "gps.info.description.patient"
+                  : "gps.info.description",
             })}
             hideCloseButton={true}
             lowContrast

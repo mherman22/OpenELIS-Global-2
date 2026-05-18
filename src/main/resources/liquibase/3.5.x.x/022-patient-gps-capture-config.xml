@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+  <!--
+    OGC-650 (LO-01-01): expose PATIENT_GPS_CAPTURE_ENABLED in Admin →
+    General Configuration → Patient Configuration Menu.
+
+    Previously the only way to enable GPS lat/long fields on the patient
+    registration form was to insert directly into the database.  This
+    changeSet seeds the site_information row so the setting appears in
+    the existing PatientConfigurationMenu admin page with a boolean
+    radio-button toggle, default "false".
+  -->
+
+  <changeSet id="3.5.0-022-patient-gps-capture-config" author="mherman22">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        SELECT count(*) FROM clinlims.site_information WHERE name = 'patientGpsCaptureEnabled'
+      </sqlCheck>
+    </preConditions>
+    <insert schemaName="clinlims" tableName="site_information">
+      <column name="id"          valueSequenceNext="site_information_seq" />
+      <column name="name"        value="patientGpsCaptureEnabled" />
+      <column name="lastupdated" valueComputed="${now}" />
+      <column name="value"       value="false" />
+      <column name="encrypted"   value="false" />
+      <column name="domain_id"   valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'patientEntryConfig')" />
+      <column name="value_type"  value="boolean" />
+      <column name="instruction_key" value="instructions.patient.gps.capture" />
+      <column name="group"       value="0" />
+      <column name="description_key" value="siteInfo.patientGpsCaptureEnabled" />
+    </insert>
+  </changeSet>
+
+  <!--
+    The GPS accuracy and timeout settings (gpsRequiredAccuracyMeters,
+    gpsTimeoutSeconds) are now shared across all GPS capture features —
+    both order entry sample collection and patient registration.
+    Update their descriptions to reflect this.
+  -->
+  <changeSet id="3.5.0-022-gps-accuracy-description-generalize" author="mherman22">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="1">
+        SELECT count(*) FROM clinlims.site_information WHERE name = 'gpsRequiredAccuracyMeters'
+      </sqlCheck>
+    </preConditions>
+    <update schemaName="clinlims" tableName="site_information">
+      <column name="description" value="Maximum acceptable GPS accuracy in meters for all GPS capture features (0 to disable accuracy checking)" />
+      <column name="instruction_key" value="instructions.gps.accuracy" />
+      <where>name = 'gpsRequiredAccuracyMeters'</where>
+    </update>
+  </changeSet>
+
+  <changeSet id="3.5.0-022-gps-timeout-description-generalize" author="mherman22">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="1">
+        SELECT count(*) FROM clinlims.site_information WHERE name = 'gpsTimeoutSeconds'
+      </sqlCheck>
+    </preConditions>
+    <update schemaName="clinlims" tableName="site_information">
+      <column name="description" value="Timeout in seconds for GPS location requests (applies to all GPS capture features)" />
+      <column name="instruction_key" value="instructions.gps.timeout" />
+      <where>name = 'gpsTimeoutSeconds'</where>
+    </update>
+  </changeSet>
+
+</databaseChangeLog>

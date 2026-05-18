@@ -25,7 +25,7 @@ import { ConfigurationContext, NotificationContext } from "../layout/Layout";
 import LocationPickerInline from "../storage/LocationPicker/LocationPickerInline";
 import { LEVEL_ORDER } from "../storage/LocationPicker/useLocationPicker";
 import { getFromOpenElisServer } from "../utils/Utils";
-import GpsCoordinatesCapture from "./GpsCoordinatesCapture";
+import GpsCoordinatesCapture from "../common/GpsCoordinatesCapture";
 import LabelsSection from "../barcodeWorkflow/LabelsSection";
 
 const SampleType = (props) => {
