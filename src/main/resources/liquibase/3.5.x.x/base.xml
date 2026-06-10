@@ -147,4 +147,13 @@
   <!-- Add lab_performed_sampling flag to sample_item (Environmental Order Entry) -->
   <include relativeToChangelogFile="true" file="037-add-lab-performed-sampling-to-sample-item.xml"/>
 
+  <!-- S-06 Laporan Hasil: compliance report audit + certificate number sequence + menu item -->
+  <include relativeToChangelogFile="true" file="039-compliance-report-audit.xml"/>
+
+  <!-- S-06 Laporan Hasil: report configuration domain + pre-seeded site_information keys -->
+  <include relativeToChangelogFile="true" file="040-laporan-hasil-report-config.xml"/>
+
+  <!-- S-06 Laporan Hasil: add last_updated column omitted from original audit table -->
+  <include relativeToChangelogFile="true" file="041-compliance-report-audit-last-updated.xml"/>
+
 </databaseChangeLog>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import ComplianceStandardsSection from "./ComplianceStandardsSection";
 import {
   TextInput,
   Button,
@@ -620,6 +621,13 @@ function VectorSection({ orderData, setOrderData, isReadOnly, workflowType }) {
           )}
         </div>
       )}
+      <div style={{ marginTop: "1.75rem" }}>
+        <ComplianceStandardsSection
+          orderData={orderData}
+          setOrderData={setOrderData}
+          isReadOnly={isReadOnly}
+        />
+      </div>
     </div>
   );
 }

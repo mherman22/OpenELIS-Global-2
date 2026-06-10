@@ -610,4 +610,16 @@ public class SampleServiceImpl extends AuditableBaseObjectServiceImpl<Sample, St
     public List<Sample> findSamplesWithRequiredByBefore(java.sql.Timestamp horizon) {
         return sampleDAO.findSamplesWithRequiredByBefore(horizon);
     }
+
+    @Override
+    @Transactional
+    public void updateStorageSkipped(String accessionNumber, boolean storageSkipped, String sysUserId) {
+        Sample sample = getSampleByAccessionNumber(accessionNumber);
+        if (sample == null) {
+            throw new IllegalArgumentException("Sample not found for accession number: " + accessionNumber);
+        }
+        sample.setStorageSkipped(storageSkipped);
+        sample.setSysUserId(sysUserId);
+        update(sample);
+    }
 }

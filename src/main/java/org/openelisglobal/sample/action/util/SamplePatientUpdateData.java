@@ -847,6 +847,11 @@ public class SamplePatientUpdateData {
         createObservation(getStringValue(envFields, "vecCollectionNotes"),
                 observationHistoryService.getObservationTypeIdForType(ObservationType.VS_COLLECTION_NOTES),
                 ValueType.LITERAL);
+        String complianceStandardsRaw = getStringValue(envFields, "complianceStandards");
+        createObservation(complianceStandardsRaw,
+                observationHistoryService.getObservationTypeIdForType(ObservationType.ENV_COMPLIANCE_STANDARDS),
+                ValueType.LITERAL);
+        setPendingComplianceStandardIds(parseJsonStringArray(complianceStandardsRaw));
     }
 
     /**

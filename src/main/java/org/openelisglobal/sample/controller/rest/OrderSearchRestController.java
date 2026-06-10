@@ -748,14 +748,7 @@ public class OrderSearchRestController extends BaseRestController {
             @RequestParam boolean storageSkipped, HttpServletRequest request) {
 
         try {
-            Sample sample = sampleService.getSampleByAccessionNumber(labNumber);
-            if (sample == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            sample.setStorageSkipped(storageSkipped);
-            sample.setSysUserId(getSysUserId(request));
-            sampleService.update(sample);
+            sampleService.updateStorageSkipped(labNumber, storageSkipped, getSysUserId(request));
 
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
@@ -763,6 +756,8 @@ public class OrderSearchRestController extends BaseRestController {
             response.put("storageSkipped", storageSkipped);
             return ResponseEntity.ok(response);
 
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             LogEvent.logError(this.getClass().getName(), "updateStorageSkipped",
                     "Error updating storageSkipped: " + e.getMessage());

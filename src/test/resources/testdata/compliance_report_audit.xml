@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <!-- Test data for S-06 Laporan Hasil compliance report audit tests. order_id
+        values reference sample.id rows that do not need to exist in these tests
+        because ComplianceReportAudit has no FK to sample (it stores order_id as
+        a plain BIGINT for decoupling). -->
+
+    <!-- Two audit records for order 1001 — older then newer, for ordering tests -->
+    <compliance_report_audit id="40001"
+        order_id="1001" certificate_number="LH-2025-00001"
+        generated_by="testuser" generated_at="2025-06-01 08:00:00.000"
+        file_hash="abc123def456abc123def456abc123def456abc123def456abc123def456abc1"
+        file_size="102400" compliance_status="PASS" parameter_count="10"
+        pass_count="10" marginal_count="0" fail_count="0" />
+
+    <compliance_report_audit id="40002"
+        order_id="1001" certificate_number="LH-2025-00002"
+        generated_by="testuser" generated_at="2025-06-02 09:00:00.000"
+        file_hash="def456abc123def456abc123def456abc123def456abc123def456abc123def4"
+        file_size="98304" compliance_status="MARGINAL" parameter_count="10"
+        pass_count="7" marginal_count="2" fail_count="1" />
+
+    <!-- Audit record for a different order 1002 — isolation test -->
+    <compliance_report_audit id="40003"
+        order_id="1002" certificate_number="LH-2025-00003"
+        generated_by="admin" generated_at="2025-06-03 10:00:00.000"
+        file_hash="111222333444555666777888999000111222333444555666777888999000111a"
+        file_size="204800" compliance_status="FAIL" parameter_count="5"
+        pass_count="1" marginal_count="1" fail_count="3" />
+
+    <!-- Certificate number sequence for site 1, year 2025 -->
+    <certificate_number_sequence id="50001"
+        site_id="1" year="2025" last_number="3" />
+
+    <!-- Sequence for a different site to test isolation -->
+    <certificate_number_sequence id="50002"
+        site_id="2" year="2025" last_number="10" />
+
+</dataset>

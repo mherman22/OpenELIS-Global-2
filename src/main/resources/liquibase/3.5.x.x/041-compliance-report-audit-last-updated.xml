@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!--
+    Adds the last_updated column required by BaseObject to compliance_report_audit.
+    The original createTable changeset (039) omitted this column.
+    -->
+
+    <changeSet id="compliance-report-audit-add-last-updated" author="mherman22">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="compliance_report_audit" schemaName="clinlims"/>
+            <not>
+                <columnExists tableName="compliance_report_audit" schemaName="clinlims" columnName="last_updated"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="compliance_report_audit" schemaName="clinlims">
+            <column name="last_updated" type="TIMESTAMP"/>
+        </addColumn>
+        <rollback>
+            <dropColumn tableName="compliance_report_audit" schemaName="clinlims" columnName="last_updated"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

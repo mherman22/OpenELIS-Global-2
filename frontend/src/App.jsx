@@ -129,6 +129,7 @@ import ModifyOrder from "./components/modifyOrder/ModifyOrder";
 import RoutineReports from "./components/reports/Routine";
 import StudyReports from "./components/reports/Study";
 import TATReport from "./components/reports/tat";
+import LaporanHasil from "./components/reports/laporanHasil/LaporanHasil";
 import StudyValidation from "./components/validation/Index";
 const AnalyserResultIndex = lazyWithRetry(
   () => import("./components/analyserResults/Index"),
@@ -1404,6 +1405,12 @@ export default function App() {
                   path="/TATReport"
                   exact
                   component={() => <TATReport />}
+                  role={Roles.REPORTS}
+                />
+                <SecureRoute
+                  path="/LaporanHasil"
+                  exact
+                  component={() => <LaporanHasil />}
                   role={Roles.REPORTS}
                 />
                 <SecureRoute

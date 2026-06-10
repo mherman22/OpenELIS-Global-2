@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!--
+    ========================================================================
+    S-06 LAPORAN HASIL — COMPLIANCE REPORT
+    ========================================================================
+    Creates tables for compliance report generation audit trail and
+    certificate number sequencing.
+
+    Also seeds the Reports → Laporan Hasil menu item.
+    ========================================================================
+    -->
+
+    <!-- ================================================================ -->
+    <!-- SEQUENCES                                                         -->
+    <!-- ================================================================ -->
+
+    <changeSet id="compliance-report-create-sequences" author="mherman22">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not><sequenceExists sequenceName="compliance_report_audit_seq"/></not>
+                <not><sequenceExists sequenceName="certificate_number_seq"/></not>
+            </and>
+        </preConditions>
+        <createSequence sequenceName="compliance_report_audit_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="certificate_number_seq" startValue="1" incrementBy="1"/>
+        <rollback>
+            <dropSequence sequenceName="compliance_report_audit_seq"/>
+            <dropSequence sequenceName="certificate_number_seq"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ================================================================ -->
+    <!-- COMPLIANCE_REPORT_AUDIT: Immutable generation log per LH-6-001  -->
+    <!-- ================================================================ -->
+
+    <changeSet id="compliance-report-create-audit-table" author="mherman22">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="compliance_report_audit" schemaName="clinlims"/></not>
+        </preConditions>
+        <createTable tableName="compliance_report_audit" schemaName="clinlims">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="certificate_number" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="generated_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="generated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_hash" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_size" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="compliance_status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parameter_count" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pass_count" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="marginal_count" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fail_count" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="compliance_report_audit" schemaName="clinlims"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ================================================================ -->
+    <!-- CERTIFICATE_NUMBER_SEQUENCE: Per-site per-year counter           -->
+    <!-- ================================================================ -->
+
+    <changeSet id="compliance-report-create-cert-seq-table" author="mherman22">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="certificate_number_sequence" schemaName="clinlims"/></not>
+        </preConditions>
+        <createTable tableName="certificate_number_sequence" schemaName="clinlims">
+            <column name="id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="site_id" type="INTEGER">
+                <constraints nullable="true"/>
+            </column>
+            <column name="year" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_number" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint
+            tableName="certificate_number_sequence"
+            schemaName="clinlims"
+            columnNames="site_id, year"
+            constraintName="uq_cert_number_seq_site_year"/>
+        <rollback>
+            <dropTable tableName="certificate_number_sequence" schemaName="clinlims"/>
+        </rollback>
+    </changeSet>
+
+    <!-- ================================================================ -->
+    <!-- MENU: Reports → Laporan Hasil                                    -->
+    <!-- ================================================================ -->
+
+    <changeSet id="laporan-hasil-add-menu-entry" author="mherman22">
+        <comment>Add Laporan Hasil as a direct entry under the Reports menu</comment>
+        <sql>
+            INSERT INTO clinlims.menu (id, parent_id, presentation_order, element_id, action_url, display_key, is_active)
+            SELECT nextval('clinlims.menu_seq'),
+                   (SELECT id FROM clinlims.menu WHERE element_id = 'menu_reports'),
+                   5, 'menu_reports_laporan_hasil', '/LaporanHasil',
+                   'nav.reports.laporanHasil', true
+            WHERE NOT EXISTS (SELECT 1 FROM clinlims.menu WHERE element_id = 'menu_reports_laporan_hasil');
+        </sql>
+        <rollback>
+            <sql>DELETE FROM clinlims.menu WHERE element_id = 'menu_reports_laporan_hasil';</sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

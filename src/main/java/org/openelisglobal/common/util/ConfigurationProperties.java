@@ -300,7 +300,21 @@ public abstract class ConfigurationProperties {
         ORDER_ENTRY_WORKFLOW_TYPE("orderEntryWorkflowType", "text"), // Controls order entry workflow: "Clinical",
                                                                      // "Environmental", or "Both"
         ELECTRONIC_SIGNATURE_ENABLED("electronicSignatureEnabled", "text"), // 21 CFR Part 11 e-signatures
-        ESIG_SESSION_TIMEOUT_MINUTES("esigSessionTimeoutMinutes", "text"); // signing session inactivity timeout
+        ESIG_SESSION_TIMEOUT_MINUTES("esigSessionTimeoutMinutes", "text"), // signing session inactivity timeout
+
+        // S-06 Laporan Hasil (Compliance Report) PDF configuration
+        LH_REPORT_LAB_NAME("report.config.labName", "text"),
+        LH_REPORT_LAB_SUBTITLE("report.config.labSubtitle", "text"),
+        LH_REPORT_ADDRESS_LINE1("report.config.addressLine1", "text"),
+        LH_REPORT_ADDRESS_LINE2("report.config.addressLine2", "text"), LH_REPORT_PHONE("report.config.phone", "text"),
+        LH_REPORT_EMAIL("report.config.email", "text"), LH_REPORT_WEBSITE("report.config.website", "text"),
+        LH_REPORT_ACCREDITATION_NUMBER("report.config.accreditationNumber", "text"),
+        LH_REPORT_ACCREDITATION_BODY("report.config.accreditationBody", "text"),
+        LH_REPORT_FOOTER_TEXT("report.config.footerText", "text"),
+        LH_REPORT_SHOW_PAGE_NUMBERS("report.config.showPageNumbers", "text"),
+        LH_REPORT_PAGE_NUMBER_FORMAT("report.config.pageNumberFormat", "text"),
+        LH_REPORT_CERTIFICATE_PREFIX("report.config.certificatePrefix", "text"),
+        LH_REPORT_DATE_FORMAT("report.config.dateFormat", "text");
 
         // visible on
         // the ui

@@ -153,6 +153,10 @@
         <class>org.openelisglobal.compliance.valueholder.ComplianceThreshold</class>
         <class>org.openelisglobal.compliance.valueholder.ComplianceThresholdValueMap</class>
 
+        <!-- S-06 Laporan Hasil (Compliance Report) entities -->
+        <class>org.openelisglobal.compliancereport.valueholder.ComplianceReportAudit</class>
+        <class>org.openelisglobal.compliancereport.valueholder.CertificateNumberSequence</class>
+
         <!-- QC Result Evaluation entities (OGC-554 S-08) -->
         <class>org.openelisglobal.qc.valueholder.SampleItemQcProfile</class>
         <class>org.openelisglobal.qc.valueholder.TestQcThreshold</class>

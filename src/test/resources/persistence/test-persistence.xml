@@ -182,6 +182,10 @@
         <class>org.openelisglobal.compliance.valueholder.ComplianceThreshold</class>
         <class>org.openelisglobal.compliance.valueholder.ComplianceThresholdValueMap</class>
         <class>org.openelisglobal.sample.valueholder.SampleComplianceStandard</class>
+
+        <!-- S-06 Laporan Hasil (Compliance Report) entities -->
+        <class>org.openelisglobal.compliancereport.valueholder.ComplianceReportAudit</class>
+        <class>org.openelisglobal.compliancereport.valueholder.CertificateNumberSequence</class>
         <!-- Vector Surveillance entities -->
         <class>org.openelisglobal.vector.valueholder.VectorOrganismGroup</class>
         <class>org.openelisglobal.vector.valueholder.VectorTrapType</class>

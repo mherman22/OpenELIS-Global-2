@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- ============================================================ -->
+    <!-- S-06 Laporan Hasil: report configuration keys               -->
+    <!-- Seeds 16 report.config.* keys into the existing             -->
+    <!-- printedReportsConfig domain so they appear in the standard  -->
+    <!-- PrintedReportsConfigurationMenu — no new domain needed.     -->
+    <!-- ============================================================ -->
+
+    <changeSet id="lh-cfg-000-extend-site-info-name-column" author="mherman22">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="32">
+                SELECT character_maximum_length
+                FROM information_schema.columns
+                WHERE table_schema = 'clinlims'
+                  AND table_name   = 'site_information'
+                  AND column_name  = 'name'
+            </sqlCheck>
+        </preConditions>
+        <comment>Widen site_information.name from VARCHAR(32) to VARCHAR(60) to accommodate longer config keys</comment>
+        <modifyDataType schemaName="clinlims" tableName="site_information" columnName="name" newDataType="VARCHAR(60)"/>
+    </changeSet>
+
+    <changeSet id="lh-cfg-002-seed-report-config-keys" author="mherman22">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM clinlims.site_information WHERE name = 'report.config.labName'
+            </sqlCheck>
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig'
+            </sqlCheck>
+        </preConditions>
+        <comment>Pre-seed all 16 report.config.* keys into the existing printedReportsConfig domain</comment>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.labName"/>
+            <column name="value" value=""/>
+            <column name="description" value="Laboratory name printed on the Laporan Hasil PDF header"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.labSubtitle"/>
+            <column name="value" value=""/>
+            <column name="description" value="Laboratory subtitle or tagline shown beneath the lab name"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.addressLine1"/>
+            <column name="value" value=""/>
+            <column name="description" value="First line of laboratory address in the PDF header"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.addressLine2"/>
+            <column name="value" value=""/>
+            <column name="description" value="Second line of laboratory address (city, province, postal code)"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.phone"/>
+            <column name="value" value=""/>
+            <column name="description" value="Laboratory phone number shown in the PDF header"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.email"/>
+            <column name="value" value=""/>
+            <column name="description" value="Laboratory email address shown in the PDF header"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.website"/>
+            <column name="value" value=""/>
+            <column name="description" value="Laboratory website URL shown in the PDF header"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.labLogoBase64"/>
+            <column name="value" value=""/>
+            <column name="description" value="Lab logo image as a base64-encoded data URI for the PDF header"/>
+            <column name="value_type" value="freeText"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.accreditationNumber"/>
+            <column name="value" value=""/>
+            <column name="description" value="Laboratory accreditation certificate number shown in the PDF header"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.accreditationBody"/>
+            <column name="value" value=""/>
+            <column name="description" value="Name of the accreditation body (e.g. KAN, ISO 17025)"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.accreditationLogoBase64"/>
+            <column name="value" value=""/>
+            <column name="description" value="Accreditation body logo as a base64-encoded data URI for the PDF header"/>
+            <column name="value_type" value="freeText"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.footerText"/>
+            <column name="value" value=""/>
+            <column name="description" value="Custom text printed in the footer of each PDF page"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.showPageNumbers"/>
+            <column name="value" value="true"/>
+            <column name="description" value="Whether to print page numbers in the PDF footer (true/false)"/>
+            <column name="value_type" value="boolean"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.pageNumberFormat"/>
+            <column name="value" value="Page {page} of {total}"/>
+            <column name="description" value="Page number format string; use {page} and {total} as placeholders"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.certificatePrefix"/>
+            <column name="value" value="LH"/>
+            <column name="description" value="Prefix for generated certificate numbers (e.g. LH-2025-00001)"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert schemaName="clinlims" tableName="site_information">
+            <column name="id" valueSequenceNext="site_information_seq"/>
+            <column name="name" value="report.config.dateFormat"/>
+            <column name="value" value="YYYY"/>
+            <column name="description" value="Date format string used in certificate number generation (default: YYYY for year-only)"/>
+            <column name="value_type" value="text"/>
+            <column name="domain_id" valueComputed="(SELECT id FROM clinlims.site_information_domain WHERE name = 'printedReportsConfig')"/>
+            <column name="lastupdated" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

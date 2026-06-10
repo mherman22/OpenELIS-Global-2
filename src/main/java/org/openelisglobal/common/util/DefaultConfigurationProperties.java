@@ -377,6 +377,22 @@ public class DefaultConfigurationProperties extends ConfigurationProperties {
         properties.setPropertyValue(Property.GPS_ACCURACY_METERS, "100");
         properties.setPropertyValue(Property.GPS_TIMEOUT_SECONDS, "10");
         properties.setPropertyValue(Property.USE_NEW_ADDRESS_HIERARCHY, "true"); // Default to new address hierarchy
+
+        // S-06 Laporan Hasil report configuration defaults
+        properties.setPropertyValue(Property.LH_REPORT_LAB_NAME, "");
+        properties.setPropertyValue(Property.LH_REPORT_LAB_SUBTITLE, "");
+        properties.setPropertyValue(Property.LH_REPORT_ADDRESS_LINE1, "");
+        properties.setPropertyValue(Property.LH_REPORT_ADDRESS_LINE2, "");
+        properties.setPropertyValue(Property.LH_REPORT_PHONE, "");
+        properties.setPropertyValue(Property.LH_REPORT_EMAIL, "");
+        properties.setPropertyValue(Property.LH_REPORT_WEBSITE, "");
+        properties.setPropertyValue(Property.LH_REPORT_ACCREDITATION_NUMBER, "");
+        properties.setPropertyValue(Property.LH_REPORT_ACCREDITATION_BODY, "");
+        properties.setPropertyValue(Property.LH_REPORT_FOOTER_TEXT, "");
+        properties.setPropertyValue(Property.LH_REPORT_SHOW_PAGE_NUMBERS, "true");
+        properties.setPropertyValue(Property.LH_REPORT_PAGE_NUMBER_FORMAT, "Page {page} of {total}");
+        properties.setPropertyValue(Property.LH_REPORT_CERTIFICATE_PREFIX, "LH");
+        properties.setPropertyValue(Property.LH_REPORT_DATE_FORMAT, "YYYY");
         return properties;
     }
 

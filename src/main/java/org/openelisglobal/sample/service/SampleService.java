@@ -122,4 +122,6 @@ public interface SampleService extends BaseObjectService<Sample, String> {
     List<Sample> getSamplesByPriority(OrderPriority priority);
 
     List<Sample> findSamplesWithRequiredByBefore(Timestamp horizon);
+
+    void updateStorageSkipped(String accessionNumber, boolean storageSkipped, String sysUserId);
 }
