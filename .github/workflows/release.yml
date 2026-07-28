@@ -1,0 +1,115 @@
+# Cuts a release: sets the version in pom.xml + frontend/package.json,
+# commits and tags on the target branch (develop by default, or a
+# release/X.Y.x hotfix branch), and publishes a GitHub Release.
+#
+# Publishing the release fires the existing pipeline: "03 - E2E" runs on
+# release:published, and publish-images.yml promotes the tested GHCR images
+# to DockerHub tagged with the release tag verbatim. This workflow therefore
+# does NOT build or push any artifacts itself.
+#
+# Requires a RELEASE_TOKEN secret (PAT or GitHub App token) with permission
+# to push to protected branches, since branch protection blocks the default
+# GITHUB_TOKEN.
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (semver, no v prefix, e.g. 3.3.0 or 3.3.0-rc.1)"
+        required: true
+      next_version:
+        description: "Next development version to bump to after release (leave empty to skip, e.g. 3.3.1-SNAPSHOT)"
+        required: false
+      branch:
+        description: "Branch to release from (develop, or a release/X.Y.x hotfix branch)"
+        required: false
+        default: "develop"
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.repository == 'DIGI-UW/OpenELIS-Global-2'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Validate version format
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          if ! echo "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc)\.[0-9]+)?$'; then
+            echo "::error::'$VERSION' is not valid semver (expected e.g. 3.3.0 or 3.3.0-rc.1, no v prefix)"
+            exit 1
+          fi
+          NEXT="${{ github.event.inputs.next_version }}"
+          if [ -n "$NEXT" ] && ! echo "$NEXT" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+-SNAPSHOT$'; then
+            echo "::error::next_version '$NEXT' must look like 3.3.1-SNAPSHOT"
+            exit 1
+          fi
+
+      - name: Checkout release branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.inputs.branch }}
+          token: ${{ secrets.RELEASE_TOKEN }}
+          fetch-depth: 0
+
+      - name: Fail if tag already exists
+        run: |
+          if git rev-parse -q --verify "refs/tags/${{ github.event.inputs.version }}" >/dev/null; then
+            echo "::error::Tag ${{ github.event.inputs.version }} already exists"
+            exit 1
+          fi
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: "21"
+          distribution: temurin
+          cache: maven
+
+      - name: Set release version in pom.xml and package.json
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          mvn -B -q versions:set -DnewVersion="$VERSION" -DgenerateBackupPoms=false
+          cd frontend && npm version "$VERSION" --no-git-tag-version --allow-same-version && cd ..
+          # Sanity check: pom resolves to exactly the requested version
+          RESOLVED=$(mvn -B -q help:evaluate -Dexpression=project.version -DforceStdout)
+          if [ "$RESOLVED" != "$VERSION" ]; then
+            echo "::error::pom.xml resolved to '$RESOLVED', expected '$VERSION'"
+            exit 1
+          fi
+
+      - name: Commit and tag release
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pom.xml frontend/package.json frontend/package-lock.json
+          git commit -m "release: $VERSION"
+          git tag -a "$VERSION" -m "OpenELIS-Global2 $VERSION"
+          git push origin HEAD:${{ github.event.inputs.branch }}
+          git push origin "$VERSION"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          name: OpenELIS-Global2 ${{ github.event.inputs.version }} Release
+          generate_release_notes: true
+          prerelease: ${{ contains(github.event.inputs.version, '-') }}
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Bump to next development version
+        if: github.event.inputs.next_version != ''
+        run: |
+          NEXT="${{ github.event.inputs.next_version }}"
+          mvn -B -q versions:set -DnewVersion="$NEXT" -DgenerateBackupPoms=false
+          cd frontend && npm version "${NEXT%-SNAPSHOT}" --no-git-tag-version --allow-same-version && cd ..
+          git add pom.xml frontend/package.json frontend/package-lock.json
+          git commit -m "chore: bump version to $NEXT after ${{ github.event.inputs.version }} release"
+          git push origin HEAD:${{ github.event.inputs.branch }}

@@ -1,51 +1,50 @@
+# Builds the Linux installer tarball for a release and attaches it as a
+# release asset. Runs automatically when a release is published (including
+# releases created by the Release workflow), and can be invoked manually
+# with a tag for testing or backfilling an older release.
 name: Packaging / Installer
-on:
-  workflow_call: 
 
-    
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to build and attach the installer to"
+        required: true
+
 jobs:
   build-installer-and-upload-installer:
     name: Build
+    if: github.repository == 'DIGI-UW/OpenELIS-Global-2'
     runs-on: ubuntu-latest
-    steps:
+    permissions:
+      contents: write
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name || github.event.inputs.tag }}
 
-      - name: Checkout OpenELIS-Global2
+    steps:
+      - name: Checkout OpenELIS-Global2 at release tag
         uses: actions/checkout@v6
         with:
-          repository: ${{github.repository}}
+          ref: ${{ env.RELEASE_TAG }}
+          fetch-depth: 0
           submodules: recursive
 
       - name: Build installer
-        run: ./build.sh -ib develop
+        run: ./build.sh -ib "$RELEASE_TAG"
 
-      - name: check installer
-        run: ls OEInstaller/linux  
+      - name: Check installer
+        run: ls OEInstaller/linux
 
-
-      - name: Find installer file
-        id: find_file
+      - name: Upload installer as release asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Find the file in OEInstaller/linux with .tar.gz extension
           FILE_PATH=$(find OEInstaller/linux -name "*.tar.gz" -print -quit)
           if [ -z "$FILE_PATH" ]; then
-            echo "No .tar.gz file found in OEInstaller/linux directory."
+            echo "::error::No .tar.gz file found in OEInstaller/linux directory."
             exit 1
           fi
-          echo "File path: $FILE_PATH"
-          # Extract the file name from the path
-          FILE_NAME=$(basename "$FILE_PATH")
-          echo "File name: $FILE_NAME"
-          # Pass the file path and name to outputs
-          echo "FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
-          echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ env.FILE_PATH }}
-          asset_name: ${{ env.FILE_NAME }}
-          asset_content_type: application/gzip  
- 
+          echo "Uploading $FILE_PATH to release $RELEASE_TAG"
+          gh release upload "$RELEASE_TAG" "$FILE_PATH" --clobber
